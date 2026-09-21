@@ -1,40 +1,57 @@
 # Art — HI02H11_L02_S01 «मात्राओं की रेल»
 
-Regenerated 2026-09-17 after applying the SME deck **and generating the art**.
+## Object art — YOUR artwork, 2026-09-21
 
-## Object art — all 10 produced
+You supplied three composite sheets (2172×724, already carrying real alpha). They were split into
+one transparent PNG per object and now **replace** the previously generated art.
 
-Flat-vector, transparent, autocropped, magenta-keyed. None is pink (house rule).
-Every one was eyeballed on a contact sheet (`_review_shots/_art_contact_sheet.png`).
+| key | word | what it is | size |
+|---|---|---|---|
+| `obj_jal` | जल | water splash | 604×466 |
+| `obj_jaal` | जाल | net on a handle | 568×496 |
+| `obj_bal` | बल | flexed arm | 506×484 |
+| `obj_bil` | बिल | a bill / receipt with ₹ | 474×527 |
+| `obj_kal` | कल | desk calendar | 537×535 |
+| `obj_keel` | कील | nail | 389×553 |
+| `obj_naak` | नाक | nose | 444×513 |
+| `obj_din` | दिन | smiling sun | 591×589 |
+| `obj_teer` | तीर | arrow | 640×499 |
+| `assets/UI/ui_magnifier.webp` | — | magnifying glass, now the POEM_SEARCH lens | 420×385 |
 
-| key | size | what it is |
-|---|---|---|
-| `obj_bal.png` | 578×313 | a blue dumbbell — बल (strength) |
-| `obj_bil.png` | 410×296 | an earth mound with a burrow hole — बिल |
-| `obj_gati.png` | 273×367 | a boy running — गति (motion) |
-| `obj_jaal.png` | 350×580 | a round mesh net on a wooden handle — जाल |
-| `obj_jal.png` | 442×225 | a shallow puddle of blue water with a droplet — जल |
-| `obj_kal.png` | 464×448 | a wall calendar — कल |
-| `obj_keel.png` | 220×541 | a grey metal nail — कील |
-| `obj_ladki.png` | 275×571 | a girl in a yellow top and blue skirt — लड़की |
-| `obj_matka.png` | 440×500 | a terracotta clay water pot — मटका |
-| `obj_pari.png` | 486×490 | a fairy in a teal dress with golden wings — परी |
+### Two meaning changes that came with your art — worth a look
 
-### Two notes on these
+* **`obj_bil` is now a BILL/RECEIPT, not a burrow.** बिल carries both senses; the previous generated
+  art was a burrow hole. Your sheet is a receipt with a ₹ field, so the emoji fallback moved 🕳️ → 🧾.
+  The VO («अब बल में छोटी इ की मात्रा लगाने पर, बिल बनता है।») works for either reading.
+* **`obj_bal` is now the flexed arm** you'd expect. It replaces the dumbbell I substituted earlier —
+  that substitution only existed because the magenta keyer kept eating skin tones. Your art arrives
+  with real alpha, so no keying was needed and the arm works.
 
-* **बल is drawn as a dumbbell, not a flexed arm.** The arm was generated twice and refused twice by
-  the keyer's hollow-object guard: skin tone sits ~82–100 from both the magenta and the green
-  chroma, i.e. inside the halo radius, so the keyer ate the arm. A saturated subject keys cleanly.
-  बल is abstract either way — say the word if you would rather have the arm and I will hand-key it.
-* **परी wears teal, not pink.** A pink fairy fights the magenta key (the house rule's "keep objects
-  never pink"). Your mockup draws her in pink — easy to change if you want it, on a green chroma.
+### How the sheets were split
+
+Column-gap detection worked on two sheets. The third (`net water nose,bal.png`) came back as one
+blob — faint speckle bridged the gaps, and no alpha threshold separated the objects without eating
+real edges; connected-component labelling also merged them because the objects abut. The column
+**profile** showed true zero-ink columns at x=575, 1194, 1649, so that sheet was cut at those
+measured valleys. Every cut was then autocropped, capped to 640px, and checked for a sane opaque
+fraction (8–96%) before being written.
+
+The three source sheets were removed from `assets/Images/` after splitting — left there they would
+ship as unreferenced orphans and each is over 600KB.
+
+### The magnifier's glass is off-centre
+
+The artwork's glass sits at **67.9% across / 35.2% down, radius 25% of the width** — not the centre
+of the image. `POEM_SEARCH`'s magnify hit-test reads through those coordinates, so the child is
+looking through the glass rather than the handle. If the artwork is ever swapped, update `GLASS`
+in the module.
 
 ## UI chrome — generated 2026-09-20 on your explicit instruction
 
 The house rule is that engine chrome art is **COPIED from the assets kit, never model-generated**.
 Neither of these exists in the kit, and you asked twice for the images to be generated, so they were
-— flagging the deviation rather than making it silently. Both were keyed, eyeballed and are the only
-reason the game now contains **zero emoji fallbacks**.
+— flagging the deviation rather than making it silently. Both were keyed and eyeballed. (The magnifier that now
+replaces the CSS-drawn lens came from your own sheet — see above.)
 
 | file | size | what it is |
 |---|---|---|
@@ -51,8 +68,7 @@ no code change.
 
 ## Cover-page train — your artwork, wired in 2026-09-21
 
-`assets/GIFandVIDEO/train.gif` → `assets/UI/train_cover.webp`: 18 frames @100ms, i.e. the **same
-1.8s loop**, **1291KB → 287KB**. The artwork already carries a locomotive and three cream coach
+`assets/GIFandVIDEO/train.gif` → `assets/UI/train_cover.webp`: **lossless**, 36 frames @50ms — identical to your source frame-for-frame, **1291KB → 883KB**. The artwork already carries a locomotive and three cream coach
 panels, so the deck's "three matra boxes" are those panels — ा · ि · ी are placed on them and
 appear one by one after the landing VO.
 
@@ -73,13 +89,14 @@ non-clipped. **Both go on the EAR-CHECK list — a human plays them before deliv
 
 | id | length | used for |
 |---|---|---|
-| `sfx_train_arrive` | 2.05s | locomotive entry — every train screen and the cover page |
+| `sfx_train_arrive` | 2.05s | locomotive entry on the in-game train screens |
+| `sfx_train_move` | 1.75s | the cover train chugging while it travels in |
 | `sfx_whistle` | 1.35s | round / lesson completion |
 
 ## Still outstanding — three SFX (deck row X4)
 
-Chrome, and still copied-not-generated. Each id already resolves at runtime and swaps to the real
-take with no code change; until then the engine's procedural tone plays.
+Chrome, still copied-not-generated. Each id resolves at runtime and swaps to the real take with no
+code change; until then the engine's procedural tone plays.
 
 | id | used for |
 |---|---|

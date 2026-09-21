@@ -517,3 +517,102 @@ down. The train's own bounce is only 4px over 182px, so a static overlay stays o
 
 A working snapshot of the engine is now kept at `4_ENGINE/lesson_template.r5.bak.html`, and any
 file carrying emoji is written with a file-based tool rather than a Python string literal.
+
+---
+
+## Follow-up changes — 2026-09-21 (second round)
+
+Final build sha `179782f83b70`. Receipt `17 pass · 1 FAIL · 6 warn` (unchanged; the FAIL is the
+pre-existing `start_mascot.png` one). Colour audit across all 17 screens: **no non-orange highlight
+anywhere**.
+
+| # | ask | what was done |
+|---|---|---|
+| G1 | cover train should come from the right to the centre | Cover-specific `coverTrainIn` (translateX 115% → 0, 1.7s, eased to a stop) — it now travels in from off the right edge rather than sharing the shorter in-game entry. |
+| G2 | "generate and add train moving, train whistle, sfx" | Added `sfx_train_move` (1.75s steady chug, no whistle, no acceleration — deliberately quiet as it plays under the landing VO). The cover now chugs for the length of the travel and **whistles as it settles**. Joins `sfx_train_arrive` and `sfx_whistle`. |
+| G3 | "there is some distortion in the gif, fix that" | **Real defect, measured.** The 287KB WebP was lossy (`quality=80`): mean pixel delta **8.14**, max **206** — the artwork is flat vector with hard binary alpha, which lossy WebP rings badly at the edges. Re-encoded **lossless at the source's own 36 frames**: delta **0.00 / max 0** (pixel-identical) and still **883KB vs the GIF's 1291KB**. Lossy at q95 was still delta 7.28, so quality was never the fix — lossless was. |
+| G4 | page 1: "आ" matra aligned differently from the others | **Cause:** the spans carried `.ink-glyph`, and `centerInkGlyph` squares up the ink BOUNDING BOX — it was translating the letter ~2.5px but the matra ~13.3px, and ि / ी have tall ascenders that ा does not, so their dotted circle sat lower than ा's. Removed `.ink-glyph` from the page-1 pairs and aligned on the text BASELINE (`.mp-pair` and `.mp-row`). Letter and matra now share a baseline exactly (delta **+0** in all three pairs) and the three dotted circles line up. |
+| G5 | no red for highlighting a matra or letter anywhere — use page 1's orange | Seven rules moved to **#FF8A00**: the matra callout pill, the in-word matra SVG (`--matra-red`), the matra dropped into a blank, the highlighted consonant, the matra in the equation, the flying matra, and the empty blank box. **Wrong-answer red is untouched** — that is feedback, not a highlight. |
+| G6 | page 2 (deck page 5), re-checked bullet by bullet | Heading removed (`prompt_hi: ""`) per "Do not add extra explanatory text". Added the **Sound Differentiation** beat. Verified chain order: intro → «यह शब्द जल है।» → «ज में आ की मात्रा लगाने पर, जा बनता है।» → «जाल» → **«ज, जा, जाल।»** → explain, with आगे gated until the end. |
+
+### What the model will and will not say — measured, and worse than the spec records
+
+The deck's "Sound Differentiation" beat needs ज / जा / जाल as distinguishable sounds. Probed the TTS
+model directly:
+
+| text | result |
+|---|---|
+| `ज` · `ब` · `क` (bare akshara) | **refused** — `finishReason: OTHER`, no content at all |
+| `जा` · `बि` · `की` (bare syllable) | **refused** — same |
+| `ज। जा। जाल।` (danda-separated) | **refused** |
+| `ज, जा, जाल।` (comma-separated) | **OK** |
+
+Two corrections to the handoff spec §6.1, which records this as "bare akshara → HTTP 400" for
+क/न/द/त: it is **not an HTTP error** but a silent content-free response, and it extends to **bare
+two-character syllables**, not just single consonants. The danda/comma split matters too — the same
+words refuse with a danda and succeed with commas.
+
+So the three sounds ride in **one clip per screen** (`vo_mb_*_sounds`) whose commas give exactly the
+"small pause between each sound" the deck asks for. No human recording needed for this after all.
+The equation panel pulses while it plays. These three clips are on the EAR-CHECK list.
+
+### Still outstanding
+
+`sfx_sparkle`, `sfx_chime` and `sfx_shake` — chrome, still copied-not-generated, procedural tones
+standing in. EAR-CHECK list now: 11 VO clips + 3 sound-differentiation clips + 3 synthesised SFX.
+
+---
+
+## Follow-up — 2026-09-21: your artwork replaces the generated art
+
+Build `90a0c4717e80`. Receipt unchanged at `17 pass · 1 FAIL · 6 warn`. All 16 slides re-checked:
+**no broken images anywhere**.
+
+You supplied three composite sheets (2172×724, already carrying real alpha). They were split into
+one transparent PNG per object and now **replace** the generated art. Ten objects:
+
+| key | word | what it is | replaced |
+|---|---|---|---|
+| `obj_jal` | जल | water splash | generated puddle |
+| `obj_jaal` | जाल | net on a handle | generated net |
+| `obj_bal` | बल | **flexed arm** | the dumbbell I had substituted |
+| `obj_bil` | बिल | **a bill / receipt with ₹** | the generated burrow |
+| `obj_kal` | कल | desk calendar | generated calendar |
+| `obj_keel` | कील | nail | generated nail |
+| `obj_naak` | नाक | nose | the original bundle's nose |
+| `obj_din` | दिन | smiling sun | the original bundle's sun |
+| `obj_teer` | तीर | arrow | the original bundle's arrow |
+| `assets/UI/ui_magnifier.webp` | — | magnifying glass | the CSS-drawn lens on POEM_SEARCH |
+
+### Two meaning changes that came with the art — flagged, not decided
+
+* **`obj_bil` is now a BILL/RECEIPT, not a burrow.** बिल carries both senses. The emoji fallback
+  moved 🕳️ → 🧾 to match. The VO («अब बल में छोटी इ की मात्रा लगाने पर, बिल बनता है।») works either
+  way, so nothing else changed — but the screen now teaches बिल as "invoice", which is worth an
+  SME glance.
+* **`obj_bal` is the flexed arm** you'd expect. My dumbbell only existed because the magenta keyer
+  kept eating skin tones; your art arrives with real alpha, so the arm works.
+
+### How the sheets were split
+
+Column-gap detection cut two sheets cleanly. The third (`net water nose,bal.png`) came back as a
+single blob: faint speckle bridged every gap, no alpha threshold separated the objects without
+eating real edges, and connected-component labelling merged them too because the objects abut. The
+column **profile** did show true zero-ink columns at x=575 / 1194 / 1649, so that sheet was cut at
+those measured valleys. Every cut was autocropped, capped to 640px, and checked for a sane opaque
+fraction (8–96%) before being written.
+
+The three source sheets were then deleted from `assets/Images/` — left there they would ship as
+unreferenced orphans at 600KB–1.2MB each.
+
+### The magnifier's glass is off-centre, and the hit-test follows it
+
+Measured off the artwork: the glass sits at **67.9% across, 35.2% down, radius 25% of the width** —
+not the centre of the image. `POEM_SEARCH`'s magnify test now reads through those coordinates, so a
+child scanning the poem is looking through the glass rather than the handle. Swapping the artwork
+means updating `GLASS` in the module.
+
+### Size
+
+`assets/Images` 2.2MB → 3.4MB (the new art is higher resolution). Bundle 52MB; the deploy after
+`.vercelignore` is unaffected in shape and still well inside limits.

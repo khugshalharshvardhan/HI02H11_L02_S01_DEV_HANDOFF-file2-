@@ -98,13 +98,13 @@ body.is-start{background:#47BCFD;}   /* [20a landing] new-blue ground */
 /* 16L: matra HINT — its own labelled block below the meet row (coloured isolated ◌matra) */
 .meet-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding-bottom:24px;}
 .matra-hint{font-family:var(--font-hi);font-weight:800;font-size:28px;color:var(--navy-dk);display:flex;align-items:center;gap:12px;background:#FFF6F4;border:2px solid #F3B4A8;border-radius:18px;padding:6px 22px;}
-.matra-hint .matra-hl{font-size:46px;font-weight:800;color:#E5533C;line-height:1;}
+.matra-hint .matra-hl{font-size:46px;font-weight:800;color:#FF8A00;line-height:1;}
 /* IN-WORD matra colouring (right-spacing matras like ा): full word in navy + a red copy of the
    same word clipped to just the matra column(s). Both layers = identical string/coords → the red
    lands exactly on the matra strokes, no dotted circle, no duplicate आ. */
 .meet-letter-box .matra-word{display:block;max-width:100%;max-height:320px;height:auto;color:var(--navy);}
 .matra-word .mw-base{fill:currentColor;}
-.matra-word .mw-red text{fill:var(--matra-red,#E5533C);}
+.matra-word .mw-red text{fill:var(--matra-red,#FF8A00);}
 .matra-word.mw-pulse .mw-red{animation:mwPulse .62s ease-in-out 3;}
 @keyframes mwPulse{0%,100%{opacity:1}50%{opacity:.12}}
 .meet-letter-box .glyph-img{width:200px;height:200px;object-fit:contain;}
@@ -1765,6 +1765,9 @@ body.is-start .phase-gate{
   transform:translateX(0);opacity:1;}
 .train-rail.tr-entering{animation:trainIn 1100ms cubic-bezier(.22,.61,.36,1) both;}
 @keyframes trainIn{from{transform:translateX(62%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+/* the cover train travels further and slower than an in-game one: it comes in from off the right
+   edge and settles centred, which is what deck page 3 asks for. */
+@keyframes coverTrainIn{from{transform:translateX(115%);}to{transform:translateX(0);}}
 @media (prefers-reduced-motion:reduce){
   .train-rail.tr-entering{animation:none;transform:translateX(0);opacity:1;}
 }
@@ -1853,10 +1856,10 @@ body.is-start .phase-gate{
 
 /* --- MATRA_FILL: the blank inside a coach word (rows #146, #147, #155) ---------------- */
 .mf-word{display:flex;align-items:center;justify-content:center;gap:2px;font-size:44px;font-weight:800;color:var(--navy);}
-.mf-blank{display:inline-flex;align-items:center;justify-content:center;width:52px;height:60px;border:3px dashed rgba(249,105,94,.85);
-  border-radius:10px;background:rgba(249,105,94,.06);}
+.mf-blank{display:inline-flex;align-items:center;justify-content:center;width:52px;height:60px;border:3px dashed rgba(255,138,0,.85);
+  border-radius:10px;background:rgba(255,138,0,.08);}
 .mf-blank.filled{border-style:solid;border-color:transparent;background:transparent;}
-.mf-blank .mf-fill{color:var(--wrong,#F9695E);}
+.mf-blank .mf-fill{color:#FF8A00;}
 .mf-blank.nudge{animation:coachPulse 1200ms ease-in-out infinite;}
 
 /* --- MATRA_PAIRS (deck page 4 · rows #17-#22) ---------------------------------------
@@ -1870,14 +1873,18 @@ body.is-start .phase-gate{
    restored to full. The card chrome the first pass drew around each pair is gone — it was exactly
    the "extra decorative element" the note rules out. Visibility is carried by opacity in the RULE
    (not only inside @keyframes), so the frozen review capture shows the real settled state. */
-.mp-row{display:flex;align-items:center;justify-content:center;gap:64px;width:100%;min-height:260px;}
-.mp-pair{display:flex;align-items:center;gap:18px;padding:10px 20px;
+.mp-row{display:flex;align-items:baseline;justify-content:center;gap:64px;width:100%;min-height:260px;}
+/* Page 1 pairs are deliberately NOT ink-centred (no .ink-glyph on the spans): centerInkGlyph
+   squares up the ink BOUNDING BOX and was translating the letter ~2.5px but the matra ~13.3px, so
+   the two never shared a baseline and ि / ी (tall ascenders) sat differently from ा. Plain baseline
+   alignment puts all three dotted circles on one line. */
+.mp-pair{display:flex;align-items:baseline;gap:18px;padding:10px 20px;
   opacity:0;transform:scale(.92);
   transition:opacity .45s ease,transform .45s ease;}
 .mp-pair.shown{opacity:.5;transform:scale(.95);}      /* "both fade slightly" */
 .mp-pair.active{opacity:1;transform:scale(1);}
 .mp-letter{font-size:96px;font-weight:800;color:var(--navy);line-height:1;}
-.mp-arrow{font-size:44px;color:#7FA8D9;line-height:1;
+.mp-arrow{font-size:44px;color:#7FA8D9;line-height:1;align-self:center;
   opacity:0;transition:opacity .35s ease;}
 .mp-arrow.mp-in{opacity:1;}
 /* the matra is held back until the letter has landed, then pops in beside it and glows softly */
@@ -1900,7 +1907,7 @@ body.is-start .phase-gate{
 @keyframes mbIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 .mb-word{font-size:84px;font-weight:800;color:var(--navy);line-height:1.1;display:flex;align-items:center;}
 .mb-word .mb-c{transition:color .25s ease,text-shadow .25s ease;}
-.mb-word .mb-c.lit{color:var(--wrong,#F9695E);text-shadow:0 0 18px rgba(249,105,94,.45);}
+.mb-word .mb-c.lit{color:#FF8A00;text-shadow:0 0 18px rgba(255,138,0,.45);}
 .mb-pic{width:180px;height:150px;display:flex;align-items:center;justify-content:center;}
 .mb-pic img{max-width:100%;max-height:100%;object-fit:contain;}
 .mb-pic .mb-emoji{font-size:96px;line-height:1;}
@@ -1908,10 +1915,14 @@ body.is-start .phase-gate{
 /* the centre equation panel — tinted card, as the mockup draws it */
 .mb-eq{position:relative;background:#EAF3FE;border-radius:20px;padding:20px 26px;display:flex;flex-direction:column;align-items:center;gap:8px;}
 .mb-eq-line{display:flex;align-items:center;gap:12px;font-size:76px;font-weight:800;color:var(--navy);line-height:1;}
-.mb-eq-line .mb-m{color:var(--wrong,#F9695E);}
+.mb-eq-line .mb-m{color:#FF8A00;}
+.mb-eq.mb-say{animation:mbSay 900ms ease-in-out 3;}
+@keyframes mbSay{0%,100%{box-shadow:0 0 0 0 rgba(255,138,0,0);}
+                 50%{box-shadow:0 0 0 6px rgba(255,138,0,.28);}}
+@media (prefers-reduced-motion:reduce){.mb-eq.mb-say{animation:none;}}
 .mb-eq-line .mb-op{color:#3E86E0;font-size:54px;}
 /* the matra flying into place (rows #34, #58): ा/ी travel from the RIGHT, ि travels from the LEFT */
-.mb-fly{position:absolute;font-size:76px;font-weight:800;color:var(--wrong,#F9695E);pointer-events:none;z-index:40;}
+.mb-fly{position:absolute;font-size:76px;font-weight:800;color:#FF8A00;pointer-events:none;z-index:40;}
 .mb-fly.fly-right{animation:mbFlyR 620ms ease-out both;}
 .mb-fly.fly-left{animation:mbFlyL 620ms ease-out both;}
 @keyframes mbFlyR{from{transform:translate(74px,-34px) scale(1.3);opacity:0;}to{transform:translate(0,0) scale(1);opacity:1;}}
@@ -1998,19 +2009,19 @@ body.is-start .phase-gate{
    544px, every matra drifted right — progressively, +3.7% / +5.5% / +7.7%. inline-block + a
    fixed image height makes the wrap hug the artwork, so the percentages are the artwork's own. */
 .lt-wrap{position:relative;display:block;line-height:0;}
-.lt-wrap.lt-in{animation:trainIn 1200ms cubic-bezier(.22,.61,.36,1) both;}
+.lt-wrap.lt-in{animation:coverTrainIn 1700ms cubic-bezier(.16,.72,.3,1) both;}
 @media (prefers-reduced-motion:reduce){.lt-wrap.lt-in{animation:none;}}
 .lt-train{display:block;margin:0 auto;}   /* .sg-art's own img caps decide the size; JS reads it back */
 /* left/top/font-size are written by placeMatras() from the image's MEASURED box — the .sg-art
    rules cap the image (max-width:92%, max-height:250px) and the wrap is a flex item, so neither
    the wrap's width nor a CSS percentage is a reliable reference for "the middle of coach 2". */
-.lt-matra{position:absolute;transform:translate(-50%,-50%);
+.lt-matra{position:absolute;
   font-family:var(--font-hi);font-weight:800;color:var(--navy);line-height:1;
   opacity:1;white-space:nowrap;}
 .lt-matra.lt-pending{opacity:0;}
 .lt-matra.lt-pop{animation:ltPop 420ms cubic-bezier(.34,1.5,.6,1) both;}
-@keyframes ltPop{from{opacity:0;transform:translate(-50%,-50%) scale(.55);}
-                 to{opacity:1;transform:translate(-50%,-50%) scale(1);}}
+@keyframes ltPop{from{opacity:0;transform:scale(.55);}
+                 to{opacity:1;transform:scale(1);}}
 
 </style>
 </head>
@@ -2498,7 +2509,19 @@ function _chainMs(srcs, gapMs){
   return total;
 }
 function play(src, onEnd){
-  stopAudio(); setPlaying(true);
+  stopAudio();
+  /* [r5-mute] MUTED = a silent clip of the SAME DURATION, not an instant no-op. Every staged
+     sequence in this engine advances on the onEnd callback, so collapsing the timing would rush
+     the teaching. _clipMs() returns the decoded length (or its 8s default) exactly as the
+     fail-safes elsewhere use it. */
+  if(isMuted){
+    const _g = ++_audioGen;                       // cancel anything still pending, like stopAudio
+    setPlaying(false);
+    const _ms = src ? _clipMs(src) : 0;
+    if(onEnd) setTimeout(()=>{ if(_g === _audioGen) onEnd(); }, Math.max(0, Math.min(_ms, 9000)));
+    return;
+  }
+  setPlaying(true);
   const myGen=_audioGen;
   let done=false; const fire=()=>{ if(done || myGen!==_audioGen)return; done=true; currentVoiceSource=null; currentAudio=null; _curVoMs=null; setPlaying(false); if(onEnd) onEnd(); };
   if(src){
@@ -2550,7 +2573,7 @@ function play(src, onEnd){
    overlap the spoken VO (does NOT touch currentAudio / the play() chain).
    Silently no-ops if the file is missing or playback is blocked. */
 function playSfx(id){
-  if(!id) return;
+  if(!id || isMuted) return;      /* [r5-mute] */
   const src="assets/Audio/"+id+"."+AUDIO_EXT;
   _loadVoiceBuffer(src).then(buffer=>{
     const c=_resumeVoiceAudio(); if(!c)throw new Error("Web Audio unavailable");
@@ -2562,7 +2585,8 @@ function playSfx(id){
    WebAudio resumes on the first user tap (autoplay policy), so taps/answers always sound. */
 let _juiceAC = null;
 function _ac(){ _juiceAC=_resumeVoiceAudio(); return _juiceAC; }   // [31x] one context for VO + procedural SFX
-function _tone(freqs, type, dur, vol){ const c = _ac(); if(!c) return; const t0 = c.currentTime;
+function _tone(freqs, type, dur, vol){ if(isMuted) return;   /* [r5-mute] procedural sfx too */
+  const c = _ac(); if(!c) return; const t0 = c.currentTime;
   freqs.forEach((f, i)=>{ const o = c.createOscillator(), g = c.createGain(); o.type = type; o.frequency.value = f;
     const t = t0 + i*(dur/freqs.length); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t+0.02);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur/freqs.length); o.connect(g).connect(c.destination); o.start(t); o.stop(t + dur/freqs.length); }); }
@@ -7281,6 +7305,7 @@ function _forceNudgeAt(el){
    no code change. */
 const _sfxHave = new Map();
 function sfxOr(id, fallback){
+  if(isMuted) return;             /* [r5-mute] neither the file nor the procedural stand-in */
   if(!id){ if(fallback) fallback(); return; }
   if(_sfxHave.get(id) === false){ if(fallback) fallback(); return; }
   if(_sfxHave.get(id) === true){ playSfx(id); return; }
@@ -7293,6 +7318,7 @@ const sfxWhistle     = ()=> sfxOr("sfx_whistle",      ()=> _tone([880, 1180], "s
 const sfxSparkle     = ()=> sfxOr("sfx_sparkle",      ()=> _tone([1180, 1560], "sine", 0.22, 0.07));
 const sfxChime       = ()=> sfxOr("sfx_chime",        ()=> _tone([784, 1046], "sine", 0.30, 0.09));
 const sfxShake       = ()=> sfxOr("sfx_shake",        ()=> _tone([260, 200], "triangle", 0.22, 0.07));
+const sfxTrainMove   = ()=> sfxOr("sfx_train_move",   ()=> _tone([150, 190], "triangle", 0.40, 0.05));
 
 /* ==========================================================================================
    TRAIN_CHROME — the shared visual shell (deck row X3; blocks 7 screens)
@@ -7429,9 +7455,9 @@ SlideModules.MATRA_PAIRS = {
     const pairs = (slide.data && slide.data.pairs) || [];
     const els = pairs.map(p => {
       const el = document.createElement("div"); el.className = "mp-pair";
-      el.innerHTML = '<span class="mp-letter ink-glyph">' + p.letter + '</span>' +
+      el.innerHTML = '<span class="mp-letter">' + p.letter + '</span>' +
                      '<span class="mp-arrow">\u2192</span>' +
-                     '<span class="mp-matra ink-glyph">' + matraGlyph(p.matra) + '</span>';
+                     '<span class="mp-matra">' + matraGlyph(p.matra) + '</span>';
       row.appendChild(el);
       return el;
     });
@@ -7599,7 +7625,12 @@ SlideModules.MATRA_BUILD = {
       (next)=>{ const mw = p3.querySelector(".matra-word") || p3.querySelector(".matra-hl");
                 if(mw) mw.classList.add("mw-pulse");
                 play(A("result") || null, ()=>{ if(mw) mw.classList.remove("mw-pulse"); setTimeout(next, 420); }); },
-      // 7 · "अब जल में आ की मात्रा लगाने पर — जाल बनता है।" then आगे unlocks
+      // 7 · the three sounds contrasted: ज , जा , जाल  (deck: "give a small pause between each")
+      (next)=>{ const src = A("sounds");
+                if(!src){ next(); return; }
+                const eq = p2.querySelector(".mb-eq"); if(eq) eq.classList.add("mb-say");
+                play(src, ()=>{ if(eq) eq.classList.remove("mb-say"); setTimeout(next, 420); }); },
+      // 8 · "अब जल में आ की मात्रा लगाने पर — जाल बनता है।" then आगे unlocks
       (next)=> play(A("explain") || null, ()=> setTimeout(next, 200))
     ];
 
@@ -7609,11 +7640,11 @@ SlideModules.MATRA_BUILD = {
       if(si >= steps.length){ finish(); return; }
       steps[si++](run);
     };
-    state.replayAudio = ()=> playChain([A("prompt"), A("base"), A("onset"), A("result"), A("explain")].filter(Boolean), 0, ()=>{});
+    state.replayAudio = ()=> playChain([A("prompt"), A("base"), A("onset"), A("result"), A("sounds"), A("explain")].filter(Boolean), 0, ()=>{});
     setTimeout(run, 380);
     /* FAIL-SAFE — real chain length, never a flat race ([31y]) */
     setTimeout(()=>{ if(CARD.slides[state.idx] === slide) finish(); },
-               _chainMs([A("prompt"), A("base"), A("onset"), A("result"), A("explain")], 520) + 6000);
+               _chainMs([A("prompt"), A("base"), A("onset"), A("result"), A("sounds"), A("explain")], 520) + 6000);
   }
 };
 
@@ -8736,7 +8767,7 @@ function boot(){
       const wrap = document.createElement("div"); wrap.className = "lt-wrap";
       wrap.innerHTML = '<img class="lt-train" src="' + (hero.src || "assets/UI/train_cover.webp") +
         '" alt="" onerror="this.replaceWith(TrainChrome.locoSVG());">' +
-        ms.map(m => '<span class="lt-matra ink-glyph lt-pending">' + m + '</span>').join("");
+        ms.map(m => '<span class="lt-matra lt-pending">' + m + '</span>').join("");
       el.appendChild(wrap);
 
       /* Place each matra on its coach panel from the image's RENDERED box. Percentages of the wrap
@@ -8748,9 +8779,13 @@ function boot(){
         const W = img.offsetWidth, H = img.offsetHeight;
         [...wrap.querySelectorAll(".lt-matra")].forEach((sp, i)=>{
           const spot = SPOTS[i] || SPOTS[SPOTS.length - 1];
-          sp.style.left = (img.offsetLeft + W * spot[0] / 100) + "px";
-          sp.style.top  = (img.offsetTop  + H * spot[1] / 100) + "px";
           sp.style.fontSize = Math.round(W * 0.072) + "px";      // 46px at the artwork's native 634
+          /* centre on the panel using the glyph's OWN measured box — not translate(-50%,-50%),
+             which the review capture's animation freeze was discarding. */
+          sp.style.left = "0px"; sp.style.top = "0px";
+          const bw = sp.offsetWidth, bh = sp.offsetHeight;
+          sp.style.left = Math.round(img.offsetLeft + W * spot[0] / 100 - bw / 2) + "px";
+          sp.style.top  = Math.round(img.offsetTop  + H * spot[1] / 100 - bh / 2) + "px";
         });
       };
       if(img.complete) placeMatras(); else img.addEventListener("load", placeMatras);
@@ -8761,9 +8796,11 @@ function boot(){
       $("sgTitle").classList.add("compact");
       const c2 = el.closest && el.closest(".sg-content"); if(c2) c2.classList.add("has-hero");
 
-      /* "bring the train onto the screen with a smooth right-to-left animation" + the arrival SFX */
+      /* "bring the train onto the screen with a smooth right-to-left animation" (deck page 3):
+         it chugs for the length of the travel, then whistles as it settles in the centre. */
       wrap.classList.add("lt-in");
-      sfxTrainArrive();
+      sfxTrainMove();
+      setTimeout(()=> sfxWhistle(), 1500);
 
       /* "After this VO, the three matras ा, ि, ी can appear one by one on screen." */
       const spans = [...wrap.querySelectorAll(".lt-matra")];

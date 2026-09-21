@@ -1,10 +1,10 @@
 {
  "schema": "swiftpal-build-report/1",
- "generated_at": "2026-09-21T12:04:36",
+ "generated_at": "2026-09-21T15:01:18",
  "skill_code": "HI02H11_L02_S01",
  "engine_expected": "2026.08.04b-r4-unified",
  "engine_file_sha256": {
-  "HI02H11_L02_S01.html": "0f406ef2627b5b4b7ae2646bf41b8d2a92fa54655b9dac8d2ceb17e968046d7a"
+  "HI02H11_L02_S01.html": "8c028891ce55abb8bf2f0ccff2b59f7b2fcd9711ca8c5b97bc4c61c561e3bc93"
  },
  "receipt": {
   "counts": "17 pass / 1 FAIL / 6 warn",
@@ -72,7 +72,7 @@
    },
    {
     "ok": true,
-    "label": "Voice-over: all 91 lines have real audio",
+    "label": "Voice-over: all 94 lines have real audio",
     "detail": "OK"
    },
    {
@@ -103,7 +103,7 @@
    {
     "ok": true,
     "label": "Page-capture shots present (visual gate ran)",
-    "detail": "19 shots (expected ~17)"
+    "detail": "17 shots (expected ~17)"
    },
    {
     "ok": true,
@@ -152,10 +152,10 @@
  },
  "assets": {
   "images": 23,
-  "audio_files": 173,
-  "audio_lines_authored": 91,
+  "audio_files": 177,
+  "audio_lines_authored": 94,
   "audio_silent_pending": [],
-  "bytes_total": 52005083
+  "bytes_total": 54083306
  },
  "environment": {
   "platform": "Windows-11-10.0.26200-SP0",

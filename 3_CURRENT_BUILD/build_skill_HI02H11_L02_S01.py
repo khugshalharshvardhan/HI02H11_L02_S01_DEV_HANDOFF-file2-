@@ -112,6 +112,7 @@ VO = {
     "vo_mb_jal_onset":   "ज में आ की मात्रा लगाने पर, जा बनता है।",
     "vo_name_jaal":      "जाल",
     "vo_mb_jal_explain": "अब जल में आ की मात्रा लगाने पर, जाल बनता है।",
+    "vo_mb_jal_sounds":  "ज, जा, जाल।",
 
     # ---- Screen 3 · examples नाक / मटका (deck page 6) ----------------------------------------
     "vo_ex_aa_intro": "आइए, आ की मात्रा वाले कुछ शब्द देखें।",
@@ -124,6 +125,7 @@ VO = {
     "vo_mb_bil_onset":   "ब में छोटी इ की मात्रा लगाने पर, बि बनता है।",
     "vo_name_bil":       "बिल",
     "vo_mb_bil_explain": "अब बल में छोटी इ की मात्रा लगाने पर, बिल बनता है।",
+    "vo_mb_bil_sounds":  "ब, बि, बिल।",
 
     # ---- Screen 5 · examples दिन / गति (deck page 8) -----------------------------------------
     "vo_ex_i_intro": "आइए, छोटी इ की मात्रा वाले कुछ शब्द देखें।",
@@ -136,6 +138,7 @@ VO = {
     "vo_mb_keel_onset":   "क में बड़ी ई की मात्रा लगाने पर, की बनता है।",
     "vo_name_keel":       "कील",
     "vo_mb_keel_explain": "अब कल में बड़ी ई की मात्रा लगाने पर, कील बनता है।",
+    "vo_mb_keel_sounds":  "क, की, कील।",
 
     # ---- Screen 7 · examples तीर / लड़की (deck page 10) ---------------------------------------
     "vo_ex_ee_intro": "आइए, बड़ी ई की मात्रा वाले कुछ शब्द देखें।",
@@ -240,7 +243,7 @@ IMAGES = {
     "obj_haath": "✋", "obj_naak": "👃", "obj_din": "☀️", "obj_pin": "📌",
     "obj_neem": "🌳", "obj_teer": "🏹", "obj_hiran": "🦌",
     # NEW — pending art
-    "obj_jal": "💧", "obj_jaal": "🕸️", "obj_bal": "💪", "obj_bil": "🕳️",
+    "obj_jal": "💧", "obj_jaal": "🕸️", "obj_bal": "💪", "obj_bil": "🧾",
     "obj_kal": "📅", "obj_keel": "🔩", "obj_matka": "🏺", "obj_gati": "🏃",
     "obj_ladki": "👧", "obj_pari": "🧚",
 }
@@ -267,9 +270,10 @@ SLIDES = [
     },
     {   # Screen 2 · deck page 5
         "id": "T2", "phase": "tutorial", "eis": "iconic", "type": "MATRA_BUILD",
-        "prompt_hi": "जल में आ की मात्रा लगाने पर जाल बनता है।",
+        "prompt_hi": "",   # deck: "Do not add extra explanatory text"
         "audio": A(prompt="vo_mb_jal_intro", base="vo_mb_jal_base", onset="vo_mb_jal_onset",
-                   result="vo_name_jaal", explain="vo_mb_jal_explain"),
+                   result="vo_name_jaal", sounds="vo_mb_jal_sounds",
+                   explain="vo_mb_jal_explain"),
         "data": {"auto": True,
                  "base_word": "जल", "base_img": "obj_jal", "base_emoji": "💧",
                  "consonant": "ज", "matra": "ा", "syllable": "जा",
@@ -286,9 +290,10 @@ SLIDES = [
     },
     {   # Screen 4 · deck page 7
         "id": "T4", "phase": "tutorial", "eis": "iconic", "type": "MATRA_BUILD",
-        "prompt_hi": "बल में छोटी इ की मात्रा लगाने पर बिल बनता है।",
+        "prompt_hi": "",   # deck: "Do not add extra explanatory text"
         "audio": A(prompt="vo_mb_bil_intro", base="vo_mb_bil_base", onset="vo_mb_bil_onset",
-                   result="vo_name_bil", explain="vo_mb_bil_explain"),
+                   result="vo_name_bil", sounds="vo_mb_bil_sounds",
+                   explain="vo_mb_bil_explain"),
         "data": {"auto": True,
                  "base_word": "बल", "base_img": "obj_bal", "base_emoji": "💪",
                  "consonant": "ब", "matra": "ि", "syllable": "बि",
@@ -305,9 +310,10 @@ SLIDES = [
     },
     {   # Screen 6 · deck page 9
         "id": "T6", "phase": "tutorial", "eis": "iconic", "type": "MATRA_BUILD",
-        "prompt_hi": "कल में बड़ी ई की मात्रा लगाने पर कील बनता है।",
+        "prompt_hi": "",   # deck: "Do not add extra explanatory text"
         "audio": A(prompt="vo_mb_keel_intro", base="vo_mb_keel_base", onset="vo_mb_keel_onset",
-                   result="vo_name_keel", explain="vo_mb_keel_explain"),
+                   result="vo_name_keel", sounds="vo_mb_keel_sounds",
+                   explain="vo_mb_keel_explain"),
         "data": {"auto": True,
                  "base_word": "कल", "base_img": "obj_kal", "base_emoji": "📅",
                  "consonant": "क", "matra": "ी", "syllable": "की",
@@ -532,7 +538,7 @@ def main():
         elif isinstance(o, dict):
             for k, v in o.items():
                 if isinstance(v, str) and (k in ("audio", "correct_audio", "prompt", "base",
-                                                 "onset", "result", "explain", "hint1", "hint2",
+                                                 "onset", "result", "explain", "sounds", "hint1", "hint2",
                                                  "try_again", "correct", "reveal", "sfx")
                                            and re.fullmatch(r"(vo|sfx)_[\w]+", v)):
                     used_audio.add(v)
