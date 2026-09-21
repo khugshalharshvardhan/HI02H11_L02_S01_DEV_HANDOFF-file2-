@@ -1,0 +1,40 @@
+# What Vercel uploads. This changes NOTHING about the folder structure — it only keeps
+# non-runtime files out of the deployment. Everything the lesson actually fetches at runtime
+# (3_CURRENT_BUILD/HI02H11_L02_S01.html + assets/Audio, assets/Images, assets/UI) is kept.
+
+# ── Secrets ──────────────────────────────────────────────────────────────────
+# Already git-ignored and never committed, but a `vercel` CLI deploy uploads the working
+# directory rather than the git tree — so exclude it here too.
+.env
+.env.*
+*.key
+*.pem
+
+# ── Authoring material, not runtime ──────────────────────────────────────────
+1_SPEC/
+2_MOCKUPS/
+5_CURRENT_BUILD_SCREENSHOTS/
+*.pptx
+
+# The engine template + its backups. The built HTML is self-contained (the engine is inlined),
+# so none of this is fetched by the page.
+4_ENGINE/
+
+# ── Build / review by-products inside the bundle ──────────────────────────────
+3_CURRENT_BUILD/_review_shots/
+3_CURRENT_BUILD/_diagnostics/
+3_CURRENT_BUILD/_build_report.json
+3_CURRENT_BUILD/*.py
+3_CURRENT_BUILD/card.json
+
+# The source GIF. It is re-encoded into assets/UI/train_cover.webp, which is what the page loads.
+3_CURRENT_BUILD/assets/GIFandVIDEO/
+
+# ── General ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.bak
+*.bak.*
+*.orig
+Thumbs.db
+.DS_Store

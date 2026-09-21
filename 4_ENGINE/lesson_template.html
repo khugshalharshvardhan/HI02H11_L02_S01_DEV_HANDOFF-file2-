@@ -2498,7 +2498,19 @@ function _chainMs(srcs, gapMs){
   return total;
 }
 function play(src, onEnd){
-  stopAudio(); setPlaying(true);
+  stopAudio();
+  /* [r5-mute] MUTED = a silent clip of the SAME DURATION, not an instant no-op. Every staged
+     sequence in this engine advances on the onEnd callback, so collapsing the timing would rush
+     the teaching. _clipMs() returns the decoded length (or its 8s default) exactly as the
+     fail-safes elsewhere use it. */
+  if(isMuted){
+    const _g = ++_audioGen;                       // cancel anything still pending, like stopAudio
+    setPlaying(false);
+    const _ms = src ? _clipMs(src) : 0;
+    if(onEnd) setTimeout(()=>{ if(_g === _audioGen) onEnd(); }, Math.max(0, Math.min(_ms, 9000)));
+    return;
+  }
+  setPlaying(true);
   const myGen=_audioGen;
   let done=false; const fire=()=>{ if(done || myGen!==_audioGen)return; done=true; currentVoiceSource=null; currentAudio=null; _curVoMs=null; setPlaying(false); if(onEnd) onEnd(); };
   if(src){
@@ -2550,7 +2562,7 @@ function play(src, onEnd){
    overlap the spoken VO (does NOT touch currentAudio / the play() chain).
    Silently no-ops if the file is missing or playback is blocked. */
 function playSfx(id){
-  if(!id) return;
+  if(!id || isMuted) return;      /* [r5-mute] */
   const src="assets/Audio/"+id+"."+AUDIO_EXT;
   _loadVoiceBuffer(src).then(buffer=>{
     const c=_resumeVoiceAudio(); if(!c)throw new Error("Web Audio unavailable");
@@ -2562,7 +2574,8 @@ function playSfx(id){
    WebAudio resumes on the first user tap (autoplay policy), so taps/answers always sound. */
 let _juiceAC = null;
 function _ac(){ _juiceAC=_resumeVoiceAudio(); return _juiceAC; }   // [31x] one context for VO + procedural SFX
-function _tone(freqs, type, dur, vol){ const c = _ac(); if(!c) return; const t0 = c.currentTime;
+function _tone(freqs, type, dur, vol){ if(isMuted) return;   /* [r5-mute] procedural sfx too */
+  const c = _ac(); if(!c) return; const t0 = c.currentTime;
   freqs.forEach((f, i)=>{ const o = c.createOscillator(), g = c.createGain(); o.type = type; o.frequency.value = f;
     const t = t0 + i*(dur/freqs.length); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t+0.02);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur/freqs.length); o.connect(g).connect(c.destination); o.start(t); o.stop(t + dur/freqs.length); }); }
@@ -7281,6 +7294,7 @@ function _forceNudgeAt(el){
    no code change. */
 const _sfxHave = new Map();
 function sfxOr(id, fallback){
+  if(isMuted) return;             /* [r5-mute] neither the file nor the procedural stand-in */
   if(!id){ if(fallback) fallback(); return; }
   if(_sfxHave.get(id) === false){ if(fallback) fallback(); return; }
   if(_sfxHave.get(id) === true){ playSfx(id); return; }

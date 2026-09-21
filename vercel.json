@@ -1,0 +1,38 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": false,
+
+  "_comment": [
+    "Static deploy of the repo root. Nothing about the folder layout changes — these rewrites just",
+    "make the existing layout reachable.",
+    "",
+    "Why / would 404 without this: there is no index.html at the repo root; the playable file lives",
+    "at 3_CURRENT_BUILD/HI02H11_L02_S01.html.",
+    "",
+    "Why the /assets rule is needed as well: the built HTML references its assets RELATIVELY",
+    "(assets/Audio/..., assets/Images/..., assets/UI/...). A rewrite keeps the browser URL at /, so",
+    "those resolve to /assets/... — which does not exist at the root. The second rule maps them back",
+    "under 3_CURRENT_BUILD. Without it the page would load and every picture and clip would 404.",
+    "",
+    "NOTE ON SECRETS: rewrites are evaluated AFTER the filesystem, so a deployed file is always",
+    "served and no rule here can hide one. 3_CURRENT_BUILD/.env is kept out of the deployment",
+    "instead — it is git-ignored (verified never committed) and listed in .vercelignore."
+  ],
+
+  "rewrites": [
+    { "source": "/", "destination": "/3_CURRENT_BUILD/HI02H11_L02_S01.html" },
+    { "source": "/index.html", "destination": "/3_CURRENT_BUILD/HI02H11_L02_S01.html" },
+    { "source": "/play", "destination": "/3_CURRENT_BUILD/HI02H11_L02_S01.html" },
+
+    { "source": "/assets/:path*", "destination": "/3_CURRENT_BUILD/assets/:path*" }
+  ],
+
+  "headers": [
+    {
+      "source": "/3_CURRENT_BUILD/HI02H11_L02_S01.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    }
+  ]
+}
