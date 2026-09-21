@@ -1,0 +1,11 @@
+{
+ "id": "20260916-224551-hi02h11-l02-s01-3",
+ "game": "HI02H11_L02_S01",
+ "session": "sme-lxd-matra-train",
+ "symptom": "MATRA_BUILD module: staged transformation teach — base word, highlight the consonant, the matra travels in, consonant+matra=syllable with its own sound, remaining letters join, matra highlighted inside the finished word",
+ "evidence": "SME's core teaching idea for HI02H11_L02_S01, on 3 screens (जल→ज+ा=जा→जाल, बल→बि→बिल, कल→की→कील); mockups _SME_MOCKUPS/slide05,07,09. Not a card fix: MEET_LETTER shows one static word and DECODE_TAP (08.14a) taps pre-made aksharas — neither animates a word changing, and nothing sequences per-stage audio against a per-stage visual. Reusable by every matra lesson in the fleet. Gate each step on the previous CLIP ENDING, not a timer — [32b nocut] records fixed 1400ms advances truncating 27-35% of every reveal line. WARNING: the per-stage `onset` clip (जा / बि / की) may not synthesise — bare aksharas hard-refuse (HTTP 400 on क/न/द/त) and carriers are unreliable per letter; budget human recording.",
+ "blocking": true,
+ "opened": "2026-09-16T22:45:51",
+ "closed": null,
+ "note": ""
+}

@@ -1,0 +1,11 @@
+{
+ "id": "20260916-224551-hi02h11-l02-s01-5",
+ "game": "HI02H11_L02_S01",
+ "session": "sme-lxd-matra-train",
+ "symptom": "SORT_GENDER needs a data.hide_labels flag so tiles render the picture only, with the word still SPOKEN on tap",
+ "evidence": "HI02H11_L02_S01 redesign screen 14 (mockup _SME_MOCKUPS/slide17): SME is explicit that the word must never be displayed during the question but must be heard, which is what makes it a listening task rather than picture-matching. Not a card fix: SORT_GENDER unconditionally renders <span class=\"lbl\">${it.word_hi}</span>. ~3 lines, additive, default false so no shipped game changes. Also note .sort-tray is flex-wrap:nowrap and overflows past ~6 tiles at 104px — that screen has exactly 6.",
+ "blocking": true,
+ "opened": "2026-09-16T22:45:51",
+ "closed": null,
+ "note": ""
+}

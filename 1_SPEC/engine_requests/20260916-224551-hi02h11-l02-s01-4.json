@@ -1,0 +1,11 @@
+{
+ "id": "20260916-224551-hi02h11-l02-s01-4",
+ "game": "HI02H11_L02_S01",
+ "session": "sme-lxd-matra-train",
+ "symptom": "MATRA_FILL module: render a word with a BLANK where its matra belongs and let the child drag a matra card into it",
+ "evidence": "SME asked for this in round 1 and again in round 2 for HI02H11_L02_S01 (ज_ल→ा, पर_→ी, ह_रण→ि); mockup _SME_MOCKUPS/slide16. I substituted a wrong-matra pick and told the SME it was a substitution. Not a card fix: I checked all 59 modules in 2026.08.04b and every module in the reference engines — nothing renders a word with a slot. CRITICAL: the blank index must be into the CONSONANT SEQUENCE, not a character offset — ि is a reordering matra (stored after its consonant, drawn before it), so in हिरण a naive character-offset insert puts the matra in the wrong visual position. Render the blank in the DRAWN position.",
+ "blocking": true,
+ "opened": "2026-09-16T22:45:51",
+ "closed": null,
+ "note": ""
+}

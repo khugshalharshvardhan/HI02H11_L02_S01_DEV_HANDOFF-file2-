@@ -1,0 +1,11 @@
+{
+ "id": "20260916-224551-hi02h11-l02-s01-7",
+ "game": "HI02H11_L02_S01",
+ "session": "sme-lxd-matra-train",
+ "symptom": "POEM_SEARCH module: multi-line poem card with word-level hit testing, a draggable magnifying glass that magnifies the word under it, 3 sequential target rounds over the same poem, and an idle/hint guide actor",
+ "evidence": "HI02H11_L02_S01 redesign screen 15 «मात्रा खोजो» (mockup _SME_MOCKUPS/slide18). Not a card fix: SENTENCE_FIND tokenises a SINGLE sentence into chips with no lens, no round state and no per-word geometry that survives reflow. Also needs a second nudge actor alongside the hand — extend the existing nudge system with a pluggable actor ('hand'|'ghost'|'mascot') rather than a parallel timer, so the one-nudge-at-a-time and state.hintActive guards keep working. NOT blocking and DO NOT SCHEDULE YET: the SME's target word list is incomplete (4 correct answers are missing — a child tapping चमकी for ी would be marked wrong), and the target list is this module's entire data model. See §4 of the bundle's DEV_HANDOFF.",
+ "blocking": false,
+ "opened": "2026-09-16T22:45:51",
+ "closed": null,
+ "note": ""
+}

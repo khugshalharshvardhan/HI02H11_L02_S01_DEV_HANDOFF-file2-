@@ -1,0 +1,467 @@
+{
+  "_README": [
+    "Machine-readable companion to DEV_HANDOFF_HI02H11_L02_S01.md. The prose file is authoritative",
+    "for rationale; this file is authoritative for DATA — screen order, content, mappings, and the",
+    "proposed card schemas. The SME's recommendations are preserved verbatim in",
+    "_SME_RECOMMENDATIONS.md; nothing here paraphrases them as if they were instructions.",
+    "",
+    "status values: 'ready' = ships on today's engine · 'reskin' = existing module + TRAIN_CHROME",
+    "               'new' = new engine module · 'blocked' = needs an SME ruling first"
+  ],
+
+  "skill_code": "HI02H11_L02_S01",
+  "lo_code": "HI02H11_L02",
+  "grade": "02",
+  "title_hi_recommended": "मात्राओं की रेल",
+  "title_hi_conflict": {
+    "note_says": "मात्राओं की रेल",
+    "mockup_says": "शब्दों की रेल",
+    "mockup": "_SME_MOCKUPS/slide03_image2.png",
+    "resolution": "SME ruling needed — handoff §7 item 1 recommends the note's wording"
+  },
+  "source": {
+    "deck": "HI02H11_L02_S01_SME_Review.pptx",
+    "date": "2026-09-16",
+    "screens_with_recommendations": 16,
+    "verbatim_record": "_SME_RECOMMENDATIONS.md",
+    "mockups": "_SME_MOCKUPS/"
+  },
+
+  "matra_naming": {
+    "_issue": "The notes use both «बड़ी आ की मात्रा» and «आ की मात्रा». Hindi pairs छोटी इ with बड़ी ई; आ has no छोटी/बड़ी counterpart, so «बड़ी आ» is non-standard. The built lesson currently says «बड़ी आ» — an error either way.",
+    "_status": "SME ruling needed — handoff §7 item 2",
+    "recommended": { "ा": "आ की मात्रा", "ि": "छोटी इ की मात्रा", "ी": "बड़ी ई की मात्रा" }
+  },
+
+  "cross_cutting": {
+    "TRAIN_CHROME": {
+      "status": "new",
+      "blocking_screens": 6,
+      "api": {
+        "coaches": "int 2..4 (all mockups use 3)",
+        "coach_label": "string[] — rendered ABOVE the coach",
+        "coach_body": "string[] — rendered INSIDE the coach (word | blank-word | empty drop zone)",
+        "drop_zone": "bool — does the coach interior accept a drop",
+        "entry": "'right_to_left'",
+        "on_enter": "callback, fires when the entry animation settles"
+      },
+      "coach_states": {
+        "idle": "flat colour; mockups use pink/red, green, amber for coaches 1-3",
+        "hover": "soft glow while a card is dragged over it",
+        "correct": "glow + sparkle/confetti around that coach",
+        "wrong": "short horizontal shake/wiggle, then revert",
+        "locked": "card fixed inside, no longer draggable",
+        "nudge": "soft pulse + guiding hand, on the CORRECT coach, at attempt 2",
+        "complete": "all coaches glow together + whistle/steam animation"
+      },
+      "constraints": [
+        "Entry animation and steam must degrade to a settled static train under prefers-reduced-motion.",
+        "capture_pages.py injects `*{animation:none !important}`, so any state that exists ONLY inside @keyframes is invisible in review captures. Put the settled state on the base rule."
+      ]
+    },
+
+    "scaffold_ladder_3_attempt": {
+      "status": "engine change, additive",
+      "blocking_screens": 9,
+      "today": {
+        "max_attempts": 2,
+        "attempt_1_wrong": "hint1 VO + Swiftie tryagain",
+        "attempt_2_wrong": "terminal help — reveal, dim other options, hand appears; answer effectively given",
+        "late_correct": "n/a, already revealed"
+      },
+      "requested": {
+        "max_attempts": 3,
+        "attempt_1_wrong": "hint1 VO only — SME explicitly: no hand nudge",
+        "attempt_2_wrong": "hint2 VO + hand nudge on the CORRECT coach; child still answers",
+        "attempt_3_correct": "confetti + correct state, and NO VO"
+      },
+      "proposed_scaffold_rules": {
+        "nudge_timeout_ms": { "guided": 6000, "practice": 8000 },
+        "max_attempts": 3,
+        "hand_on_attempt": 2,
+        "reveal_on_attempt": null,
+        "silent_on_late_correct": true
+      },
+      "engine_touchpoints": [
+        "wrongClip() / midHint() — rung selection",
+        "terminalHold() — must become opt-in via reveal_on_attempt",
+        "celebrateThenAdvance(slide, revealed) — must support a silent visual-only success"
+      ]
+    },
+
+    "no_onscreen_instruction": {
+      "status": "card-only, but verify the shell",
+      "sme_position": "repeated on 9 screens: no instruction text, VO only",
+      "mockup_conflict": "_SME_MOCKUPS/slide11_image12.png prints the instruction at the top",
+      "action": "Confirm the non-tutorial shell COLLAPSES the heading band when prompt_hi is empty rather than leaving a blank pill."
+    },
+
+    "new_sfx": {
+      "status": "asset request — chrome and SFX are COPIED, never generated (house rule)",
+      "existing": ["sfx_tap", "sfx_correct", "sfx_wrong", "sfx_pop", "sfx_celebrate"],
+      "needed": {
+        "sfx_train_arrive": "locomotive entry",
+        "sfx_whistle": "round / lesson completion steam-and-whistle",
+        "sfx_sparkle": "matra or word snapping into a coach",
+        "sfx_chime": "a letter transforming (ज -> जा)",
+        "sfx_shake": "wrong drop — SME asks for a soft error/shake sound, distinct from sfx_wrong"
+      }
+    },
+
+    "guide_actor": {
+      "status": "new — SME asks for a ghost",
+      "sme_requirements": [
+        "a search guide, not decoration",
+        "idle cue: appears near the lens and moves toward the poem after a few idle seconds",
+        "attempt-2 hint: floats to a correct target word and pulses near it, INSTEAD of extra text",
+        "must not move constantly"
+      ],
+      "engineering_note": "This is a second nudge actor alongside the existing hand (pointNudgeAt / nudgeHand). Extend the nudge system with a pluggable actor ('hand' | 'ghost' | 'mascot') so the one-nudge-at-a-time and state.hintActive guards keep working; do not add a parallel timer.",
+      "recommendation": "Use the existing mascot (Swiftie) with a magnifying glass instead of a new ghost character — same function, no new art line, no new character to validate with children. SME ruling needed (handoff §7 item 6)."
+    }
+  },
+
+  "screens": [
+    {
+      "n": 0, "id": "LANDING", "deck_slide": 3, "status": "reskin",
+      "mockup": "_SME_MOCKUPS/slide03_image2.png",
+      "heading": "मात्राओं की रेल",
+      "shows": ["three matra cards: ा, ि, ी", "train, entering right-to-left", "mascot unchanged"],
+      "vo": { "vo_landing": "हेलो दोस्त! मैं हूँ स्विफ्टी। आज हम मात्राओं के बारे में जानेंगे।" },
+      "sfx": ["sfx_train_arrive", "sfx_sparkle"],
+      "engine": "landing_hero concept_strip already renders type:'letter' cells (back-ported into engine_local). Train shell + entry animation are new.",
+      "notes": "The three matra tiles are visual-only chrome: not tappable, no clip. Matra cards appear one by one AFTER the VO."
+    },
+    {
+      "n": 1, "id": "INTRO", "deck_slide": 4, "status": "ready",
+      "mockup": "_SME_MOCKUPS/slide04_image4.png",
+      "module": "INTRO",
+      "vo": { "prompt": "आज हम आ, इ और ई की मात्रा वाले शब्द पढ़ेंगे।" },
+      "sequence": [ { "letter": "आ", "matra": "ा" }, { "letter": "इ", "matra": "ि" }, { "letter": "ई", "matra": "ी" } ],
+      "behaviour": [
+        "letter + its matra shown as a PAIR, one pair at a time",
+        "each pair lights up while its VO plays; only one pair active at a time",
+        "remove the heading text",
+        "Next disabled until all three pairs are shown and spoken"
+      ],
+      "engine": "INTRO already has letters[] + phonemes{} + auto, and already sequences and locks आगे. The letter->matra PAIR display is new (today it shows the matra alone).",
+      "sfx": ["sfx_pop per matra, subtle so the VO stays clear"]
+    },
+    {
+      "n": 2, "id": "BUILD_AA", "deck_slide": 5, "status": "new",
+      "mockup": "_SME_MOCKUPS/slide05_image5.png", "module": "MATRA_BUILD",
+      "data": { "base_word": "जल", "consonant": "ज", "matra": "ा", "syllable": "जा", "result_word": "जाल" },
+      "vo": {
+        "prompt": "आइए, देखें कि आ की मात्रा लगने से शब्द की आवाज़ कैसे बदलती है।",
+        "base": "यह शब्द है, जल।",
+        "onset": "ज में आ की मात्रा लगाने पर, जा बनता है।",
+        "explain": "अब जल में आ की मात्रा लगाने पर, जाल बनता है।"
+      },
+      "_vo_note": "The SME wrote these with an em-dash («यह शब्द है — जल।»). An em-dash before a short final word TRUNCATES the clip (measured: 0.73-1.05s vs 1.53-2.21s with a comma), so a comma is substituted here. SME informed — handoff §6 item 2.",
+      "images_needed": ["obj_jal", "obj_jaal"],
+      "sfx": ["sfx_pop on matra appear", "sfx_chime on ज->जा", "sfx_correct on जाल complete"]
+    },
+    {
+      "n": 3, "id": "EXAMPLES_AA", "deck_slide": 6, "status": "new",
+      "mockup": "_SME_MOCKUPS/slide06_image6.png", "module": "MEET_LETTER + examples[]",
+      "examples": [
+        { "word_hi": "नाक", "matra": "ा", "img": "obj_naak", "have_art": true },
+        { "word_hi": "मटका", "matra": "ा", "img": "obj_matka", "have_art": false }
+      ],
+      "vo": {
+        "prompt": "आइए, आ की मात्रा वाले कुछ शब्द देखें।",
+        "ex1": "नाक, बोलकर देखिए। इसमें न पर आ की मात्रा लगी है।",
+        "ex2": "मटका, बोलकर देखिए। इसमें क पर आ की मात्रा लगी है।"
+      },
+      "behaviour": ["one example at a time", "word appears first, then its picture", "the ा glows when the VO reaches the matra", "Next disabled until both examples complete"]
+    },
+    {
+      "n": 4, "id": "BUILD_I", "deck_slide": 7, "status": "new",
+      "mockup": "_SME_MOCKUPS/slide07_image7.png", "module": "MATRA_BUILD",
+      "data": { "base_word": "बल", "consonant": "ब", "matra": "ि", "syllable": "बि", "result_word": "बिल" },
+      "vo": {
+        "prompt": "आइए, देखें कि छोटी इ की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।",
+        "base": "यह शब्द है, बल।",
+        "onset": "ब में छोटी इ की मात्रा लगाने पर, बि बनता है।",
+        "explain": "अब बल में छोटी इ की मात्रा लगाने पर, बिल बनता है।"
+      },
+      "images_needed": ["obj_bal", "obj_bil"],
+      "special": "SME: «The ि मात्रा should visibly move to the LEFT side of ब, so the child notices its written position.» This travel is the teaching moment for the reordering matra and partly compensates for the in-word highlight limitation (handoff §5).",
+      "blocked_by": "The step-6 in-word highlight of ि is NOT possible with the current pixel-column method — see handoff §5."
+    },
+    {
+      "n": 5, "id": "EXAMPLES_I", "deck_slide": 8, "status": "new",
+      "mockup": "_SME_MOCKUPS/slide08_image8.png", "module": "MEET_LETTER + examples[]",
+      "examples": [
+        { "word_hi": "दिन", "matra": "ि", "img": "obj_din", "have_art": true },
+        { "word_hi": "गति", "matra": "ि", "img": "obj_gati", "have_art": false }
+      ],
+      "vo": {
+        "prompt": "आइए, छोटी इ की मात्रा वाले कुछ शब्द देखें।",
+        "ex1": "दिन, बोलकर देखिए। इसमें द पर छोटी इ की मात्रा लगी है।",
+        "ex2": "गति, बोलकर देखिए। इसमें त पर छोटी इ की मात्रा लगी है।"
+      },
+      "warning": "गति is abstract (motion) and hard to illustrate unambiguously. Suggest a concrete alternative with a single ि — तिल, पिन, सिर or हिरण all have art or are trivially drawable. SME ruling."
+    },
+    {
+      "n": 6, "id": "BUILD_II", "deck_slide": 9, "status": "new",
+      "mockup": "_SME_MOCKUPS/slide09_image9.png", "module": "MATRA_BUILD",
+      "data": { "base_word": "कल", "consonant": "क", "matra": "ी", "syllable": "की", "result_word": "कील" },
+      "vo": {
+        "prompt": "आइए, देखें कि बड़ी ई की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।",
+        "base": "यह शब्द है, कल।",
+        "onset": "क में बड़ी ई की मात्रा लगाने पर, की बनता है।",
+        "explain": "अब कल में बड़ी ई की मात्रा लगाने पर, कील बनता है।"
+      },
+      "images_needed": ["obj_kal", "obj_keel"],
+      "warning": "कल is ambiguous in Hindi (yesterday / tomorrow) and the mockup illustrates it with a calendar. Acceptable, but it is the weakest of the three base words. कील (nail) is fine."
+    },
+    {
+      "n": 7, "id": "EXAMPLES_II", "deck_slide": 10, "status": "new",
+      "mockup": "_SME_MOCKUPS/slide10_image10.png", "module": "MEET_LETTER + examples[]",
+      "examples": [
+        { "word_hi": "तीर", "matra": "ी", "img": "obj_teer", "have_art": true },
+        { "word_hi": "लड़की", "matra": "ी", "img": "obj_ladki", "have_art": false }
+      ],
+      "vo": {
+        "prompt": "आइए, बड़ी ई की मात्रा वाले कुछ शब्द देखें।",
+        "ex1": "तीर, बोलकर देखिए। इसमें त पर बड़ी ई की मात्रा लगी है।",
+        "ex2": "लड़की, बोलकर देखिए। इसमें क पर बड़ी ई की मात्रा लगी है।"
+      }
+    },
+    {
+      "n": 8, "id": "TRAIN_TAP_AA", "deck_slide": 11, "status": "reskin",
+      "mockup": "_SME_MOCKUPS/slide11_image12.png", "module": "TAP + TRAIN_CHROME",
+      "coaches": ["नाक", "दिन", "पानी"], "target": "नाक", "target_matra": "ा",
+      "vo": {
+        "prompt": "जिस डिब्बे में आ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+        "correct": "शाबाश! हाथ शब्द में आ की मात्रा है।",
+        "hint1": "फिर से सोचो। आ की मात्रा वाला शब्द कौन-सा है?",
+        "hint2": "ध्यान से देखो और सही डिब्बे पर टैप कीजिए।"
+      },
+      "defect": "The correct-answer VO names हाथ but no coach carries हाथ — the mockup's coaches are नाक / दिन / पानी. Either the VO should say नाक, or हाथ should replace a coach. SME ruling needed.",
+      "ladder": "3-attempt (cross_cutting.scaffold_ladder_3_attempt)"
+    },
+    {
+      "n": 9, "id": "TRAIN_TAP_I", "deck_slide": 12, "status": "reskin",
+      "mockup": "_SME_MOCKUPS/slide12_image12.png", "module": "TAP + TRAIN_CHROME",
+      "coaches": ["नाक", "दिन", "पानी"], "target": "पिन", "target_matra": "ि",
+      "vo": {
+        "prompt": "जिस डिब्बे में छोटी इ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+        "correct": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।",
+        "hint1": "फिर से सोचो। छोटी इ की मात्रा वाला शब्द कौन-सा है?",
+        "hint2": "ध्यान से देखो और सही डिब्बे पर टैप करो।"
+      },
+      "sme_correction_noted": "SME: «Here it should be छोटी इ, not छोटी ई.» — their own typo catch, applied.",
+      "defect": "Same as screen 8: the correct-answer VO names पिन, which is not on any coach in the shared mockup. The three TRAIN_TAP screens reuse one mockup, so each needs its own coach set authored. SME ruling needed."
+    },
+    {
+      "n": 10, "id": "TRAIN_TAP_II", "deck_slide": 13, "status": "reskin",
+      "mockup": "_SME_MOCKUPS/slide13_image12.png", "module": "TAP + TRAIN_CHROME",
+      "target": "पानी", "target_matra": "ी",
+      "vo": {
+        "prompt": "जिस डिब्बे में बड़ी ई की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+        "correct": "शाबाश! पानी शब्द में बड़ी ई की मात्रा है।"
+      },
+      "note": "पानी is the only one of the three TRAIN_TAP targets that is actually on the mockup's coaches."
+    },
+    {
+      "n": 11, "id": "TRAIN_SORT_WORDS", "deck_slide": 14, "status": "reskin",
+      "mockup": "_SME_MOCKUPS/slide14_image14.png", "module": "SORT_GENDER + TRAIN_CHROME",
+      "coach_label": ["आ (ा)", "इ (ि)", "ई (ी)"],
+      "cards": [
+        { "word": "हाथ", "matra": "ा", "img": "obj_haath", "have_art": true },
+        { "word": "पिन", "matra": "ि", "img": "obj_pin", "have_art": true },
+        { "word": "नीम", "matra": "ी", "img": "obj_neem", "have_art": true }
+      ],
+      "vo": {
+        "prompt": "हर शब्द को उसकी सही मात्रा वाली बोगी में डालिए।",
+        "per_card": "the card's own word, on tap or drag-start",
+        "correct_example": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।",
+        "hint1": "फिर से सुनो और सही मात्रा पहचानिए।",
+        "hint2": "ध्यान से देखो, इस शब्द में कौन-सी मात्रा है?"
+      },
+      "behaviour": ["one word per coach", "dragged card slightly enlarges", "coach glows on hover", "correct card locks", "all three placed -> coaches glow, whistle/steam, Next active, no completion VO"]
+    },
+    {
+      "n": 12, "id": "TRAIN_SORT_MATRAS", "deck_slide": 15, "status": "reskin",
+      "mockup": "_SME_MOCKUPS/slide15_image15.png", "module": "SORT_GENDER + TRAIN_CHROME",
+      "_note": "REVERSE of screen 11 — coaches carry the WORD, the child drags the MATRA. Good design: it prevents pairing card-shape with coach-shape and forces reading.",
+      "coach_label": ["जाल", "सिर", "कील"],
+      "cards": ["ा", "ि", "ी"],
+      "mapping": { "जाल": "ा", "सिर": "ि", "कील": "ी" },
+      "vo": {
+        "prompt": "सही मात्रा को सही शब्द वाली बोगी में डालिए।",
+        "correct_example": "शाबाश! जाल शब्द में आ की मात्रा लगी है।",
+        "hint1": "फिर से सोचो। इस शब्द में कौन-सी मात्रा लगी है?",
+        "hint2": "ध्यान से देखो और शब्द को फिर से पढ़ो।"
+      },
+      "images_needed": ["obj_jaal", "obj_sir", "obj_keel"]
+    },
+    {
+      "n": 13, "id": "MATRA_FILL", "deck_slide": 16, "status": "new",
+      "mockup": "_SME_MOCKUPS/slide16_image16.png", "module": "MATRA_FILL",
+      "_note": "This is the module the SME asked for in round 1 and that was substituted with a pick, because nothing in any engine renders a word with a matra slot. Now specified.",
+      "slots": [
+        { "word": "जाल", "blank_after_consonant_index": 0, "matra": "ा", "img": "obj_jaal" },
+        { "word": "परी", "blank_after_consonant_index": 1, "matra": "ी", "img": "obj_pari" },
+        { "word": "हिरण", "blank_after_consonant_index": 0, "matra": "ि", "img": "obj_hiran" }
+      ],
+      "options": ["ा", "ि", "ी"],
+      "vo": {
+        "prompt": "सही मात्रा को सही जगह पर खींचकर डालो और शब्द पूरा करिए।",
+        "correct": ["शाबाश! जाल बन गया।", "शाबाश! परी बन गई।", "शाबाश! हिरण बन गया।"],
+        "hint1": "फिर से सोचो।",
+        "hint2": "ध्यान से देखो। कौन-सी मात्रा लगेगी?"
+      },
+      "_vo_correction": "SME wrote «शाबाश! परी बन गया।» — परी is feminine, so «बन गई» is correct. Flagged, not silently changed; SME ruling.",
+      "sme_correction_applied": "SME: «Important correction: Please use हिरण instead of हीरा / hira.» The mockup still shows ह_रा with a diamond. हीरा is unusable regardless — ही + रा is two in-scope matras. obj_hiran art already exists in this bundle.",
+      "critical_implementation_note": "blank_after_consonant_index is an index into the CONSONANT SEQUENCE, not a character offset. ि is a reordering matra: in हिरण it is stored after ह but DRAWN before it. Render the dashed blank in the DRAWN position and resolve the string by consonant index. A naive character-offset insert puts the matra in the wrong visual place."
+    },
+    {
+      "n": 14, "id": "TRAIN_SORT_PICTURES", "deck_slide": 17, "status": "reskin",
+      "mockup": "_SME_MOCKUPS/slide17_image17.png", "module": "SORT_GENDER + TRAIN_CHROME + hide_labels",
+      "coach_label": ["आ (ा)", "इ (ि)", "ई (ी)"],
+      "cards": [
+        { "word": "हाथ", "matra": "ा", "img": "obj_haath", "have_art": true },
+        { "word": "नाक", "matra": "ा", "img": "obj_naak", "have_art": true },
+        { "word": "पिन", "matra": "ि", "img": "obj_pin", "have_art": true },
+        { "word": "हिरण", "matra": "ि", "img": "obj_hiran", "have_art": true },
+        { "word": "नीम", "matra": "ी", "img": "obj_neem", "have_art": true },
+        { "word": "कील", "matra": "ी", "img": "obj_keel", "have_art": false }
+      ],
+      "new_flag": { "hide_labels": true, "_why": "SORT_GENDER always renders <span class='lbl'>${it.word_hi}</span>. SME: pictures only, the word must never be displayed during the question — but it MUST still be SPOKEN on tap, which is what makes this a listening task rather than picture matching." },
+      "vo": {
+        "prompt": "चित्र को सुनो और उसे सही मात्रा वाली बोगी में डालिए।",
+        "per_card": "the picture's word name, on tap or drag-start",
+        "correct_example": "शाबाश! हाथ में आ की मात्रा है।",
+        "hint1": "फिर से सुनो और सही मात्रा पहचानो।",
+        "hint2": "शब्द को ध्यान से सुनो।"
+      },
+      "constraint": ".sort-tray is flex-wrap:nowrap and overflows past ~6 tiles at 104px. This screen has EXACTLY 6. Do not add a 7th without making the tray wrap.",
+      "note": "5 of the 6 pictures already exist in this bundle; only obj_keel is new."
+    },
+    {
+      "n": 15, "id": "POEM_SEARCH", "deck_slide": 18, "status": "blocked", "module": "POEM_SEARCH",
+      "mockup": "_SME_MOCKUPS/slide18_image18.png",
+      "blocked_by": "Incomplete target list — see poem_audit below. The target list is this screen's entire data model, so it cannot be built until the SME rules.",
+      "poem": "रवि लाया लाल पतंग, दिन में चमकी सूरज की किरण। नीम तले मीना गाए संग।",
+      "rounds": [
+        { "matra": "ा", "vo": "आ की मात्रा वाले शब्द ढूँढो।", "sme_targets": ["लाया", "लाल"] },
+        { "matra": "ि", "vo": "अब छोटी इ की मात्रा वाले शब्द ढूँढो।", "sme_targets": ["रवि", "दिन", "किरण"] },
+        { "matra": "ी", "vo": "अब बड़ी ई की मात्रा वाले शब्द ढूँढो।", "sme_targets": ["नीम", "मीना"] }
+      ],
+      "interaction": [
+        "large magnifying glass, bottom-right, draggable over the poem",
+        "the word under the lens slightly enlarges",
+        "the child taps the word through the lens",
+        "correct words remain highlighted for the rest of the activity",
+        "round completes -> correct words glow together, guide sweeps them with a sparkle trail, next round's VO starts automatically"
+      ],
+      "remove_from_mockup": ["Ravi", "kite", "girl", "tree", "background scenery"],
+      "_sme": "«Use a clean version of the existing UI so the child's attention stays on the activity.»",
+      "engine_needs": [
+        "word-level hit-tested multi-line poem card with per-word geometry that survives reflow (SENTENCE_FIND tokenises a single sentence only)",
+        "draggable lens with proximity magnification",
+        "round state over one stimulus, with found words persisting",
+        "guide actor for the idle cue and the attempt-2 hint (see cross_cutting.guide_actor)"
+      ]
+    },
+    { "n": 16, "id": "CELEBRATION", "deck_slide": 19, "status": "ready", "module": "CELEBRATION",
+      "mockup": "_SME_MOCKUPS/slide19_image19.png",
+      "note": "No recommendation given; ships as built. No score, no timer, no stars shown to the child (house rule)." }
+  ],
+
+  "poem_audit": {
+    "_status": "BLOCKING — handoff §4",
+    "_method": "Every word in the SME's poem checked programmatically for the three in-scope matras.",
+    "poem": "रवि लाया लाल पतंग, दिन में चमकी सूरज की किरण। नीम तले मीना गाए संग。",
+    "per_word": {
+      "रवि":  { "in_scope": ["ि"] },
+      "लाया": { "in_scope": ["ा"] },
+      "लाल":  { "in_scope": ["ा"] },
+      "पतंग": { "in_scope": [], "other": ["ं"] },
+      "दिन":  { "in_scope": ["ि"] },
+      "में":  { "in_scope": [], "other": ["े", "ं"] },
+      "चमकी": { "in_scope": ["ी"] },
+      "सूरज": { "in_scope": [], "other": ["ू"] },
+      "की":   { "in_scope": ["ी"] },
+      "किरण": { "in_scope": ["ि"] },
+      "नीम":  { "in_scope": ["ी"] },
+      "तले":  { "in_scope": [], "other": ["े"] },
+      "मीना": { "in_scope": ["ा", "ी"] },
+      "गाए":  { "in_scope": ["ा"] },
+      "संग":  { "in_scope": [], "other": ["ं"] }
+    },
+    "findings": {
+      "ा": { "actually_present": ["गाए", "मीना", "लाया", "लाल"], "sme_listed": ["लाया", "लाल"], "missing_from_list": ["गाए", "मीना"] },
+      "ि": { "actually_present": ["किरण", "दिन", "रवि"], "sme_listed": ["किरण", "दिन", "रवि"], "missing_from_list": [] },
+      "ी": { "actually_present": ["की", "चमकी", "नीम", "मीना"], "sme_listed": ["नीम", "मीना"], "missing_from_list": ["की", "चमकी"] }
+    },
+    "why_it_blocks": "A child hunting ी who taps चमकी is RIGHT, and the screen as specified would shake it and play «फिर से देखो।» — teaching the opposite of the lesson. Same for गाए in round 1.",
+    "multi_round_word": "मीना carries both ी and ा, so it is a correct answer in two different rounds. Pedagogically fine, but the module must support a word belonging to more than one round, and 'correct words remain highlighted' must survive a word being found twice.",
+    "options": {
+      "A_recommended": {
+        "what": "Complete the target list; the SME's poem is kept word-for-word.",
+        "rounds": { "ा": ["लाया", "लाल", "मीना", "गाए"], "ि": ["रवि", "दिन", "किरण"], "ी": ["चमकी", "की", "नीम", "मीना"] },
+        "cost": "module must support multi-round membership"
+      },
+      "B": { "what": "Edit the poem so each in-scope matra appears only in intended targets.", "cost": "smaller module, but it is the SME's poem and it is not being rewritten unasked." }
+    }
+  },
+
+  "assets": {
+    "images_already_in_bundle": ["obj_naak", "obj_baal", "obj_haath", "obj_maala", "obj_baadal", "obj_din", "obj_hiran", "obj_pin", "obj_til", "obj_teer", "obj_neem", "obj_seep", "obj_cheeni"],
+    "images_new": {
+      "obj_jal": "जल — water / a puddle", "obj_jaal": "जाल — a net",
+      "obj_bal": "बल — strength (mockup uses a flexed arm)", "obj_bil": "बिल — a bill / receipt",
+      "obj_kal": "कल — a calendar (see the ambiguity warning on screen 6)", "obj_keel": "कील — a nail",
+      "obj_matka": "मटका — a clay pot", "obj_gati": "गति — motion (see the warning on screen 5)",
+      "obj_ladki": "लड़की — a girl", "obj_pari": "परी — a fairy", "obj_sir": "सिर — a head",
+      "obj_paani": "पानी — water from a tap (mockup)"
+    },
+    "art_rules": [
+      "Flat vector, magenta-keyed, autocropped. NEVER pink or near-white without a thick dark outline — a white subject leaves keep_largest nothing to keep and the PNG comes out BLANK (this shipped once as obj_sapna).",
+      "Any spiky / rayed / dotted / multi-part subject must be prompted as ONE SINGLE CONNECTED SILHOUETTE — separated parts are disconnected components and keep_largest discards all but one. This cost three attempts on obj_din.",
+      "Eyeball art at FULL SIZE, not on a contact sheet. A ray-less sun looked fine at 230px and was obviously wrong at full resolution."
+    ],
+    "train_chrome_needed": ["locomotive", "coach x3 in the mockup's pink/green/amber", "track", "steam/whistle animation frames", "coach drop-zone frame", "magnifying glass", "guide actor (ghost, or Swiftie + lens — pending §7 item 6)"],
+    "sfx_needed": ["sfx_train_arrive", "sfx_whistle", "sfx_sparkle", "sfx_chime", "sfx_shake"]
+  },
+
+  "tts_constraints": {
+    "_why_here": "The dev/VO pipeline must respect these; all four were measured on this bundle, not inferred.",
+    "bare_akshara_refused": {
+      "detail": "क, न, द, त all return HTTP 400. Carrier forms are unreliable per letter: «अक्षर त।» synthesises, «अक्षर न।» and «अक्षर द।» refuse after three retries.",
+      "impact": "Hits MATRA_BUILD's `onset` clip directly (जा, बि, की). Two-character syllables are safer than bare consonants but must be verified one by one.",
+      "recommendation": "Plan on HUMAN RECORDING for the onset clips — they are the pedagogical core of the screen and must not be silent on some letters and spoken on others."
+    },
+    "em_dash_truncates": {
+      "detail": "Probed head to head, same words: em-dash 0.73-1.05s, comma 1.53-2.21s, danda 1.13-2.01s. Ten clips in the built lesson shipped half-spoken this way.",
+      "impact": "Several of the SME's new lines use «यह शब्द है — जल।». Substitute a comma or record by hand.",
+      "rule": "No em-dash in a short spoken line."
+    },
+    "truncation_is_invisible": "A truncated clip exists, is a valid WAV, and is a normal file size. The only detector that works is comparing a clip against others of the same text length — _verify_assets.py §3 does this; keep it in the pipeline.",
+    "din_specific": "The word दिन triggers truncation on the Kore voice regardless of retries; two clips in the built lesson are on Aoede for this reason. दिन appears on four of the new screens."
+  },
+
+  "build_order": [
+    { "phase": 1, "name": "the shell — unblocks 6 screens", "items": ["TRAIN_CHROME", "3-attempt scaffold ladder", "5 new SFX (asset request, parallel)", "empty-prompt_hi shell check"] },
+    { "phase": 2, "name": "the reskins — 6 screens playable", "items": ["TRAIN_TAP", "TRAIN_SORT + hide_labels"] },
+    { "phase": 3, "name": "the teaching", "items": ["MEET_LETTER examples[] sequencer", "MATRA_BUILD (needs onset clips first)", "MATRA_FILL"] },
+    { "phase": 4, "name": "cluster-aware matra highlight — fleet-wide, can run in parallel from the start", "items": ["replace pixel-column clipping with glyph-cluster highlighting"] },
+    { "phase": 5, "name": "POEM_SEARCH — only after the poem_audit ruling", "items": ["poem card with word hit-testing", "draggable lens", "round state", "guide actor"] }
+  ],
+
+  "existing_build": {
+    "_what": "The lesson that exists today, on the standard stage, teaching the same outcome.",
+    "file": "HI02H11_L02_S01.html",
+    "engine": "2026.08.04b-r4-unified (per-game engine_local copy)",
+    "slides": 19, "phase_distribution": { "tutorial": 4, "guided": 6, "practice": 9 },
+    "images": 13, "audio_clips": 95,
+    "receipt": "0 FAIL / 0 WARN",
+    "runtime": "108/108 declared assets return 200",
+    "recommendation": "Hybrid — ship this now, land phases 1+2 as an update to this same card, keep the existing teach slides until MATRA_BUILD lands. Product lead's and SME's call, not the builder's.",
+    "fixes_to_apply_regardless": ["«आ की मात्रा» not «बड़ी आ की मात्रा» (matra_naming)", "confirm हिरण"]
+  }
+}

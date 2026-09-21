@@ -1,0 +1,937 @@
+{
+  "version": "0.2",
+  "skill_code": "HI02H11_L02_S01",
+  "lo_code": "HI02H11_L02",
+  "grade": "02",
+  "attribute": "H11",
+  "skill_type": "CORE",
+  "part_label": "",
+  "medium": "hi",
+  "title": {
+    "hi": "मात्राओं की रेल",
+    "en": "The matra train"
+  },
+  "subtitle_hi": "",
+  "theme": "toybox",
+  "skill_description_hi": "आ, इ, ई मात्रा वाले शब्द पढ़ता है। शब्दों में आने वाली मात्रा पहचानता है।",
+  "landing_audio": "vo_landing",
+  "landing_hero": {
+    "kind": "matra_train",
+    "matras": [
+      "ा",
+      "ि",
+      "ी"
+    ]
+  },
+  "phase_transition_audio": {
+    "tutorial": "vo_pt_tutorial",
+    "guided": "vo_pt_guided",
+    "practice": "vo_pt_practice"
+  },
+  "phase_transition_title": {
+    "tutorial": "चलो, शुरू करें!",
+    "guided": "साथ में करें।",
+    "practice": "अब तुम्हारी बारी।"
+  },
+  "phase_distribution": {
+    "tutorial": 7,
+    "guided": 4,
+    "practice": 5
+  },
+  "scaffold_rules": {
+    "nudge_timeout_ms": {
+      "guided": 6000,
+      "practice": 8000
+    },
+    "max_attempts": 3,
+    "hand_on_attempt": 2,
+    "silent_on_late_correct": true,
+    "hand_in_practice": true
+  },
+  "signals_expected": [
+    "slide_entered",
+    "slide_completed",
+    "matra_tap_first_try",
+    "matra_sort_correct",
+    "matra_fill_correct",
+    "poem_search_correct",
+    "lesson_completed",
+    "mastery_score"
+  ],
+  "_emoji_fallback": {
+    "obj_haath": "✋",
+    "obj_naak": "👃",
+    "obj_din": "☀️",
+    "obj_pin": "📌",
+    "obj_neem": "🌳",
+    "obj_teer": "🏹",
+    "obj_hiran": "🦌",
+    "obj_jal": "💧",
+    "obj_jaal": "🕸️",
+    "obj_bal": "💪",
+    "obj_bil": "🕳️",
+    "obj_kal": "📅",
+    "obj_keel": "🔩",
+    "obj_matka": "🏺",
+    "obj_gati": "🏃",
+    "obj_ladki": "👧",
+    "obj_pari": "🧚"
+  },
+  "slides": [
+    {
+      "id": "T1",
+      "phase": "tutorial",
+      "eis": "enactive",
+      "type": "MATRA_PAIRS",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_s1_prompt"
+      },
+      "data": {
+        "auto": true,
+        "pairs": [
+          {
+            "letter": "आ",
+            "matra": "ा",
+            "audio": "vo_matra_aa2"
+          },
+          {
+            "letter": "इ",
+            "matra": "ि",
+            "audio": "vo_matra_i"
+          },
+          {
+            "letter": "ई",
+            "matra": "ी",
+            "audio": "vo_matra_ee"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T2",
+      "phase": "tutorial",
+      "eis": "iconic",
+      "type": "MATRA_BUILD",
+      "prompt_hi": "जल में आ की मात्रा लगाने पर जाल बनता है।",
+      "audio": {
+        "prompt": "vo_mb_jal_intro",
+        "base": "vo_mb_jal_base",
+        "onset": "vo_mb_jal_onset",
+        "result": "vo_name_jaal",
+        "explain": "vo_mb_jal_explain"
+      },
+      "data": {
+        "auto": true,
+        "base_word": "जल",
+        "base_img": "obj_jal",
+        "base_emoji": "💧",
+        "consonant": "ज",
+        "matra": "ा",
+        "syllable": "जा",
+        "result_word": "जाल",
+        "result_img": "obj_jaal",
+        "result_emoji": "🕸️"
+      }
+    },
+    {
+      "id": "T3",
+      "phase": "tutorial",
+      "eis": "iconic",
+      "type": "MEET_EXAMPLES",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_ex_aa_intro"
+      },
+      "data": {
+        "auto": true,
+        "examples": [
+          {
+            "word_hi": "नाक",
+            "matra": "ा",
+            "img": "obj_naak",
+            "emoji": "👃",
+            "audio": "vo_ex_naak"
+          },
+          {
+            "word_hi": "मटका",
+            "matra": "ा",
+            "img": "obj_matka",
+            "emoji": "🏺",
+            "audio": "vo_ex_matka"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T4",
+      "phase": "tutorial",
+      "eis": "iconic",
+      "type": "MATRA_BUILD",
+      "prompt_hi": "बल में छोटी इ की मात्रा लगाने पर बिल बनता है।",
+      "audio": {
+        "prompt": "vo_mb_bil_intro",
+        "base": "vo_mb_bil_base",
+        "onset": "vo_mb_bil_onset",
+        "result": "vo_name_bil",
+        "explain": "vo_mb_bil_explain"
+      },
+      "data": {
+        "auto": true,
+        "base_word": "बल",
+        "base_img": "obj_bal",
+        "base_emoji": "💪",
+        "consonant": "ब",
+        "matra": "ि",
+        "syllable": "बि",
+        "result_word": "बिल",
+        "result_img": "obj_bil",
+        "result_emoji": "🕳️"
+      }
+    },
+    {
+      "id": "T5",
+      "phase": "tutorial",
+      "eis": "iconic",
+      "type": "MEET_EXAMPLES",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_ex_i_intro"
+      },
+      "data": {
+        "auto": true,
+        "examples": [
+          {
+            "word_hi": "दिन",
+            "matra": "ि",
+            "img": "obj_din",
+            "emoji": "☀️",
+            "audio": "vo_ex_din"
+          },
+          {
+            "word_hi": "गति",
+            "matra": "ि",
+            "img": "obj_gati",
+            "emoji": "🏃",
+            "audio": "vo_ex_gati"
+          }
+        ]
+      }
+    },
+    {
+      "id": "T6",
+      "phase": "tutorial",
+      "eis": "iconic",
+      "type": "MATRA_BUILD",
+      "prompt_hi": "कल में बड़ी ई की मात्रा लगाने पर कील बनता है।",
+      "audio": {
+        "prompt": "vo_mb_keel_intro",
+        "base": "vo_mb_keel_base",
+        "onset": "vo_mb_keel_onset",
+        "result": "vo_name_keel",
+        "explain": "vo_mb_keel_explain"
+      },
+      "data": {
+        "auto": true,
+        "base_word": "कल",
+        "base_img": "obj_kal",
+        "base_emoji": "📅",
+        "consonant": "क",
+        "matra": "ी",
+        "syllable": "की",
+        "result_word": "कील",
+        "result_img": "obj_keel",
+        "result_emoji": "🔩"
+      }
+    },
+    {
+      "id": "T7",
+      "phase": "tutorial",
+      "eis": "iconic",
+      "type": "MEET_EXAMPLES",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_ex_ee_intro"
+      },
+      "data": {
+        "auto": true,
+        "examples": [
+          {
+            "word_hi": "तीर",
+            "matra": "ी",
+            "img": "obj_teer",
+            "emoji": "🏹",
+            "audio": "vo_ex_teer"
+          },
+          {
+            "word_hi": "लड़की",
+            "matra": "ी",
+            "img": "obj_ladki",
+            "emoji": "👧",
+            "audio": "vo_ex_ladki"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G1",
+      "phase": "guided",
+      "eis": "iconic",
+      "type": "TRAIN_TAP",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_tt_aa_prompt",
+        "correct": "vo_tt_aa_correct",
+        "hint1": "vo_tt_aa_hint1",
+        "hint2": "vo_tt_aa_hint2",
+        "reveal": "vo_rev_tt_aa",
+        "try_again": "vo_tt_aa_hint1"
+      },
+      "data": {
+        "signal": "matra_tap_first_try",
+        "options": [
+          {
+            "word_hi": "हाथ",
+            "audio": "vo_name_haath",
+            "correct": true
+          },
+          {
+            "word_hi": "दिन",
+            "audio": "vo_name_din"
+          },
+          {
+            "word_hi": "नीम",
+            "audio": "vo_name_neem"
+          }
+        ]
+      },
+      "signals": {
+        "on_complete": [
+          "matra_tap_first_try"
+        ]
+      }
+    },
+    {
+      "id": "G2",
+      "phase": "guided",
+      "eis": "iconic",
+      "type": "TRAIN_TAP",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_tt_i_prompt",
+        "correct": "vo_tt_i_correct",
+        "hint1": "vo_tt_i_hint1",
+        "hint2": "vo_tt_i_hint2",
+        "reveal": "vo_rev_tt_i",
+        "try_again": "vo_tt_i_hint1"
+      },
+      "data": {
+        "signal": "matra_tap_first_try",
+        "options": [
+          {
+            "word_hi": "पिन",
+            "audio": "vo_name_pin",
+            "correct": true
+          },
+          {
+            "word_hi": "नाक",
+            "audio": "vo_name_naak"
+          },
+          {
+            "word_hi": "तीर",
+            "audio": "vo_name_teer"
+          }
+        ]
+      },
+      "signals": {
+        "on_complete": [
+          "matra_tap_first_try"
+        ]
+      }
+    },
+    {
+      "id": "G3",
+      "phase": "guided",
+      "eis": "iconic",
+      "type": "TRAIN_TAP",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_tt_ee_prompt",
+        "correct": "vo_tt_ee_correct",
+        "hint1": "vo_tt_ee_hint1",
+        "hint2": "vo_tt_ee_hint2",
+        "reveal": "vo_rev_tt_ee",
+        "try_again": "vo_tt_ee_hint1"
+      },
+      "data": {
+        "signal": "matra_tap_first_try",
+        "options": [
+          {
+            "word_hi": "पानी",
+            "audio": "vo_name_paani",
+            "correct": true
+          },
+          {
+            "word_hi": "नाक",
+            "audio": "vo_name_naak"
+          },
+          {
+            "word_hi": "दिन",
+            "audio": "vo_name_din"
+          }
+        ]
+      },
+      "signals": {
+        "on_complete": [
+          "matra_tap_first_try"
+        ]
+      }
+    },
+    {
+      "id": "G4",
+      "phase": "guided",
+      "eis": "enactive",
+      "type": "TRAIN_SORT",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_ts1_prompt",
+        "hint1": "vo_ts1_hint1",
+        "hint2": "vo_ts1_hint2",
+        "try_again": "vo_ts1_hint1"
+      },
+      "data": {
+        "signal": "matra_sort_correct",
+        "bins": [
+          {
+            "key": "aa",
+            "label": "आ (ा)"
+          },
+          {
+            "key": "i",
+            "label": "इ (ि)"
+          },
+          {
+            "key": "ee",
+            "label": "ई (ी)"
+          }
+        ],
+        "items": [
+          {
+            "key": "aa",
+            "word_hi": "हाथ",
+            "img": "obj_haath",
+            "emoji": "✋",
+            "audio": "vo_name_haath",
+            "correct_audio": "vo_ts1_ok_haath"
+          },
+          {
+            "key": "i",
+            "word_hi": "पिन",
+            "img": "obj_pin",
+            "emoji": "📌",
+            "audio": "vo_name_pin",
+            "correct_audio": "vo_ts1_ok_pin"
+          },
+          {
+            "key": "ee",
+            "word_hi": "नीम",
+            "img": "obj_neem",
+            "emoji": "🌳",
+            "audio": "vo_name_neem",
+            "correct_audio": "vo_ts1_ok_neem"
+          }
+        ]
+      },
+      "signals": {
+        "on_complete": [
+          "matra_sort_correct"
+        ]
+      }
+    },
+    {
+      "id": "P1",
+      "phase": "practice",
+      "eis": "enactive",
+      "type": "TRAIN_SORT",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_ts2_prompt",
+        "hint1": "vo_ts2_hint1",
+        "hint2": "vo_ts2_hint2",
+        "try_again": "vo_ts2_hint1"
+      },
+      "data": {
+        "signal": "matra_sort_correct",
+        "bins": [
+          {
+            "key": "aa",
+            "label": "जाल"
+          },
+          {
+            "key": "i",
+            "label": "सिर"
+          },
+          {
+            "key": "ee",
+            "label": "कील"
+          }
+        ],
+        "items": [
+          {
+            "key": "aa",
+            "glyph": "ा",
+            "correct_audio": "vo_ts2_ok_jaal"
+          },
+          {
+            "key": "i",
+            "glyph": "ि",
+            "correct_audio": "vo_ts2_ok_sir"
+          },
+          {
+            "key": "ee",
+            "glyph": "ी",
+            "correct_audio": "vo_ts2_ok_keel"
+          }
+        ]
+      },
+      "signals": {
+        "on_complete": [
+          "matra_sort_correct"
+        ]
+      }
+    },
+    {
+      "id": "P2",
+      "phase": "practice",
+      "eis": "enactive",
+      "type": "MATRA_FILL",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_mf_prompt",
+        "hint1": "vo_mf_hint1",
+        "hint2": "vo_mf_hint2",
+        "try_again": "vo_mf_hint1"
+      },
+      "data": {
+        "signal": "matra_fill_correct",
+        "options": [
+          "ा",
+          "ि",
+          "ी"
+        ],
+        "reuse_options": true,
+        "slots": [
+          {
+            "word": "जाल",
+            "parts": [
+              "ज",
+              "ल"
+            ],
+            "blank_at": 1,
+            "matra": "ा",
+            "img": "obj_jaal",
+            "emoji": "🕸️",
+            "audio": "vo_name_jaal",
+            "correct_audio": "vo_mf_ok_jaal"
+          },
+          {
+            "word": "परी",
+            "parts": [
+              "पर"
+            ],
+            "blank_at": 1,
+            "matra": "ी",
+            "img": "obj_pari",
+            "emoji": "🧚",
+            "audio": "vo_name_pari",
+            "correct_audio": "vo_mf_ok_pari"
+          },
+          {
+            "word": "हिरण",
+            "parts": [
+              "ह",
+              "रण"
+            ],
+            "blank_at": 0,
+            "matra": "ि",
+            "img": "obj_hiran",
+            "emoji": "🦌",
+            "audio": "vo_name_hiran",
+            "correct_audio": "vo_mf_ok_hiran"
+          }
+        ]
+      },
+      "signals": {
+        "on_complete": [
+          "matra_fill_correct"
+        ]
+      }
+    },
+    {
+      "id": "P3",
+      "phase": "practice",
+      "eis": "enactive",
+      "type": "TRAIN_SORT",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_ts3_prompt",
+        "hint1": "vo_ts3_hint1",
+        "hint2": "vo_ts3_hint2",
+        "try_again": "vo_ts3_hint1"
+      },
+      "data": {
+        "signal": "matra_sort_correct",
+        "hide_labels": true,
+        "multi": true,
+        "bins": [
+          {
+            "key": "aa",
+            "label": "आ (ा)"
+          },
+          {
+            "key": "i",
+            "label": "इ (ि)"
+          },
+          {
+            "key": "ee",
+            "label": "ई (ी)"
+          }
+        ],
+        "items": [
+          {
+            "key": "aa",
+            "word_hi": "हाथ",
+            "img": "obj_haath",
+            "emoji": "✋",
+            "audio": "vo_name_haath",
+            "correct_audio": "vo_ts3_ok_haath"
+          },
+          {
+            "key": "aa",
+            "word_hi": "नाक",
+            "img": "obj_naak",
+            "emoji": "👃",
+            "audio": "vo_name_naak",
+            "correct_audio": "vo_ts3_ok_naak"
+          },
+          {
+            "key": "i",
+            "word_hi": "पिन",
+            "img": "obj_pin",
+            "emoji": "📌",
+            "audio": "vo_name_pin",
+            "correct_audio": "vo_ts3_ok_pin"
+          },
+          {
+            "key": "i",
+            "word_hi": "हिरण",
+            "img": "obj_hiran",
+            "emoji": "🦌",
+            "audio": "vo_name_hiran",
+            "correct_audio": "vo_ts3_ok_hiran"
+          },
+          {
+            "key": "ee",
+            "word_hi": "नीम",
+            "img": "obj_neem",
+            "emoji": "🌳",
+            "audio": "vo_name_neem",
+            "correct_audio": "vo_ts3_ok_neem"
+          },
+          {
+            "key": "ee",
+            "word_hi": "कील",
+            "img": "obj_keel",
+            "emoji": "🔩",
+            "audio": "vo_name_keel",
+            "correct_audio": "vo_ts3_ok_keel"
+          }
+        ]
+      },
+      "signals": {
+        "on_complete": [
+          "matra_sort_correct"
+        ]
+      }
+    },
+    {
+      "id": "P4",
+      "phase": "practice",
+      "eis": "symbolic",
+      "type": "POEM_SEARCH",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_ps_r1",
+        "correct": "vo_ps_ok",
+        "hint1": "vo_ps_hint1",
+        "hint2": "vo_ps_hint2",
+        "try_again": "vo_ps_hint1"
+      },
+      "data": {
+        "signal": "poem_search_correct",
+        "poem_lines": [
+          "रवि लाया लाल पतंग,",
+          "दिन में चमकी सूरज की किरण।",
+          "नीम तले मीना गाए संग।"
+        ],
+        "rounds": [
+          {
+            "matra": "ा",
+            "targets": [
+              "लाया",
+              "लाल",
+              "मीना",
+              "गाए"
+            ],
+            "audio": "vo_ps_r1"
+          },
+          {
+            "matra": "ि",
+            "targets": [
+              "रवि",
+              "दिन",
+              "किरण"
+            ],
+            "audio": "vo_ps_r2"
+          },
+          {
+            "matra": "ी",
+            "targets": [
+              "चमकी",
+              "की",
+              "नीम",
+              "मीना"
+            ],
+            "audio": "vo_ps_r3"
+          }
+        ]
+      },
+      "signals": {
+        "on_complete": [
+          "poem_search_correct"
+        ]
+      }
+    },
+    {
+      "id": "CEL",
+      "phase": "practice",
+      "eis": "enactive",
+      "type": "CELEBRATION",
+      "prompt_hi": "शाबाश! आज हमने सीखा — आ, इ और ई की मात्रा पहचानना, और मात्रा वाले शब्द पढ़ना।",
+      "audio": {
+        "prompt": "vo_cel_prompt",
+        "sfx": "sfx_celebrate"
+      },
+      "data": {}
+    }
+  ],
+  "assets": {
+    "audio": {
+      "sfx_celebrate": "assets/Audio/sfx_celebrate.ogg",
+      "vo_cel_prompt": "assets/Audio/vo_cel_prompt.ogg",
+      "vo_ex_aa_intro": "assets/Audio/vo_ex_aa_intro.ogg",
+      "vo_ex_din": "assets/Audio/vo_ex_din.ogg",
+      "vo_ex_ee_intro": "assets/Audio/vo_ex_ee_intro.ogg",
+      "vo_ex_gati": "assets/Audio/vo_ex_gati.ogg",
+      "vo_ex_i_intro": "assets/Audio/vo_ex_i_intro.ogg",
+      "vo_ex_ladki": "assets/Audio/vo_ex_ladki.ogg",
+      "vo_ex_matka": "assets/Audio/vo_ex_matka.ogg",
+      "vo_ex_naak": "assets/Audio/vo_ex_naak.ogg",
+      "vo_ex_teer": "assets/Audio/vo_ex_teer.ogg",
+      "vo_landing": "assets/Audio/vo_landing.ogg",
+      "vo_matra_aa2": "assets/Audio/vo_matra_aa2.ogg",
+      "vo_matra_ee": "assets/Audio/vo_matra_ee.ogg",
+      "vo_matra_i": "assets/Audio/vo_matra_i.ogg",
+      "vo_mb_bil_base": "assets/Audio/vo_mb_bil_base.ogg",
+      "vo_mb_bil_explain": "assets/Audio/vo_mb_bil_explain.ogg",
+      "vo_mb_bil_intro": "assets/Audio/vo_mb_bil_intro.ogg",
+      "vo_mb_bil_onset": "assets/Audio/vo_mb_bil_onset.ogg",
+      "vo_mb_jal_base": "assets/Audio/vo_mb_jal_base.ogg",
+      "vo_mb_jal_explain": "assets/Audio/vo_mb_jal_explain.ogg",
+      "vo_mb_jal_intro": "assets/Audio/vo_mb_jal_intro.ogg",
+      "vo_mb_jal_onset": "assets/Audio/vo_mb_jal_onset.ogg",
+      "vo_mb_keel_base": "assets/Audio/vo_mb_keel_base.ogg",
+      "vo_mb_keel_explain": "assets/Audio/vo_mb_keel_explain.ogg",
+      "vo_mb_keel_intro": "assets/Audio/vo_mb_keel_intro.ogg",
+      "vo_mb_keel_onset": "assets/Audio/vo_mb_keel_onset.ogg",
+      "vo_mf_hint1": "assets/Audio/vo_mf_hint1.ogg",
+      "vo_mf_hint2": "assets/Audio/vo_mf_hint2.ogg",
+      "vo_mf_ok_hiran": "assets/Audio/vo_mf_ok_hiran.ogg",
+      "vo_mf_ok_jaal": "assets/Audio/vo_mf_ok_jaal.ogg",
+      "vo_mf_ok_pari": "assets/Audio/vo_mf_ok_pari.ogg",
+      "vo_mf_prompt": "assets/Audio/vo_mf_prompt.ogg",
+      "vo_name_bil": "assets/Audio/vo_name_bil.ogg",
+      "vo_name_din": "assets/Audio/vo_name_din.ogg",
+      "vo_name_haath": "assets/Audio/vo_name_haath.ogg",
+      "vo_name_hiran": "assets/Audio/vo_name_hiran.ogg",
+      "vo_name_jaal": "assets/Audio/vo_name_jaal.ogg",
+      "vo_name_keel": "assets/Audio/vo_name_keel.ogg",
+      "vo_name_naak": "assets/Audio/vo_name_naak.ogg",
+      "vo_name_neem": "assets/Audio/vo_name_neem.ogg",
+      "vo_name_paani": "assets/Audio/vo_name_paani.ogg",
+      "vo_name_pari": "assets/Audio/vo_name_pari.ogg",
+      "vo_name_pin": "assets/Audio/vo_name_pin.ogg",
+      "vo_name_teer": "assets/Audio/vo_name_teer.ogg",
+      "vo_ps_hint1": "assets/Audio/vo_ps_hint1.ogg",
+      "vo_ps_hint2": "assets/Audio/vo_ps_hint2.ogg",
+      "vo_ps_ok": "assets/Audio/vo_ps_ok.ogg",
+      "vo_ps_r1": "assets/Audio/vo_ps_r1.ogg",
+      "vo_ps_r2": "assets/Audio/vo_ps_r2.ogg",
+      "vo_ps_r3": "assets/Audio/vo_ps_r3.ogg",
+      "vo_pt_guided": "assets/Audio/vo_pt_guided.ogg",
+      "vo_pt_practice": "assets/Audio/vo_pt_practice.ogg",
+      "vo_pt_tutorial": "assets/Audio/vo_pt_tutorial.ogg",
+      "vo_rev_tt_aa": "assets/Audio/vo_rev_tt_aa.ogg",
+      "vo_rev_tt_ee": "assets/Audio/vo_rev_tt_ee.ogg",
+      "vo_rev_tt_i": "assets/Audio/vo_rev_tt_i.ogg",
+      "vo_s1_prompt": "assets/Audio/vo_s1_prompt.ogg",
+      "vo_ts1_hint1": "assets/Audio/vo_ts1_hint1.ogg",
+      "vo_ts1_hint2": "assets/Audio/vo_ts1_hint2.ogg",
+      "vo_ts1_ok_haath": "assets/Audio/vo_ts1_ok_haath.ogg",
+      "vo_ts1_ok_neem": "assets/Audio/vo_ts1_ok_neem.ogg",
+      "vo_ts1_ok_pin": "assets/Audio/vo_ts1_ok_pin.ogg",
+      "vo_ts1_prompt": "assets/Audio/vo_ts1_prompt.ogg",
+      "vo_ts2_hint1": "assets/Audio/vo_ts2_hint1.ogg",
+      "vo_ts2_hint2": "assets/Audio/vo_ts2_hint2.ogg",
+      "vo_ts2_ok_jaal": "assets/Audio/vo_ts2_ok_jaal.ogg",
+      "vo_ts2_ok_keel": "assets/Audio/vo_ts2_ok_keel.ogg",
+      "vo_ts2_ok_sir": "assets/Audio/vo_ts2_ok_sir.ogg",
+      "vo_ts2_prompt": "assets/Audio/vo_ts2_prompt.ogg",
+      "vo_ts3_hint1": "assets/Audio/vo_ts3_hint1.ogg",
+      "vo_ts3_hint2": "assets/Audio/vo_ts3_hint2.ogg",
+      "vo_ts3_ok_haath": "assets/Audio/vo_ts3_ok_haath.ogg",
+      "vo_ts3_ok_hiran": "assets/Audio/vo_ts3_ok_hiran.ogg",
+      "vo_ts3_ok_keel": "assets/Audio/vo_ts3_ok_keel.ogg",
+      "vo_ts3_ok_naak": "assets/Audio/vo_ts3_ok_naak.ogg",
+      "vo_ts3_ok_neem": "assets/Audio/vo_ts3_ok_neem.ogg",
+      "vo_ts3_ok_pin": "assets/Audio/vo_ts3_ok_pin.ogg",
+      "vo_ts3_prompt": "assets/Audio/vo_ts3_prompt.ogg",
+      "vo_tt_aa_correct": "assets/Audio/vo_tt_aa_correct.ogg",
+      "vo_tt_aa_hint1": "assets/Audio/vo_tt_aa_hint1.ogg",
+      "vo_tt_aa_hint2": "assets/Audio/vo_tt_aa_hint2.ogg",
+      "vo_tt_aa_prompt": "assets/Audio/vo_tt_aa_prompt.ogg",
+      "vo_tt_ee_correct": "assets/Audio/vo_tt_ee_correct.ogg",
+      "vo_tt_ee_hint1": "assets/Audio/vo_tt_ee_hint1.ogg",
+      "vo_tt_ee_hint2": "assets/Audio/vo_tt_ee_hint2.ogg",
+      "vo_tt_ee_prompt": "assets/Audio/vo_tt_ee_prompt.ogg",
+      "vo_tt_i_correct": "assets/Audio/vo_tt_i_correct.ogg",
+      "vo_tt_i_hint1": "assets/Audio/vo_tt_i_hint1.ogg",
+      "vo_tt_i_hint2": "assets/Audio/vo_tt_i_hint2.ogg",
+      "vo_tt_i_prompt": "assets/Audio/vo_tt_i_prompt.ogg"
+    },
+    "audio_text": {
+      "sfx_celebrate": "celebration sound",
+      "vo_cel_prompt": "शाबाश! आज हमने सीखा — आ, इ और ई की मात्रा पहचानना, और मात्रा वाले शब्द पढ़ना।",
+      "vo_ex_aa_intro": "आइए, आ की मात्रा वाले कुछ शब्द देखें।",
+      "vo_ex_din": "दिन, बोलकर देखिए। इसमें द पर छोटी इ की मात्रा लगी है।",
+      "vo_ex_ee_intro": "आइए, बड़ी ई की मात्रा वाले कुछ शब्द देखें।",
+      "vo_ex_gati": "गति, बोलकर देखिए। इसमें त पर छोटी इ की मात्रा लगी है।",
+      "vo_ex_i_intro": "आइए, छोटी इ की मात्रा वाले कुछ शब्द देखें।",
+      "vo_ex_ladki": "लड़की, बोलकर देखिए। इसमें क पर बड़ी ई की मात्रा लगी है।",
+      "vo_ex_matka": "मटका, बोलकर देखिए। इसमें क पर आ की मात्रा लगी है।",
+      "vo_ex_naak": "नाक, बोलकर देखिए। इसमें न पर आ की मात्रा लगी है।",
+      "vo_ex_teer": "तीर, बोलकर देखिए। इसमें त पर बड़ी ई की मात्रा लगी है।",
+      "vo_landing": "हेलो दोस्त! मैं हूँ स्विफ्टी। आज हम मात्राओं के बारे में जानेंगे।",
+      "vo_matra_aa2": "आ की मात्रा",
+      "vo_matra_ee": "बड़ी ई की मात्रा",
+      "vo_matra_i": "छोटी इ की मात्रा",
+      "vo_mb_bil_base": "यह शब्द बल है।",
+      "vo_mb_bil_explain": "अब बल में छोटी इ की मात्रा लगाने पर, बिल बनता है।",
+      "vo_mb_bil_intro": "आइए, देखें कि छोटी इ की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।",
+      "vo_mb_bil_onset": "ब में छोटी इ की मात्रा लगाने पर, बि बनता है।",
+      "vo_mb_jal_base": "यह शब्द जल है।",
+      "vo_mb_jal_explain": "अब जल में आ की मात्रा लगाने पर, जाल बनता है।",
+      "vo_mb_jal_intro": "आइए, देखें कि आ की मात्रा लगने से शब्द की आवाज़ कैसे बदलती है।",
+      "vo_mb_jal_onset": "ज में आ की मात्रा लगाने पर, जा बनता है।",
+      "vo_mb_keel_base": "यह शब्द कल है।",
+      "vo_mb_keel_explain": "अब कल में बड़ी ई की मात्रा लगाने पर, कील बनता है।",
+      "vo_mb_keel_intro": "आइए, देखें कि बड़ी ई की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।",
+      "vo_mb_keel_onset": "क में बड़ी ई की मात्रा लगाने पर, की बनता है।",
+      "vo_mf_hint1": "फिर से सोचो।",
+      "vo_mf_hint2": "ध्यान से देखो। कौन-सी मात्रा लगेगी?",
+      "vo_mf_ok_hiran": "शाबाश! हिरण बन गया।",
+      "vo_mf_ok_jaal": "शाबाश! जाल बन गया।",
+      "vo_mf_ok_pari": "शाबाश! परी बन गया।",
+      "vo_mf_prompt": "सही मात्रा को सही जगह पर खींचकर डालो और शब्द पूरा करिए।",
+      "vo_name_bil": "बिल",
+      "vo_name_din": "दिन",
+      "vo_name_haath": "हाथ",
+      "vo_name_hiran": "हिरण",
+      "vo_name_jaal": "जाल",
+      "vo_name_keel": "कील",
+      "vo_name_naak": "नाक",
+      "vo_name_neem": "नीम",
+      "vo_name_paani": "पानी",
+      "vo_name_pari": "परी",
+      "vo_name_pin": "पिन",
+      "vo_name_teer": "तीर",
+      "vo_ps_hint1": "फिर से देखो।",
+      "vo_ps_hint2": "ध्यान से मात्रा पहचानो।",
+      "vo_ps_ok": "शाबाश!",
+      "vo_ps_r1": "आ की मात्रा वाले शब्द ढूँढो।",
+      "vo_ps_r2": "अब छोटी इ की मात्रा वाले शब्द ढूँढो।",
+      "vo_ps_r3": "अब बड़ी ई की मात्रा वाले शब्द ढूँढो।",
+      "vo_pt_guided": "बहुत बढ़िया! अब हम साथ मिलकर शुरू करते हैं। चलिए, साथ में करें!",
+      "vo_pt_practice": "वाह! अब आपकी बारी।",
+      "vo_pt_tutorial": "ध्यान से देखिए और मेरे साथ जानिए। चलिए, शुरू करें!",
+      "vo_rev_tt_aa": "सही डिब्बा यह है। हाथ शब्द में आ की मात्रा है।",
+      "vo_rev_tt_ee": "सही डिब्बा यह है। पानी शब्द में बड़ी ई की मात्रा है।",
+      "vo_rev_tt_i": "सही डिब्बा यह है। पिन शब्द में छोटी इ की मात्रा है।",
+      "vo_s1_prompt": "आज हम आ की मात्रा, छोटी इ की मात्रा और बड़ी ई की मात्रा वाले शब्द पढ़ेंगे।",
+      "vo_ts1_hint1": "फिर से सुनो और सही मात्रा पहचानिए।",
+      "vo_ts1_hint2": "ध्यान से देखो, इस शब्द में कौन-सी मात्रा है?",
+      "vo_ts1_ok_haath": "शाबाश! हाथ शब्द में आ की मात्रा है।",
+      "vo_ts1_ok_neem": "शाबाश! नीम शब्द में बड़ी ई की मात्रा है।",
+      "vo_ts1_ok_pin": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।",
+      "vo_ts1_prompt": "हर शब्द को उसकी सही मात्रा वाली बोगी में डालिए।",
+      "vo_ts2_hint1": "फिर से सोचो। इस शब्द में कौन-सी मात्रा लगी है?",
+      "vo_ts2_hint2": "ध्यान से देखो और शब्द को फिर से पढ़ो।",
+      "vo_ts2_ok_jaal": "शाबाश! जाल शब्द में आ की मात्रा लगी है।",
+      "vo_ts2_ok_keel": "शाबाश! कील शब्द में बड़ी ई की मात्रा लगी है।",
+      "vo_ts2_ok_sir": "शाबाश! सिर शब्द में छोटी इ की मात्रा लगी है।",
+      "vo_ts2_prompt": "सही मात्रा को सही शब्द वाली बोगी में डालिए।",
+      "vo_ts3_hint1": "फिर से सुनो और सही मात्रा पहचानो।",
+      "vo_ts3_hint2": "शब्द को ध्यान से सुनो।",
+      "vo_ts3_ok_haath": "शाबाश! हाथ में आ की मात्रा है।",
+      "vo_ts3_ok_hiran": "शाबाश! हिरण में छोटी इ की मात्रा है।",
+      "vo_ts3_ok_keel": "शाबाश! कील में बड़ी ई की मात्रा है।",
+      "vo_ts3_ok_naak": "शाबाश! नाक में आ की मात्रा है।",
+      "vo_ts3_ok_neem": "शाबाश! नीम में बड़ी ई की मात्रा है।",
+      "vo_ts3_ok_pin": "शाबाश! पिन में छोटी इ की मात्रा है।",
+      "vo_ts3_prompt": "चित्र को सुनो और उसे सही मात्रा वाली बोगी में डालिए।",
+      "vo_tt_aa_correct": "शाबाश! हाथ शब्द में आ की मात्रा है।",
+      "vo_tt_aa_hint1": "फिर से सोचो। आ की मात्रा वाला शब्द कौन-सा है?",
+      "vo_tt_aa_hint2": "ध्यान से देखो और सही डिब्बे पर टैप कीजिए।",
+      "vo_tt_aa_prompt": "जिस डिब्बे में आ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+      "vo_tt_ee_correct": "शाबाश! पानी शब्द में बड़ी ई की मात्रा है।",
+      "vo_tt_ee_hint1": "फिर से सोचो। बड़ी ई की मात्रा वाला शब्द कौन-सा है?",
+      "vo_tt_ee_hint2": "ध्यान से देखो और सही डिब्बे पर टैप करो।",
+      "vo_tt_ee_prompt": "जिस डिब्बे में बड़ी ई की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+      "vo_tt_i_correct": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।",
+      "vo_tt_i_hint1": "फिर से सोचो। छोटी इ की मात्रा वाला शब्द कौन-सा है?",
+      "vo_tt_i_hint2": "ध्यान से देखो और सही डिब्बे पर टैप करो।",
+      "vo_tt_i_prompt": "जिस डिब्बे में छोटी इ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।"
+    },
+    "image": {
+      "obj_bal": "assets/Images/obj_bal.png",
+      "obj_bil": "assets/Images/obj_bil.png",
+      "obj_din": "assets/Images/obj_din.png",
+      "obj_gati": "assets/Images/obj_gati.png",
+      "obj_haath": "assets/Images/obj_haath.png",
+      "obj_hiran": "assets/Images/obj_hiran.png",
+      "obj_jaal": "assets/Images/obj_jaal.png",
+      "obj_jal": "assets/Images/obj_jal.png",
+      "obj_kal": "assets/Images/obj_kal.png",
+      "obj_keel": "assets/Images/obj_keel.png",
+      "obj_ladki": "assets/Images/obj_ladki.png",
+      "obj_matka": "assets/Images/obj_matka.png",
+      "obj_naak": "assets/Images/obj_naak.png",
+      "obj_neem": "assets/Images/obj_neem.png",
+      "obj_pari": "assets/Images/obj_pari.png",
+      "obj_pin": "assets/Images/obj_pin.png",
+      "obj_teer": "assets/Images/obj_teer.png"
+    },
+    "audio_ext": "ogg",
+    "img_ext": "png"
+  }
+}

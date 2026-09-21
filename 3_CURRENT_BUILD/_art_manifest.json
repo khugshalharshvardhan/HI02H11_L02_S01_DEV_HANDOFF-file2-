@@ -1,0 +1,16 @@
+{
+  "obj_naak": "a single large friendly cartoon human nose seen from the front, warm medium-tan skin tone, with a thick dark brown outline and two clear nostrils, simple and cheerful",
+  "obj_baal": "a cartoon girl's head from the front with two long thick black braided pigtails hanging down, each braid tied at the end with a bright yellow ribbon, warm tan skin, thick dark brown outline, the braided hair is the clear subject",
+  "obj_haath": "a single open human hand, palm facing forward, fingers spread, warm medium-tan skin tone, thick dark brown outline",
+  "obj_maala": "a circular flower garland necklace made of bright orange and golden-yellow marigold flowers strung on a green thread, thick dark green outline, no pink flowers",
+  "obj_baadal": "a plump fluffy cloud in saturated medium sky-blue with a thick navy blue outline, several rounded bumps along the top, NOT white and NOT pale",
+  "_note_obj_din": "TOOK THREE GOES — keep this prompt. v1 said 'sun with rays' and came back as a plain yellow smiley with NO rays, which reads as an emoji and not as दिन. v2 demanded 'clearly separated' rays and came back BLANK (175x349, 10KB): separated rays are disconnected blobs, so keep_largest threw the disc away and kept a 1px sliver — the same failure that shipped obj_sapna empty on the sibling lesson. The fix is to demand ONE SINGLE CONNECTED SILHOUETTE. Any prompt for a spiky, rayed, dotted or multi-part subject must say this.",
+  "obj_din": "a cheerful daytime sun drawn as ONE SINGLE CONNECTED SHAPE: a golden-yellow circular disc with a simple smiling face, and pointed triangular rays around the edge that are FUSED DIRECTLY ONTO the disc so the whole sun is one solid continuous silhouette with no detached pieces and no gaps between the rays and the disc. One thick dark orange outline around the entire combined silhouette.",
+  "obj_hiran": "a single cute standing deer in warm golden-brown with small white spots on its back and two small brown antlers, thick dark brown outline, side view",
+  "obj_pin": "a single push pin drawing pin standing upright, with a round bright red plastic top and a short silver-grey metal point, thick dark outline",
+  "obj_til": "a small neat heap of golden-brown sesame seeds, each teardrop-shaped seed drawn with a thick dark brown outline, arranged as a small mound",
+  "obj_teer": "a single archery arrow pointing up and to the right, with a grey metal arrowhead, a medium-brown wooden shaft and bright red feather fletching, thick dark outline",
+  "obj_neem": "a small neem tree with a sturdy medium-brown trunk and a rounded canopy of bright saturated green leaves, thick dark green outline",
+  "obj_seep": "a single fan-shaped scallop seashell standing upright, in warm sandy orange and cream with clear ridged lines radiating out, thick dark brown outline",
+  "obj_cheeni": "a small terracotta-orange bowl heaped with white sugar crystals, the bowl and the sugar mound both drawn with a thick dark brown outline so the white sugar is clearly bounded"
+}

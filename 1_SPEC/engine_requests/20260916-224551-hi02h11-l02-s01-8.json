@@ -1,0 +1,11 @@
+{
+ "id": "20260916-224551-hi02h11-l02-s01-8",
+ "game": "HI02H11_L02_S01",
+ "session": "sme-lxd-matra-train",
+ "symptom": "Matra highlighting inside a word is pixel-column based and therefore CANNOT work for reordering matras — needs replacing with glyph-cluster-aware highlighting",
+ "evidence": "HIGHEST-LEVERAGE ASK IN THIS BATCH — fleet-wide, every matra lesson. _matraClipCols rasterises the word and colours ink columns after the consonant, so it works for right-spacing matras (ा, ी — both verified correct on नाक and तीर) and CANNOT work for ि, which is typed after its consonant but drawn before it. Measured, not assumed: with ि added to RIGHT_SPACING_MATRAS, दिन mis-clips and the red lands on part of the द — the child is shown the wrong glyph as 'the matra'. Tried, rendered, reverted; see the bundle's engine_local/CHANGES.md. Proper fix: shape the word into per-cluster spans and recolour the matra's cluster, instead of clipping pixel columns. That also unlocks े ै ो ौ ु ू, which all currently fall back to the ◌<matra> callout.",
+ "blocking": false,
+ "opened": "2026-09-16T22:45:51",
+ "closed": null,
+ "note": ""
+}

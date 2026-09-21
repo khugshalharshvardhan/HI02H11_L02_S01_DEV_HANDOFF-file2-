@@ -1,0 +1,11 @@
+{
+ "id": "20260916-224551-hi02h11-l02-s01-2",
+ "game": "HI02H11_L02_S01",
+ "session": "sme-lxd-matra-train",
+ "symptom": "Scaffold ladder needs a 3rd attempt: 1st wrong = hint VO only with NO hand, 2nd wrong = hint VO + hand nudge on the CORRECT option (child still answers), 3rd-attempt correct = confetti but SILENT. Today max_attempts is 2 and the 2nd wrong triggers terminalHold, which reveals the answer and dims the rest",
+ "evidence": "SME specifies this identical ladder on all 9 test screens of the HI02H11_L02_S01 redesign. Not a card fix: max_attempts is read from scaffold_rules but the rung BEHAVIOUR is hardcoded in wrongClip()/midHint()/terminalHold(), and celebrateThenAdvance(slide, revealed) always plays correct-or-reveal so a silent visual-only success is not expressible. Proposed additive keys (defaults preserve today's behaviour, so no shipped game changes): hand_on_attempt:2, reveal_on_attempt:null, silent_on_late_correct:true. Fleet-wide value: the current ladder hands the answer over one rung early.",
+ "blocking": true,
+ "opened": "2026-09-16T22:45:51",
+ "closed": null,
+ "note": ""
+}

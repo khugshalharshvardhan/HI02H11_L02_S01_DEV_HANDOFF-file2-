@@ -1,0 +1,11 @@
+{
+ "id": "20260916-224551-hi02h11-l02-s01-6",
+ "game": "HI02H11_L02_S01",
+ "session": "sme-lxd-matra-train",
+ "symptom": "MEET_LETTER needs data.examples[] so one slide can teach TWO example words one at a time, each with its own picture and matra highlight",
+ "evidence": "HI02H11_L02_S01 redesign screens 3, 5 and 7 (नाक+मटका, दिन+गति, तीर+लड़की). SME: \"Keep one example visible at a time... Keep animation one by one, not all together.\" Not a card fix: MEET_LETTER renders slide.data.letter once and runs one autonomous demo; there is no loop. Additive — keep the single-word path byte-identical so the 11 shipped MEET_LETTER games are untouched. NOT blocking: the screens degrade to one example each.",
+ "blocking": false,
+ "opened": "2026-09-16T22:45:51",
+ "closed": null,
+ "note": ""
+}

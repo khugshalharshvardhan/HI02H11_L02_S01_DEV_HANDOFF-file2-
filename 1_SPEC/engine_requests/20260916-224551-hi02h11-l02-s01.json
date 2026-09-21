@@ -1,0 +1,11 @@
+{
+ "id": "20260916-224551-hi02h11-l02-s01",
+ "game": "HI02H11_L02_S01",
+ "session": "sme-lxd-matra-train",
+ "symptom": "TRAIN_CHROME: no shared train shell — a locomotive + N coaches that act as answer options, sort bins and word frames, with right-to-left entry, and per-coach idle/hover/correct/wrong/locked/nudge/complete states",
+ "evidence": "SME redesign of HI02H11_L02_S01 into «मात्राओं की रेल» (recommendations verbatim in the bundle's _SME_RECOMMENDATIONS.md, mockups in _SME_MOCKUPS/). Not a card fix: 6 of the 17 screens mount inside this shell and nothing in the engine draws it. Checked all 59 modules in 2026.08.04b — no themed container exists; SORT_GENDER's bins and mountTapOptions' opt-grid are the only containers and neither is skinnable from a card. NOTE for whoever builds it: capture_pages.py injects *{animation:none !important}, so any coach state that lives only in @keyframes is invisible in review decks — put the settled state on the base rule (this already cost 4 attempts on the landing letter glow).",
+ "blocking": true,
+ "opened": "2026-09-16T22:45:51",
+ "closed": null,
+ "note": ""
+}
