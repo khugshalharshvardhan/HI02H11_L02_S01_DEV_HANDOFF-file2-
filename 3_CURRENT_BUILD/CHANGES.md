@@ -1242,3 +1242,40 @@ centred.
 project inside the first". Its README, the standalone `index.html`, the 11MB `_raw` art and the
 audio build scripts are kept at `_SOURCE/matra_tokri/` for provenance, and `_SOURCE/` is in
 `.vercelignore`, so none of it deploys. Delete it if you would rather not carry it.
+
+---
+
+## Follow-up changes — 2026-09-22 (thirteenth round) — correcting the port
+
+Two regressions against the standalone build, both caused by the same decision: I skipped the
+game's `shared/core.css` and three of the kit recipes on the assumption this engine already had
+equivalents. It has equivalents for the *stage*; it does not for everything those files carried.
+
+| # | reported | cause and fix |
+|---|---|---|
+| Q1 | "the progress bar was on the right side, but you made it to the left" | `core.css` is where this game's **HUD** is laid out, not just its stage: `.stats` is `position:absolute; right:28px; top:50%`, and `.game-header` is the absolutely-positioned band it sits in. Dropping that stylesheet left `.stats` unpositioned, so it fell to the top-left as a plain flex child. Restored `.game-header` positioning, `.stats`, `.stat-chip`, `.stars`, `.star`, `starPop`, `.feedback-pop` and `feedbackPop`, all scoped to `.mt-game`, along with the `--pal-*` tokens they read. Measured after: the track sits **30px from the right edge** of the game box. |
+| Q2 | "originally there were many levels, currently missing" | **Only round 1 was reachable.** `levelCheer()` — the beat between rounds — calls `FLNMotion.confetti.burst()`, and the confetti recipe was one of the three I did not carry across. `FLNMotion.confetti` was undefined, so the call threw, round 2 never started and the game sat on ◌ा forever. The whole recipe (CSS + JS) is now installed. |
+
+### What I should have done instead of assuming
+
+Enumerated the dependency rather than eyeballing it. Doing that now: the game calls **eight**
+`FLNMotion.*` APIs — `guard`, `still`, `nudge`, `correctSelect`, `wrongSelect`, `objectOutline`,
+`starBurst`, `confetti` — and exactly one of them, `confetti`, was missing from this engine. One
+line of checking would have caught it before it shipped.
+
+The same check now covers markup and runtime classes: all **24** classes in the game's markup and
+all **19** it adds at runtime resolve to a rule in the engine.
+
+### Verified by actually playing it through
+
+Auto-played with the basket tracking the lowest falling word:
+
+```
+ROUND 1 reached: ◌ा   (t+0s)
+ROUND 2 reached: ◌ि   (t+35s)
+ROUND 3 reached: ◌ी   (t+66s)
+GAME COMPLETE          (t+103s) - आगे unlocked
+```
+
+All three rounds, zero console errors, zero 4xx. Progress bar on the right. All 17 slides still
+mount; the cover is untouched (train on cell 35, three matras centred). Receipt: **0 FAIL, 0 WARN**.
