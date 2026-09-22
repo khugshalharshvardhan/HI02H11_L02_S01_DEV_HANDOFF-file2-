@@ -2023,10 +2023,142 @@ body.is-start .phase-gate{
 @keyframes ltPop{from{opacity:0;transform:scale(.55);}
                  to{opacity:1;transform:scale(1);}}
 
+
+/* ==========================================================================================
+   FLN ANIMATION KIT — installed 2026-09-21 from github.com/ananya-goswami/fln-animation-toolkit
+   Recipes 1 (start screen stars, drift), 2 (tap to burst) and 8 (celebration star burst).
+   Verified against the kit's own rules before pasting: none of .sg-sky / .sg-glow / .sg-burst
+   nor any of sgFly / sgBreathe / sgFlash / sgSpark / sgGlowOpacity existed in this engine (R11),
+   and ENGINE_VERSION is untouched (R10).
+   Stacking here: .start-bg/.end-bg are z-index 0, the sky is 1, .start-gate is 80, .end-screen
+   is 90, and a burst is 95 — so the sky sits behind the card and bursts land on top of both.
+   ========================================================================================== */
+
+/* ===== FLN ANIMATION KIT: reduced-motion BEGIN ===== */
+html.no-anim *, html.no-anim *::before, html.no-anim *::after{
+  animation:none!important; transition:none!important;
+}
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{ animation:none!important; transition:none!important; }
+}
+/* ===== FLN ANIMATION KIT: reduced-motion END ===== */
+
+/* ===== FLN ANIMATION KIT: sky-drift BEGIN ===== */
+/* MANDATORY swap. Our shipped startnew_bg.webp has stars, sparkles, rings and dots PAINTED IN;
+   drifting a second set over them is the kit's documented "two sets of stars, one frozen and one
+   moving" bug. startnew_bg_plain.webp is that same artwork with the decorations inpainted out
+   (the rays and the centre glow are untouched). This rule is later in the stylesheet than the
+   original .start-bg, so it wins. */
+.start-bg{background-image:url("assets/UI/startnew_bg_plain.webp");}
+
+.sg-glow,.sg-sky{position:fixed;inset:0;pointer-events:none;display:none;z-index:1;}
+body.is-start .sg-glow,body.is-start .sg-sky,
+body.is-end   .sg-glow,body.is-end   .sg-sky{display:block;}
+/* R2: this engine never sets html.rotated, so the rule below is inert here — kept so the layer
+   still behaves if portrait rotation is ever adopted. */
+html.rotated .sg-glow,html.rotated .sg-sky{
+  inset:auto;left:50%;top:50%;width:100vh;height:100vw;
+  transform:translate(-50%,-50%) rotate(90deg);}
+
+.sg-glow{opacity:.75;background:radial-gradient(ellipse 38% 25% at 50% 79%,
+  rgba(255,255,255,.34) 0%,rgba(255,255,255,.13) 45%,rgba(255,255,255,0) 72%);
+  animation:sgBreathe 6.5s ease-in-out infinite;}
+@keyframes sgBreathe{0%,100%{opacity:.55;}50%{opacity:1;}}
+
+/* hole punched over the centre card — it is translucent, so elements showed through.
+   Our .sg-card art is 1114x456, exactly the size the kit's default hole is cut for. */
+.sg-sky{overflow:hidden;
+  --sg-hole-w:calc(1074px * var(--scale,1));
+  --sg-hole-h:calc(416px * var(--scale,1));
+  -webkit-mask-image:linear-gradient(#000,#000),linear-gradient(#000,#000);
+          mask-image:linear-gradient(#000,#000),linear-gradient(#000,#000);
+  -webkit-mask-size:100% 100%,var(--sg-hole-w) var(--sg-hole-h);
+          mask-size:100% 100%,var(--sg-hole-w) var(--sg-hole-h);
+  -webkit-mask-position:center,center; mask-position:center,center;
+  -webkit-mask-repeat:no-repeat,no-repeat; mask-repeat:no-repeat,no-repeat;
+  -webkit-mask-composite:xor; mask-composite:exclude;
+}
+/* the end screen has no visible occluder, so a hard edge reads as a sliced crescent.
+   Soft radial hole sized to the mascot instead. */
+body.is-end .sg-sky{
+  --sg-hole-w:calc(800px * var(--scale,1));
+  --sg-hole-h:calc(800px * var(--scale,1));
+  -webkit-mask-image:linear-gradient(#000,#000),
+                     radial-gradient(closest-side,#000 71%,rgba(0,0,0,0) 100%);
+          mask-image:linear-gradient(#000,#000),
+                     radial-gradient(closest-side,#000 71%,rgba(0,0,0,0) 100%);
+}
+
+.sg-sky i{position:absolute;left:50%;top:50%;width:var(--s);aspect-ratio:1;
+  margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  background:center/contain no-repeat;opacity:0;
+  animation:sgFly var(--t) linear infinite;animation-delay:var(--d);}
+.sg-sky .s1{background-image:url("assets/UI/bgdeco_star.svg");}
+.sg-sky .s2{background-image:url("assets/UI/bgdeco_star_o.svg");}
+.sg-sky .s3{background-image:url("assets/UI/bgdeco_spark.svg");}
+.sg-sky .s4{border-radius:50%;border:.22vmax solid rgba(255,255,255,.92);}
+.sg-sky .s5{border-radius:50%;background:rgba(255,255,255,.92);}
+
+/* transform keyed ONLY at 0% and 100% — that is what makes the path a straight ray */
+@keyframes sgFly{
+  0%{transform:translate(var(--x1),var(--y1));opacity:0;}
+  10%{opacity:var(--o);}
+  84%{opacity:var(--o);}
+  100%{transform:translate(var(--x2),var(--y2));opacity:0;}
+}
+
+/* glow: static shadow, animated opacity = composited */
+.sg-sky i::after{content:"";position:absolute;inset:0;border-radius:inherit;
+  background:inherit;border:inherit;
+  filter:drop-shadow(0 0 7px rgba(255,255,255,.95));
+  opacity:0;will-change:opacity;
+  animation:sgGlowOpacity var(--g) ease-in-out infinite alternate;
+  animation-delay:var(--gd);}
+@keyframes sgGlowOpacity{from{opacity:0;}to{opacity:1;}}
+/* ===== FLN ANIMATION KIT: sky-drift END ===== */
+
+/* ===== FLN ANIMATION KIT: sky-burst BEGIN ===== */
+.sg-sky i.popped{visibility:hidden;}
+.sg-burst{position:fixed;z-index:95;width:0;height:0;pointer-events:none;}
+
+/* data URIs, not file refs — external SVG masks are blocked under file:// */
+.sg-burst.k-star{--shape:url("data:image/svg+xml,%3Csvg%20width=%2264%22%20height=%2264%22%20viewBox=%220%200%2064%2064%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d=%22M32%205.5c1.6%200%203%20.9%203.7%202.4l6.1%2012.4%2013.7%202c1.6.2%203%201.4%203.5%203s.1%203.3-1.1%204.4l-9.9%209.6%202.3%2013.6c.3%201.6-.4%203.3-1.7%204.2s-3.1%201.1-4.6.3L32%2051l-12.2%206.4c-1.5.8-3.2.7-4.6-.3s-2-2.6-1.7-4.2l2.3-13.6-9.9-9.6c-1.2-1.1-1.6-2.9-1.1-4.4s1.9-2.7%203.5-3l13.7-2%206.1-12.4C29%206.4%2030.4%205.5%2032%205.5z%22%20fill=%22%23fff%22/%3E%3C/svg%3E");}
+.sg-burst.k-spark{--shape:url("data:image/svg+xml,%3Csvg%20width=%2264%22%20height=%2264%22%20viewBox=%220%200%2064%2064%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d=%22M32%202c1.6%2012.6%2015.4%2026.4%2030%2030-14.6%203.6-28.4%2017.4-30%2030-1.6-12.6-15.4-26.4-30-30C16.6%2028.4%2030.4%2014.6%2032%202z%22%20fill=%22%23fff%22/%3E%3C/svg%3E");}
+.sg-burst.k-dot{--shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23fff'/%3E%3C/svg%3E");}
+
+.sg-burst .fl{position:absolute;left:0;top:0;
+  width:calc(var(--bs) * 3);height:calc(var(--bs) * 3);
+  margin:calc(var(--bs) * -1.5) 0 0 calc(var(--bs) * -1.5);border-radius:50%;
+  background:radial-gradient(circle,rgba(244,250,255,1) 0%,
+    rgba(96,165,250,.92) 38%,rgba(30,58,138,0) 76%);
+  animation:sgFlash .36s ease-out forwards;}
+
+/* solid fill + two colour drop-shadows; they respect the mask alpha, so the halo
+   follows the star silhouette rather than a box */
+.sg-burst i{position:absolute;left:0;top:0;width:var(--ps);height:var(--ps);
+  margin:calc(var(--ps) / -2) 0 0 calc(var(--ps) / -2);
+  background:currentColor;
+  -webkit-mask:var(--shape) center/contain no-repeat;
+          mask:var(--shape) center/contain no-repeat;
+  filter:drop-shadow(0 0 3px currentColor) drop-shadow(0 0 8px currentColor);
+  animation:sgSpark var(--sd) cubic-bezier(.12,.72,.24,1) forwards;
+  animation-delay:var(--sdl);}
+
+@keyframes sgFlash{0%{transform:scale(.15);opacity:1;}100%{transform:scale(1.6);opacity:0;}}
+@keyframes sgSpark{           /* --gy = gravity drop (kit renames the shipped --g, which collides
+                                 with the sky's glow-duration --g; do not mix the two) */
+  0%{transform:translate(0,0) scale(.35);opacity:0;}
+  14%{opacity:1;transform:translate(calc(var(--dx) * .3),calc(var(--dy) * .3)) scale(1.12);}
+  100%{transform:translate(var(--dx),calc(var(--dy) + var(--gy))) scale(.3);opacity:0;}
+}
+/* ===== FLN ANIMATION KIT: sky-burst END ===== */
+
 </style>
 </head>
 <body class="is-start">
 <div class="start-bg" aria-hidden="true"></div>
+<div class="sg-glow" aria-hidden="true"></div>
+<div class="sg-sky"  aria-hidden="true"></div>
 <div class="end-bg" aria-hidden="true"></div>   <!-- [20a] body-level: position:fixed must NOT sit inside the transformed .stage or it gets hijacked to the stage box (leaves letterbox band) -->
 
 <!-- BOOT LOADER — [template] r4/P2: white boot screen, no-tap auto-dismiss (see boot()) -->
@@ -8304,60 +8436,10 @@ SlideModules.MATCH_VACHAN_PAIRS    = SlideModules.MATCH_GENDER_PAIRS;
 
 /* ---------- 13. CONTROLLER ---------- */
 /* r4: gold star burst for the celebration finale (adopted from Shruti's build) */
-function starBurst(){
-  if(document.documentElement.classList.contains("no-anim")) return;
-  const host = $("confetti"); if(!host) return;
-  const cv = document.createElement("canvas");
-  cv.width = 1333; cv.height = 750;
-  cv.style.cssText = "position:absolute;inset:0;width:100%;height:100%;";
-  host.appendChild(cv);
-  const ctx = cv.getContext("2d");
-  const COLORS = ["#FFE400","#FFBD00","#E89400","#FFCA6C","#FDFFB8"];
-  const TICKS = 100, DECAY = 0.96, START_V = 22;
-  const parts = [];
-  function starPath(r){
-    ctx.beginPath();
-    for(let i=0;i<10;i++){
-      const rad = (i % 2 === 0) ? r : r/2;
-      const a = Math.PI/5*i - Math.PI/2;
-      ctx[i === 0 ? "moveTo" : "lineTo"](Math.cos(a)*rad, Math.sin(a)*rad);
-    }
-    ctx.closePath();
-  }
-  function shoot(){
-    const add = (n, scalar, shape) => {
-      for(let i=0;i<n;i++){
-        const a = Math.random()*Math.PI*2;
-        parts.push({ x:cv.width/2, y:cv.height/2, ax:Math.cos(a), ay:Math.sin(a),
-          vel:START_V*(0.5 + Math.random()), tick:0, scalar, shape,
-          color:COLORS[Math.floor(Math.random()*COLORS.length)],
-          rot:Math.random()*Math.PI*2, spin:(Math.random()-.5)*0.3 });
-      }
-    };
-    add(80, 1.8, "star");
-    add(20, 1.0, "circle");
-  }
-  shoot(); setTimeout(shoot, 150); setTimeout(shoot, 300);
-  let frames = 0;
-  (function frame(){
-    ctx.clearRect(0, 0, cv.width, cv.height);
-    let alive = false;
-    for(const p of parts){
-      if(p.tick >= TICKS) continue;
-      alive = true;
-      p.x += p.ax*p.vel; p.y += p.ay*p.vel; p.vel *= DECAY; p.rot += p.spin; p.tick++;
-      ctx.globalAlpha = 1 - p.tick/TICKS;
-      ctx.fillStyle = p.color;
-      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
-      if(p.shape === "star"){ starPath(8*p.scalar); ctx.fill(); }
-      else { ctx.beginPath(); ctx.arc(0, 0, 6*p.scalar, 0, Math.PI*2); ctx.fill(); }
-      ctx.restore();
-    }
-    frames++;
-    if(alive || frames < 30) requestAnimationFrame(frame);
-    else setTimeout(()=> cv.remove(), 300);
-  })();
-}
+/* [animation-kit] Recipe 8 supersedes the original canvas burst that lived here — fewer
+   stars, slower drift, and a frame floor derived from the last shot instead of a hard 30.
+   The name is kept so the existing call site in the celebration path does not change. */
+function starBurst(){ if(window.FLNMotion && FLNMotion.starBurst) FLNMotion.starBurst.fire(); }
 function clearHost(){
   document.body.classList.remove("is-end");   // r4: clear immersive end state when leaving celebration
   /* [28g] "going back from last screen gets swiftie stuck" — clearHost dropped body.is-end but never
@@ -8975,6 +9057,307 @@ function buildDevNav(){
   document.body.appendChild(bar);
   setInterval(sync, 300); sync(); syncMute();
 }
+/* ==========================================================================================
+   FLN ANIMATION KIT — installed 2026-09-21 from github.com/ananya-goswami/fln-animation-toolkit
+   Recipe 1 (start screen stars, drift) · Recipe 2 (tap to burst) · Recipe 8 (celebration star
+   burst, retuned). Classic script only, per the kit's R3. Every entry point is wrapped so a
+   throw here can never strand the boot loader (R4), and every effect checks the reduced-motion
+   guard as well as the CSS kill-switch (R5).
+   ========================================================================================== */
+
+/* ===== FLN ANIMATION KIT: core BEGIN ===== */
+(function(){ "use strict";
+  var M = window.FLNMotion = window.FLNMotion || {};
+  M.still = function(){
+    try{ return document.documentElement.classList.contains("no-anim") ||
+      (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); }
+    catch(_){ return false; }
+  };
+  M.scale = function(){
+    try{ return parseFloat(getComputedStyle(document.documentElement)
+      .getPropertyValue("--scale")) || 1; }catch(_){ return 1; }
+  };
+  M.guard = function(fn){
+    try{ fn(); }catch(e){ try{ console.warn("[animation-kit]", e && e.message); }catch(_){} }
+  };
+  var _actx = null;
+  M.audio = function(){
+    try{
+      var AC = window.AudioContext || window.webkitAudioContext; if(!AC) return null;
+      _actx = _actx || new AC();
+      if(_actx.state === "suspended") _actx.resume();
+      return _actx;
+    }catch(_){ return null; }
+  };
+  M.ready = function(fn){
+    if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn);
+    else fn();
+  };
+})();
+/* ===== FLN ANIMATION KIT: core END ===== */
+
+/* ===== FLN ANIMATION KIT: sky-drift BEGIN ===== */
+(function(){ "use strict";
+  var M = window.FLNMotion;
+
+  function build(o){
+    var sky = typeof o.container === "string" ? document.querySelector(o.container) : o.container;
+    if(!sky) return null;
+    sky.textContent = "";
+    var maxSize = 0, frag = document.createDocumentFragment();
+
+    o.layers.forEach(function(L, li){
+      for(var i = 0; i < o.lanes; i++){
+        var a = ((360 / o.lanes) * i + L.rot) * Math.PI / 180;
+        var cos = Math.cos(a), sin = Math.sin(a);
+        var size = +((o.size[0] + Math.random() * (o.size[1] - o.size[0])) * L.scale).toFixed(2);
+        if(size > maxSize) maxSize = size;
+        var dur = +(o.dur[0] + Math.random() * (o.dur[1] - o.dur[0])).toFixed(1);
+        var el = document.createElement("i");
+        el.className = o.shapes[(i + li) % o.shapes.length];
+        el.style.cssText =
+          "--s:"  + size + "vmax;" +
+          "--x1:" + (o.r0 * cos).toFixed(2) + "vmax;--y1:" + (o.r0 * sin).toFixed(2) + "vmax;" +
+          "--x2:" + (o.r1 * cos).toFixed(2) + "vmax;--y2:" + (o.r1 * sin).toFixed(2) + "vmax;" +
+          "--t:"  + dur + "s;" +
+          "--d:-" + (Math.random() * dur).toFixed(1) + "s;" +     // negative = de-sync
+          "--g:"  + (o.glow[0] + Math.random() * (o.glow[1] - o.glow[0])).toFixed(1) + "s;" +
+          "--gd:-" + (Math.random() * 4).toFixed(1) + "s;" +
+          "--o:"  + (o.opacity[0] + Math.random() * (o.opacity[1] - o.opacity[0])).toFixed(2) + ";";
+        frag.appendChild(el);
+      }
+    });
+    sky.appendChild(frag);
+
+    // collision proof: lane arc at the tightest radius must be >= 1.5x the largest element
+    var arc = (2 * Math.PI * o.r0) / o.lanes, ok = arc >= maxSize * 1.5;
+    if(!ok && o.warn !== false){
+      console.warn("[animation-kit] sky lanes too tight: arc " + arc.toFixed(2) +
+        "vmax vs element " + maxSize.toFixed(2) + "vmax. Reduce lanes or size.");
+    }
+    return { arc:arc, maxSize:maxSize, safe:ok, count:sky.children.length };
+  }
+
+  M.sky = {
+    defaults: {
+      container:".sg-sky", lanes:29,
+      layers:[{rot:0,scale:1},{rot:6.2,scale:0.62},{rot:-6.2,scale:0.55}],
+      r0:22, r1:72, size:[0.8,2.6], dur:[18,34], glow:[3.0,4.8],
+      opacity:[0.62,0.92], shapes:["s1","s2","s3","s4","s5"], warn:true
+    },
+    init: function(opts){
+      var o = Object.assign({}, this.defaults, opts || {}), res = null;
+      M.guard(function(){ res = build(o); });
+      return res;
+    }
+  };
+  M.ready(function(){ M.guard(function(){ if(!window.__skyManual) M.sky.init(); }); });
+})();
+/* ===== FLN ANIMATION KIT: sky-drift END ===== */
+
+/* ===== FLN ANIMATION KIT: sky-burst BEGIN ===== */
+(function(){ "use strict";
+  var M = window.FLNMotion;
+
+  function boom(o){                      // sine thud + noise tail + square crackles
+    var actx = M.audio(); if(!actx) return;
+    try{
+      var t = actx.currentTime, out = actx.createGain();
+      out.gain.value = o.volume; out.connect(actx.destination);
+
+      var tg = actx.createGain();
+      tg.gain.setValueAtTime(0.9, t);
+      tg.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+      tg.connect(out);
+      var osc = actx.createOscillator();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(420, t);
+      osc.frequency.exponentialRampToValueAtTime(90, t + 0.16);
+      osc.connect(tg); osc.start(t); osc.stop(t + 0.18);
+
+      var n = actx.sampleRate * 0.45;
+      var buf = actx.createBuffer(1, n, actx.sampleRate), d = buf.getChannelData(0);
+      for(var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2.6);
+      var src = actx.createBufferSource(); src.buffer = buf;
+
+      for(var c = 0; c < o.crackles; c++){
+        var cg = actx.createGain(), ct = t + 0.10 + Math.random() * 0.30;
+        cg.gain.setValueAtTime(0.0001, ct);
+        cg.gain.exponentialRampToValueAtTime(0.18, ct + 0.006);
+        cg.gain.exponentialRampToValueAtTime(0.0001, ct + 0.07);
+        cg.connect(out);
+        var co = actx.createOscillator();
+        co.type = "square";
+        co.frequency.setValueAtTime(1500 + Math.random() * 2200, ct);
+        co.connect(cg); co.start(ct); co.stop(ct + 0.08);
+      }
+      var bp = actx.createBiquadFilter();
+      bp.type = "bandpass"; bp.frequency.value = 3400; bp.Q.value = 0.8;
+      var ng = actx.createGain();
+      ng.gain.setValueAtTime(0.0001, t);
+      ng.gain.exponentialRampToValueAtTime(0.5, t + 0.03);
+      ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.45);
+      src.connect(bp); bp.connect(ng); ng.connect(out); src.start(t + 0.02);
+    }catch(_){}
+  }
+
+  function pop(el, r, o){
+    el.classList.add("popped");
+    // respawn on the next FLIGHT lap — the glow cycle is much shorter, so filter by name
+    el.addEventListener("animationiteration", function back(e){
+      if(e.animationName !== "sgFly") return;
+      el.classList.remove("popped");
+      el.removeEventListener("animationiteration", back);
+    });
+
+    var kind = "k-dot", cls = el.classList;
+    for(var ci = 0; ci < cls.length; ci++){ if(o.kind[cls[ci]]) kind = o.kind[cls[ci]]; }
+
+    var bs = Math.max(11, r.width);
+    var b = document.createElement("div");
+    b.className = "sg-burst " + kind;
+    b.style.left = (r.left + r.width / 2) + "px";
+    b.style.top  = (r.top  + r.height / 2) + "px";
+    b.style.setProperty("--bs", bs + "px");
+    b.appendChild(document.createElement("div")).className = "fl";
+
+    var k = 0;
+    for(var g = 0; g < o.rings.length; g++){
+      var R = o.rings[g], off = Math.random() * Math.PI * 2;
+      for(var i = 0; i < R.n; i++, k++){
+        var a = off + i / R.n * Math.PI * 2;
+        var dist = bs * R.rad * (0.78 + Math.random() * 0.44);
+        var p = document.createElement("i");
+        p.style.cssText =
+          "--ps:"  + (bs * R.size * (0.8 + Math.random() * 0.5)).toFixed(1) + "px;" +
+          "--dx:"  + (Math.cos(a) * dist).toFixed(1) + "px;" +
+          "--dy:"  + (Math.sin(a) * dist).toFixed(1) + "px;" +
+          "--gy:"  + (dist * o.gravity).toFixed(1) + "px;" +
+          "--sd:"  + (R.dur + Math.random() * 0.22).toFixed(2) + "s;" +
+          "--sdl:" + (Math.random() * 0.06).toFixed(3) + "s;" +
+          "color:" + o.hues[k % o.hues.length];
+        b.appendChild(p);
+      }
+    }
+    document.body.appendChild(b);
+    if(o.sound) boom(o);
+    setTimeout(function(){ b.remove(); }, o.life);
+  }
+
+  M.skyBurst = {
+    defaults: {
+      container:".sg-sky", when:["is-start","is-end"],
+      rings:[{n:9,rad:3.1,size:.58,dur:.80},{n:7,rad:1.8,size:.78,dur:.62}],
+      hues:["#FCB717","#3B7DD8","#21A74A","#E5484D","#7048D6","#F1781D"],
+      kind:{s1:"k-star",s2:"k-star",s3:"k-spark",s4:"k-dot",s5:"k-dot"},
+      gravity:0.42, pad:12, padRatio:0.7, minAlpha:0.08, life:1200,
+      sound:true, volume:0.22, crackles:4
+    },
+    init: function(opts){
+      var o = Object.assign({}, this.defaults, opts || {});
+      M.guard(function(){
+        var sky = typeof o.container === "string"
+          ? document.querySelector(o.container) : o.container;
+        if(!sky) return;
+        // capture phase: .sg-sky is pointer-events:none, so hit-test by rect (R6)
+        document.addEventListener("pointerdown", function(e){
+          if(M.still()) return;
+          if(typeof isMuted !== "undefined" && isMuted && o.sound){ /* dev mute also silences the pop */ }
+          if(!o.when.some(function(c){ return document.body.classList.contains(c); })) return;
+          var els = sky.querySelectorAll("i:not(.popped)");
+          for(var i = 0; i < els.length; i++){
+            var el = els[i], r = el.getBoundingClientRect();
+            if(r.width < 2) continue;
+            var pad = Math.max(o.pad, r.width * o.padRatio);   // ~4px targets need slack
+            if(e.clientX < r.left - pad || e.clientX > r.right  + pad ||
+               e.clientY < r.top  - pad || e.clientY > r.bottom + pad) continue;
+            if(parseFloat(getComputedStyle(el).opacity) < o.minAlpha) continue;
+            // claim the tap, or it also fires the button under the star
+            e.stopPropagation(); e.preventDefault();
+            var op = Object.assign({}, o);
+            if(typeof isMuted !== "undefined" && isMuted) op.sound = false;   // honour the dev mute
+            pop(el, r, op);
+            return;
+          }
+        }, true);
+      });
+    }
+  };
+  M.ready(function(){ M.guard(function(){ M.skyBurst.init(); }); });
+})();
+/* ===== FLN ANIMATION KIT: sky-burst END ===== */
+
+/* ===== FLN ANIMATION KIT: star-burst BEGIN ===== */
+(function(){ "use strict";
+  var M = window.FLNMotion;
+  M.starBurst = {
+    defaults:{ host:"#confetti", w:1333, h:750,
+      colors:["#FFE400","#FFBD00","#E89400","#FFCA6C","#FDFFB8"],
+      /* retuned: fewer, slower, longer. Travel distance is held at ~547px so the
+         burst still fills the same area - only the density and pace changed. */
+      ticks:150, decay:0.975, startV:14, shots:[0,220,440], spin:0.18,
+      stars:32, starScale:1.8, circles:8, circleScale:1.0 },
+    fire: function(opts){
+      var o = Object.assign({}, this.defaults, opts || {});
+      M.guard(function(){
+        if(M.still()) return;
+        var host = document.querySelector(o.host); if(!host) return;
+        var cv = document.createElement("canvas");
+        cv.width = o.w; cv.height = o.h;                 // design grid, scaled by CSS
+        cv.style.cssText = "position:absolute;inset:0;width:100%;height:100%;";
+        host.appendChild(cv);
+        var ctx = cv.getContext("2d"), parts = [];
+
+        function starPath(r){
+          ctx.beginPath();
+          for(var i = 0; i < 10; i++){
+            var rad = (i % 2 === 0) ? r : r/2, a = Math.PI/5*i - Math.PI/2;
+            ctx[i === 0 ? "moveTo" : "lineTo"](Math.cos(a)*rad, Math.sin(a)*rad);
+          }
+          ctx.closePath();
+        }
+        function add(n, scalar, shape){
+          for(var i = 0; i < n; i++){
+            var a = Math.random()*Math.PI*2;
+            parts.push({ x:cv.width/2, y:cv.height/2, ax:Math.cos(a), ay:Math.sin(a),
+              vel:o.startV*(0.5 + Math.random()), tick:0, scalar:scalar, shape:shape,
+              color:o.colors[Math.floor(Math.random()*o.colors.length)],
+              rot:Math.random()*Math.PI*2, spin:(Math.random()-.5)*o.spin });
+          }
+        }
+        function shoot(){ add(o.stars, o.starScale, "star"); add(o.circles, o.circleScale, "circle"); }
+        o.shots.forEach(function(ms){ ms ? setTimeout(shoot, ms) : shoot(); });
+
+        /* derived from the LAST shot, so retiming the shots cannot end the loop
+           before they have all fired. A hard-coded 30 breaks if shots move later. */
+        var minFrames = Math.max.apply(null, o.shots) / 16 + 20;
+        var frames = 0;
+        (function frame(){
+          ctx.clearRect(0, 0, cv.width, cv.height);
+          var alive = false;
+          for(var i = 0; i < parts.length; i++){
+            var p = parts[i];
+            if(p.tick >= o.ticks) continue;
+            alive = true;
+            p.x += p.ax*p.vel; p.y += p.ay*p.vel; p.vel *= o.decay;
+            p.rot += p.spin; p.tick++;
+            ctx.globalAlpha = 1 - p.tick/o.ticks;
+            ctx.fillStyle = p.color;
+            ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+            if(p.shape === "star"){ starPath(8*p.scalar); ctx.fill(); }
+            else { ctx.beginPath(); ctx.arc(0, 0, 6*p.scalar, 0, Math.PI*2); ctx.fill(); }
+            ctx.restore();
+          }
+          frames++;
+          if(alive || frames < minFrames) requestAnimationFrame(frame);  // survive delayed shots
+          else setTimeout(function(){ cv.remove(); }, 300);
+        })();
+      });
+    }
+  };
+})();
+/* ===== FLN ANIMATION KIT: star-burst END ===== */
+
 boot();
 
 </script>

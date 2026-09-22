@@ -35,257 +35,257 @@ This file is the contract **and** the scorecard: statuses are updated in place a
 ## Deck page 3 — Landing
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 3 | 3 | "New Heading:मात्राओं की रेल" | card `title.hi` | ✅ | landing capture `_review_shots/00_landing.png`; `landin
-| 4 | 3 | "Remove all extra text that is not required." | card `subtitle_hi` | ✅ | landing capture `_review_shots/00_landing.png`; `landing_hero.
-| 5 | 3 | "Keep the screen clean and minimal." | card landing | ✅ | landing capture `_review_shots/00_landing.png`; `landing_hero.kind="matra_tra
-| 6 | 3 | "Show only three matra boxes/cards: 1st box: ा 2nd box: ि 3rd box: ी" | card `landing_hero.cells` | ✅ | landing capture `_review_
-| 7 | 3 | "Keep the existing mascot and overall UI/UX style unchanged." | — (no change) | ✅ | landing capture `_review_shots/00_landing.png`; `
-| 8 | 3 | "If possible, bring the train onto the screen with a smooth right-to-left animation." | engine `TrainChrome` | ✅ | landing capture `_re
-| 9 | 3 | "The three matra boxes can appear one by one with a soft pop/fade animation." | engine landing | ✅ | landing capture `_review_shots/00_
-| 10 | 3 | "Keep animations subtle and child-friendly." | engine CSS | ✅ | landing capture `_review_shots/00_landing.png`; `landing_hero.kind="ma
-| 11 | 3 | "Add a soft train arrival / whistle SFX when the train enters." | `sfx_train_arrive` | ⏳ asset | landing capture `_review_shots/00_lan
-| 12 | 3 | "Add a light sparkle/pop SFX when each matra appears." | `sfx_sparkle` | ⏳ asset | landing capture `_review_shots/00_landing.png`; `la
-| 13 | 3 | VO "हेलो दोस्त! मैं हूँ स्विफ्टी। आज हम मात्राओं के बा�
-| 14 | 3 | "After this VO, the three matras ा, ि, ी can appear one by one on screen." | engine landing | ✅ | landing capture `_review_shots
+| 3 | 3 | "New Heading:मात्राओं की रेल" | card `title.hi` | ✅ | landing capture `_review_shots/00_landing.png`; `landin …(clipped)|
+| 4 | 3 | "Remove all extra text that is not required." | card `subtitle_hi` | ✅ | landing capture `_review_shots/00_landing.png`; `landing_hero. …(clipped)|
+| 5 | 3 | "Keep the screen clean and minimal." | card landing | ✅ | landing capture `_review_shots/00_landing.png`; `landing_hero.kind="matra_tra …(clipped)|
+| 6 | 3 | "Show only three matra boxes/cards: 1st box: ा 2nd box: ि 3rd box: ी" | card `landing_hero.cells` | ✅ | landing capture `_review_ …(clipped)|
+| 7 | 3 | "Keep the existing mascot and overall UI/UX style unchanged." | — (no change) | ✅ | landing capture `_review_shots/00_landing.png`; ` …(clipped)|
+| 8 | 3 | "If possible, bring the train onto the screen with a smooth right-to-left animation." | engine `TrainChrome` | ✅ | landing capture `_re …(clipped)|
+| 9 | 3 | "The three matra boxes can appear one by one with a soft pop/fade animation." | engine landing | ✅ | landing capture `_review_shots/00_ …(clipped)|
+| 10 | 3 | "Keep animations subtle and child-friendly." | engine CSS | ✅ | landing capture `_review_shots/00_landing.png`; `landing_hero.kind="ma …(clipped)|
+| 11 | 3 | "Add a soft train arrival / whistle SFX when the train enters." | `sfx_train_arrive` | ⏳ asset | landing capture `_review_shots/00_lan …(clipped)|
+| 12 | 3 | "Add a light sparkle/pop SFX when each matra appears." | `sfx_sparkle` | ⏳ asset | landing capture `_review_shots/00_landing.png`; `la …(clipped)|
+| 13 | 3 | VO "हेलो दोस्त! मैं हूँ स्विफ्टी। आज हम मात्राओं के बारे में जानेंगे।" | `vo_landing` | ? | — |
+| 14 | 3 | "After this VO, the three matras ा, ि, ी can appear one by one on screen." | engine landing | ✅ | landing capture `_review_shots …(clipped)|
 
 ## Deck page 4 — Screen 1 · INTRO (the three matras)
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 15 | 4 | VO "आज हम बड़ी आ की मात्रा, छोटी इ की मात्रा और बड़ी ई की 
-| 16 | 4 | "Remove the current heading text from the top." | card `prompt_hi:""` | ✅ | capture `01_T1_MATRA_PAIRS.png` + `END_T1_pairs.png`; walk
-| 17 | 4 | "Show the letter and its corresponding matra symbol as a pair, one by one." | engine `MATRA_PAIRS` | ✅ | `MATRA_PAIRS`. Nothing is on 
-| 18 | 4 | "Each pair should light up/highlight when its VO plays." | engine `MATRA_PAIRS` | ✅ | Active pair renders at opacity 1.00, taught pair
-| 19 | 4 | "Keep only one pair active at a time." | engine `MATRA_PAIRS` | ✅ | Live trace: exactly one pair carries `.active` at any sample point
-| 20 | 4 | "Sequence: आ → ा · इ → ि · ई → ी" | card `data.pairs` | ✅ | `data.pairs` = आ/ा · इ/ि · ई/ी in that o
-| 21 | 4 | "First आ appears, then ा appears beside it with a soft glow. Then both fade slightly and इ → ि appears. Finally ई → ी ap
-| 22 | 4 | "Use a simple pop/fade animation; no extra decorative elements." | engine CSS | ✅ | **The white card frame around each pair was remove
-| 23 | 4 | "Add a soft pop/chime when each matra symbol appears. Keep SFX subtle so the VO remains clear." | `sfx_chime` | ⏳ asset | `sfxChime()`
-| 24 | 4 | "Keep the Next button disabled during the sequence. Activate it only after all three pairs have been shown and spoken." | engine `MATRA_
+| 15 | 4 | VO "आज हम बड़ी आ की मात्रा, छोटी इ की मात्रा और बड़ी ई की मात्रा वाले शब्द पढ़ेंगे।" **(removing chota or bada)** | `vo_intro_matras` | ? | — |
+| 16 | 4 | "Remove the current heading text from the top." | card `prompt_hi:""` | ✅ | capture `01_T1_MATRA_PAIRS.png` + `END_T1_pairs.png`; walk …(clipped)|
+| 17 | 4 | "Show the letter and its corresponding matra symbol as a pair, one by one." | engine `MATRA_PAIRS` | ✅ | `MATRA_PAIRS`. Nothing is on …(clipped)|
+| 18 | 4 | "Each pair should light up/highlight when its VO plays." | engine `MATRA_PAIRS` | ✅ | Active pair renders at opacity 1.00, taught pair …(clipped)|
+| 19 | 4 | "Keep only one pair active at a time." | engine `MATRA_PAIRS` | ✅ | Live trace: exactly one pair carries `.active` at any sample point …(clipped)|
+| 20 | 4 | "Sequence: आ → ा · इ → ि · ई → ी" | card `data.pairs` | ✅ | `data.pairs` = आ/ा · इ/ि · ई/ी in that o …(clipped)|
+| 21 | 4 | "First आ appears, then ा appears beside it with a soft glow. Then both fade slightly and इ → ि appears. Finally ई → ी appears." | engine `MATRA_PAIRS` | ? | — |
+| 22 | 4 | "Use a simple pop/fade animation; no extra decorative elements." | engine CSS | ✅ | **The white card frame around each pair was remove …(clipped)|
+| 23 | 4 | "Add a soft pop/chime when each matra symbol appears. Keep SFX subtle so the VO remains clear." | `sfx_chime` | ⏳ asset | `sfxChime()` …(clipped)|
+| 24 | 4 | "Keep the Next button disabled during the sequence. Activate it only after all three pairs have been shown and spoken." | engine `MATRA_PAIRS` | ? | — |
 
 ## Deck page 5 — Screen 2 · MATRA_BUILD जल → जा → जाल
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 25 | 5 | VO "आइए, देखें कि आ की मात्रा लगने से शब्द की आवाज़ कैसे
-| 26 | 5 | VO पहले "यह शब्द है — जल।" | `vo_mb_jal_base` | ✅ | capture `END_T2_jal.png`; DOM walk: जल(ज red
-| 27 | 5 | VO फिर "ज में आ की मात्रा लगाने पर — जा बनता है।" | `vo_mb_jal_onset` 
-| 28 | 5 | VO अंत में "अब जल में आ की मात्रा लगाने पर — जाल बनता है�
-| 29 | 5 | "Keep the screen focused on only one transformation." | engine `MATRA_BUILD` | ✅ | capture `END_T2_jal.png`; DOM walk: जल(ज red)
-| 30 | 5 | "First show जल clearly on the left. Then show the transformation in the centre: ज + ा = जा. After that, complete the word as
-| 31 | 5 | "Highlight only the ा matra when it is introduced." | engine `MATRA_BUILD` | ✅ | capture `END_T2_jal.png`; DOM walk: जल(ज red)
-| 32 | 5 | "A simple relevant image can support the final word जाल." | `obj_jaal` | ✅ | capture `END_T2_jal.png`; DOM walk: जल(ज red)
-| 33 | 5 | Staged sequence: जल → VO "जल" → ज highlights → ा appears → ज+ा=जा → "ज"→"जा" → ल joins → ज
-| 34 | 5 | "The ा matra should slide/pop into place beside ज. As soon as it joins, ज visually transforms into जा." | engine `MATRA_BUILD`
-| 35 | 5 | "Avoid showing all stages together at the start." | engine `MATRA_BUILD` | ✅ | capture `END_T2_jal.png`; DOM walk: जल(ज red) →
-| 36 | 5 | "Give a small pause between each sound so the child can hear the change." | engine `MATRA_BUILD` | ✅ | capture `END_T2_jal.png`; DOM w
-| 37 | 5 | "Soft pop when ा appears. Light chime when ज changes to जा. Small success sound when जाल is completed." | sfx wiring | ⏳
-| 38 | 5 | "Keep Next disabled while the transformation is playing. Activate it only after ज → जा → जाल is fully demonstrated." | e
-| 39 | 5 | "Keep the screen clean and minimal. Do not add extra explanatory text." | card `prompt_hi` | ✅ | capture `END_T2_jal.png`; DOM walk: �
+| 25 | 5 | VO "आइए, देखें कि आ की मात्रा लगने से शब्द की आवाज़ कैसे बदलती है।" | `vo_mb_jal_intro` | ? | — |
+| 26 | 5 | VO पहले "यह शब्द है — जल।" | `vo_mb_jal_base` | ✅ | capture `END_T2_jal.png`; DOM walk: जल(ज red …(clipped)|
+| 27 | 5 | VO फिर "ज में आ की मात्रा लगाने पर — जा बनता है।" | `vo_mb_jal_onset` | ? | — |
+| 28 | 5 | VO अंत में "अब जल में आ की मात्रा लगाने पर — जाल बनता है।" | `vo_mb_jal_explain` | ? | — |
+| 29 | 5 | "Keep the screen focused on only one transformation." | engine `MATRA_BUILD` | ✅ | capture `END_T2_jal.png`; DOM walk: जल(ज red) …(clipped)|
+| 30 | 5 | "First show जल clearly on the left. Then show the transformation in the centre: ज + ा = जा. After that, complete the word as: जाल" | engine `MATRA_BUILD` | ? | — |
+| 31 | 5 | "Highlight only the ा matra when it is introduced." | engine `MATRA_BUILD` | ✅ | capture `END_T2_jal.png`; DOM walk: जल(ज red) …(clipped)|
+| 32 | 5 | "A simple relevant image can support the final word जाल." | `obj_jaal` | ✅ | capture `END_T2_jal.png`; DOM walk: जल(ज red) …(clipped)|
+| 33 | 5 | Staged sequence: जल → VO "जल" → ज highlights → ा appears → ज+ा=जा → "ज"→"जा" → ल joins → जाल → highlight ा in जाल → final image | engine `MATRA_BUILD` | ? | — |
+| 34 | 5 | "The ा matra should slide/pop into place beside ज. As soon as it joins, ज visually transforms into जा." | engine `MATRA_BUILD` | ? | — |
+| 35 | 5 | "Avoid showing all stages together at the start." | engine `MATRA_BUILD` | ✅ | capture `END_T2_jal.png`; DOM walk: जल(ज red) → …(clipped)|
+| 36 | 5 | "Give a small pause between each sound so the child can hear the change." | engine `MATRA_BUILD` | ✅ | capture `END_T2_jal.png`; DOM w …(clipped)|
+| 37 | 5 | "Soft pop when ा appears. Light chime when ज changes to जा. Small success sound when जाल is completed." | sfx wiring | ? | — |
+| 38 | 5 | "Keep Next disabled while the transformation is playing. Activate it only after ज → जा → जाल is fully demonstrated." | engine `MATRA_BUILD` | ? | — |
+| 39 | 5 | "Keep the screen clean and minimal. Do not add extra explanatory text." | card `prompt_hi` | ✅ | capture `END_T2_jal.png`; DOM walk:  …(clipped)|
 
 ## Deck page 6 — Screen 3 · examples नाक / मटका
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 40 | 6 | VO "आइए, आ की मात्रा वाले कुछ शब्द देखें।" | `vo_ex_aa_intro` | ✅ | capture 
-| 41 | 6 | VO "नाक — बोलकर देखिए। इसमें न पर बड़ी आ की मात्रा लगी ह
-| 42 | 6 | VO "मटका — बोलकर देखिए। इसमें क पर बड़ी आ की मात्रा लगी 
-| 43 | 6 | "Keep one example visible at a time." | engine `MEET_LETTER.examples[]` | ✅ | capture `03_T3_MEET_EXAMPLES.png` + `END_T3_examples.png
-| 44 | 6 | "First show नाक with the nose image. Highlight only the ा matra in the word नाक." | card `data.examples[0]` | ✅ | captur
-| 45 | 6 | "After that, show the second example मटका with a clay pot image. Highlight the ा matra in मटका as well." | card `data.
-| 46 | 6 | "Word should appear first, then image should appear." | engine sequencer | ✅ | capture `03_T3_MEET_EXAMPLES.png` + `END_T3_examples.pn
-| 47 | 6 | "When VO says the matra part, the ा should glow/highlight. Keep animation one by one, not all together." | engine sequencer | ✅ | ca
-| 48 | 6 | "Soft pop sound when word/image appears · Soft highlight chime when matra glows" | sfx wiring | ⏳ asset | capture `03_T3_MEET_EXAMPLE
-| 49 | 6 | "Keep Next button disabled during the explanation. Activate it only after both examples are shown completely." | engine sequencer | ✅ 
-| 50 | 6 | "Keep screen clean · No extra text other than the example heading/content required" | card `prompt_hi` | ✅ | capture `03_T3_MEET_EXAM
+| 40 | 6 | VO "आइए, आ की मात्रा वाले कुछ शब्द देखें।" | `vo_ex_aa_intro` | ✅ | capture …(clipped)|
+| 41 | 6 | VO "नाक — बोलकर देखिए। इसमें न पर बड़ी आ की मात्रा लगी है।" | `vo_ex_naak` | ? | — |
+| 42 | 6 | VO "मटका — बोलकर देखिए। इसमें क पर बड़ी आ की मात्रा लगी है।" | `vo_ex_matka` | ? | — |
+| 43 | 6 | "Keep one example visible at a time." | engine `MEET_LETTER.examples[]` | ✅ | capture `03_T3_MEET_EXAMPLES.png` + `END_T3_examples.png …(clipped)|
+| 44 | 6 | "First show नाक with the nose image. Highlight only the ा matra in the word नाक." | card `data.examples[0]` | ✅ | captur …(clipped)|
+| 45 | 6 | "After that, show the second example मटका with a clay pot image. Highlight the ा matra in मटका as well." | card `data.examples[1]` + `obj_matka` | ? | — |
+| 46 | 6 | "Word should appear first, then image should appear." | engine sequencer | ✅ | capture `03_T3_MEET_EXAMPLES.png` + `END_T3_examples.pn …(clipped)|
+| 47 | 6 | "When VO says the matra part, the ा should glow/highlight. Keep animation one by one, not all together." | engine sequencer | ✅ | ca …(clipped)|
+| 48 | 6 | "Soft pop sound when word/image appears · Soft highlight chime when matra glows" | sfx wiring | ⏳ asset | capture `03_T3_MEET_EXAMPLE …(clipped)|
+| 49 | 6 | "Keep Next button disabled during the explanation. Activate it only after both examples are shown completely." | engine sequencer | ? | — |
+| 50 | 6 | "Keep screen clean · No extra text other than the example heading/content required" | card `prompt_hi` | ✅ | capture `03_T3_MEET_EXAM …(clipped)|
 
 ## Deck page 7 — Screen 4 · MATRA_BUILD बल → बि → बिल
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 51 | 7 | VO "आइए, देखें कि छोटी इ की मात्रा लगाने से शब्द की आवा�
-| 52 | 7 | VO पहले "यह शब्द है — बल।" | `vo_mb_bil_base` | ✅ | capture `04_T4_MATRA_BUILD.png`; DOM: बल → 
-| 53 | 7 | VO फिर "ब में छोटी इ की मात्रा लगाने पर — बि बनता है।" | `vo_
-| 54 | 7 | VO अंत में "अब बल में छोटी इ की मात्रा लगाने पर — बिल बन�
-| 55 | 7 | "First show बल with a simple visual. Then highlight ब. Show the transformation in the centre: ब + ि = बि. After that, com
-| 56 | 7 | "Highlight only the ि मात्रा in बिल." | engine (see §5 limitation) | ⚑ | **INFEASIBLE AS ASKED.** ि is a reord
-| 57 | 7 | "Show a simple relevant image for बिल on the final side." | `obj_bil` | ✅ | capture `04_T4_MATRA_BUILD.png`; DOM: बल → �
-| 58 | 7 | "**ि appears and moves to its correct position before ब**" / "The ि मात्रा should visibly move to the left side of �
-| 59 | 7 | "Sync the visual change with the VO: ब → बि → बिल. Give a short pause between each sound." | engine `MATRA_BUILD` | ✅
-| 60 | 7 | "Soft pop when ि appears. Light chime when ब changes to बि. Small success chime when बिल is completed." | sfx wiring | �
-| 61 | 7 | "Keep Next disabled during the explanation. Activate it only after the full transformation बल → बि → बिल is completed
-| 62 | 7 | "Keep the screen clean and minimal. Avoid extra explanatory text." | card `prompt_hi` | ✅ | capture `04_T4_MATRA_BUILD.png`; DOM: ब
+| 51 | 7 | VO "आइए, देखें कि छोटी इ की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।" | `vo_mb_bil_intro` | ? | — |
+| 52 | 7 | VO पहले "यह शब्द है — बल।" | `vo_mb_bil_base` | ✅ | capture `04_T4_MATRA_BUILD.png`; DOM: बल → …(clipped)|
+| 53 | 7 | VO फिर "ब में छोटी इ की मात्रा लगाने पर — बि बनता है।" | `vo_mb_bil_onset` | ? | — |
+| 54 | 7 | VO अंत में "अब बल में छोटी इ की मात्रा लगाने पर — बिल बनता है।" | `vo_mb_bil_explain` | ? | — |
+| 55 | 7 | "First show बल with a simple visual. Then highlight ब. Show the transformation in the centre: ब + ि = बि. After that, complete the word as: बिल" | engine + card | ? | — |
+| 56 | 7 | "Highlight only the ि मात्रा in बिल." | engine (see §5 limitation) | ⚑ | **INFEASIBLE AS ASKED.** ि is a reord …(clipped)|
+| 57 | 7 | "Show a simple relevant image for बिल on the final side." | `obj_bil` | ✅ | capture `04_T4_MATRA_BUILD.png`; DOM: बल →  …(clipped)|
+| 58 | 7 | "**ि appears and moves to its correct position before ब**" / "The ि मात्रा should visibly move to the left side of ब, so the child notices its written position." | engine `MATRA_BUILD` ि-travel | ? | — |
+| 59 | 7 | "Sync the visual change with the VO: ब → बि → बिल. Give a short pause between each sound." | engine `MATRA_BUILD` | ? | — |
+| 60 | 7 | "Soft pop when ि appears. Light chime when ब changes to बि. Small success chime when बिल is completed." | sfx wiring | ? | — |
+| 61 | 7 | "Keep Next disabled during the explanation. Activate it only after the full transformation बल → बि → बिल is completed." | engine | ? | — |
+| 62 | 7 | "Keep the screen clean and minimal. Avoid extra explanatory text." | card `prompt_hi` | ✅ | capture `04_T4_MATRA_BUILD.png`; DOM: ब …(clipped)|
 
 ## Deck page 8 — Screen 5 · examples दिन / गति
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 63 | 8 | VO "आइए, छोटी इ की मात्रा वाले कुछ शब्द देखें।" | `vo_ex_i_intro` | �
-| 64 | 8 | VO "दिन — बोलकर देखिए। इसमें द पर छोटी इ की मात्रा लगी �
-| 65 | 8 | VO "गति — बोलकर देखिए। इसमें त पर छोटी इ की मात्रा लगी �
-| 66 | 8 | "First show दिन with a simple day/sun image. Highlight only the ि matra in दिन." | card `data.examples[0]` | ✅ | captur
-| 67 | 8 | "After that, show गति with a simple visual representing movement/motion. Highlight the ि matra in गति as well." | card `d
+| 63 | 8 | VO "आइए, छोटी इ की मात्रा वाले कुछ शब्द देखें।" | `vo_ex_i_intro` | ? | — |
+| 64 | 8 | VO "दिन — बोलकर देखिए। इसमें द पर छोटी इ की मात्रा लगी है।" | `vo_ex_din` | ? | — |
+| 65 | 8 | VO "गति — बोलकर देखिए। इसमें त पर छोटी इ की मात्रा लगी है।" | `vo_ex_gati` | ? | — |
+| 66 | 8 | "First show दिन with a simple day/sun image. Highlight only the ि matra in दिन." | card `data.examples[0]` | ✅ | captur …(clipped)|
+| 67 | 8 | "After that, show गति with a simple visual representing movement/motion. Highlight the ि matra in गति as well." | card `data.examples[1]` + `obj_gati` | ? | — |
 | 68 | 8 | "Remove any extra explanatory text that is not required." | card `prompt_hi` | ✅ | capture `05_T5_MEET_EXAMPLES.png` |
-| 69 | 8 | "Word appears first with a soft fade/pop. Image appears just after the word." | engine sequencer | ✅ | capture `05_T5_MEET_EXAMPLES.p
-| 70 | 8 | "When the VO reaches the matra explanation, ि should glow/pulse briefly." | engine (see §5 limitation) | ⚑ | Same ि limitation a
-| 71 | 8 | "Soft pop/chime when each word/image appears. Light sparkle/chime when the matra gets highlighted." | sfx wiring | ⏳ asset | capture 
-| 72 | 8 | "Keep Next disabled while both examples are being explained. Activate it only after both examples are completed." | engine sequencer | 
+| 69 | 8 | "Word appears first with a soft fade/pop. Image appears just after the word." | engine sequencer | ✅ | capture `05_T5_MEET_EXAMPLES.p …(clipped)|
+| 70 | 8 | "When the VO reaches the matra explanation, ि should glow/pulse briefly." | engine (see §5 limitation) | ⚑ | Same ि limitation a …(clipped)|
+| 71 | 8 | "Soft pop/chime when each word/image appears. Light sparkle/chime when the matra gets highlighted." | sfx wiring | ⏳ asset | capture …(clipped)|
+| 72 | 8 | "Keep Next disabled while both examples are being explained. Activate it only after both examples are completed." | engine sequencer || — |
 
 ## Deck page 9 — Screen 6 · MATRA_BUILD कल → की → कील
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 73 | 9 | VO "आइए, देखें कि बड़ी ई की मात्रा लगाने से शब्द की आवा�
-| 74 | 9 | VO पहले "यह शब्द है — कल।" | `vo_mb_keel_base` | ✅ | capture `06_T6_MATRA_BUILD.png` + `END_T6_keel.p
-| 75 | 9 | VO फिर "क में बड़ी ई की मात्रा लगाने पर — की बनता है।" | `vo_
-| 76 | 9 | VO अंत में "अब कल में बड़ी ई की मात्रा लगाने पर — कील बन�
-| 77 | 9 | "First show कल with a simple supporting visual. Then highlight क. Show the transformation in the centre: क + ी = की. Afte
-| 78 | 9 | "Highlight only the ी मात्रा in कील." | engine `MATRA_BUILD` | ✅ | capture `06_T6_MATRA_BUILD.png` + `END_T6_keel
-| 79 | 9 | "Show a simple relevant image for कील on the final side." | `obj_keel` | ✅ | capture `06_T6_MATRA_BUILD.png` + `END_T6_keel.png
-| 80 | 9 | "The ी मात्रा should visibly join क, so the child notices how the sound changes." | engine `MATRA_BUILD` | ✅ | captur
-| 81 | 9 | "Sync the visual change with the VO: क → की → कील. Give a short pause between each sound." | engine | ✅ | capture `06
-| 82 | 9 | "Soft pop when ी appears. Light chime when क changes to की. Small success chime when कील is completed." | sfx wiring | �
-| 83 | 9 | "Keep Next disabled during the explanation. Activate it only after the full transformation कल → की → कील is completed
-| 84 | 9 | "Keep the screen clean and minimal. Avoid extra explanatory text." | card `prompt_hi` | ✅ | capture `06_T6_MATRA_BUILD.png` + `END_T6
+| 73 | 9 | VO "आइए, देखें कि बड़ी ई की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।" | `vo_mb_keel_intro` | ? | — |
+| 74 | 9 | VO पहले "यह शब्द है — कल।" | `vo_mb_keel_base` | ✅ | capture `06_T6_MATRA_BUILD.png` + `END_T6_keel.p …(clipped)|
+| 75 | 9 | VO फिर "क में बड़ी ई की मात्रा लगाने पर — की बनता है।" | `vo_mb_keel_onset` | ? | — |
+| 76 | 9 | VO अंत में "अब कल में बड़ी ई की मात्रा लगाने पर — कील बनता है।" | `vo_mb_keel_explain` | ? | — |
+| 77 | 9 | "First show कल with a simple supporting visual. Then highlight क. Show the transformation in the centre: क + ी = की. After that, complete the word as: कील" | engine + card | ? | — |
+| 78 | 9 | "Highlight only the ी मात्रा in कील." | engine `MATRA_BUILD` | ✅ | capture `06_T6_MATRA_BUILD.png` + `END_T6_keel …(clipped)|
+| 79 | 9 | "Show a simple relevant image for कील on the final side." | `obj_keel` | ✅ | capture `06_T6_MATRA_BUILD.png` + `END_T6_keel.png …(clipped)|
+| 80 | 9 | "The ी मात्रा should visibly join क, so the child notices how the sound changes." | engine `MATRA_BUILD` | ✅ | captur …(clipped)|
+| 81 | 9 | "Sync the visual change with the VO: क → की → कील. Give a short pause between each sound." | engine | ✅ | capture `06 …(clipped)|
+| 82 | 9 | "Soft pop when ी appears. Light chime when क changes to की. Small success chime when कील is completed." | sfx wiring | ? | — |
+| 83 | 9 | "Keep Next disabled during the explanation. Activate it only after the full transformation कल → की → कील is completed." | engine | ? | — |
+| 84 | 9 | "Keep the screen clean and minimal. Avoid extra explanatory text." | card `prompt_hi` | ✅ | capture `06_T6_MATRA_BUILD.png` + `END_T6 …(clipped)|
 
 ## Deck page 10 — Screen 7 · examples तीर / लड़की
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 85 | 10 | VO "आइए, बड़ी ई की मात्रा वाले कुछ शब्द देखें।" | `vo_ex_ee_intro` |
-| 86 | 10 | VO "तीर — बोलकर देखिए। इसमें त पर बड़ी ई की मात्रा लगी �
-| 87 | 10 | VO "लड़की — बोलकर देखिए। इसमें क पर बड़ी ई की मात्रा ल�
-| 88 | 10 | "First show तीर with the arrow image. Highlight only the ी matra in तीर." | card `data.examples[0]` | ✅ | capture `07_
-| 89 | 10 | "After that, show लड़की with a simple girl image. Highlight only the ी matra in लड़की." | card `data.examples[1]
+| 85 | 10 | VO "आइए, बड़ी ई की मात्रा वाले कुछ शब्द देखें।" | `vo_ex_ee_intro` || — |
+| 86 | 10 | VO "तीर — बोलकर देखिए। इसमें त पर बड़ी ई की मात्रा लगी है।" | `vo_ex_teer` | ? | — |
+| 87 | 10 | VO "लड़की — बोलकर देखिए। इसमें क पर बड़ी ई की मात्रा लगी है।" | `vo_ex_ladki` | ? | — |
+| 88 | 10 | "First show तीर with the arrow image. Highlight only the ी matra in तीर." | card `data.examples[0]` | ✅ | capture `07_ …(clipped)|
+| 89 | 10 | "After that, show लड़की with a simple girl image. Highlight only the ी matra in लड़की." | card `data.examples[1]` + `obj_ladki` | ? | — |
 | 90 | 10 | "Remove any extra explanatory text that is not required." | card `prompt_hi` | ✅ | capture `07_T7_MEET_EXAMPLES.png` |
-| 91 | 10 | "Word appears first with a soft fade/pop animation. Image appears just after the word. Show the examples one by one, not together." | 
+| 91 | 10 | "Word appears first with a soft fade/pop animation. Image appears just after the word. Show the examples one by one, not together." | engine sequencer | ? | — |
 | 92 | 10 | "When the VO mentions the matra, ी should glow/pulse briefly." | engine sequencer | ✅ | capture `07_T7_MEET_EXAMPLES.png` |
-| 93 | 10 | "Soft pop/chime when the word or image appears. Light sparkle/chime when the matra gets highlighted." | sfx wiring | ⏳ asset | captu
-| 94 | 10 | "Keep Next disabled during the explanation. Activate it only after both examples are completely shown." | engine sequencer | ✅ | cap
+| 93 | 10 | "Soft pop/chime when the word or image appears. Light sparkle/chime when the matra gets highlighted." | sfx wiring | ⏳ asset | captu …(clipped)|
+| 94 | 10 | "Keep Next disabled during the explanation. Activate it only after both examples are completely shown." | engine sequencer | ✅ | cap …(clipped)|
 
 ## Deck page 11 — Screen 8 · TRAIN_TAP आ
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 95 | 11 | "Train comes through animation from right to left. Train stops at the centre of the screen." | engine `TrainChrome` | ✅ | capture `0
-| 96 | 11 | "No instruction text on screen. Only VO should play." | card `prompt_hi:""` + shell collapse | ✅ | capture `08_G1_TRAIN_TAP.png`; **
-| 97 | 11 | VO "जिस डिब्बे में आ की मात्रा वाला शब्द है, उस डिब्बे �
-| 98 | 11 | Correct: "Show confetti / sparkle effect · Correct coach should glow / highlight" | engine `TRAIN_TAP` | ✅ | capture `08_G1_TRAIN_T
-| 99 | 11 | Correct VO "शाबाश! हाथ शब्द में आ की मात्रा है।" | `vo_tt_aa_correct` | ✅ | ca
-| 100 | 11 | 1st wrong: "Wrong coach should wiggle / shake · **No hand nudge** · Only hint VO should come" | engine ladder rung 1 | ✅ | captur
-| 101 | 11 | 1st wrong VO "फिर से सोचो। आ की मात्रा वाला शब्द कौन-सा है?" | `v
-| 102 | 11 | 2nd wrong: "Wrong coach should again wiggle / shake · Hint VO should play · **Show hand nudge on the correct answer**" | engine `ha
-| 103 | 11 | 2nd wrong VO "ध्यान से देखो और सही डिब्बे पर टैप कीजिए।" | `vo_tt_a
-| 104 | 11 | 3rd-attempt correct: "Show confetti / sparkle · Correct coach highlights · Next button becomes active · **No VO**" | engine `silen
-| 105 | 11 | "Soft train arrival sound · Light tap sound on selection · Soft shake/error sound on wrong attempt · Light success chime on correc
-| 106 | 11 | Coach words per mockup: नाक · दिन · पानी | card `data.options` | ⚑ | **Conflict.** `slide11/12/13_image12.png
+| 95 | 11 | "Train comes through animation from right to left. Train stops at the centre of the screen." | engine `TrainChrome` | ✅ | capture `0 …(clipped)|
+| 96 | 11 | "No instruction text on screen. Only VO should play." | card `prompt_hi:""` + shell collapse | ✅ | capture `08_G1_TRAIN_TAP.png`; ** …(clipped)|
+| 97 | 11 | VO "जिस डिब्बे में आ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।" | `vo_tt_aa_prompt` | ? | — |
+| 98 | 11 | Correct: "Show confetti / sparkle effect · Correct coach should glow / highlight" | engine `TRAIN_TAP` | ✅ | capture `08_G1_TRAIN_T …(clipped)|
+| 99 | 11 | Correct VO "शाबाश! हाथ शब्द में आ की मात्रा है।" | `vo_tt_aa_correct` | ✅ | ca …(clipped)|
+| 100 | 11 | 1st wrong: "Wrong coach should wiggle / shake · **No hand nudge** · Only hint VO should come" | engine ladder rung 1 | ✅ | captur …(clipped)|
+| 101 | 11 | 1st wrong VO "फिर से सोचो। आ की मात्रा वाला शब्द कौन-सा है?" | `vo_tt_aa_hint1` | ? | — |
+| 102 | 11 | 2nd wrong: "Wrong coach should again wiggle / shake · Hint VO should play · **Show hand nudge on the correct answer**" | engine `hand_on_attempt:2` | ? | — |
+| 103 | 11 | 2nd wrong VO "ध्यान से देखो और सही डिब्बे पर टैप कीजिए।" | `vo_tt_aa_hint2` | ? | — |
+| 104 | 11 | 3rd-attempt correct: "Show confetti / sparkle · Correct coach highlights · Next button becomes active · **No VO**" | engine `silent_on_late_correct` | ? | — |
+| 105 | 11 | "Soft train arrival sound · Light tap sound on selection · Soft shake/error sound on wrong attempt · Light success chime on correct answer" | sfx wiring | ? | — |
+| 106 | 11 | Coach words per mockup: नाक · दिन · पानी | card `data.options` | ⚑ | **Conflict.** `slide11/12/13_image12.png …(clipped)|
 
 ## Deck page 12 — Screen 9 · TRAIN_TAP छोटी इ
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 107 | 12 | "Train comes through animation from right to left. Train stops at the centre of the screen." | engine `TrainChrome` | ✅ | capture `
-| 108 | 12 | "No instruction text on screen. Only VO should play." | card `prompt_hi:""` | ✅ | capture `09_G2_TRAIN_TAP.png`; same ladder path a
-| 109 | 12 | VO "जिस डिब्बे में छोटी इ की मात्रा वाला शब्द है, उस डि
-| 110 | 12 | Correct VO "शाबाश! पिन शब्द में छोटी इ की मात्रा है।" | `vo_tt_i_correc
-| 111 | 12 | **"Note: Here it should be छोटी इ, not छोटी ई."** | all इ wording | ✅ | capture `09_G2_TRAIN_TAP.png`; same l
-| 112 | 12 | 1st wrong: shake, no hand, hint VO only — "फिर से सोचो। छोटी इ की मात्रा वाला
-| 113 | 12 | 2nd wrong: shake + hint VO + hand nudge — "ध्यान से देखो और सही डिब्बे पर टैप
-| 114 | 12 | 3rd-attempt correct: confetti, coach highlights, Next active, **No VO** | engine | ✅ | capture `09_G2_TRAIN_TAP.png`; same ladder p
-| 115 | 12 | SFX set (arrival / tap / shake / success chime) | sfx wiring | ⏳ asset | capture `09_G2_TRAIN_TAP.png`; same ladder path as G1 · *
+| 107 | 12 | "Train comes through animation from right to left. Train stops at the centre of the screen." | engine `TrainChrome` | ✅ | capture ` …(clipped)|
+| 108 | 12 | "No instruction text on screen. Only VO should play." | card `prompt_hi:""` | ✅ | capture `09_G2_TRAIN_TAP.png`; same ladder path a …(clipped)|
+| 109 | 12 | VO "जिस डिब्बे में छोटी इ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।" | `vo_tt_i_prompt` | ? | — |
+| 110 | 12 | Correct VO "शाबाश! पिन शब्द में छोटी इ की मात्रा है।" | `vo_tt_i_correct` | ? | — |
+| 111 | 12 | **"Note: Here it should be छोटी इ, not छोटी ई."** | all इ wording | ✅ | capture `09_G2_TRAIN_TAP.png`; same l …(clipped)|
+| 112 | 12 | 1st wrong: shake, no hand, hint VO only — "फिर से सोचो। छोटी इ की मात्रा वाला शब्द कौन-सा है?" | ladder rung 1 | ? | — |
+| 113 | 12 | 2nd wrong: shake + hint VO + hand nudge — "ध्यान से देखो और सही डिब्बे पर टैप करो।" | ladder rung 2 | ? | — |
+| 114 | 12 | 3rd-attempt correct: confetti, coach highlights, Next active, **No VO** | engine | ✅ | capture `09_G2_TRAIN_TAP.png`; same ladder p …(clipped)|
+| 115 | 12 | SFX set (arrival / tap / shake / success chime) | sfx wiring | ⏳ asset | capture `09_G2_TRAIN_TAP.png`; same ladder path as G1 · * …(clipped)|
 
 ## Deck page 13 — Screen 10 · TRAIN_TAP बड़ी ई
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 116 | 13 | "Train comes through animation from right to left. Train stops at the centre of the screen." | engine `TrainChrome` | ✅ | capture `
-| 117 | 13 | "No instruction text on screen. Instruction should come through VO only." | card `prompt_hi:""` | ✅ | capture `10_G3_TRAIN_TAP.png`
-| 118 | 13 | VO "जिस डिब्बे में बड़ी ई की मात्रा वाला शब्द है, उस डि
-| 119 | 13 | Correct: small confetti/sparkle + soft glow + VO "शाबाश! पानी शब्द में बड़ी ई की मा
+| 116 | 13 | "Train comes through animation from right to left. Train stops at the centre of the screen." | engine `TrainChrome` | ✅ | capture ` …(clipped)|
+| 117 | 13 | "No instruction text on screen. Instruction should come through VO only." | card `prompt_hi:""` | ✅ | capture `10_G3_TRAIN_TAP.png` …(clipped)|
+| 118 | 13 | VO "जिस डिब्बे में बड़ी ई की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।" | `vo_tt_ee_prompt` | ? | — |
+| 119 | 13 | Correct: small confetti/sparkle + soft glow + VO "शाबाश! पानी शब्द में बड़ी ई की मात्रा है।" + Next active | engine + `vo_tt_ee_correct` | ? | — |
 | 120 | 13 | 1st wrong: short shake, hint VO only, no hand nudge | ladder rung 1 | ✅ | capture `10_G3_TRAIN_TAP.png`; same ladder path as G1 |
-| 121 | 13 | 2nd wrong: shake again, hint VO, hand nudge on the correct answer | ladder rung 2 | ✅ | capture `10_G3_TRAIN_TAP.png`; same ladder 
-| 122 | 13 | 3rd-attempt correct: confetti, coach highlights, Next active, **No VO** | engine | ✅ | capture `10_G3_TRAIN_TAP.png`; same ladder p
-| 123 | 13 | SFX set (arrival / tap / error-shake / success chime with confetti) | sfx wiring | ⏳ asset | capture `10_G3_TRAIN_TAP.png`; same la
+| 121 | 13 | 2nd wrong: shake again, hint VO, hand nudge on the correct answer | ladder rung 2 | ✅ | capture `10_G3_TRAIN_TAP.png`; same ladder …(clipped)|
+| 122 | 13 | 3rd-attempt correct: confetti, coach highlights, Next active, **No VO** | engine | ✅ | capture `10_G3_TRAIN_TAP.png`; same ladder p …(clipped)|
+| 123 | 13 | SFX set (arrival / tap / error-shake / success chime with confetti) | sfx wiring | ⏳ asset | capture `10_G3_TRAIN_TAP.png`; same la …(clipped)|
 
 ## Deck page 14 — Screen 11 · TRAIN_SORT word → matra coach
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 124 | 14 | "Train comes through animation right to left, stops at the centre. Three coaches are visible." | engine `TrainChrome` | ✅ | capture
-| 125 | 14 | "Each coach has one मात्रा shown above it: आ (ा), इ (ि), ई (ी). The inside drop area of each coach remains em
-| 126 | 14 | "Three draggable word cards appear below the train: हाथ, पिन, नीम." | card `data.items` | ✅ | capture `11_G4_TRAI
-| 127 | 14 | "No instruction text. Only VO: हर शब्द को उसकी सही मात्रा वाली बोगी मे�
-| 128 | 14 | "Each word card can also play its word VO when tapped/dragged: हाथ / पिन / नीम" | speak-on-tap | ✅ | capture `11_
-| 129 | 14 | Mapping हाथ → आ (ा) · पिन → इ (ि) · नीम → ई (ी) | card `data.items` | ✅ | capture `11_G4_TRAI
-| 130 | 14 | "Only one word can be placed inside each coach." | engine `capacity:1` | ✅ | capture `11_G4_TRAIN_SORT.png`; **drag walk**: wrong�
-| 131 | 14 | "While dragging, the selected card slightly enlarges. When the card reaches a coach, that coach gets a soft highlight." | engine CSS 
-| 132 | 14 | Correct: "card snaps inside the correct coach · small confetti/sparkle around that coach · VO 'शाबाश! पिन शब्
-| 133 | 14 | 1st wrong: "Wrong coach gives a short shake · card returns to its original position · No hand nudge · VO 'फिर से सु�
-| 134 | 14 | 2nd wrong: "shake again · card returns · VO 'ध्यान से देखो, इस शब्द में कौन-सी �
-| 135 | 14 | 3rd-attempt correct: "confetti/sparkle · **No VO** · word locks inside the coach" | engine | ✅ | capture `11_G4_TRAIN_SORT.png`; 
-| 136 | 14 | Completion: "all three coaches glow · train gives a small whistle/steam animation · Next active · no extra completion VO" | engine
+| 124 | 14 | "Train comes through animation right to left, stops at the centre. Three coaches are visible." | engine `TrainChrome` | ✅ | capture …(clipped)|
+| 125 | 14 | "Each coach has one मात्रा shown above it: आ (ा), इ (ि), ई (ी). The inside drop area of each coach remains empty." | `coach_label` + `drop_zone` | ? | — |
+| 126 | 14 | "Three draggable word cards appear below the train: हाथ, पिन, नीम." | card `data.items` | ✅ | capture `11_G4_TRAI …(clipped)|
+| 127 | 14 | "No instruction text. Only VO: हर शब्द को उसकी सही मात्रा वाली बोगी में डालिए।" | `vo_ts1_prompt` | ? | — |
+| 128 | 14 | "Each word card can also play its word VO when tapped/dragged: हाथ / पिन / नीम" | speak-on-tap | ✅ | capture `11_ …(clipped)|
+| 129 | 14 | Mapping हाथ → आ (ा) · पिन → इ (ि) · नीम → ई (ी) | card `data.items` | ✅ | capture `11_G4_TRAI …(clipped)|
+| 130 | 14 | "Only one word can be placed inside each coach." | engine `capacity:1` | ✅ | capture `11_G4_TRAIN_SORT.png`; **drag walk**: wrong …(clipped)|
+| 131 | 14 | "While dragging, the selected card slightly enlarges. When the card reaches a coach, that coach gets a soft highlight." | engine CSS | ? | — |
+| 132 | 14 | Correct: "card snaps inside the correct coach · small confetti/sparkle around that coach · VO 'शाबाश! पिन शब्द में छोटी इ की मात्रा है।' · card locked" | engine + per-item VO | ? | — |
+| 133 | 14 | 1st wrong: "Wrong coach gives a short shake · card returns to its original position · No hand nudge · VO 'फिर से सुनो और सही मात्रा पहचानिए।'" | ladder rung 1 | ? | — |
+| 134 | 14 | 2nd wrong: "shake again · card returns · VO 'ध्यान से देखो, इस शब्द में कौन-सी मात्रा है?' · hand nudge on the correct coach · correct coach soft pulse/glow" | ladder rung 2 | ? | — |
+| 135 | 14 | 3rd-attempt correct: "confetti/sparkle · **No VO** · word locks inside the coach" | engine | ✅ | capture `11_G4_TRAIN_SORT.png`; …(clipped)|
+| 136 | 14 | Completion: "all three coaches glow · train gives a small whistle/steam animation · Next active · no extra completion VO" | engine `complete` state | ? | — |
 
 ## Deck page 15 — Screen 12 · TRAIN_SORT matra → word coach
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 137 | 15 | "VO only: सही मात्रा को सही शब्द वाली बोगी में डालिए।" | `vo_ts
-| 138 | 15 | Mapping जाल → आ (ा) · सिर → इ (ि) · कील → ई (ी) — coaches carry the WORD, cards carry the म
-| 139 | 15 | Correct: "मात्रा snaps and locks inside the coach · small sparkle/confetti · VO 'शाबाश! जाल शब्�
-| 140 | 15 | 1st wrong: "short shake, मात्रा returns · VO 'फिर से सोचो। इस शब्द में कौन-�
-| 141 | 15 | 2nd wrong: "Shake + मात्रा returns · VO 'ध्यान से देखो और शब्द को फिर से
-| 142 | 15 | 3rd-attempt correct: "snaps into the correct coach with a small confetti/sparkle. No VO required." | engine | ✅ | capture `12_P1_TR
-| 143 | 15 | Completion: "all coaches glow briefly and the Next button becomes active" | engine | ✅ | capture `12_P1_TRAIN_SORT.png`; coaches ca
-| 144 | 15 | "Train enters with a smooth right-to-left animation and stops at the centre. मात्रा cards appear from the bottom with a s
-| 145 | 15 | "Keep the rest of the current UI/UX unchanged and avoid adding extra decorative elements." | — | ✅ | capture `12_P1_TRAIN_SORT.pn
+| 137 | 15 | "VO only: सही मात्रा को सही शब्द वाली बोगी में डालिए।" | `vo_ts2_prompt` + `prompt_hi:""` | ? | — |
+| 138 | 15 | Mapping जाल → आ (ा) · सिर → इ (ि) · कील → ई (ी) — coaches carry the WORD, cards carry the मात्रा | card `data` (reverse) | ? | — |
+| 139 | 15 | Correct: "मात्रा snaps and locks inside the coach · small sparkle/confetti · VO 'शाबाश! जाल शब्द में आ की मात्रा लगी है।' Use the same pattern for सिर and कील." | engine + per-item VO | ? | — |
+| 140 | 15 | 1st wrong: "short shake, मात्रा returns · VO 'फिर से सोचो। इस शब्द में कौन-सी मात्रा लगी है?'" | ladder rung 1 | ? | — |
+| 141 | 15 | 2nd wrong: "Shake + मात्रा returns · VO 'ध्यान से देखो और शब्द को फिर से पढ़ो।' · hand nudge/pulse on the correct coach" | ladder rung 2 | ? | — |
+| 142 | 15 | 3rd-attempt correct: "snaps into the correct coach with a small confetti/sparkle. No VO required." | engine | ✅ | capture `12_P1_TR …(clipped)|
+| 143 | 15 | Completion: "all coaches glow briefly and the Next button becomes active" | engine | ✅ | capture `12_P1_TRAIN_SORT.png`; coaches ca …(clipped)|
+| 144 | 15 | "Train enters with a smooth right-to-left animation and stops at the centre. मात्रा cards appear from the bottom with a simple fade/slide-up animation." | engine | ? | — |
+| 145 | 15 | "Keep the rest of the current UI/UX unchanged and avoid adding extra decorative elements." | — | ✅ | capture `12_P1_TRAIN_SORT.pn …(clipped)|
 
 ## Deck page 16 — Screen 13 · MATRA_FILL (fill the blank)
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 146 | 16 | "This activity will be a reverse matra-building train activity. … three train coaches … Each coach will have an incomplete word w
-| 147 | 16 | "The child will drag the correct matra from the options given below and drop it into the blank space inside the correct coach. As soo
-| 148 | 16 | Words: "ज + ा + ल = जाल · पर + ी = परी · ह + ि + रण = हिरण" | card `data.slots` | ✅ | cap
-| 149 | 16 | **"Important correction: Please use 'हिरण' instead of 'हीरा / hira'."** | card `data.slots[2]` | ✅ | capture `13_P2
-| 150 | 16 | "A related picture can be shown above each coach for support." | `coach_label` = picture | ✅ | capture `13_P2_MATRA_FILL.png`; **dr
-| 151 | 16 | "Below the train, matra options will appear: आ (ा) · इ (ि) · ई (ी)" | card `data.options` | ✅ | capture `13_P2_MATRA_
-| 152 | 16 | "Next button remains disabled initially." | engine | ✅ | capture `13_P2_MATRA_FILL.png`; **drag walk**: ज_ल→जाल, पर
-| 153 | 16 | "VO only: सही मात्रा को सही जगह पर खींचकर डालो और शब्द पू�
-| 154 | 16 | "Optional word-level support VO: जाल / परी / हिरण" | per-slot audio | ✅ | capture `13_P2_MATRA_FILL.png`; **dra
-| 155 | 16 | Correct mapping: "ज _ ल → ा · पर _ → ी · ह _ रण → ि" | card `data.slots` | ✅ | capture `13_P2_MATRA_FIL
-| 156 | 16 | Correct: "matra snaps into the blank · word becomes complete · small sparkle/confetti · VO 'शाबाश! जाल बन ग�
-| 157 | 16 | 1st wrong: "Wrong area shakes · Matra returns to original place · Only VO: 'फिर से सोचो।'" | ladder rung 1 | �
-| 158 | 16 | 2nd wrong: "Shake · Matra returns · VO 'ध्यान से देखो। कौन-सी मात्रा लगेगी?
-| 159 | 16 | 3rd-attempt correct: "Matra snaps into place · Word completes · Small confetti/sparkle · No VO required" | engine | ✅ | capture 
-| 160 | 16 | Completion: "all coaches glow softly · next button becomes active · optional small train whistle / success SFX" | engine | ✅ | ca
-| 161 | 16 | "Keep the same current UI/UX style. Do not add extra text on screen. Use VO-led interaction." | card + engine | ✅ | capture `13_P2_
+| 146 | 16 | "This activity will be a reverse matra-building train activity. … three train coaches … Each coach will have an incomplete word with a blank space where the missing matra should be added." | engine `MATRA_FILL` | ? | — |
+| 147 | 16 | "The child will drag the correct matra from the options given below and drop it into the blank space inside the correct coach. As soon as the child drops the correct matra, the word will be completed." | engine `MATRA_FILL` | ? | — |
+| 148 | 16 | Words: "ज + ा + ल = जाल · पर + ी = परी · ह + ि + रण = हिरण" | card `data.slots` | ✅ | cap …(clipped)|
+| 149 | 16 | **"Important correction: Please use 'हिरण' instead of 'हीरा / hira'."** | card `data.slots[2]` | ✅ | capture `13_P2 …(clipped)|
+| 150 | 16 | "A related picture can be shown above each coach for support." | `coach_label` = picture | ✅ | capture `13_P2_MATRA_FILL.png`; **dr …(clipped)|
+| 151 | 16 | "Below the train, matra options will appear: आ (ा) · इ (ि) · ई (ी)" | card `data.options` | ✅ | capture `13_P2_MATRA_ …(clipped)|
+| 152 | 16 | "Next button remains disabled initially." | engine | ✅ | capture `13_P2_MATRA_FILL.png`; **drag walk**: ज_ल→जाल, पर …(clipped)|
+| 153 | 16 | "VO only: सही मात्रा को सही जगह पर खींचकर डालो और शब्द पूरा करिए।" | `vo_mf_prompt` + `prompt_hi:""` | ? | — |
+| 154 | 16 | "Optional word-level support VO: जाल / परी / हिरण" | per-slot audio | ✅ | capture `13_P2_MATRA_FILL.png`; **dra …(clipped)|
+| 155 | 16 | Correct mapping: "ज _ ल → ा · पर _ → ी · ह _ रण → ि" | card `data.slots` | ✅ | capture `13_P2_MATRA_FIL …(clipped)|
+| 156 | 16 | Correct: "matra snaps into the blank · word becomes complete · small sparkle/confetti · VO 'शाबाश! जाल बन गया।' / 'शाबाश! परी बन गया।' / 'शाबाश! हिरण बन गया।'" | engine + per-slot VO | ? | — |
+| 157 | 16 | 1st wrong: "Wrong area shakes · Matra returns to original place · Only VO: 'फिर से सोचो।'" | ladder rung 1 | ? | — |
+| 158 | 16 | 2nd wrong: "Shake · Matra returns · VO 'ध्यान से देखो। कौन-सी मात्रा लगेगी?' · Hand nudge appears on the correct blank space" | ladder rung 2 | ? | — |
+| 159 | 16 | 3rd-attempt correct: "Matra snaps into place · Word completes · Small confetti/sparkle · No VO required" | engine | ✅ | capture …(clipped)|
+| 160 | 16 | Completion: "all coaches glow softly · next button becomes active · optional small train whistle / success SFX" | engine | ✅ | ca …(clipped)|
+| 161 | 16 | "Keep the same current UI/UX style. Do not add extra text on screen. Use VO-led interaction." | card + engine | ✅ | capture `13_P2_ …(clipped)|
 
 ## Deck page 17 — Screen 14 · TRAIN_SORT pictures only
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 162 | 17 | "Show a train with three coaches. Each coach represents one matra category: आ (ा) · इ (ि) · ई (ी). The inside area of e
-| 163 | 17 | "At the bottom, show pictures only. **Do not show any word text below the pictures.**" | `data.hide_labels:true` | ✅ | capture `14_
-| 164 | 17 | Picture set: हाथ → ा · नाक → ा · पिन → ि · हिरण → ि · नीम → ी · कील �
-| 165 | 17 | Intro VO "चित्र को सुनो और उसे सही मात्रा वाली बोगी में ड�
-| 166 | 17 | "When the child taps or starts dragging a picture, play only that picture's name: हाथ/नाक/पिन/हिरण/नी�
-| 167 | 17 | "One coach can accept multiple pictures belonging to the same matra." | engine multi-capacity | ✅ | capture `14_P3_TRAIN_SORT.png`;
-| 168 | 17 | "The word should not be displayed at any point during the question." | `hide_labels` | ✅ | capture `14_P3_TRAIN_SORT.png`; 6 pictur
-| 169 | 17 | "While dragging, the selected picture card can slightly enlarge. When hovering over a coach, that coach can get a soft glow." | engin
-| 170 | 17 | Correct: "Picture snaps inside the correct coach · small sparkle/confetti · Picture becomes locked · VO 'शाबाश! हा�
-| 171 | 17 | 1st wrong: "Wrong coach short wiggle/shake · Picture returns · No hand nudge · VO 'फिर से सुनो और सही 
-| 172 | 17 | 2nd wrong: "Wrong coach shakes again · Picture returns to the bottom · VO 'शब्द को ध्यान से सुनो�
-| 173 | 17 | 3rd-attempt correct: "Picture snaps into the correct coach · Small confetti/sparkle · No VO required" | engine | ✅ | capture `14_
-| 174 | 17 | Completion: "all three coaches glow briefly · train gives a small whistle/steam animation · Next active" | engine | ✅ | capture `
-| 175 | 17 | "Train enters right to left and stops at the centre. Coach labels आ (ा), इ (ि), ई (ी) appear one by one. Picture cards fa
-| 176 | 17 | "Keep animation subtle and do not add extra decorative elements." | engine | ✅ | capture `14_P3_TRAIN_SORT.png`; 6 picture cards, *
+| 162 | 17 | "Show a train with three coaches. Each coach represents one matra category: आ (ा) · इ (ि) · ई (ी). The inside area of each coach remains empty as the drop zone." | engine + card | ? | — |
+| 163 | 17 | "At the bottom, show pictures only. **Do not show any word text below the pictures.**" | `data.hide_labels:true` | ✅ | capture `14_ …(clipped)|
+| 164 | 17 | Picture set: हाथ → ा · नाक → ा · पिन → ि · हिरण → ि · नीम → ी · कील → ी | card `data.items` | ? | — |
+| 165 | 17 | Intro VO "चित्र को सुनो और उसे सही मात्रा वाली बोगी में डालिए।" | `vo_ts3_prompt` | ? | — |
+| 166 | 17 | "When the child taps or starts dragging a picture, play only that picture's name: हाथ/नाक/पिन/हिरण/नीम/कील" | speak-on-tap | ? | — |
+| 167 | 17 | "One coach can accept multiple pictures belonging to the same matra." | engine multi-capacity | ✅ | capture `14_P3_TRAIN_SORT.png`; …(clipped)|
+| 168 | 17 | "The word should not be displayed at any point during the question." | `hide_labels` | ✅ | capture `14_P3_TRAIN_SORT.png`; 6 pictur …(clipped)|
+| 169 | 17 | "While dragging, the selected picture card can slightly enlarge. When hovering over a coach, that coach can get a soft glow." | engine CSS | ? | — |
+| 170 | 17 | Correct: "Picture snaps inside the correct coach · small sparkle/confetti · Picture becomes locked · VO 'शाबाश! हाथ में आ की मात्रा है।'" | engine + per-item VO | ? | — |
+| 171 | 17 | 1st wrong: "Wrong coach short wiggle/shake · Picture returns · No hand nudge · VO 'फिर से सुनो और सही मात्रा पहचानो।'" | ladder rung 1 | ? | — |
+| 172 | 17 | 2nd wrong: "Wrong coach shakes again · Picture returns to the bottom · VO 'शब्द को ध्यान से सुनो।' · hand nudge / soft pulse on the correct coach" | ladder rung 2 | ? | — |
+| 173 | 17 | 3rd-attempt correct: "Picture snaps into the correct coach · Small confetti/sparkle · No VO required" | engine | ✅ | capture `14_ …(clipped)|
+| 174 | 17 | Completion: "all three coaches glow briefly · train gives a small whistle/steam animation · Next active" | engine | ✅ | capture ` …(clipped)|
+| 175 | 17 | "Train enters right to left and stops at the centre. Coach labels आ (ा), इ (ि), ई (ी) appear one by one. Picture cards fade/slide up from the bottom." | engine | ? | — |
+| 176 | 17 | "Keep animation subtle and do not add extra decorative elements." | engine | ✅ | capture `14_P3_TRAIN_SORT.png`; 6 picture cards, * …(clipped)|
 
 ## Deck page 18 — Screen 15 · POEM_SEARCH «मात्रा खोजो»
 | # | page | change (verbatim) | where | status | proof |
 |---|---|---|---|---|---|
-| 177 | 18 | "Use this as a final 'मात्रा खोजो' challenge. Keep the focus only on: poem card · magnifying glass · target wor
-| 178 | 18 | "Remove extra decorative elements like: Ravi · kite · girl · tree · unnecessary background objects" | engine (clean stage) | ✅ 
-| 179 | 18 | Poem "रवि लाया लाल पतंग, दिन में चमकी सूरज की किरण। नीम �
-| 180 | 18 | Round 1 VO "आ की मात्रा वाले शब्द ढूँढो।" | `vo_ps_r1` | ✅ | capture `15_P4_POEM_SEAR
-| 181 | 18 | Round 2 VO "अब छोटी इ की मात्रा वाले शब्द ढूँढो।" | `vo_ps_r2` | ✅ | capt
-| 182 | 18 | Round 3 VO "अब बड़ी ई की मात्रा वाले शब्द ढूँढो।" | `vo_ps_r3` | ✅ | capt
-| 183 | 18 | Target words ा: लाया, लाल · ि: रवि, दिन, किरण · ी: नीम, मीना — **completed 
-| 184 | 18 | "A large magnifying glass appears at the bottom-right. Child drags the magnifying glass over the poem. Any word under the glass sligh
-| 185 | 18 | Ghost entry: "a small ghost floats in from one side · briefly circles around the magnifying glass · then fades slightly or moves to
-| 186 | 18 | Ghost idle: "If the child is idle for a few seconds, the ghost appears near the magnifying glass and gently moves toward the poem." |
-| 187 | 18 | Correct: "Ghost pops up happily near the correct word · Small sparkle · short happy bounce and disappear · VO 'शाबाश!'" 
-| 188 | 18 | 1st wrong: "Wrong word gives a small wiggle/shake · Ghost briefly appears with a thinking expression · No hand nudge · VO 'फि�
-| 189 | 18 | 2nd wrong: "Wrong word shakes again · Ghost floats toward one correct target word · gently points/pulses near that word · VO 'ध�
-| 190 | 18 | Round completion: "Correct words glow together · Ghost flies across the selected words with a sparkle trail · Soft success chime ·
-| 191 | 18 | Final completion: "All correct words stay highlighted · Ghost appears once in the centre, celebrates with a small spin/sparkle · Ma
-| 192 | 18 | "Poem card fades in first. Magnifying glass slides in from the bottom. Ghost enters after the magnifying glass. Keep ghost motion slo
-| 193 | 18 | "Keep the screen minimal: plain/light background · central poem card · magnifying glass · small ghost · mascot/audio button if re
+| 177 | 18 | "Use this as a final 'मात्रा खोजो' challenge. Keep the focus only on: poem card · magnifying glass · target words · ghost animation feedback" | engine `POEM_SEARCH` | ? | — |
+| 178 | 18 | "Remove extra decorative elements like: Ravi · kite · girl · tree · unnecessary background objects" | engine (clean stage) | ? | — |
+| 179 | 18 | Poem "रवि लाया लाल पतंग, दिन में चमकी सूरज की किरण। नीम तले मीना गाए संग।" | card `data.poem` | ? | — |
+| 180 | 18 | Round 1 VO "आ की मात्रा वाले शब्द ढूँढो।" | `vo_ps_r1` | ✅ | capture `15_P4_POEM_SEAR …(clipped)|
+| 181 | 18 | Round 2 VO "अब छोटी इ की मात्रा वाले शब्द ढूँढो।" | `vo_ps_r2` | ✅ | capt …(clipped)|
+| 182 | 18 | Round 3 VO "अब बड़ी ई की मात्रा वाले शब्द ढूँढो।" | `vo_ps_r3` | ✅ | capt …(clipped)|
+| 183 | 18 | Target words ा: लाया, लाल · ि: रवि, दिन, किरण · ी: नीम, मीना — **completed per §4 Option A** to ा: +मीना, +गाए · ी: +चमकी, +की | card `data.rounds` | ? | — |
+| 184 | 18 | "A large magnifying glass appears at the bottom-right. Child drags the magnifying glass over the poem. Any word under the glass slightly enlarges. Child taps/selects the word through the magnifying glass. Correct words remain highlighted." | engine lens | ? | — |
+| 185 | 18 | Ghost entry: "a small ghost floats in from one side · briefly circles around the magnifying glass · then fades slightly or moves to a corner" | engine ghost actor | ? | — |
+| 186 | 18 | Ghost idle: "If the child is idle for a few seconds, the ghost appears near the magnifying glass and gently moves toward the poem." | engine ghost idle cue | ? | — |
+| 187 | 18 | Correct: "Ghost pops up happily near the correct word · Small sparkle · short happy bounce and disappear · VO 'शाबाश!'" | engine + `vo_ps_correct` | ? | — |
+| 188 | 18 | 1st wrong: "Wrong word gives a small wiggle/shake · Ghost briefly appears with a thinking expression · No hand nudge · VO 'फिर से देखो।'" | ladder rung 1 | ? | — |
+| 189 | 18 | 2nd wrong: "Wrong word shakes again · Ghost floats toward one correct target word · gently points/pulses near that word · VO 'ध्यान से मात्रा पहचानो।'" | ladder rung 2 (ghost = hint actor) | ? | — |
+| 190 | 18 | Round completion: "Correct words glow together · Ghost flies across the selected words with a sparkle trail · Soft success chime · Next target VO starts automatically." | engine round state | ? | — |
+| 191 | 18 | Final completion: "All correct words stay highlighted · Ghost appears once in the centre, celebrates with a small spin/sparkle · Magnifying glass gives a final glow · Next button becomes active." | engine | ? | — |
+| 192 | 18 | "Poem card fades in first. Magnifying glass slides in from the bottom. Ghost enters after the magnifying glass. Keep ghost motion slow and soft, not distracting. Do not keep ghost constantly moving on screen." | engine | ? | — |
+| 193 | 18 | "Keep the screen minimal: plain/light background · central poem card · magnifying glass · small ghost · mascot/audio button if required · next button" | engine | ? | — |
 
 ## Deck page 19 — celebration
 | # | page | change (verbatim) | where | status | proof |
@@ -302,7 +302,7 @@ This file is the contract **and** the scorecard: statuses are updated in place a
 | X2 | pages 11–18 | "No instruction text on screen. Only VO should play." — the heading band must collapse, not leave an empty pill | engine 
 | X3 | pages 3, 11–17 | Shared train shell: right-to-left entry, settle centred, coach states idle/hover/correct/wrong/locked/nudge/complete, wh
 | X4 | pages 3–18 | Five new SFX: `sfx_train_arrive`, `sfx_whistle`, `sfx_sparkle`, `sfx_chime`, `sfx_shake` | `assets/UI` | ⏳ asset | Five id
-| X5 | page 4 + §7.2 | «बड़ी आ» is non-standard — the deck's page-4 note says "(removing chota or bada)". Correct to «आ की �
+| X5 | page 4 + §7.2 | «बड़ी आ» is non-standard — the deck's page-4 note says "(removing chota or bada)". Correct to «आ की …(clipped)
 
 ---
 
@@ -894,3 +894,210 @@ its `.vercelignore` entry so it does not deploy.
 Whole-lesson walk: all 16 slides mount, **zero console errors, zero 4xx**, all three matras reveal.
 Travel steps through the sheet and holds a single cell once stopped. `prefers-reduced-motion` sits
 on cell 35 with no animation at all.
+## Follow-up — 2026-09-21: FLN Animation Kit recipes installed
+
+Source: `github.com/ananya-goswami/fln-animation-toolkit` (`ANIMATIONS.md`, branch `main`).
+Receipt unchanged at `17 pass · 1 FAIL · 6 warn`; all 16 slides re-swept, **no broken images, no new
+console errors, no `[animation-kit]` warnings**.
+
+| recipe | where | state |
+|---|---|---|
+| **1 · Start screen stars (drift)** | cover page + end screen | installed |
+| **2 · Start screen stars (tap to burst)** | cover page + end screen | installed |
+| **8 · Celebration star burst** | celebration screen | **replaced** the engine's older burst |
+
+### Checked before pasting, as the kit's own rules demand
+
+The kit is emphatic that its main failure mode is collision with an append-only stylesheet (R11).
+Grepped every selector and keyframe first: `.sg-sky`, `.sg-glow`, `.sg-burst`, `sgFly`, `sgBreathe`,
+`sgFlash`, `sgSpark`, `sgGlowOpacity` and `FLNMotion` were **all absent** from this engine — zero
+collisions. `ENGINE_VERSION` untouched (R10). Classic script only, no modules (R3). Every entry
+point is wrapped so a throw cannot strand the boot loader (R4), and each effect checks the JS
+reduced-motion guard as well as the CSS kill-switch (R5).
+
+Stacking verified against our own layers: `.start-bg`/`.end-bg` are z-index 0, the sky is 1, the
+start gate is 80, the end screen is 90, a burst is 95. So the sky sits behind the card and bursts
+land on top of everything.
+
+### Recipe 8 REPLACED an existing implementation
+
+This engine already shipped a canvas `starBurst()` — the **pre-retune** version: `ticks 100`,
+`decay 0.96`, `startV 22`, 100 particles per shot, and a hard-coded 30-frame floor. Recipe 8 is the
+retuned one: `ticks 150`, `decay 0.975`, `startV 14`, 32 stars + 8 circles per shot, and a frame
+floor **derived from the last shot** so retiming the shots cannot end the loop early. Fewer stars,
+slower drift, same area covered. The old function name is kept as a one-line wrapper, so the single
+existing call site in the celebration path did not change.
+
+### The mandatory prerequisite the recipe warns about
+
+Recipe 1 opens with a **must-do-first**: swap `.start-bg` to a *plain* background, because the
+decorations are painted into `startnew_bg.webp`. Skipping it gives "two sets of stars — one frozen,
+one moving".
+
+Our background **does** have them painted in, and the toolkit does not ship
+`startnew_bg_plain.webp`. So one was generated: the decorations are inpainted out by estimating the
+clean background with a heavy blur, masking anywhere the original is markedly *brighter* than that
+estimate, and compositing — twice, the second pass gentler to catch residue. The sunburst rays and
+the centre glow are untouched. Mask covered 3.3% of the image; result is 37KB.
+
+### New assets
+
+| file | what |
+|---|---|
+| `assets/UI/startnew_bg_plain.webp` | the start background with its painted decorations removed |
+| `assets/UI/bgdeco_star.svg` | drift shape `s1` — written from the recipe's inline source |
+| `assets/UI/bgdeco_star_o.svg` | drift shape `s2` |
+| `assets/UI/bgdeco_spark.svg` | drift shape `s3` |
+
+`s4` (ring) and `s5` (dot) are pure CSS. The tap-burst masks are inline `data:` URIs, not file refs —
+the recipe is explicit that external SVG masks are blocked under `file://`.
+
+### Verified running, not just present
+
+* **Drift** — 87 elements built across 3 layers, `sgFly` 18–34s laps, hole mask applied, background
+  confirmed swapped to `_plain`, all three SVGs in use. The kit's own **lane-collision proof**
+  returns `safe: true` (arc 4.77 vmax against a 2.55 vmax largest element, comfortably over the
+  1.5× requirement).
+* **Tap to burst** — tapping an `s3` marked it `popped` and spawned a `sg-burst k-spark` with
+  **16 particles + 1 flash** at z-index 95, cleaned up after its 1200ms life. The shape→mask mapping
+  works (a spark bursts as sparks).
+* **Celebration burst** — reached by playing to the celebration slide: one canvas at 1333×750 inside
+  `#confetti`, retuned defaults confirmed live.
+
+### One local adaptation
+
+The tap-burst's synthesised pop now honours the dev mute toggle — it is Web Audio and therefore
+bypasses the engine's `play()` path entirely, so without this it would still sound with audio muted.
+
+---
+
+## Follow-up — 2026-09-21 · pages 2–7: the transition, the spacing, and what "the complete matra" took
+
+Four asks. All four are in. The third one — "highlight the complete matra but don't highlight
+anything else" — could not be done by patching the old highlighter, so the highlighter was
+replaced; that replacement is what also fixed pages 4, 5 and 6 for free.
+
+### 1 · «ज + ा = जा» now moves instead of cutting
+
+Three hard cuts sat inside one step, which is why it read as a jump rather than a join:
+
+* the flier was `position:absolute` with **no offsets**, so it settled at `.mb-eq`'s static
+  position — near the bottom-left of the blue card, **not over the slot** it was flying to;
+* it was then `remove()`d in the same frame the slot's glyph was written, so the matra
+  disappeared from one place and reappeared in another between two frames;
+* and `ज` became `जा` by a bare `textContent` swap — a second cut, 240ms after the first.
+
+Now: the slot is filled but held invisible **before** the flier is parked, so the equation's
+layout is already final and the matra lands on a mark that will not move. The flier is parked at
+the slot's real centre, flies in from the side with a small overshoot and settles, then **cross-
+fades** into the slot while the slot's own glyph fades up underneath it. `ज → जा` dissolves, and
+the whole equation gives one small nod so the eye follows the change.
+
+One measured bug worth recording: the first version aimed with `getBoundingClientRect()`, which
+returns **screen** pixels, while `style.left` is written in **CSS** pixels — and this stage carries
+a `--scale` transform. The matra landed 13px left of the slot. It uses `offsetLeft`/`offsetTop`
+now, which are unscaled. Verified: fly centre and slot centre agree to **0.0px** on both page 2
+and page 4.
+
+### 2 · जल→picture and जाल→picture are now the same gap
+
+They were not close. Measured on page 2 before the change:
+
+| panel | word element | gap to its picture |
+|---|---|---|
+| 1 · जल | `.mb-word`, bare text | **9px** |
+| 3 · जाल | `.meet-letter-box`, a 340px card with the word centred in it | **~120px** of visible air |
+
+The flex `gap` was 9px in both — the difference was the 340px card. Panel 3 does not use that card
+any more; both panels are one `.mb-word` row of the same fixed height with the ink centred, then
+the picture. Measured after: **93px tall and a 9px gap in both panels.** Pages 4 and 6 are the same
+module, so they came along.
+
+The result word is an SVG, and its box used to include the font's descent strip — empty under a
+Devanagari word, but it reads as air. The SVG's viewBox is **cropped to the word's real ink** now,
+so an SVG word occupies the space a plain text word does.
+
+### 3 · The highlight is the matra's ink, not a column of the word
+
+The old highlighter clipped a **vertical band** from the consonant's advance to the next letter's
+body. Two consequences, both visible:
+
+* On a medial matra the band also swallowed the **shirorekha running over the next letter** — in
+  जाल the top bar above ल came out orange. That is "highlighting something else".
+* It could not do **ि** at all. ि is a reordering matra and owns no column of its own, so pages 4
+  and 5 fell back to a `इस शब्द की मात्रा — ◌ि` callout box under the word instead.
+
+The mask is now the matra's **actual ink**: each cluster is rastered twice, with the matra and
+without it, and the difference is kept. `जा` minus `ज` is the ा stroke and its own bar segment,
+stopping at its advance. `बि` minus `ब` — aligned on the right, because ि pushes ब across — is the
+ि bar and hook. Both rasters are locked onto the real word raster by a small correlation search
+before differencing, so a sub-pixel disagreement between `measureText()` and full-word shaping
+cannot erode a stroke. The result is used as an SVG `<mask>`.
+
+This works for any matra, so **ि is highlighted in-word now** and the callout box is gone. That is
+what makes pages 3, 5 and 7 one shape — page 5 used to carry an extra callout row that pages 3 and
+7 did not, which pushed its picture down.
+
+Checked at 86px against **every** word/matra pair on the card — जाल नाक मटका बिल दिन गति कील तीर
+लड़की परी हिरण — all eleven mask cleanly, complete matra, nothing else. Mask payload is ~1KB per
+word.
+
+**One thing tried and reverted.** Where the consonant's top bar abuts the matra's, the seam pixels
+belong to both and are left to the consonant, which leaves a ~1px notch. Eroding the consonant
+plane to hand the seam to the matra instead shrinks the consonant *everywhere*, so its whole
+silhouette picked up an orange rim. Reverted; the notch is the smaller problem.
+
+### 4 · The girl on page 7
+
+`obj_ladki` is regenerated: an Indian school girl waving, flat vector with bold navy outlines to
+match the rest of the object art, 330×640 with real alpha. The previous generated girl (yellow
+top, blue skirt, 275×571) is replaced.
+
+Two keying faults were measured and fixed on the way, both worth knowing for the next object:
+
+* Protecting **every** non-border-connected region from the key welds background showing through
+  the braids into the hair as coloured patches — only *small* interior holes should be filled back.
+* Distance to the measured background median alone leaves behind whatever background *isn't* that
+  exact colour: the soft vignette between the backpack straps, and the ground shadow the model
+  keeps drawing despite being told not to. Green **dominance** is also treated as background, and
+  that test has to run **last** — the small-hole fill above it was re-opaquing the green wedges.
+
+### Two things for you to look at
+
+* **The `◌` placeholder.** In the page 2/4/6 equation it is now muted slate and only the matra is
+  orange — that is what "don't highlight anything else" asks for, since the dotted circle is a
+  placeholder for the consonant, not part of the matra. **Page 1 still paints its `◌` orange.**
+  I left it: that alignment was hard-won and re-rendering the chip as an SVG would disturb the
+  baseline you had me fix. Say the word and I will do page 1 to match.
+* **`ज` is still lit orange inside जल** on page 2 (and ब in बल, क in कल). That is a *letter*, not a
+  matra, and the deck asks for it in so many words — page 5 step 3, "The letter ज is highlighted".
+  Your rule is about matras, so I have left it. It is the only other orange on those screens.
+
+### Verification
+
+Build `HI02H11_L02_S01.html` rebuilt and all 16 slides swept: every matra slide carries exactly one
+masked SVG and **zero** leftover callout boxes, no broken images, and no new console errors. The
+only SEVERE entries are the already-known missing `sfx_sparkle` / `sfx_chime` and a favicon.
+
+---
+
+## Repair note — 2026-09-21: the 194-row table was clipped, and is restored
+
+This file was rebuilt earlier from a captured tool output, and that capture had clipped **every
+line to terminal width**. 183 of the 194 contract rows had lost their tail: 64 were cut inside the
+requirement text itself, so more than a third of the contract was unreadable. Four rows also ended
+mid-character, which made the whole file invalid UTF-8.
+
+What was done:
+
+* The **requirement** and **target** columns are restored in full for all 194 rows, taken verbatim
+  from the session transcript, where the contract survives complete. Every row is well-formed again
+  and the file is valid UTF-8.
+* The **status** column is kept wherever the clipped file still carried one — 102 rows. The other
+  **92 rows show `?`**, because their status had been cut off before this repair and there is no
+  second copy to take it from. `?` means *unknown here*, not *not done*; the per-screen prose below
+  and in the follow-up sections is the reliable record of what shipped.
+* The **evidence** column survives in full on 7 rows and partially on 93, marked `…(clipped)`. The
+  captures it points at are still on disk under `_review_shots/`.
+
+The clipped file is kept beside this one as `CHANGES.md.clipped.bak` — nothing was thrown away.
