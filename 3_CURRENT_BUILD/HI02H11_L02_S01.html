@@ -2808,6 +2808,17 @@ html.no-anim .ol-alpha,html.no-anim .ol-band{animation:none !important;}
 }
 /* ===== FLN ANIMATION KIT: confetti END ===== */
 
+/* THE LETTERBOX. The stage is a fixed 16:9 box, so on any other aspect there is a margin above
+   and below it, and it was showing the page's own #F2F7FA - a hard near-white band against the
+   sky at the top and the grass at the bottom. The standalone build solved this by painting the
+   PAGE with the same plate at `cover`, so every colour in the margin matches the edge it touches;
+   that is better than any single gradient, because the band has to meet sky at one end and grass
+   at the other. Those rules were dropped in the port because they painted html/body globally and
+   would have repainted all 17 slides. Same idea, gated on a class that exists only while the
+   arcade is mounted. Lives on BODY, not in the stage: .stage carries a transform, which would
+   capture a fixed layer and shrink it back to the stage box. */
+body.mt-page{ background:#7EC2FD url("assets/UI/mt_bg_plate.webp") center / cover no-repeat; }
+
 /* WHILE THE ARCADE IS BEING PLAYED IT OWNS THE STAGE. The lesson's chrome is laid out for a
    card-and-options screen and collides with an arcade: the आगे button sits at bottom-centre,
    which is exactly where the basket is, and Swiftee's circle sits top-left on the catch-track.
@@ -11266,6 +11277,7 @@ SlideModules.MATRA_TOKRI = {
        the way out, which is where the rAF loop and the window listeners are released. */
     const stage = $("stage");
     stage.classList.add("mt-play");
+    document.body.classList.add("mt-page");   // letterbox matches the scene, see body.mt-page
     const root = document.createElement("div");
     root.className = "mt-game";
     host.setAttribute("data-mt", "1");
@@ -12072,6 +12084,7 @@ SlideModules.MATRA_TOKRI = {
         window.removeEventListener('pointerdown', onPointerDown);
         window.removeEventListener('resize', readStageScale);
         stage.classList.remove("mt-play");
+        document.body.classList.remove("mt-page");
         if (root.parentNode) root.remove();
       };
   }

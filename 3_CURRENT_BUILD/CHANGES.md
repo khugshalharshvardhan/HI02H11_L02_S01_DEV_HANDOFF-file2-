@@ -1279,3 +1279,30 @@ GAME COMPLETE          (t+103s) - आगे unlocked
 
 All three rounds, zero console errors, zero 4xx. Progress bar on the right. All 17 slides still
 mount; the cover is untouched (train on cell 35, three matras centred). Receipt: **0 FAIL, 0 WARN**.
+
+---
+
+## Follow-up changes — 2026-09-22 (fourteenth round) — the letterbox
+
+| # | reported | fix |
+|---|---|---|
+| R1 | "there is a white bar outside the main bg, it doesn't look good" | The stage is a fixed 16:9 box, so on any other aspect there is a margin above and below it, and it was showing the page's own `#F2F7FA` — measured as a hard near-white band against the sky at the top and the grass at the bottom. |
+
+**Why a gradient is not the right answer here.** The band has to meet **sky at one end and grass
+at the other**, so no single colour or vertical ramp matches both seams. The standalone build had
+already solved this: it painted the PAGE with the same plate at `cover`, so every colour in the
+margin matches the edge it touches, because it is literally the same artwork. Those rules were
+dropped in the port for a good reason — they painted `html`/`body` globally and would have
+repainted all 17 slides — so the same idea is back on `body.mt-page`, a class that exists only
+while the arcade is mounted.
+
+It lives on **body, not in the stage**: `.stage` carries a transform, which would capture a fixed
+layer and shrink it back to the stage box — the same trap the engine's own `.start-bg` comment
+warns about.
+
+Measured, top and bottom strips of the margin: **#F2F7FA → rgb(126,195,254) sky at the top and
+rgb(121,198,73) grass at the bottom**, at both a taller-than-16:9 and a wider-than-16:9 viewport.
+
+Checked for leaks: `mt-page` is absent on the landing, absent on all 16 other slides, present only
+on the arcade, and the body background returns to `none` on the way out. All 17 slides mount, zero
+console errors, zero 4xx, receipt 0 FAIL / 0 WARN.
