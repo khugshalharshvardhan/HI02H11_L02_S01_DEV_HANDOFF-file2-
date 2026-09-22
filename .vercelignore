@@ -12,6 +12,9 @@
 
 # ── Authoring material, not runtime ──────────────────────────────────────────
 1_SPEC/
+# «मात्रा टोकरी» source: the standalone build it was ported from, its raw art and its audio
+# build scripts. Kept for provenance, never requested by the page.
+_SOURCE/
 2_MOCKUPS/
 5_CURRENT_BUILD_SCREENSHOTS/
 *.pptx

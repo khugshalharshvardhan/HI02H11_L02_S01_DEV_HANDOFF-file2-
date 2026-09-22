@@ -716,6 +716,83 @@
       }
     },
     {
+      "id": "G7",
+      "phase": "practice",
+      "eis": "enactive",
+      "type": "MATRA_TOKRI",
+      "prompt_hi": "",
+      "audio": {
+        "prompt": "vo_mt_intro"
+      },
+      "data": {
+        "clips": [
+          {
+            "audio": "vo_mt_round_aa"
+          },
+          {
+            "audio": "vo_mt_round_i"
+          },
+          {
+            "audio": "vo_mt_round_ee"
+          },
+          {
+            "audio": "vo_mt_cheer_i"
+          },
+          {
+            "audio": "vo_mt_cheer_ee"
+          },
+          {
+            "audio": "vo_mt_done"
+          },
+          {
+            "audio": "vo_mt_w_naav"
+          },
+          {
+            "audio": "vo_mt_w_haath"
+          },
+          {
+            "audio": "vo_mt_w_baal"
+          },
+          {
+            "audio": "vo_mt_w_kaam"
+          },
+          {
+            "audio": "vo_mt_w_daal"
+          },
+          {
+            "audio": "vo_mt_w_din"
+          },
+          {
+            "audio": "vo_mt_w_til"
+          },
+          {
+            "audio": "vo_mt_w_sir"
+          },
+          {
+            "audio": "vo_mt_w_dil"
+          },
+          {
+            "audio": "vo_mt_w_hiran"
+          },
+          {
+            "audio": "vo_mt_w_nadi"
+          },
+          {
+            "audio": "vo_mt_w_teer"
+          },
+          {
+            "audio": "vo_mt_w_chini"
+          },
+          {
+            "audio": "vo_mt_w_machhli"
+          },
+          {
+            "audio": "vo_mt_w_neem"
+          }
+        ]
+      }
+    },
+    {
       "id": "CEL",
       "phase": "practice",
       "eis": "enactive",
@@ -766,6 +843,28 @@
       "vo_mf_ok_jaal": "assets/Audio/VO/vo_mf_ok_jaal.ogg",
       "vo_mf_ok_pari": "assets/Audio/VO/vo_mf_ok_pari.ogg",
       "vo_mf_prompt": "assets/Audio/VO/vo_mf_prompt.ogg",
+      "vo_mt_cheer_ee": "assets/Audio/VO/vo_mt_cheer_ee.ogg",
+      "vo_mt_cheer_i": "assets/Audio/VO/vo_mt_cheer_i.ogg",
+      "vo_mt_done": "assets/Audio/VO/vo_mt_done.ogg",
+      "vo_mt_intro": "assets/Audio/VO/vo_mt_intro.ogg",
+      "vo_mt_round_aa": "assets/Audio/VO/vo_mt_round_aa.ogg",
+      "vo_mt_round_ee": "assets/Audio/VO/vo_mt_round_ee.ogg",
+      "vo_mt_round_i": "assets/Audio/VO/vo_mt_round_i.ogg",
+      "vo_mt_w_baal": "assets/Audio/VO/vo_mt_w_baal.ogg",
+      "vo_mt_w_chini": "assets/Audio/VO/vo_mt_w_chini.ogg",
+      "vo_mt_w_daal": "assets/Audio/VO/vo_mt_w_daal.ogg",
+      "vo_mt_w_dil": "assets/Audio/VO/vo_mt_w_dil.ogg",
+      "vo_mt_w_din": "assets/Audio/VO/vo_mt_w_din.ogg",
+      "vo_mt_w_haath": "assets/Audio/VO/vo_mt_w_haath.ogg",
+      "vo_mt_w_hiran": "assets/Audio/VO/vo_mt_w_hiran.ogg",
+      "vo_mt_w_kaam": "assets/Audio/VO/vo_mt_w_kaam.ogg",
+      "vo_mt_w_machhli": "assets/Audio/VO/vo_mt_w_machhli.ogg",
+      "vo_mt_w_naav": "assets/Audio/VO/vo_mt_w_naav.ogg",
+      "vo_mt_w_nadi": "assets/Audio/VO/vo_mt_w_nadi.ogg",
+      "vo_mt_w_neem": "assets/Audio/VO/vo_mt_w_neem.ogg",
+      "vo_mt_w_sir": "assets/Audio/VO/vo_mt_w_sir.ogg",
+      "vo_mt_w_teer": "assets/Audio/VO/vo_mt_w_teer.ogg",
+      "vo_mt_w_til": "assets/Audio/VO/vo_mt_w_til.ogg",
       "vo_name_bil": "assets/Audio/VO/vo_name_bil.ogg",
       "vo_name_din": "assets/Audio/VO/vo_name_din.ogg",
       "vo_name_haath": "assets/Audio/VO/vo_name_haath.ogg",
@@ -862,6 +961,28 @@
       "vo_mf_ok_jaal": "शाबाश! जाल बन गया।",
       "vo_mf_ok_pari": "शाबाश! परी बन गया।",
       "vo_mf_prompt": "सही मात्रा को सही जगह पर खींचकर डालो और शब्द पूरा करिए।",
+      "vo_mt_cheer_ee": "बहुत बढ़िया! अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालो।",
+      "vo_mt_cheer_i": "बहुत बढ़िया! अब इ की मात्रा वाले शब्दों को टोकरी में डालो।",
+      "vo_mt_done": "शाबाश! तुमने सभी मात्राओं के सही शब्दों को टोकरी में रख लिया है।",
+      "vo_mt_intro": "टोकरी को उँगली से इधर-उधर ले जाओ।",
+      "vo_mt_round_aa": "आ की मात्रा वाले शब्दों को टोकरी में डालो।",
+      "vo_mt_round_ee": "अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालो।",
+      "vo_mt_round_i": "अब इ की मात्रा वाले शब्दों को टोकरी में डालो।",
+      "vo_mt_w_baal": "बाल",
+      "vo_mt_w_chini": "चीनी",
+      "vo_mt_w_daal": "दाल",
+      "vo_mt_w_dil": "दिल",
+      "vo_mt_w_din": "दिन",
+      "vo_mt_w_haath": "हाथ",
+      "vo_mt_w_hiran": "हिरन",
+      "vo_mt_w_kaam": "काम",
+      "vo_mt_w_machhli": "मछली",
+      "vo_mt_w_naav": "नाव",
+      "vo_mt_w_nadi": "नदी",
+      "vo_mt_w_neem": "नीम",
+      "vo_mt_w_sir": "सिर",
+      "vo_mt_w_teer": "तीर",
+      "vo_mt_w_til": "तिल",
       "vo_name_bil": "बिल",
       "vo_name_din": "दिन",
       "vo_name_haath": "हाथ",

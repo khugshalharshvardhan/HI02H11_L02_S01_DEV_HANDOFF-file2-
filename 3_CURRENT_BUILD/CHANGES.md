@@ -1144,3 +1144,101 @@ Wheels on rail to 0.00px; rail inside the card at both ends; the train paints in
 (hit-test at a point over the loco returns `.lt-train`); the track is already under the loco as it
 enters from the right, and still under it parked. All 16 slides mount, **zero console errors, zero
 4xx**, layout below the train unchanged.
+
+---
+
+## Follow-up changes — 2026-09-22 (twelfth round) — «मात्रा टोकरी» folded in as slide 16
+
+A standalone single-game build (`Matra Tokri-BV, G1`) was dropped into `3_CURRENT_BUILD/`. The ask
+was to put it in the lesson before the last page, drop its own first and last pages, and stop it
+being a second project living inside the first.
+
+### Ported, not embedded
+
+No iframe, no second engine. Of the game's ~1600 lines of script only the **809-line game** came
+across; its stage scaler and its copy of the FLN animation kit were dropped because this engine
+already has both. It is now `SlideModules.MATRA_TOKRI`, slide **G7**, sitting between POEM_SEARCH
+and CELEBRATION — **17 slides, 116 audio ids**.
+
+| the two pages removed | what replaced it |
+|---|---|
+| title screen (cover art + play button) | the slide mount IS the play button — `startGame()` runs on mount |
+| win overlay (mascot, stars, confetti, `vo-win`) | `endGame()` celebrates **in place** and unlocks आगे; this lesson already ends on CELEBRATION. The praise clip was kept — the screen went, the words stayed |
+
+### One project, not two
+
+The give-away that something is bolted on is duplicated infrastructure, so none was kept:
+
+* **One audio path.** The game called `SwiftPalAudio` / `SFX` / `Bgm` / `SwiftPalSound` /
+  `SwiftPalGame`. Rather than rewrite ~30 call sites, those five names are **shims onto this
+  engine**. Its 22 clips were transcoded mp3 → .ogg, renamed to this lesson's convention
+  (`vo_mt_*`), and **declared in the card** so they are warmed, preloaded and checked by the
+  receipt like every other clip — not fetched out of a private `audio/` folder.
+* **One feedback bed.** Its correct/wrong sounds are gone; it uses the lesson's own `sfxCorrect` /
+  `sfxWrongSoft`. A child should not hear two different "correct" sounds depending which screen
+  they are on. Only `sfx_mt_burst` was genuinely new.
+* **No background music.** `bgm.ogg` is not shipped: no other slide has any, and a bed under one
+  screen reads as a bug.
+* **Assets consolidated** into `assets/UI/` (`mt_` prefix, 14 files) and `assets/Audio/VO|SFX/`.
+  Bundle grew **1.2MB**. The three `bgdeco_*.svg` it carried were byte-identical to the ones
+  already here and were not duplicated.
+
+### Four collisions, each found by measurement rather than by running it and hoping
+
+| | |
+|---|---|
+| `#nudgeHand` | the engine already owns that id — the game's renamed `#mtNudgeHand` (the kit takes it as an option, so one line) |
+| bare `.drop` | would have reached the engine's `.blk.drop` on other slides — scoped to `.mt-game` |
+| `html` / `body` / `.stage` backdrop | three rules painting the game's garden plate on the PAGE. Fine when the game is the page; here they would have repainted the whole lesson on every screen. Moved onto `.mt-game` |
+| `body.is-start` | the game used it for its title screen; it is **this lesson's landing state**, so that rule would have replaced the cover behind the train |
+
+Class and keyframe collisions were enumerated up front (87 game classes against the engine's 1192;
+33 keyframes against the engine's) — the only real keyframe overlaps were the three sky-drift ones,
+which were dropped as duplicates anyway.
+
+### Two things that only showed up in the browser
+
+* **Load order.** The kit recipes the engine lacks (nudge, correct-select, wrong-select,
+  object-outline — the last is load-bearing: the basket's green/red ring is derived from the
+  artwork's own alpha) were inserted beside the other slide modules, which is **before** the
+  engine's `FLNMotion` core at line 11582. They threw on parse and took the whole module
+  registration with them (`no module for MATRA_TOKRI`). Moved after the core.
+* **The game's own SFX bus shadowed the shim.** `var SFX = (function(){...})()` inside the game
+  body re-assigned the shim declared above it, so it went on fetching `audio/wrong.ogg` — a 404.
+  That bus, `Bgm`, and the ducking wrapper that existed only to duck the music are removed.
+
+### The chrome had to get out of the way
+
+The lesson's furniture is laid out for a card-and-options screen and collides with an arcade: आगे
+sits bottom-centre, which is exactly where the basket is, and Swiftee's circle sits top-left on the
+catch-track. `.stage.mt-play` hides the nav button, the mascot and the header for the duration.
+**आगे returns the moment the third round ends** — it is the child's only way out, so it is not
+hidden a frame longer than the game runs.
+
+Slides that mount outside `#slideHost` need a teardown, and there was no hook, so one was added:
+`clearHost()` — the single exit every slide passes through — now calls `window.__slideCleanup`,
+which cancels the rAF loop, releases the window listeners and removes the stage layer.
+
+### The receipt was lying, and is not any more
+
+The 22 new clips reported **0.00s** and failed the truncation check. So did 4 clips that have been
+failing for weeks and that I had twice written off as "pre-existing". The cause was the same for
+all 26: `dur()` read duration through Python's `wave`, which cannot open Ogg or Opus, so the one
+check this script exists for was **blind to every non-WAV clip in the bundle**. It tries `ffprobe`
+first now and falls back to `wave` when it is absent.
+
+Asset receipt: **0 FAIL, 0 WARN** — the first fully clean run in this file's history.
+
+### Verified
+
+All 17 slides mount; **zero console errors, zero 4xx**. The arcade plays (words fall, basket
+catches, dots fill), `__mtFinish()` → आगे → CELEBRATION, and the stage layer plus its `mt-play`
+class are gone afterwards. The cover page is untouched: train parked on cell 35, three matras
+centred.
+
+### Where the source went
+
+`3_CURRENT_BUILD/Matra Tokri-BV, G1/` is **gone from the build folder** — that was the "second
+project inside the first". Its README, the standalone `index.html`, the 11MB `_raw` art and the
+audio build scripts are kept at `_SOURCE/matra_tokri/` for provenance, and `_SOURCE/` is in
+`.vercelignore`, so none of it deploys. Delete it if you would rather not carry it.

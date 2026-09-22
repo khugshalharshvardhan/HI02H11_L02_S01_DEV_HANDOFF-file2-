@@ -11,7 +11,7 @@ to 56 characters. A stale clip is invisible to an existence check and to a file-
 runs at a fairly steady rate, so seconds-per-character outside a generous band means the file and
 the text have drifted apart.
 """
-import json, os, sys, wave, contextlib
+import json, os, shutil, subprocess, sys, wave, contextlib
 
 FAIL, WARN = [], []
 card = json.load(open("card.json", encoding="utf-8"))
@@ -20,7 +20,26 @@ audio, text, image = A["audio"], A["audio_text"], A["image"]
 inherited = set(audio) - set(text)          # derived, never hardcoded
 
 
+# ffprobe first, `wave` second. The truncation check below is the whole reason this script
+# exists, and reading duration through `wave` alone made it BLIND to every clip that is not a
+# RIFF WAV - which in this bundle is the Opus chrome and all 22 «मात्रा टोकरी» clips, 26 of
+# them, every one reported as 0.00s and therefore as a FAIL it could not actually diagnose.
+# If ffprobe is absent the behaviour is exactly what it was.
+_FFPROBE = shutil.which("ffprobe")
+
+
 def dur(rel):
+    if _FFPROBE:
+        try:
+            out = subprocess.run(
+                [_FFPROBE, "-v", "error", "-show_entries", "format=duration",
+                 "-of", "default=nw=1:nk=1", rel],
+                capture_output=True, text=True, timeout=20)
+            v = float(out.stdout.strip())
+            if v > 0:
+                return v
+        except Exception:
+            pass
     try:
         with contextlib.closing(wave.open(rel)) as w:
             return w.getnframes() / float(w.getframerate())
