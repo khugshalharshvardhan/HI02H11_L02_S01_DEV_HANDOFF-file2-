@@ -118,3 +118,50 @@ Keyed off a flat green field. Two faults measured on the way, both relevant to a
   vignette between the backpack straps and the ground shadow the model draws despite the prompt.
   Green **dominance** is treated as background as well, and that test must run **last**, after the
   hole fill, or the fill re-opaques the green wedges at her shoulders.
+
+## The train is now one artwork across the whole lesson — 2026-09-22
+
+The cover's painted train is what pages 8-14 show as well. It ships as two files, both encoded from
+`assets/Images/train.png` / `train_spritesheet.png` (the PNG sources stay on disk and out of the
+deploy bundle):
+
+| file | size | used |
+|---|---|---|
+| `assets/UI/train_still.webp` | 814KB, lossless, 2171x724 | the parked train on every train screen |
+| `assets/UI/train_spritesheet.webp` | 1076KB, 6x6 cells of 634x182 | the travelling train, cover and interactive alike |
+
+The still is **lossless on purpose**. Composited over white, lossless is pixel-exact; at q90, 4.6%
+of pixels moved with a peak delta of 112. Flat vector art with hard edges and a hard alpha takes
+visible damage from lossy WebP — the same finding as the cover GIF re-encode.
+
+### Measurements anyone editing the train will need
+
+* Part boundaries (couplings), found by scanning for columns whose ink is thin enough to be
+  coupling-and-wheels only: **still px 17 / 650 / 1151 / 1642 / 2155**, **sheet px 2 / 188 / 336 /
+  481 / 632**. The two agree to within 0.3% of the train's width.
+* Ink boxes, which is what the two layers are aligned on (the still has more transparent padding
+  than a sheet cell): still `x17 y48 w2138 h592`, sheet `x2 y3 w630 h175`.
+* The cream panel a word sits on, per coach, in still px:
+  `{cx 894, cy 341, 409x417}`, `{cx 1392, cy 340, 396x418}`, `{cx 1892, cy 339, 418x417}`.
+* Coach fill colours, sampled from the artwork: yellow `#FDCD16`, green `#3FDC2D`, pink `#FC66A0`.
+  The label plates use slightly darker versions so a border reads against cream.
+
+`train_loco.webp` is no longer referenced by anything.
+
+## Buttons — 2026-09-22 (final)
+
+The `swiftpal_buttons` SVG set was tried and **reverted**; the files are not in the bundle. The
+three pills are HI02H11_L01_S01's, drawn in CSS with their glyphs through `::after`:
+
+| element | look |
+|---|---|
+| `#navBtn` | the pill, `→` at 52px |
+| `#endBtn` | the pill, `→` at 52px |
+| `#sgBtn` | the pill, `▶` at 30px, 64px tall, 186px min-width, bottom 40px |
+
+No button carries text; the Hindi is on each as `aria-label`. The start button also has
+`.sg-waiting` (grey and genuinely disabled while the cover greeting speaks) and `.idle-pulse`
+(the pulse is earned after 5s of stillness, not run from first paint).
+
+The hint bulb and the audio chip are unchanged live SVG — their wave arcs animate while a clip
+plays, which a flat background would have killed.

@@ -359,7 +359,9 @@ SLIDES = [
     # ============ GUIDED · 4 screens =========================================================
     {   # Screen 8 · deck page 11
         "id": "G1", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP",
-        "prompt_hi": "",                                   # row #96 "No instruction text on screen"
+        # [r8] The spoken line is written on screen in the question band on every question page
+        # (8-14). This supersedes row #96 "No instruction text on screen" for these screens.
+        "prompt_hi": "जिस डिब्बे में आ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
         "audio": A(prompt="vo_tt_aa_prompt", correct="vo_tt_aa_correct",
                    hint1="vo_tt_aa_hint1", hint2="vo_tt_aa_hint2",
                    reveal="vo_rev_tt_aa", try_again="vo_tt_aa_hint1"),
@@ -372,7 +374,7 @@ SLIDES = [
     },
     {   # Screen 9 · deck page 12
         "id": "G2", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP",
-        "prompt_hi": "",
+        "prompt_hi": "जिस डिब्बे में छोटी इ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
         "audio": A(prompt="vo_tt_i_prompt", correct="vo_tt_i_correct",
                    hint1="vo_tt_i_hint1", hint2="vo_tt_i_hint2",
                    reveal="vo_rev_tt_i", try_again="vo_tt_i_hint1"),
@@ -385,7 +387,7 @@ SLIDES = [
     },
     {   # Screen 10 · deck page 13
         "id": "G3", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP",
-        "prompt_hi": "",
+        "prompt_hi": "जिस डिब्बे में बड़ी ई की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
         "audio": A(prompt="vo_tt_ee_prompt", correct="vo_tt_ee_correct",
                    hint1="vo_tt_ee_hint1", hint2="vo_tt_ee_hint2",
                    reveal="vo_rev_tt_ee", try_again="vo_tt_ee_hint1"),
@@ -398,7 +400,7 @@ SLIDES = [
     },
     {   # Screen 11 · deck page 14 — word cards into matra coaches
         "id": "G4", "phase": "guided", "eis": "enactive", "type": "TRAIN_SORT",
-        "prompt_hi": "",
+        "prompt_hi": "हर शब्द को उसकी सही मात्रा वाली बोगी में डालिए।",
         "audio": A(prompt="vo_ts1_prompt", hint1="vo_ts1_hint1", hint2="vo_ts1_hint2",
                    try_again="vo_ts1_hint1"),
         "data": {"signal": "matra_sort_correct",
@@ -418,7 +420,7 @@ SLIDES = [
     # ============ PRACTICE · 5 screens =======================================================
     {   # Screen 12 · deck page 15 — the REVERSE mapping: matra cards into word coaches
         "id": "P1", "phase": "practice", "eis": "enactive", "type": "TRAIN_SORT",
-        "prompt_hi": "",
+        "prompt_hi": "सही मात्रा को सही शब्द वाली बोगी में डालिए।",
         "audio": A(prompt="vo_ts2_prompt", hint1="vo_ts2_hint1", hint2="vo_ts2_hint2",
                    try_again="vo_ts2_hint1"),
         "data": {"signal": "matra_sort_correct",
@@ -437,7 +439,7 @@ SLIDES = [
         # हीरा was CORRECTED to हिरण on the SME's explicit instruction (row #149) — हीरा is
         # unusable anyway, it carries two in-scope matras (ी and ा).
         "id": "P2", "phase": "practice", "eis": "enactive", "type": "MATRA_FILL",
-        "prompt_hi": "",
+        "prompt_hi": "सही मात्रा को सही जगह पर खींचकर डालो और शब्द पूरा करिए।",
         "audio": A(prompt="vo_mf_prompt", hint1="vo_mf_hint1", hint2="vo_mf_hint2",
                    try_again="vo_mf_hint1"),
         "data": {"signal": "matra_fill_correct",
@@ -457,7 +459,7 @@ SLIDES = [
     },
     {   # Screen 14 · deck page 17 — PICTURES ONLY, no word text at any point
         "id": "P3", "phase": "practice", "eis": "enactive", "type": "TRAIN_SORT",
-        "prompt_hi": "",
+        "prompt_hi": "चित्र को सुनो और उसे सही मात्रा वाली बोगी में डालिए।",
         "audio": A(prompt="vo_ts3_prompt", hint1="vo_ts3_hint1", hint2="vo_ts3_hint2",
                    try_again="vo_ts3_hint1"),
         "data": {"signal": "matra_sort_correct", "hide_labels": True, "multi": True,

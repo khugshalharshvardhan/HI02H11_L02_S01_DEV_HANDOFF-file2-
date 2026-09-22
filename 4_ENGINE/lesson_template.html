@@ -783,7 +783,7 @@ body.is-start{background:#47BCFD;}   /* [20a landing] new-blue ground */
 .nav-btn{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:10;font-family:var(--font-hi);font-weight:800;font-size:26px;color:#C2C2C2;background:#EDEDED;border:3px solid #FFFFFF;border-radius:9999px;padding:10px 36px;min-width:170px;height:62px;cursor:not-allowed;transition:transform .15s,background .2s,color .2s,box-shadow .2s;box-shadow:0 4px 0 #D6D6D6;display:flex;align-items:center;justify-content:center;gap:8px;}   /* [25c] matched to the strilling reference (26px/170x62/3px border/0 4px 0 shadow) and lifted bottom:20 -> 32 so the pill CLEARS the teaching-card border instead of sitting on it (Yasir 2026-07-25) */
 .nav-btn.active{background:#FCB717;color:var(--navy);cursor:pointer;box-shadow:0 6px 6px rgba(0,0,0,.25), inset 4.54px 9.09px 12.12px rgba(255,255,255,.25), inset -4.54px -4.54px 13.63px rgba(116,60,0,.19);}
 .nav-btn.active:hover{transform:translateX(-50%) translateY(-2px);} .nav-btn.active:active{transform:translateX(-50%) translateY(3px);box-shadow:0 3px 3px rgba(0,0,0,.25), inset 4.54px 9.09px 12.12px rgba(255,255,255,.25), inset -4.54px -4.54px 13.63px rgba(116,60,0,.19);}
-.nav-btn::after{content:"→";font-size:28px;}
+.nav-btn::after{content:"→";font-size:52px;line-height:1;}
 
 /* ===== HINT / FEEDBACK OVERLAY — kit-style card + clean Swiftee ===== */
 .hint-overlay{position:absolute;inset:0;display:none;align-items:flex-start;justify-content:center;padding-top:120px;z-index:60;background:rgba(11,61,140,.28);}
@@ -848,6 +848,28 @@ body.loaded .sg-acell{animation-play-state:running;}
 .sg-btn img{width:100%;height:auto;display:block;pointer-events:none;}
 .sg-btn:active{transform:translateX(-50%) translateY(3px);}
 @keyframes sgBtnPulse{0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.03);}}
+/* ===== [r9] THE START BUTTON, AS SHIPPED IN HI02H11_L01_S01 ==============================
+   Same pill — same fill, border, radius, shadow — and its 186px min-width, which is what stops
+   an icon-only label collapsing it to a circle. Only the content changes: a ▶ glyph drawn
+   through ::after exactly the way .nav-btn already draws its arrow, so there is no new asset to
+   ship and nothing to go missing. The Hindi stays on the button as aria-label.
+   Geometry is that build's, measured off it: 64px tall, 186px min-width, bottom 40px, and the
+   line box CENTRED rather than padded — Devanagari matras extend above the em box and conjuncts
+   below it, so identical padding reads as off-centre per string. */
+.sg-btn{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;
+  line-height:1;padding:0 36px;min-width:186px;height:64px;bottom:40px;animation:none;}
+.sg-btn::after{content:"▶";font-size:30px;line-height:1;display:block;transform:translateX(2px);}
+/* THE PULSE IS EARNED. It used to run from first paint, so it was not a signal — it was
+   wallpaper, and there was nothing left to escalate to when the child actually stalled. It
+   starts only when the 5s idle timer fires. */
+.sg-btn.idle-pulse{animation:sgBtnPulse 1.4s ease-in-out infinite;}
+/* ...and while the greeting is still speaking the button is genuinely disabled, so it has to
+   LOOK disabled. A bright button that ignores taps is worse than a grey one, because the child
+   concludes the screen is broken rather than that it is busy. */
+.sg-btn.sg-waiting{background:#E8E8EA;color:#B3B3B8;border-color:#F4F4F6;
+  box-shadow:0 4px 0 #D6D6D6;cursor:default;animation:none;}
+.sg-btn.sg-waiting:active{transform:translateX(-50%);}
+.end-btn::after{content:"→";font-size:52px;line-height:1;}
 /* landing "listen" button — a warm welcome plays on the title screen; tap to replay */
 .sg-vo{position:absolute;left:96px;bottom:-16px;z-index:5;width:58px;height:58px;background:none;border:none;padding:0;cursor:pointer;animation:none;}   /* [25d] left:96/bottom:-16 = strilling's winning rule (its line 1106, !important) — "foot/leg line, moderate ~85px overlap". animation:none pinned explicitly to match strilling line 5601; only the wv1/wv2 sound-wave arcs animate, and only while playing. */
 .sg-vo img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;}
@@ -1763,23 +1785,48 @@ body.is-start .phase-gate{
 .slide-host:has(> .train-shell){display:flex;flex-direction:column;justify-content:center;}
 .train-rail{position:relative;width:100%;display:flex;align-items:flex-end;justify-content:center;gap:0;
   transform:translateX(0);opacity:1;}
-.train-rail.tr-entering{animation:trainIn 1100ms cubic-bezier(.22,.61,.36,1) both;}
-@keyframes trainIn{from{transform:translateX(62%);opacity:0;}to{transform:translateX(0);opacity:1;}}
-/* the cover train's own entrance (coverTrainIn) lives with the rest of the cover-page rules
-   further down, next to the smoke and the bob it has to stay in time with. */
+/* [r7] the cover's entrance, not a shorter one of its own: same distance, same curve, same
+   3400ms, so the two screens read as the same train pulling in. */
+.train-rail.tr-entering{animation:trainIn var(--lt-travel,3400ms) cubic-bezier(.40,.20,.45,1) both;}
+@keyframes trainIn{from{transform:translateX(86%);opacity:0;}
+                   6%{opacity:1;}
+                   to{transform:translateX(0);opacity:1;}}
 @media (prefers-reduced-motion:reduce){
   .train-rail.tr-entering{animation:none;transform:translateX(0);opacity:1;}
 }
 
-/* the track the whole train sits on */
-.train-track{position:absolute;left:2%;right:2%;bottom:0;height:14px;border-radius:3px;
-  background:repeating-linear-gradient(90deg,#B98A5E 0 16px,#8B653F 16px 26px);
-  box-shadow:0 3px 0 rgba(11,61,140,.08);}
-.train-loco{flex:0 0 auto;width:232px;height:176px;position:relative;z-index:2;}
-.train-loco img{width:100%;height:100%;object-fit:contain;object-position:bottom;display:block;}
+/* [r8] THE COVER'S TRACK, not a second one. Same rail head, same sleeper stubs, same end fade —
+   the cover's .lt-track rules verbatim, only the selector changed. A solid brown band was what
+   was here before, which read as a bar under the train rather than as a railway. The ends are
+   masked to full strength across the middle ~46% so the track fades out instead of cutting the
+   screen in half with a hard rule. */
+.train-track{position:absolute;left:-7%;right:-7%;bottom:0;height:var(--tc-rail-h,20px);pointer-events:none;z-index:1;
+  /* The line has to be LONGER than the train, so the train has track to arrive along and track
+     left in front of it. It spans the full width of the screen and only the outer edges fade;
+     the cover's 27%/73% stops were cut for a 634px train in a 1080px clip and here they made the
+     rail shorter than the train it was carrying. */
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 7%,#000 93%,transparent 100%);
+          mask-image:linear-gradient(90deg,transparent 0%,#000 7%,#000 93%,transparent 100%);}
+/* the rail head the wheels sit on — its TOP edge is the ground line */
+.train-track::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;border-radius:3px;
+  background:linear-gradient(180deg,#B3C0CD 0,#93A2B1 60%,#7C8B9A 100%);}
+/* sleeper ends, showing the background between them */
+.train-track::after{content:"";position:absolute;left:0;right:0;top:6px;height:8px;border-radius:2px;
+  background:repeating-linear-gradient(90deg,
+    rgba(185,138,94,.80) 0 9px, rgba(0,0,0,0) 9px 22px);}
+
+/* --- one piece of the painted train ------------------------------------------------
+   .tc-art is the parked drawing at full resolution; .tc-spr is the same drawing's animated
+   sheet, laid over it and dropped the instant the train stops. Both are sized and offset by
+   the module from measurements of the two files' INK boxes, so they sit on each other exactly. */
+.tc-part{position:relative;flex:0 0 auto;z-index:2;}
+.tc-part .tc-art,.tc-part .tc-spr{position:absolute;inset:0;background-repeat:no-repeat;}
+.train-shell.tc-parked .tc-spr{opacity:0;transition:opacity .18s linear;pointer-events:none;}
+.train-shell.tc-noart .tc-art{background-image:none!important;background:#E4453C;border-radius:14px;}
+.train-loco{position:relative;}
 
 /* --- a coach ---------------------------------------------------------------------- */
-.train-coach{flex:0 0 auto;position:relative;z-index:2;margin-left:-6px;display:flex;flex-direction:column;align-items:center;}
+.train-coach{flex:0 0 auto;position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;}
 /* the label plate ABOVE the coach (mockup slide14/slide16: cream plate, coloured border) */
 .coach-label{min-width:118px;min-height:56px;margin-bottom:6px;padding:6px 16px;border-radius:12px;
   background:#FFF8E7;border:3px solid var(--coach-c,#F9695E);display:flex;align-items:center;justify-content:center;
@@ -1790,41 +1837,85 @@ body.is-start .phase-gate{
 .coach-label img{max-width:74px;max-height:56px;object-fit:contain;}
 .coach-label .cl-emoji{font-size:44px;line-height:1;}
 
-/* the coach body: coloured shell + cream interior that is the drop zone / word frame */
-.coach-body{width:214px;height:126px;border-radius:16px 16px 10px 10px;background:var(--coach-c,#F9695E);
-  padding:14px 12px 10px;box-shadow:0 4px 0 rgba(11,61,140,.12);position:relative;
-  transition:box-shadow .16s ease, filter .16s ease;}
-.coach-face{width:100%;height:100%;border-radius:10px;background:#FFF8E7;display:flex;align-items:center;
-  justify-content:center;gap:4px;font-size:40px;font-weight:800;color:var(--navy);overflow:hidden;padding:4px;}
-/* an EMPTY drop zone reads as a dashed tray (mockup slide14) */
-.coach-body.dropzone .coach-face{border:3px dashed rgba(11,61,140,.30);background:#FFFBF0;}
-.coach-body.dropzone.filled .coach-face{border-style:solid;border-color:transparent;}
-/* wheels + coupling, so a coach reads as rolling stock and not a box */
-.train-coach::after{content:"";position:absolute;left:14px;right:14px;bottom:-16px;height:18px;
-  background:
-    radial-gradient(circle at 22% 50%,#2F3A44 0 8px,transparent 8px),
-    radial-gradient(circle at 78% 50%,#2F3A44 0 8px,transparent 8px);}
-.train-coach::before{content:"";position:absolute;left:-14px;bottom:26px;width:16px;height:7px;border-radius:3px;background:#5A6672;}
+/* the coach body IS the painted coach; the face is its cream panel */
+.coach-body{position:relative;transition:filter .16s ease, transform .16s ease;}
+.coach-face{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;
+  justify-content:center;gap:4px;font-size:40px;font-weight:800;color:var(--navy);overflow:hidden;
+  z-index:3;text-align:center;}
+/* an EMPTY drop zone reads as a dashed tray inside the painted panel (mockup slide14) */
+.coach-body.dropzone .coach-face{border:3px dashed rgba(11,61,140,.30);border-radius:10px;background:rgba(255,251,240,.55);}
+.coach-body.dropzone.filled .coach-face{border-color:transparent;background:none;}
+/* [r7] The coach body carries .dd-zone so makeDraggable can find it as a drop target, but
+   .dd-zone's own chrome is a 150x150 dashed tray — drawn round the whole painted coach it was a
+   big blue rectangle swallowing the wheels and the track. The zone's states are moved onto the
+   cream panel, which is the thing a child is actually aiming at. */
+.coach-body.dd-zone,
+.coach-body.dd-zone.hover,
+.coach-body.dd-zone.filled,
+.coach-body.dd-zone.filled.correct,
+.coach-body.dd-zone.filled.wrong{background:none;border:none;border-radius:0;display:block;box-shadow:none;}
+.coach-body.dd-zone.hover .coach-face{background:#E6F0FF;border:3px solid var(--selected);
+  box-shadow:0 0 0 6px rgba(56,106,246,.14),0 0 14px rgba(56,106,246,.28);}
+.coach-body.dd-zone.filled .coach-face{border-width:3px;}
+.coach-body.dd-zone.filled.correct .coach-face{background:var(--correct-bg);border-color:var(--correct);border-style:dashed;}
+.coach-body.dd-zone.filled.wrong .coach-face{background:var(--wrong-bg);border-color:var(--wrong);border-style:dashed;}
 
-/* --- the seven coach states the deck names (rows #98,#131,#132,#133,#134,#136) -------- */
-.coach-body.hover{box-shadow:0 0 0 5px rgba(78,190,106,.55),0 4px 0 rgba(11,61,140,.12);filter:brightness(1.05);}
-.coach-body.correct{box-shadow:0 0 0 5px var(--ok,#4EBE6A),0 0 22px rgba(78,190,106,.55),0 4px 0 rgba(11,61,140,.12);}
-.coach-body.wrong{animation:coachShake 420ms ease-in-out;}
-@keyframes coachShake{0%,100%{transform:translateX(0);}15%{transform:translateX(-9px);}35%{transform:translateX(8px);}55%{transform:translateX(-6px);}78%{transform:translateX(4px);}}
-@media (prefers-reduced-motion:reduce){.coach-body.wrong{animation:none;outline:4px solid var(--wrong,#F9695E);}}
+/* what a dropped card looks like once it is sitting on the painted panel: stacked, and small
+   enough to stay inside the cream rather than spilling onto the coach's coloured frame */
+.coach-face .tt-card{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;max-width:100%;max-height:100%;}
+.coach-face .tt-card img{width:auto;height:auto;max-width:74%;max-height:62%;object-fit:contain;}
+.coach-face .tt-card .tt-emoji{font-size:clamp(20px,34%,46px);line-height:1;}
+.coach-face .tt-card .tt-lbl{font-size:26px;line-height:1.05;}
+.coach-face.multi{flex-wrap:wrap;gap:4px;align-content:center;}
+.coach-face.multi .tt-card img{max-width:44%;max-height:44%;}
+
+/* --- the seven coach states the deck names (rows #98,#131,#132,#133,#134,#136) --------
+   [r7] These were box-shadow rings round a rectangle. The coach is a SHAPED bitmap now, so a
+   rectangular ring floats off its silhouette — every state is a drop-shadow, which follows the
+   artwork's alpha instead. */
+.coach-body.hover{filter:brightness(1.06) drop-shadow(0 0 10px rgba(78,190,106,.65));}
+.coach-body.correct{filter:drop-shadow(0 0 4px var(--ok,#4EBE6A)) drop-shadow(0 0 16px rgba(78,190,106,.85)) brightness(1.04);}
+.coach-body.wrong{animation:coachShake 460ms ease-in-out;
+  filter:drop-shadow(0 0 4px var(--wrong,#F9695E)) drop-shadow(0 0 14px rgba(249,105,94,.8));}
+@keyframes coachShake{0%,100%{transform:translateX(0) rotate(0);}
+  14%{transform:translateX(-10px) rotate(-1.4deg);}
+  34%{transform:translateX(9px) rotate(1.2deg);}
+  54%{transform:translateX(-7px) rotate(-.9deg);}
+  76%{transform:translateX(5px) rotate(.6deg);}}
+@media (prefers-reduced-motion:reduce){.coach-body.wrong{animation:none;}}
 .coach-body.locked{filter:saturate(.92);}
 /* rung-2 nudge: the coach PULSES, the hand points — the answer is never given (row #134) */
-.coach-body.nudge{animation:coachPulse 1200ms ease-in-out infinite;box-shadow:0 0 0 4px rgba(255,193,60,.75),0 4px 0 rgba(11,61,140,.12);}
-@keyframes coachPulse{0%,100%{box-shadow:0 0 0 4px rgba(255,193,60,.75),0 4px 0 rgba(11,61,140,.12);}50%{box-shadow:0 0 0 10px rgba(255,193,60,.30),0 4px 0 rgba(11,61,140,.12);}}
-.train-shell.complete .coach-body{box-shadow:0 0 0 5px var(--ok,#4EBE6A),0 0 26px rgba(78,190,106,.45),0 4px 0 rgba(11,61,140,.12);}
+.coach-body.nudge{animation:coachPulse 1200ms ease-in-out infinite;}
+@keyframes coachPulse{0%,100%{filter:drop-shadow(0 0 3px rgba(255,193,60,.9)) drop-shadow(0 0 10px rgba(255,193,60,.55));}
+                      50%{filter:drop-shadow(0 0 8px rgba(255,193,60,.95)) drop-shadow(0 0 22px rgba(255,193,60,.4));}}
+.train-shell.complete .coach-body{filter:drop-shadow(0 0 4px var(--ok,#4EBE6A)) drop-shadow(0 0 20px rgba(78,190,106,.7));}
 
-/* whistle + steam on completion (rows #136, #174, #160) — puff sits on the loco chimney */
-.train-steam{position:absolute;left:52px;top:-6px;width:56px;height:56px;pointer-events:none;opacity:0;}
-.train-shell.complete .train-steam{opacity:1;}
-.train-steam span{position:absolute;left:50%;bottom:0;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 0 0 2px rgba(11,61,140,.06);}
-.train-shell.complete .train-steam span{animation:steamPuff 1500ms ease-out 2;}
-@keyframes steamPuff{from{transform:translateY(6px) scale(.5);opacity:.95;}to{transform:translateY(-44px) scale(1.5);opacity:0;}}
-@media (prefers-reduced-motion:reduce){.train-shell.complete .train-steam span{animation:none;}}
+/* [r8] THE COVER'S SMOKE. It used to be three white blobs that appeared only on completion; the
+   cover's plume runs the whole time, which is what makes the train read as alive. Cover rules
+   verbatim, with the chimney anchored from a measurement of this artwork: the funnel's mouth is
+   at loco-relative x 120..240 of 633 and y 118 of the 48..639 ink band, i.e. 28.4% across the
+   locomotive part and 11.8% down it. Positioned by the module, not by a guessed percentage.
+   NOT white: the ground here is a pale card, and a white puff is invisible on it (measured on the
+   cover). Light blue-grey body with a white highlight is what reads as steam. */
+.train-steam{position:absolute;width:0;height:0;pointer-events:none;z-index:4;}
+.train-steam span{position:absolute;left:0;top:0;width:var(--tc-puff,26px);height:var(--tc-puff,26px);
+  border-radius:50%;opacity:0;transform:translate(-50%,0) scale(.3);
+  filter:blur(.6px) drop-shadow(0 1px 1px rgba(11,61,140,.08));
+  background:radial-gradient(circle at 36% 32%,#FDFEFF 0%,#DCE7F1 46%,#BACBDD 78%,rgba(186,203,221,0) 100%);
+  animation:tcPuff 1610ms linear infinite;}
+/* NEGATIVE delays, one full period spread across the puffs, so the plume is already established
+   on the frame the train appears instead of the loco entering with a bare chimney */
+@keyframes tcPuff{
+  0%  {opacity:0;   transform:translate(-50%,3px) scale(.26);}
+  12% {opacity:.95;}
+  62% {opacity:.58;}
+  100%{opacity:0;   transform:translate(calc(-50% + var(--tc-drift,14px)),calc(var(--tc-rise,-96px))) scale(1.9);}
+}
+/* while it is travelling the puffs trail hard to the RIGHT (it is moving left); parked, they drift.
+   Both distances are written as px by the module so they scale with the train. */
+.train-rail.tr-entering .train-steam{--tc-drift:var(--tc-drift-move,52px);}
+@media (prefers-reduced-motion:reduce){.train-steam span{animation:none;opacity:0;}}
 
 /* the tray of draggable cards under the train (rows #126, #144, #163, #175) */
 .train-tray{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px;margin-top:22px;
@@ -2016,18 +2107,22 @@ body.is-start .phase-gate{
    coach body, so the deck's "wrong coach wiggles / correct coach glows / correct coach
    highlights" is literally the engine's own .wrong-flash / .correct / .crossed path with no
    second implementation to drift. (rows #98-#104, #112-#114, #119-#122) */
+/* [r7] Every state is a drop-shadow now, not a box-shadow ring: the coach is a shaped bitmap,
+   and a rectangular ring drawn round its box floats visibly off the artwork's silhouette. */
 .stage .train-coach.opt-cell{background:none;border:none;box-shadow:none;padding:0;min-height:0;border-radius:0;}
 .stage .train-coach.opt-cell:hover{transform:none;border-color:transparent;box-shadow:none;}
-.stage .train-coach.opt-cell:hover .coach-body{filter:brightness(1.05);}
+.stage .train-coach.opt-cell:hover .coach-body{filter:brightness(1.06) drop-shadow(0 0 10px rgba(78,190,106,.6));}
 .stage .train-coach.opt-cell .coach-word{font-size:44px;font-weight:800;color:var(--navy);}
-.stage .train-coach.opt-cell.wrong-flash .coach-body{animation:coachShake 420ms ease-in-out;
-  box-shadow:0 0 0 5px var(--wrong,#F9695E),0 4px 0 rgba(11,61,140,.12);}
+/* "Wrong coach should wiggle / shake" + a red glow that follows the coach's outline */
+.stage .train-coach.opt-cell.wrong-flash .coach-body{animation:coachShake 460ms ease-in-out;
+  filter:drop-shadow(0 0 4px var(--wrong,#F9695E)) drop-shadow(0 0 14px rgba(249,105,94,.8));}
 .stage .train-coach.opt-cell.correct{background:none;border:none;box-shadow:none;}
-.stage .train-coach.opt-cell.correct .coach-body{box-shadow:0 0 0 5px var(--ok,#4EBE6A),0 0 22px rgba(78,190,106,.55),0 4px 0 rgba(11,61,140,.12);}
+/* "Correct coach should glow / highlight" */
+.stage .train-coach.opt-cell.correct .coach-body{filter:drop-shadow(0 0 4px var(--ok,#4EBE6A)) drop-shadow(0 0 18px rgba(78,190,106,.85)) brightness(1.04);}
 .stage .train-coach.opt-cell.crossed .coach-body{filter:grayscale(.65);opacity:.6;}
 .stage .train-coach.opt-cell.crossed::after{content:none;}          /* the giant tick/cross never belongs on a coach */
 .stage .train-coach.opt-cell.faded{opacity:.35;}
-.stage .train-coach.opt-cell.opt-speaking .coach-body{box-shadow:0 0 0 5px #4EA3F0,0 4px 0 rgba(11,61,140,.12);}
+.stage .train-coach.opt-cell.opt-speaking .coach-body{filter:drop-shadow(0 0 4px #4EA3F0) drop-shadow(0 0 14px rgba(78,163,240,.7));}
 .stage .train-coach.opt-cell.reveal-hold .coach-body,
 .stage .train-coach.opt-cell.nudge .coach-body{animation:coachPulse 1200ms ease-in-out infinite;}
 
@@ -2375,7 +2470,7 @@ body.is-end .sg-sky{
     <div class="mascot-wrap" id="swBuddy"><div class="mascot-circle"><img class="mascot-img" id="swBuddyImg" src="assets/UI/sw_head_talking.webp" alt=""></div></div>
 
     <!-- Nav button — kit-style pill, floats bottom-right -->
-    <button class="nav-btn" id="navBtn" disabled>आगे</button>
+    <button class="nav-btn" id="navBtn" disabled aria-label="आगे"></button>
   </div>
 
   <!-- FEEDBACK OVERLAY — kit-style card + clean Swiftee large -->
@@ -2404,7 +2499,7 @@ body.is-end .sg-sky{
         <div class="sg-art" id="sgHero"></div>
       </div>
       <button class="sg-vo" id="sgVo" type="button" aria-label="सुनो"><svg viewBox="0 0 62 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Audio"><g filter="url(#sgChipShadow)"><rect x="8" y="4" width="46" height="44" rx="22" fill="url(#sgChipGrad)"/><rect x="6" y="2" width="50" height="48" rx="24" stroke="white" stroke-width="4"/><path d="M29.8466 19.0574C29.8804 19.0524 29.9145 19.0496 29.9487 19.0488C30.6094 19.0317 31.0021 19.5124 31.0015 20.1414C31.0008 20.9661 31.0003 21.7911 31.0005 22.6158L31.001 27.7212L31.0009 30.5591C31.0009 31.0364 31.0122 31.5472 30.9863 32.0228C30.9662 32.2709 30.902 32.4608 30.7251 32.643C30.3831 32.9952 29.8337 33.0842 29.4386 32.7671C29.0784 32.4781 28.7473 32.1159 28.4181 31.7862L26.4414 29.8087C26.1771 29.5426 25.9071 29.2636 25.6339 29.0081C25.0227 28.9649 24.3645 29.017 23.7487 28.9979C23.445 28.9885 23.1625 29.0211 22.8589 28.9606C22.3751 28.8616 22.0618 28.4823 22.0642 27.9824C22.0706 26.5937 22.0287 25.1949 22.0828 23.8081C22.0884 23.6626 22.2302 23.4334 22.3309 23.3252C22.454 23.1907 22.6146 23.0963 22.792 23.0543C23.0567 22.9904 23.5328 23.016 23.8224 23.0128C24.4143 23.0063 25.0171 23.0277 25.609 23.0073C25.6794 22.9529 25.8505 22.7743 25.919 22.706L26.5305 22.0945L28.5396 20.0838C28.9157 19.7059 29.3217 19.1749 29.8466 19.0574Z" fill="white"/><path class="wv wv2" d="M36.2367 18.6905C36.8783 18.6449 37.3041 19.231 37.6725 19.6829C38.7675 21.0046 39.4982 22.5894 39.7923 24.2804C40.2503 26.8763 39.6548 29.5478 38.1378 31.7035C37.8393 32.1274 37.508 32.5324 37.149 32.9063C36.9404 33.1236 36.7646 33.2558 36.4622 33.3081C36.2013 33.3412 35.9378 33.2717 35.7272 33.1144C35.5185 32.9615 35.3816 32.7298 35.3483 32.4733C35.2786 31.9235 35.5696 31.6821 35.8914 31.3297C36.0448 31.1639 36.1901 30.9908 36.3269 30.811C38.3669 28.136 38.4986 24.4654 36.6555 21.6511C36.4826 21.3899 36.2966 21.1376 36.0984 20.8951C35.8252 20.5652 35.3947 20.2691 35.3472 19.8184C35.2845 19.2225 35.6439 18.768 36.2367 18.6905Z" fill="white"/><path class="wv wv1" d="M33.3868 21.5044C33.9769 21.4549 34.2563 21.7845 34.5981 22.1981C35.1982 22.924 35.6149 23.7691 35.8211 24.6886C36.171 26.2384 35.8867 27.8637 35.0314 29.2026C34.7421 29.6568 34.2333 30.3745 33.6937 30.4946C33.1633 30.5437 32.6759 30.2927 32.5495 29.7376C32.3921 29.0462 32.9849 28.6956 33.3274 28.1763C34.2088 26.833 34.1932 25.0908 33.288 23.7635C33.0747 23.4522 32.6159 23.0564 32.5518 22.7133C32.4377 22.1027 32.7745 21.619 33.3868 21.5044Z" fill="white"/></g><defs><filter id="sgChipShadow" x="0" y="0" width="62" height="60" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="4"/><feGaussianBlur stdDeviation="2"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><linearGradient id="sgChipGrad" x1="8" y1="26" x2="54" y2="26" gradientUnits="userSpaceOnUse"><stop stop-color="#1987FC"/><stop offset="1" stop-color="#1565F4"/></linearGradient></defs></svg></button>
-      <button class="sg-btn" id="sgBtn">शुरू करें</button>
+      <button class="sg-btn" id="sgBtn" aria-label="शुरू करें"></button>
     </div>
   </div>
 
@@ -2415,7 +2510,7 @@ body.is-end .sg-sky{
     <div class="end-subtitle" id="endSubtitle"></div>
     <img class="end-mascot" src="assets/UI/sw_lg_celebrating_anim.webp" alt="Swiftee"
          onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'end-mascot',textContent:'🎉'}))">
-    <button class="end-btn" id="endBtn">आगे बढ़ें →</button>
+    <button class="end-btn" id="endBtn" aria-label="आगे बढ़ें"></button>
   </div>
 
   <!-- DEV VALIDATOR BANNER -->
@@ -3449,7 +3544,7 @@ function showBox(emoji, text, theme, audioSrc, onEnd){
 }
 
 /* ---------- 8. TAP-OPTION HELPER (shared by 5 slide types) ---------- */
-function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect, optionRenderer, columnsHint, mastery, hintAction, nudgeTarget, shuffle, optionHost}){
+function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect, optionRenderer, columnsHint, mastery, hintAction, nudgeTarget, shuffle, optionHost, navOnCorrect, tapSfx}){
   /* [r5-matra-train] `optionHost` lets a mechanic own its OWN layout (the train) while still
      inheriting this function's whole answer contract — buzz + red flash + lock, the hint
      rungs, confetti + auto-advance. Without it TRAIN_TAP would have had to re-implement the
@@ -3494,6 +3589,10 @@ function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect,
     cell.onclick = ()=>{
       if(state.locked || state.hintActive || _busy || (isPlaying && !_fb) || cell.classList.contains("crossed") || cell.classList.contains("correct") || cell.classList.contains("faded")) return;   /* [25d] .faded = an option disabled by terminal help; refuse it in JS too */
       stopNudge();
+      /* [r7 · deck] "SFX — light tap sound on selection." A pure tone, not sfxOr(): there is no
+         sfx_tap file in the kit and asking for one only buys a 404 on every tap. It fires before
+         the tapped word so the touch is acknowledged the instant the finger lands. */
+      if(tapSfx) sfxTap();
       if(_fb){ stopAudio(); _fb = false; }   /* [28t] a retry interrupts the hint — never two voices */
       // SME rule: SPEAK THE TAPPED WORD on EVERY tap (right or wrong), then the feedback — never two
       // voices at once (buzz/confetti are sfx, they ride alongside the word). opt.audio = word clip id.
@@ -3536,8 +3635,15 @@ function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect,
         const _lateSilent = _scafRule("silent_on_late_correct", false)
                             && state.attempts >= (((CARD.scaffold_rules && CARD.scaffold_rules.max_attempts) || 3) - 1);
         cell.classList.remove("nudge"); stopNudge();
+        /* [r7 · deck] "Correct coach highlights. NEXT BUTTON BECOMES ACTIVE." On the train
+           screens the celebration is allowed to sit there and the child moves on themselves,
+           rather than the engine jumping 700ms later — which on a silent 3rd-attempt correct
+           meant a burst of confetti and an immediate cut. Every other tap slide is unchanged. */
         _afterWord(()=> play(_lateSilent ? null : (audioFor(slide, "correct") || null),
-                            ()=> setTimeout(()=> completeSlide(true), 700)));
+                            ()=> setTimeout(()=>{
+                              if(navOnCorrect){ setNavActive(true); $("navBtn").onclick = ()=> completeSlide(true); }
+                              else completeSlide(true);
+                            }, 700)));
       } else {
         state.attempts++; sfxWrongSoft(); setSwMood("tryagain");
         /* [28p] 1st WRONG = A RED FLASH ON A STILL-LIVE CARD. 2nd = GREY AND DISABLED.
@@ -3667,8 +3773,13 @@ function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect,
   // the child may retry it; from the 2nd wrong attempt the card stays disabled. NO red ✕ anywhere.
   // (Supersedes the earlier lead-review standard "soft buzz + ✕ + that card LOCKS" — reversed by
   // Yasir's ruling 2026-07-27, which also matches the blessed strilling fork. See [27a] above.)
-  // a RIGHT tap = confetti cannons + Swiftie cheer, then auto-advance. No select-then-आगे for pick questions.
-  $("navBtn").style.display = "none"; setNavActive(false);
+  /* a RIGHT tap = confetti cannons + Swiftie cheer, then auto-advance. No select-then-आगे for
+     pick questions — EXCEPT where the card asks for the button (navOnCorrect), which the train
+     screens do: the deck wants "Next button becomes active", and a button that only appears
+     after the answer is a button the child never learns to look for. It is shown disabled from
+     the start there and lights up on the correct tap. */
+  $("navBtn").style.display = navOnCorrect ? "" : "none";
+  setNavActive(false);
   // [27c] AUTONOMOUS TEACHING (data.auto) — a TEACHING slide must run with ZERO child interaction
   // (Yasir 2026-07-27: "in teaching we need to have 0 student interaction ... the tapping part to be
   // done by student is also to be done by us itself"). Same contract as the INTRO / GENDER_INTRO /
@@ -7773,7 +7884,11 @@ const sfxTrainMove   = ()=> sfxOr("sfx_train_move",   ()=> _tone([150, 190], "tr
    A RENDERER, not a slide module. The landing and six activity modules mount inside it.
    Coach colours follow the mockups: 1 pink/red, 2 green, 3 amber.
    ========================================================================================== */
-const TRAIN_COACH_COLORS = ["#F06A86", "#4EBE6A", "#F2A33C", "#4EA3F0"];
+/* [r7] Sampled from the painted train itself (assets/Images/train.png), so a coach's label
+   plate is bordered in its OWN coach's colour. The old palette was a guess and put a pink
+   plate over the yellow coach. Darkened a little from the raw fill so the border reads as a
+   border against a cream plate. */
+const TRAIN_COACH_COLORS = ["#E9B400", "#37C425", "#F0559A", "#4EA3F0"];
 
 /* A BARE MATRA IS AN ORPHAN COMBINING MARK. Rendered alone it is font-dependent: a dotted
    placeholder on some platforms, a floating stroke on others. U+25CC is the standard carrier
@@ -7792,29 +7907,166 @@ function _coachCell(spec){
   return spec.text || "";
 }
 
+/* ==========================================================================================
+   THE TRAIN ITSELF — one artwork for the cover and for every interactive train screen.
+   [r7] The cover ran the painted train (a locomotive and three coaches with cream panels,
+   wheels turning through 36 frames) while pages 8-14 drew a DIFFERENT locomotive next to
+   CSS-drawn boxes. Same lesson, two trains. These screens now use the cover's train and the
+   cover's sounds, and its wheels turn as it pulls in.
+
+   Two files, one drawing, measured off both so they can be laid out interchangeably:
+     · assets/Images/train.png ........ 2171x724, the parked pose at full resolution. What is
+                                        on screen once the train has stopped, so a word sits on
+                                        a crisp panel rather than an upscaled sprite cell.
+     · assets/UI/train_spritesheet.webp 6x6 cells of 634x182 — the same drawing animated. Runs
+                                        ONLY while the train is travelling, where its lower
+                                        resolution is invisible because the thing is moving.
+   Both are cut at the couplings, found by scanning for the columns where the ink is thin
+   enough to be coupling-and-wheels only: art px 17/650/1151/1642/2155, sheet px 2/188/336/
+   481/632. The two agree to within 0.3% of the train's width, which is why one geometry can
+   drive both layers — they are aligned on their INK boxes, not their canvases, because the
+   png carries more transparent padding than a sheet cell does. */
+const TRAIN_ART = {
+  /* the lossless WebP re-encode of assets/Images/train.png (1184KB -> 814KB, pixel-exact when
+     composited). Lossy was measured and rejected: at q90 4.6% of pixels moved, peak delta 112 —
+     the same damage flat vector art with hard edges took when the cover's GIF was re-encoded. */
+  src: "assets/UI/train_still.webp", W: 2171, H: 724,
+  ink: { x: 17, y: 48, w: 2138, h: 592 },
+  cut: [17, 650, 1151, 1642, 2155],
+  /* the cream panel a word sits on, measured per coach (centre + size, art px) */
+  panel: [null, { cx: 894, cy: 341, w: 409, h: 417 },
+                { cx: 1392, cy: 340, w: 396, h: 418 },
+                { cx: 1892, cy: 339, w: 418, h: 417 }]
+};
+const TRAIN_SPR = {
+  src: "assets/UI/train_spritesheet.webp", cw: 634, ch: 182, cols: 6, rows: 6,
+  ink: { x: 2, y: 3, w: 630, h: 175 },
+  cut: [2, 188, 336, 481, 632],
+  /* REST and SPIN are the cover's, and must stay the cover's: SPIN is the cells advanced over
+     the whole travel and is congruent to REST mod 36 (71 % 36 = 35), so the last frame lands
+     exactly on the parked pose instead of jumping to it. */
+  spin: 71, rest: 35
+};
+const TRAIN_TRAVEL_MS = 3400;        /* the cover's travel, shared so the two feel like one train */
+
+/* The cover's easing, solved for y given x (Newton, then clamped). The frame advance rides
+   the SAME curve as the movement, so the chug is a function of distance covered rather than of
+   the clock and cannot drift out of sympathy with the loco. */
+function _trainEase(){
+  const p1x = .40, p1y = .20, p2x = .45, p2y = 1;
+  const cx = 3*p1x, bx = 3*(p2x-p1x)-cx, ax = 1-cx-bx;
+  const cy = 3*p1y, by = 3*(p2y-p1y)-cy, ay = 1-cy-by;
+  const fx = t=> ((ax*t + bx)*t + cx)*t, fy = t=> ((ay*t + by)*t + cy)*t;
+  const dfx = t=> (3*ax*t + 2*bx)*t + cx;
+  return (x)=>{ let t = x;
+    for(let i = 0; i < 8; i++){ const e = fx(t) - x;
+      if(Math.abs(e) < 1e-5) break;
+      const d = dfx(t); if(Math.abs(d) < 1e-6) break; t -= e/d; }
+    return fy(Math.min(1, Math.max(0, t))); };
+}
+
 const TrainChrome = {
   /* cfg: { coaches, coach_label[], coach_body[], drop_zone, multi, entry, on_enter } */
   mount(host, cfg){
     cfg = cfg || {};
     const n = cfg.coaches || (cfg.coach_label || []).length || 3;
+    const A = TRAIN_ART, S = TRAIN_SPR;
+    /* part i of the drawing: 0 is the locomotive, 1..3 the coaches. More than three coaches
+       reuses the three that exist, which is what the artwork has. */
+    const artPart = (i)=> ({ x0: A.cut[i], w: A.cut[i+1] - A.cut[i] });
+    const sprPart = (i)=> ({ x0: S.cut[i], w: S.cut[i+1] - S.cut[i] });
+    const idx = (i)=> i === 0 ? 0 : ((i - 1) % 3) + 1;
+
+    let artW = artPart(0).w;
+    for(let i = 0; i < n; i++) artW += artPart(idx(i + 1)).w;
+    /* Fit to BOTH axes. The artwork is 3.6:1, so sizing on width alone made a 1160px train
+       321px tall — which pushed TRAIN_SORT's coach labels off the top of the stage and left the
+       tray sitting on the आगे button. A screen that also carries labels and a tray passes a
+       smaller maxH. 0.56 is the cap that stops the png being upscaled past its own pixels.
+       [r9] The width budget is 86% of the room available, not a fixed number: the track has to be
+       visibly LONGER than the train, and a train filling its container left no line to arrive
+       along. Measured before: train and track were both exactly the host width. */
+    const avail = host.clientWidth || 1160;
+    const k = Math.min(0.56, (cfg.maxW || avail * 0.86) / artW, (cfg.maxH || 300) / A.ink.h);
+    const partH = A.ink.h * k;
+
     const shell = document.createElement("div"); shell.className = "train-shell";
     const rail  = document.createElement("div"); rail.className  = "train-rail";
+    rail.style.setProperty("--tc-h", partH + "px");
+    rail.style.setProperty("--tc-rail-h", Math.max(14, Math.round(partH * 0.07)) + "px");
+    rail.style.setProperty("--lt-travel", TRAIN_TRAVEL_MS + "ms");
 
+    /* The track is laid on the SHELL, not on the rail. The rail is the thing that translates
+       in from the right, so a track parented to it slid in with the train — rails that arrive
+       with the locomotive. The shell never moves, so the line is already there and the train
+       runs along it. */
     const track = document.createElement("div"); track.className = "train-track";
-    rail.appendChild(track);
 
-    /* The locomotive: reads the painted art first, falls back to a structured SVG so the screen
-       is never broken while assets/UI/train_loco.webp is outstanding. Dropping the mockup's
-       locomotive in later needs no code change. */
-    const loco = document.createElement("div"); loco.className = "train-loco";
-    loco.innerHTML =
-      '<img src="assets/UI/train_loco.webp" alt="" onerror="this.replaceWith(TrainChrome.locoSVG());">' +
-      '<div class="train-steam"><span style="animation-delay:0ms"></span>' +
-      '<span style="animation-delay:220ms"></span><span style="animation-delay:440ms"></span></div>';
+    const sprEls = [];
+    /* One part: the parked artwork underneath, the animated sheet on top. The sheet layer is
+       what moves; it is faded out and dropped the moment the train stops, which is also the
+       moment the resolution difference would first be visible. */
+    const paint = (el, i)=>{
+      const a = artPart(idx(i)), s = sprPart(idx(i));
+      el.style.width = (a.w * k) + "px";
+      el.style.height = partH + "px";
+      const art = document.createElement("div"); art.className = "tc-art";
+      art.style.backgroundImage = 'url("' + A.src + '")';
+      art.style.backgroundSize = (A.W * k) + "px " + (A.H * k) + "px";
+      art.style.backgroundPosition = (-a.x0 * k) + "px " + (-A.ink.y * k) + "px";
+      el.appendChild(art);
+
+      const sk = (A.ink.w * k) / S.ink.w;            /* sheet scale that matches the png's ink box */
+      const spr = document.createElement("div"); spr.className = "tc-spr";
+      spr.style.backgroundImage = 'url("' + S.src + '")';
+      spr.style.backgroundSize = (S.cw * S.cols * sk) + "px " + (S.ch * S.rows * sk) + "px";
+      spr.dataset.x0 = String(s.x0); spr.dataset.sk = String(sk);
+      el.appendChild(spr);
+      sprEls.push(spr);
+      return { a, s };
+    };
+    const setCell = (cellIn)=>{
+      const CELLS = S.cols * S.rows;
+      const cell = ((cellIn % CELLS) + CELLS) % CELLS;
+      const c = cell % S.cols, r = (cell / S.cols) | 0;
+      sprEls.forEach(spr=>{
+        const sk = parseFloat(spr.dataset.sk), x0 = parseFloat(spr.dataset.x0);
+        spr.style.backgroundPosition =
+          (-(c * S.cw + x0) * sk) + "px " + (-(r * S.ch + S.ink.y) * sk) + "px";
+      });
+    };
+
+    const loco = document.createElement("div"); loco.className = "train-loco tc-part";
+    paint(loco, 0);
+    /* appendChild, never `innerHTML +=` — that serialises and RE-PARSES the whole subtree, which
+       silently replaces the .tc-spr node paint() just handed to setCell. Measured: the loco's
+       wheels stopped turning while the coaches' kept going, because its sprite element was a
+       detached orphan. */
+    /* the funnel mouth, measured off this artwork (see the CSS note): 28.4% across the
+       locomotive part, 11.8% down the ink band. The puff size and the drift scale with the
+       train so a small train does not get cover-sized smoke. */
+    const steam = document.createElement("div"); steam.className = "train-steam";
+    steam.style.left = (artPart(0).w * k * 0.284) + "px";
+    steam.style.top  = (partH * 0.118) + "px";
+    /* the cover sizes its puff at 4.6% of the rendered train width and its plume at about
+       0.57x the train's height; kept proportional here so a short train gets short smoke. */
+    const IW = A.ink.w * k;
+    steam.style.setProperty("--tc-puff",       Math.round(IW * 0.040) + "px");
+    steam.style.setProperty("--tc-rise",       Math.round(-partH * 0.62) + "px");
+    steam.style.setProperty("--tc-drift",      Math.round(IW * 0.012) + "px");
+    steam.style.setProperty("--tc-drift-move", Math.round(IW * 0.046) + "px");
+    const PUFFS = 7;
+    for(let i = 0; i < PUFFS; i++){
+      const p = document.createElement("span");
+      p.style.animationDelay = (i * (1610 / PUFFS) - 1610) + "ms";
+      steam.appendChild(p);
+    }
+    loco.appendChild(steam);
     rail.appendChild(loco);
 
     const coachEls = [], faceEls = [], labelEls = [];
     for(let i = 0; i < n; i++){
+      const pi = idx(i + 1), a = artPart(pi), pan = A.panel[pi];
       const c = document.createElement("div"); c.className = "train-coach";
       c.style.setProperty("--coach-c", TRAIN_COACH_COLORS[i % TRAIN_COACH_COLORS.length]);
 
@@ -7823,31 +8075,69 @@ const TrainChrome = {
       if(labSpec == null) lab.style.display = "none";   /* not `visibility` — that still reserves 50px */
       lab.innerHTML = _coachCell(labSpec);
 
-      const body = document.createElement("div"); body.className = "coach-body";
+      const body = document.createElement("div"); body.className = "coach-body tc-part";
+      paint(body, pi);
       if(cfg.drop_zone) body.classList.add("dropzone", "dd-zone");
+
+      /* the word/card sits ON the coach's painted cream panel, placed from the measurement
+         above rather than from padding — the panel is not centred in the coach slice */
       const face = document.createElement("div"); face.className = "coach-face" + (cfg.multi ? " multi" : "");
+      face.style.left   = ((pan.cx - a.x0) * k) + "px";
+      face.style.top    = ((pan.cy - A.ink.y) * k) + "px";
+      face.style.width  = (pan.w * k * 0.94) + "px";
+      face.style.height = (pan.h * k * 0.90) + "px";
       face.innerHTML = _coachCell((cfg.coach_body || [])[i]);
       body.appendChild(face);
 
       c.appendChild(lab); c.appendChild(body);
       c.dataset.coach = String(i);
       rail.appendChild(c);
-      coachEls.push(c); faceEls.push(face); labelEls.push(lab);
+      coachEls.push(c); faceEls.push(body.querySelector(".coach-face")); labelEls.push(lab);
     }
+    shell.appendChild(track);        /* behind the rail in DOM order, so the train paints over it */
     shell.appendChild(rail);
     host.appendChild(shell);
 
+    /* If the painted train cannot be fetched, fall back to the structured locomotive exactly as
+       the old <img> onerror did — a background-image has no error event, so probe separately. */
+    (function(){ const probe = new Image();
+      probe.onerror = ()=>{ shell.classList.add("tc-noart"); };
+      probe.src = TRAIN_ART.src; })();
+
+    setCell(S.rest);
+
     /* "Train comes through animation from right to left. Train stops at the centre of the
-       screen." (rows #8, #95, #107, #116, #124, #144, #175) */
+       screen." (rows #8, #95, #107, #116, #124, #144, #175)
+       The cover's entrance, beat for beat: whistle as it appears, the chug bed under the
+       travel, the wheels turning on the travel's own easing curve, and the arrival sound as it
+       settles. Rows X4/#95: "Soft train arrival sound." */
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let _raf = 0;
+    /* "Train comes through animation ... Train stops at the centre. On screen: no instruction
+       text, only VO should play." The VO waits for the train: mountSlide's auto chain is held
+       here and released once the arrival sound has had a beat to clear. */
+    let _promptGo = null, _parked = false;
+    state.promptGate = (go)=>{ if(_parked) go(); else _promptGo = go; };
     const settle = ()=>{
       rail.classList.remove("tr-entering");
+      shell.classList.add("tc-parked");               /* drops the sprite layer, reveals the png */
+      _parked = true;
+      if(_promptGo){ const g = _promptGo; _promptGo = null; setTimeout(g, 320); }
       if(typeof cfg.on_enter === "function") cfg.on_enter();
     };
-    if(cfg.entry !== false){
+    if(cfg.entry !== false && !reduce){
       rail.classList.add("tr-entering");
-      sfxTrainArrive();
-      const ms = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1100;
-      setTimeout(settle, ms);
+      sfxWhistle(); sfxTrainMove();
+      const ease = _trainEase(), t0 = performance.now();
+      const tick = ()=>{
+        if(!rail.isConnected) return;                 /* navigated away mid-run */
+        const p = Math.min(1, (performance.now() - t0) / TRAIN_TRAVEL_MS);
+        setCell(Math.floor(ease(p) * S.spin));
+        if(p < 1) _raf = requestAnimationFrame(tick);
+        else setCell(S.rest);                         /* exact landing, no rounding drift */
+      };
+      _raf = requestAnimationFrame(tick);
+      setTimeout(()=>{ sfxTrainArrive(); settle(); }, TRAIN_TRAVEL_MS);
     } else {
       setTimeout(settle, 0);
     }
@@ -7870,8 +8160,8 @@ const TrainChrome = {
     };
   },
 
-  /* Structured SVG locomotive — the fallback, and what the review captures show until the
-     painted art arrives. Deliberately simple and flat-vector, matching the mockup's silhouette. */
+  /* Structured SVG locomotive — kept as the last-resort drawing if the painted train is
+     missing. Deliberately simple and flat-vector, matching the mockup's silhouette. */
   locoSVG(){
     const w = document.createElement("div");
     w.innerHTML =
@@ -8149,7 +8439,7 @@ SlideModules.TRAIN_TAP = {
       coaches: opts.length,
       coach_label: opts.map(()=> null),
       coach_body:  opts.map(()=> ""),
-      drop_zone: false,
+      drop_zone: false, maxH: 300,          /* no labels and no tray: the train gets the room */
       on_enter: ()=> train.popLabels(0)
     });
     /* the coach IS the option cell: feedback classes land on .train-coach, and the CSS maps them
@@ -8171,6 +8461,8 @@ SlideModules.TRAIN_TAP = {
       optionRenderer: (o, i)=> built[i],
       optionHost: train.rail,                          // cells are already in the train
       nudgeTarget: null,                               // "No instruction text on screen" — nothing to re-tap
+      navOnCorrect: true,                              // deck: "Next button becomes active"
+      tapSfx: true,                                    // deck: "light tap sound on selection"
       mastery: !!d.mastery
     });
   }
@@ -8196,7 +8488,7 @@ SlideModules.TRAIN_SORT = {
       coach_label: bins.map(b => b.label_img ? { img: b.label_img, emoji: b.label_emoji }
                                              : (b.label || "")),
       coach_body: bins.map(()=> ""),
-      drop_zone: true, multi,
+      drop_zone: true, multi, maxH: 208,    /* labels above + the card tray below */
       on_enter: ()=>{ train.popLabels(240); setTimeout(rise, bins.length * 240); }
     });
     bins.forEach((b, i)=>{ train.coachEls[i].dataset.key = b.key; train.body(i).dataset.key = b.key; });
@@ -8330,7 +8622,7 @@ SlideModules.MATRA_FILL = {
       coaches: slots.length,
       coach_label: slots.map(s => ({ img: s.img, emoji: s.emoji })),   // "A related picture can be shown above each coach" (row #150)
       coach_body: slots.map(()=> ""),
-      drop_zone: true,
+      drop_zone: true, maxH: 208,          /* picture plates above + the matra tray below */
       on_enter: ()=>{ train.popLabels(240); setTimeout(rise, slots.length * 240); }
     });
 
@@ -8826,6 +9118,11 @@ function mountSlide(idx){
   state.replayAudio = null;   // a module may set a slide-specific replay (e.g. teach slides whose
                               // audio roles aren't in the autoPlayChain order); else the chip replays the chain
   state.ownsAudio = false;    // a module that drives its OWN audio sequence sets this → skip autoPlayChain
+  /* [r7] A module that has an ENTRANCE can hold the auto chain until it is over, without having
+     to take over the whole audio path (state.ownsAudio) and re-implement navUnlock and the
+     replay chip with it. The train screens use it so the instruction is not spoken underneath
+     3.4 seconds of whistle, chug and arrival — the same masking the cover page was fixed for. */
+  state.promptGate = null;
                               // (else the auto prompt-chain stomps/truncates the module's timed VO)
   state.revealing = false;    // [24a N8] true while a reveal_seq/sortSeqReveal is mid-flight (blocks replay + drag)
   state.demoRunning = false;  // [24a N8] true while a self-driving teach chain runs (blocks the replay chips)
@@ -8910,7 +9207,8 @@ function mountSlide(idx){
   // (so students can't skip before hearing it). SKIP when the module owns its audio
   // (state.ownsAudio) — else this chain stomps/truncates the module's own timed VO.
   if(!state.ownsAudio){
-    autoPlayChain(slide, navUnlock);   // [24a N7b] same unlock the replay chips re-apply
+    const _go = ()=> autoPlayChain(slide, navUnlock);   // [24a N7b] same unlock the replay chips re-apply
+    if(typeof state.promptGate === "function") state.promptGate(_go); else _go();
   }
   armIdleVo();   // [27b] start the 7s silent-inactivity watch (all four TEST phases; no-op elsewhere)
                  // [27f] fires at most ONCE per slide
@@ -9448,8 +9746,46 @@ function boot(){
   // greeting lives HERE now (not on slide 0), which also kills the old overlap glitch where the
   // landing VO and slide-0 VO could talk over each other.
   const landSrc = audioSrc("vo_landing");
-  const playLanding = ()=>{ if(!$("startGate").classList.contains("hidden"))
-    play(landSrc, ()=>{ if(window.__landingTrainReveal) window.__landingTrainReveal(); }); };
+  /* [r9] The two start-button states that came with the pill, ported from HI02H11_L01_S01.
+     (a) WAITING. The greeting is the lesson's opening instruction and the cover is the one screen
+         with nothing else to do, so the button is genuinely dead until it finishes — and therefore
+         has to look dead. setStartBtnReady(false) is called as the greeting starts and (true) at
+         its end, by the same path that arms the idle timer, so the button and the pulse can never
+         disagree about whether the VO is still running.
+     (b) THE EARNED PULSE. It used to run from first paint, which made it wallpaper rather than a
+         signal. It now waits for 5 seconds of stillness on the cover. Any touch of the cover counts
+         as activity and RESTARTS the wait rather than ending it — cancelling outright meant one
+         stray tap bought permanent silence, which is not what "inactive for 5 seconds" describes. */
+  const setStartBtnReady = (ready)=>{
+    const b = $("sgBtn"); if(!b) return;
+    b.disabled = !ready;
+    b.classList.toggle("sg-waiting", !ready);
+    if(!ready) b.classList.remove("idle-pulse");
+  };
+  let _startNudgeT = 0;
+  const _onLandingNow = ()=> !$("startGate").classList.contains("hidden");
+  const disarmStartNudge = ()=>{ clearTimeout(_startNudgeT); _startNudgeT = 0;
+    const b = $("sgBtn"); if(b) b.classList.remove("idle-pulse"); };
+  const armStartNudge = ()=>{
+    clearTimeout(_startNudgeT);
+    _startNudgeT = setTimeout(()=>{
+      if(!_onLandingNow()) return;
+      const btn = $("sgBtn");
+      if(!btn || btn.disabled) return;          /* a button the child cannot press yet must not beg */
+      btn.classList.add("idle-pulse");
+    }, 5000);
+  };
+  setStartBtnReady(false);                      /* dead from first paint — the greeting is coming */
+  { const sg = $("startGate");
+    if(sg) sg.addEventListener("pointerdown", ()=>{ disarmStartNudge(); armStartNudge(); }, true); }
+
+  const playLanding = ()=>{ if($("startGate").classList.contains("hidden")) return;
+    setStartBtnReady(false); disarmStartNudge();
+    play(landSrc, ()=>{ if(window.__landingTrainReveal) window.__landingTrainReveal();
+                        setStartBtnReady(true); armStartNudge(); }); };
+  /* never strand the child behind a clip that never ends or never starts */
+  setTimeout(()=>{ if(_onLandingNow() && $("sgBtn") && $("sgBtn").disabled){
+    setStartBtnReady(true); armStartNudge(); } }, 12000);
   /* [r5-matra-train] Everything the landing does WHEN IT BECOMES VISIBLE, in one place. The
      train's 2.6s entrance used to start at mount — i.e. behind the brand loader's >=1600ms hold
      — so it was over before the child saw the screen. The loader's own dismissal calls this, so
@@ -9513,7 +9849,7 @@ function boot(){
        with no existing signal in this engine. One-shot inside _xapi, so a mashed start
        cannot double-report, and a game opened-and-abandoned reports nothing. */
     try{ SwiftPAL.emit("activity_launched", { skill_code: CARD.skill_code }); }catch(e){}
-    if(_starting)return; _starting=true; $("sgBtn").disabled=true;   // a double-tap must not start twice
+    if(_starting)return; _starting=true; disarmStartNudge(); $("sgBtn").disabled=true;   // a double-tap must not start twice
     stopAudio();          // silence the landing greeting BEFORE slide 0 speaks (no VO overlap)
     _resumeVoiceAudio();  // [31x] unlock/resume INSIDE the Android user gesture
     _ac();

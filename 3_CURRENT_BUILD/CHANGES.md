@@ -1144,3 +1144,266 @@ Wheels on rail to 0.00px; rail inside the card at both ends; the train paints in
 (hit-test at a point over the loco returns `.lt-train`); the track is already under the loco as it
 enters from the right, and still under it parked. All 16 slides mount, **zero console errors, zero
 4xx**, layout below the train unchanged.
+
+---
+
+## Follow-up — 2026-09-22 · one train for the whole lesson, and page 8's ladder
+
+### The two trains are now one
+
+The cover ran the painted train — a locomotive and three coaches with cream panels, wheels turning
+through 36 frames. Pages 8-14 drew a **different** locomotive next to CSS boxes with the wrong
+colours. Same lesson, two trains. Every train screen now uses the cover's train, the cover's
+entrance and the cover's sounds.
+
+The artwork ships twice, because the two jobs want different things:
+
+| file | what | where it is used |
+|---|---|---|
+| `assets/UI/train_still.webp` | 2171×724, the parked pose, **lossless** (814KB) | on screen once the train has stopped |
+| `assets/UI/train_spritesheet.webp` | 6×6 cells of 634×182, the same drawing animated | only while the train is travelling |
+
+Both are cut at the couplings, found by scanning for the columns where the ink is thin enough to be
+coupling-and-wheels only: art px 17/650/1151/1642/2155, sheet px 2/188/336/481/632. **The two cuts
+agree to within 0.3% of the train's width**, which is why one geometry drives both layers — they are
+aligned on their INK boxes, not their canvases, because the still carries more transparent padding
+than a sheet cell does. Each of the four parts (loco + three coaches) is its own element with the
+still underneath and the animated sheet over it; the sheet layer is dropped the instant the train
+stops, which is also the instant a resolution difference would first be visible.
+
+A word now sits on the coach's **painted** cream panel, placed from a measurement of that panel
+(centre and size, per coach) rather than from padding — the panel is not centred in the coach slice.
+
+The parked train is lossless because lossy was measured and rejected: at q90, 4.6% of pixels moved
+with a peak delta of 112 — the same damage this artwork took when the cover's GIF was re-encoded.
+`train.png` stays out of the bundle (`.vercelignore`), the WebP ships.
+
+### Page 8, line by line
+
+| the deck asks for | what happens |
+|---|---|
+| Train comes through from right to left, stops at centre | rail travels 1059px → 175px over **3400ms** on the cover's own easing curve, wheels turning on that same curve |
+| No instruction text on screen | `prompt_hi` is empty; no heading strip |
+| Only VO should play | the prompt now waits for the train — see below |
+| VO «जिस डिब्बे में आ की मात्रा वाला शब्द है…» | `vo_tt_aa_prompt` |
+| Correct: confetti / sparkle | confetti fires on the tap |
+| Correct: coach glows / highlights | `.correct` → a green **drop-shadow**, not a box ring |
+| Correct: VO «शाबाश! हाथ शब्द में आ की मात्रा है।» | `vo_tt_aa_correct`, verified on a first-try correct |
+| 1st wrong: coach wiggles, **no** hand, hint VO | `wrong-flash` + shake; hand stays hidden; `vo_tt_aa_hint1` |
+| 2nd wrong: coach wiggles, hint VO, **hand on the correct answer** | shake; `vo_tt_aa_hint2`; hand appears on the हाथ coach |
+| Correct on 3rd attempt: confetti, highlight, Next active, **no VO** | verified — no `vo_tt_aa_correct`, Next enabled, slide does not jump |
+| SFX: train arrival · tap on selection · shake on wrong · chime on correct | `sfx_train_arrive` · a 520Hz tap · a 300/235Hz buzz · a 660/880/1180Hz chime |
+
+Three of those needed engine work:
+
+* **The prompt was being spoken underneath the train.** `mountSlide`'s auto chain fired on mount, so
+  the instruction ran under 3.4 seconds of whistle, chug and arrival — exactly the masking the cover
+  page was fixed for. A module with an entrance can now hold that chain (`state.promptGate`) without
+  having to take over the whole audio path and re-implement navUnlock and the replay chip with it.
+  Measured: arrival at 20208ms, prompt at 20509ms.
+* **"Next button becomes active" was an automatic jump.** Every correct tap called `completeSlide`
+  700ms later. On a silent third-attempt correct that meant a burst of confetti and an immediate
+  cut. `navOnCorrect` enables Next and leaves the child on the screen instead. **Only the train tap
+  screens pass it**; every other tap slide is unchanged.
+* **There was no tap sound.** A light 520Hz tone now fires the instant a coach is touched, before
+  the word speaks. A pure tone rather than `sfxOr("sfx_tap", …)` — there is no such file in the kit
+  and asking for one only buys a 404 on every tap.
+
+### Pages 9-14 came with it
+
+Pages 9 and 10 are the same module as page 8, so they inherit all of it. Pages 11, 12 and 14
+(TRAIN_SORT) and page 13 (MATRA_FILL) get the same train, entrance and sounds.
+
+Four things had to be re-fitted for a painted coach rather than a CSS box:
+
+* **Every feedback state is a `drop-shadow` now.** They were `box-shadow` rings, which drawn round a
+  shaped bitmap float visibly off its silhouette. A drop-shadow follows the artwork's alpha.
+* **The drop-zone chrome moved onto the cream panel.** `.dd-zone`'s own styling is a 150×150 dashed
+  tray; on the whole coach it was a blue rectangle swallowing the wheels and the track, and on a
+  correct drop a green one over the entire coach.
+* **The train is fitted to both axes.** At 3.6:1, sizing on width alone made a 1160px train 321px
+  tall, which pushed the coach labels off the top of the stage and put the tray on the आगे button.
+  Screens that also carry labels and a tray ask for a shorter train (`maxH`).
+* **Coach label colours are sampled from the artwork** (`#E9B400` / `#37C425` / `#F0559A`). The old
+  palette was a guess and put a pink plate over the yellow coach.
+
+One bug worth recording: the loco's steam was appended with `innerHTML +=`, which serialises and
+**re-parses** the whole subtree — silently replacing the sprite element the frame-driver was
+holding. The loco's wheels stopped turning while the coaches' kept going.
+
+### Verified
+
+All 16 slides swept: 4 train parts on each of the 7 train screens, nothing clipped, **no broken
+images and no console errors** beyond a favicon. Drag walks completed on page 11 (3 of 3 cards) and
+page 14 (6 of 6 pictures, two per coach) — the drop zones work on the new geometry. The full answer
+ladder was walked on page 8 for wrong→wrong→correct and for a first-try correct. The cover page is
+untouched and still runs its own spritesheet.
+
+### Two readings I did not take on my own
+
+* **The tapped word still speaks on every tap**, before the hint. The deck says the first wrong
+  attempt should have "only hint VO". The engine carries an explicit SME rule the other way —
+  "SPEAK THE TAPPED WORD on EVERY tap (right or wrong), then the feedback" — so I read "only hint
+  VO" as naming the scaffold at that rung (no hand yet), not as banning speak-on-tap. Say the word
+  and the tapped word goes silent on wrong taps.
+* **A second wrong coach is still greyed out and locked.** That is the engine's house ladder (red
+  buzz on both misses, grey lock from the second) and the deck does not mention it either way.
+
+---
+
+## Follow-up — 2026-09-22 · the question band, the cover's track and smoke, Next, and the button set
+
+### 1 · The spoken line is now written on screen, pages 8-14
+
+Every question page shows its VO as text in the question band. **This supersedes deck row #96
+("No instruction text on screen")** for screens 8-14 — that row is now contradicted by a later
+instruction, and the band wins.
+
+| page | band text |
+|---|---|
+| 8 | जिस डिब्बे में आ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए। |
+| 9 | जिस डिब्बे में छोटी इ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए। |
+| 10 | जिस डिब्बे में बड़ी ई की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए। |
+| 11 | हर शब्द को उसकी सही मात्रा वाली बोगी में डालिए। |
+| 12 | सही मात्रा को सही शब्द वाली बोगी में डालिए। |
+| 13 | सही मात्रा को सही जगह पर खींचकर डालो और शब्द पूरा करिए। |
+| 14 | चित्र को सुनो और उसे सही मात्रा वाली बोगी में डालिए। |
+
+Each is the page's own `prompt` clip, verbatim, so the band and the voice cannot drift apart. The
+band appears because `prompt_hi` is no longer blank — `mountSlide` drops `.no-prompt` on its own,
+so nothing in the engine changed for this. Measured after: the band overlaps nothing on any of the
+seven screens and nothing is clipped.
+
+**Worth an SME eye while the text is visible:** these seven lines are not written to one pattern.
+Pages 8-10 share one («जिस … है, उस … कीजिए।»); 11-14 are each phrased differently, say **बोगी**
+where 8-10 say **डिब्बा**, and page 13 mixes register («डालो … करिए»). That was invisible while the
+lines were only spoken. Say the word and I will bring 11-14 onto page 8's pattern.
+
+### 2 · The cover's track and the cover's smoke, on every train screen
+
+Both are the cover's rules verbatim, only the selector changed.
+
+* **Track.** What was here was a solid brown band, which read as a bar under the train rather than
+  a railway. Now: a grey rail head whose TOP edge is the ground line, sleeper stubs showing the
+  background between them, and the ends masked to full strength across the middle ~46% so the track
+  fades out instead of cutting the screen with a hard rule. Height scales with the train.
+* **Smoke.** There were three white blobs that appeared only on completion. The cover's plume runs
+  the whole time, which is what makes the train read as alive: 7 puffs on **negative** delays
+  spread over one full period, so the plume is already established on the frame the train appears
+  rather than the loco entering with a bare chimney. Puffs trail hard right while it is travelling
+  (it is moving left) and drift once parked.
+
+The chimney is anchored from a measurement of this artwork, not a guess: the funnel's mouth is at
+loco-relative x 120-240 of 633 and y 118 of the 48-639 ink band — **28.4% across the locomotive
+part, 11.8% down it**. Verified in the DOM at 28.4%. Puff size, rise and drift are all written as
+px by the module so a short train gets short smoke instead of cover-sized smoke.
+
+They are not white, for the reason the cover recorded: the ground is a pale card and a white puff
+is invisible on it. Light blue-grey body with a white highlight is what reads as steam.
+
+### 3 · Next is back on pages 8-10
+
+It was hidden, and by me. `mountTapOptions` hides आगे on every pick question because a correct tap
+auto-advances — but these screens were switched to "Next button becomes active" last round, and I
+did not lift the hide with it. So the button was enabled and invisible. It is now shown **disabled
+from the start** on any tap screen that asks for the button; a button that only appears after the
+answer is a button the child never learns to look for. Pages 11-14 always had it.
+
+Verified end to end: answer page 8 correctly → the pill turns gold → clicking it moves to page 9.
+
+### 4 · The supplied button set
+
+`assets/UI/btn-*.svg`, from `swiftpal_buttons`. Three buttons are now the delivered artwork rather
+than CSS that imitated it:
+
+| element | resting | other state |
+|---|---|---|
+| `#navBtn` | `btn-next-disabled.svg` | `btn-next.svg` when active |
+| `#sgBtn` (cover) | `btn-play.svg` | `btn-play-waiting.svg` while disabled |
+| `#endBtn` (celebration) | `btn-finish.svg` | — |
+
+**The words are gone**, because the artwork has none: Next and Finish are arrows, Play is a
+triangle. «आगे», «शुरू करें» and «आगे बढ़ें» are no longer on screen. That is what was supplied.
+
+Each file is padded 14px on every side so its drop shadow is not clipped, so the ELEMENT is the
+full SVG box and the pill sits 14px inside it; every `bottom` was lowered by that 14px so the pill
+lands exactly where the CSS pill used to.
+
+That padding caused one real bug, found and fixed: it is still a hit target, and on the sort
+screens it sat over the bottom 7px of the tray cards — **a dead strip where a drag could not be
+started**. The pad is inert now and the pill is the hit area (`pointer-events` on the button, with
+a `::before` inset 14px), so `onclick`, `:hover` and `:active` are all unchanged. Hit-tested on all
+16 slides: the pill centre resolves to `navBtn`, the pad resolves to whatever is behind it.
+
+**Two buttons were deliberately NOT replaced** — the hint bulb and the audio chip. The set's own
+README says both were "lifted from the game unchanged", and ours are live SVG whose wave arcs
+animate while a clip plays (`.wv1`/`.wv2`). Swapping them for a flat background would have silently
+killed that animation for no visual gain.
+
+`btn-play-waiting.svg` is wired to the play button's **disabled** state (after the tap, while the
+lesson boots) rather than to the landing VO. The README describes it as "while the voice-over runs,
+not tappable", but the cover VO is about 9 seconds and gating the start button for that long is a
+worse screen than the one we have. Say the word if you want it the README's way.
+
+### Verified
+
+All 16 slides swept: no broken images, nothing clipped, the Next pill hit-testable on every slide
+that shows it, and no console errors beyond a favicon and the already-known missing `sfx_chime`.
+Drag-and-drop re-proved on page 11 after the pointer-events change.
+
+---
+
+## Follow-up — 2026-09-22 (2) · the track stays put, and the buttons go back to the shipped set
+
+### The track is a fixed line, and it is longer than the train
+
+Two faults, both mine from the round before.
+
+* **It moved with the train.** The track was parented to `.train-rail` — the element that
+  translates in from the right — so the rails arrived with the locomotive. It is laid on
+  `.train-shell` now, which never moves, and appended before the rail so the train paints over
+  it. Measured across the 3.4s entrance: the track holds at x=209 while the rail travels
+  1035 -> 209.
+* **It was exactly the train's length.** The train was filling its container, so there was no
+  line to arrive along and none left in front. Two changes: the track runs to -7% either side of
+  the shell, and the train's width budget is now **86% of the room available** (measured from
+  `host.clientWidth`) instead of a fixed 1160px. Measured after: track/train is **1.33x** on the
+  tap screens and **1.57x** on the sort and fill screens, with about 130px of visible rail beyond
+  each end of the train.
+
+### The buttons are HI02H11_L01_S01's again
+
+The SVG set is out — files deleted, CSS removed — and the three pills are that build's, ported
+with their states rather than just their look:
+
+* **Next** and **Finish** are the pill with a `→` drawn through `::after` at **52px** (ours was
+  28px, which is what made it look mean next to the reference).
+* **Play** keeps the pill exactly — same fill, border, radius, shadow, and the 186px `min-width`
+  that stops an icon-only label collapsing it to a circle — and only the content changes to a
+  `▶` glyph. Geometry is that build's: 64px tall, bottom 40px, and the line box **centred**
+  rather than padded, because Devanagari matras extend above the em box and conjuncts below it,
+  so identical padding reads as off-centre per string.
+* The Hindi survives as `aria-label` on all three, so nothing is lost to a screen reader.
+
+Two states came with it and are wired here:
+
+* **`.sg-waiting`** — the greeting is the lesson's opening instruction and the cover is the one
+  screen with nothing else to do, so the play button is genuinely disabled until it ends, and
+  therefore has to look disabled. A bright button that ignores taps reads as broken rather than
+  busy. There is a 12s fail-safe so a clip that never fires cannot strand the child.
+* **`.idle-pulse`** — the pulse used to run from first paint, which made it wallpaper rather than
+  a signal. It now waits for 5 seconds of stillness on the cover, and any touch **restarts** that
+  wait rather than ending it.
+
+Verified: waiting + disabled during the greeting, ready + pulsing five seconds after it ends,
+and the pill advances the slide on both a train screen and a tutorial screen.
+
+One trap worth recording, because it cost a round-trip: writing `content:"B6"` through a
+shell heredoc collapsed one backslash level, so Python read `` as an **octal** escape and the
+CSS shipped `content:"<0x15>B6"` — the button rendered a box and the literal text `B6`. Non-ASCII
+glyphs go into this file as literal characters, never as escapes.
+
+### Verified
+
+All 16 slides swept: no broken images, nothing clipped, no console errors beyond a favicon and the
+already-known missing `sfx_chime`.
