@@ -1905,15 +1905,9 @@ body.is-start .phase-gate{
 .mb-panel.mb-hidden{opacity:0;pointer-events:none;}
 .mb-panel.mb-in{animation:mbIn 420ms ease-out both;}
 @keyframes mbIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-/* [r6] Both word rows are the SAME fixed height with the ink centred, so "the space between
-   जाल and its image" equals "the space between जल and its image" whatever the two words'
-   own ink heights are. The result word is an SVG cropped to its ink (§10c), the base word is
-   live text — centring both in one box is what makes the two gaps agree. */
-.mb-word{height:104px;font-size:84px;font-weight:800;color:var(--navy);line-height:1.1;
-  display:flex;align-items:center;justify-content:center;}
+.mb-word{font-size:84px;font-weight:800;color:var(--navy);line-height:1.1;display:flex;align-items:center;}
 .mb-word .mb-c{transition:color .25s ease,text-shadow .25s ease;}
 .mb-word .mb-c.lit{color:#FF8A00;text-shadow:0 0 18px rgba(255,138,0,.45);}
-.mb-word.mb-result .matra-word{display:block;max-height:104px;width:auto;height:auto;color:var(--navy);}
 .mb-pic{width:180px;height:150px;display:flex;align-items:center;justify-content:center;}
 .mb-pic img{max-width:100%;max-height:100%;object-fit:contain;}
 .mb-pic .mb-emoji{font-size:96px;line-height:1;}
@@ -1928,42 +1922,11 @@ body.is-start .phase-gate{
 @media (prefers-reduced-motion:reduce){.mb-eq.mb-say{animation:none;}}
 .mb-eq-line .mb-op{color:#3E86E0;font-size:54px;}
 /* the matra flying into place (rows #34, #58): ा/ी travel from the RIGHT, ि travels from the LEFT */
-/* [r6] the flying matra. It is parked over the slot's measured centre by the module, so the
-   keyframes only describe the TRAVEL (--mb-fx, signed by the matra's side) and it lands where
-   the slot actually is. Ends held by `both`, so a frozen capture shows the settled state. */
-.mb-fly{position:absolute;left:0;top:0;font-size:76px;font-weight:800;color:#FF8A00;
-  pointer-events:none;z-index:40;opacity:0;line-height:1;}
-.mb-fly .matra-word{display:block;}
-.mb-fly.mb-fly-go{animation:mbFly 760ms cubic-bezier(.22,.9,.28,1.06) both;}
-@keyframes mbFly{
-  0%{opacity:0;transform:translate(var(--mb-fx,118px),-38px) scale(1.34) rotate(6deg);}
-  18%{opacity:1;}
-  72%{opacity:1;transform:translate(0,3px) scale(1.06) rotate(0deg);}    /* overshoot a hair */
-  100%{opacity:1;transform:translate(0,0) scale(1) rotate(0deg);}        /* then settle */
-}
-/* the hand-off: the flier dissolves while the slot's own glyph fades up underneath it */
-.mb-fly.mb-fly-done{animation:mbFlyOut 260ms ease-out both;}
-@keyframes mbFlyOut{from{opacity:1;transform:scale(1);}to{opacity:0;transform:scale(1.08);}}
-.mb-slot{display:inline-flex;align-items:center;justify-content:center;min-width:76px;}
-.mb-slot.mb-slot-wait{opacity:0;}      /* laid out, not yet shown — see step 3 */
-.mb-slot .matra-word{display:block;}
-.mb-slot.mb-slot-in{animation:mbSlotIn 320ms ease-out both;}
-@keyframes mbSlotIn{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:scale(1);}}
-/* ज -> जा dissolves instead of cutting */
-.mb-syl{display:inline-block;}
-.mb-syl.mb-syl-in{animation:mbSylIn 420ms ease-out both;}
-@keyframes mbSylIn{from{opacity:0;transform:translateY(10px) scale(.88);}
-                   to{opacity:1;transform:translateY(0) scale(1);}}
-.mb-eq.mb-settle{animation:mbSettle 420ms ease-out;}
-@keyframes mbSettle{0%{transform:scale(1);}38%{transform:scale(1.035);}100%{transform:scale(1);}}
-@media (prefers-reduced-motion:reduce){
-  .mb-fly.mb-fly-go,.mb-fly.mb-fly-done,.mb-slot.mb-slot-in,.mb-syl.mb-syl-in,.mb-eq.mb-settle{animation:none;}
-  .mb-fly{opacity:1;}
-}
-/* [r6] the ◌ in the equation is a placeholder, not part of the matra. "Highlight the complete
-   matra but don't highlight anything else" — so the dotted circle drops to a muted slate and
-   the orange is left to the matra alone, painted by the ink mask. */
-.matra-word.mw-chip .mw-base{fill:#A3B6CC;}
+.mb-fly{position:absolute;font-size:76px;font-weight:800;color:#FF8A00;pointer-events:none;z-index:40;}
+.mb-fly.fly-right{animation:mbFlyR 620ms ease-out both;}
+.mb-fly.fly-left{animation:mbFlyL 620ms ease-out both;}
+@keyframes mbFlyR{from{transform:translate(74px,-34px) scale(1.3);opacity:0;}to{transform:translate(0,0) scale(1);opacity:1;}}
+@keyframes mbFlyL{from{transform:translate(-74px,-34px) scale(1.3);opacity:0;}to{transform:translate(0,0) scale(1);opacity:1;}}
 @media (prefers-reduced-motion:reduce){.mb-fly.fly-right,.mb-fly.fly-left{animation:none;opacity:1;transform:none;}}
 
 /* --- POEM_SEARCH (deck page 18 · rows #177-#193) ------------------------------------
@@ -3953,201 +3916,84 @@ function centerAllGlyphs(root){
   (root || document).querySelectorAll(".ink-glyph").forEach(centerInkGlyph);
 }
 
-/* ---------- 10c. IN-WORD MATRA COLOURING (pixel-exact ink mask) ----------
-   Colour the matra ORANGE *inside the word itself* (e.g. the ा in जाल) with no artifacts.
-   Per-character fill CANNOT do this: ज+ा shape as ONE cluster the browser colours as a unit —
-   a <span>/<tspan> on the ा is ignored (colours by the base consonant), and forcing the ा into
-   its own run inserts a dotted circle (◌ा). Verified at the pixel level. So: a two-layer
-   overlay — the whole word in the base colour, plus an ORANGE copy of the SAME word masked
-   down to the matra. Both layers are the identical string at identical coords, so shaping is
-   identical and the orange lands exactly on the matra strokes.
-
-   [r6] The mask is now the matra's ACTUAL INK, not an x-column range.
-   The old method clipped a vertical band from the consonant's advance to the next letter's
-   body. On a medial matra that band also swallowed the shirorekha running over the NEXT
-   letter — in जाल the top bar above ल came out orange, which is "highlighting something else".
-   And it could not do ि at all: a reordering matra owns no column of its own.
-   The mask instead rasters the cluster twice — with the matra and without it — and keeps the
-   difference. That is the matra's own ink and nothing more, for any matra:
-
-       जा  minus  ज   ->  the ा stroke + its own bar segment, stopping at its advance
-       बि  minus  ब   ->  the ि bar + hook  (aligned on the RIGHT, since ि pushes ब across)
-
-   Everything is locked back onto the real word raster by a small correlation search before it
-   is differenced, so a sub-pixel disagreement between measureText() and the full-word shaping
-   cannot erode a stroke. Canvas raster uses the real Baloo 2 (recomputed on fonts.ready by
-   refreshMatraWords, so a first paint with fallback metrics self-corrects). */
+/* ---------- 10c. IN-WORD MATRA COLOURING (AA / right-spacing matras) ----------
+   Colour the matra RED *inside the word itself* (e.g. the ा in दादा) with no artifacts.
+   Per-character fill CANNOT do this: द+ा shape as ONE cluster the browser colours as a
+   unit — a <span>/<tspan> on the ा is ignored (colours by the base consonant), and forcing
+   the ा into its own run inserts a dotted circle (◌ा). Verified at the pixel level. The clean
+   way is a two-layer overlay: the whole word in the base colour + a RED copy of the SAME word
+   clipped to just the matra's x-column(s). Both layers are the identical string at identical
+   coords, so shaping is identical and the red lands exactly on the matra strokes (100% ink
+   match vs the plain word, no ◌, no shift, no duplicate आ).
+   ONLY valid for RIGHT-SPACING matras (matra owns its own right-hand column). Above/below/left
+   matras (े ै ि ु ृ …) have no such column, so callers fall back to the old coloured callout.
+   Extend the set ONLY after pixel-verifying the new matra's geometry. */
 const RIGHT_SPACING_MATRAS = new Set(["ा", "ी"]);
-/* Matras the mask has been pixel-verified to isolate. ि IS in this set now — the mask works on
-   rendered ink rather than on advance columns, so a reordering matra is no harder than a
-   post-base one. Extend only after looking at a capture. */
-const INWORD_MATRAS = new Set(["ा", "ी", "ि"]);
 const _COMB = /[ऀ-ःऺ-ॏ॑-ॗॢॣ]/;   // Devanagari combining marks
 let _matraUid = 0, _mCv = null, _mCx = null;
-
-const _MASK_SS = 2;     // the mask is rastered at 2x and scaled into the viewBox
-const _MASK_INK = 40;   // alpha at or below this is not ink
-
-function _mFont(px){ return `800 ${px}px "Baloo 2","Noto Sans Devanagari",sans-serif`; }
-function _mScratch(w, h){
-  const c = document.createElement("canvas"); c.width = w; c.height = h;
-  const x = c.getContext("2d", { willReadFrequently: true });
-  x.textBaseline = "alphabetic"; x.fillStyle = "#000";
-  return { c, x };
-}
-function _mAlpha(ctx, w, h){
-  const d = ctx.getImageData(0, 0, w, h).data, a = new Uint8Array(w * h);
-  for(let i = 0, p = 3; i < a.length; i++, p += 4) a[i] = d[p];
-  return a;
-}
-/* the integer dx that slides plane `b` onto plane `a` with the most ink in common */
-function _mBestDx(a, b, w, h, span){
-  let best = 0, bestN = -1;
-  for(let dx = -span; dx <= span; dx++){
-    let n = 0;
-    for(let y = 0; y < h; y++){
-      const r = y * w, x0 = Math.max(0, -dx), x1 = Math.min(w, w - dx);
-      for(let x = x0; x < x1; x++) if(a[r + x + dx] > _MASK_INK && b[r + x] > _MASK_INK) n++;
-    }
-    if(n > bestN){ bestN = n; best = dx; }
-  }
-  return best;
-}
-/* grow a boolean plane by `r` pixels (square kernel — the strokes are thick, no need for a disc) */
-function _mDilate(src, w, h, r){
-  if(r <= 0) return src;
-  const out = new Uint8Array(w * h);
-  for(let y = 0; y < h; y++) for(let x = 0; x < w; x++){
-    if(!src[y * w + x]) continue;
-    for(let dy = -r; dy <= r; dy++){ const yy = y + dy; if(yy < 0 || yy >= h) continue;
-      for(let dx = -r; dx <= r; dx++){ const xx = x + dx; if(xx < 0 || xx >= w) continue;
-        out[yy * w + xx] = 1; } }
-  }
-  return out;
-}
-
-/* The word's real ink box, in user units. The padded frame _matraWordSVG lays out in leaves
-   a font-descent strip under words with no descender (Devanagari usually), which read as extra
-   air between the word and the picture beneath it. Cropping the viewBox to the ink makes an
-   SVG word occupy the same space a plain text word does. */
-function _mInkBox(word, fontPx, padX, asc, W, H){
-  const S = _MASK_SS, cw = Math.ceil(W * S), chh = Math.ceil(H * S);
-  const c = _mScratch(cw, chh); c.x.font = _mFont(fontPx * S);
-  c.x.fillText(word, padX * S, asc * S);
-  const a = _mAlpha(c.x, cw, chh);
-  let x0 = cw, y0 = chh, x1 = -1, y1 = -1;
-  for(let y = 0; y < chh; y++){ const r = y * cw;
-    for(let x = 0; x < cw; x++) if(a[r + x] > _MASK_INK){
-      if(x < x0) x0 = x; if(x > x1) x1 = x; if(y < y0) y0 = y; if(y > y1) y1 = y; } }
-  if(x1 < 0) return null;
-  const m = fontPx * 0.07 * S;                       // a little air for the pulse glow
-  return { x: Math.max(0, x0 - m) / S, y: Math.max(0, y0 - m) / S,
-           w: (Math.min(cw - 1, x1 + m) - Math.max(0, x0 - m)) / S,
-           h: (Math.min(chh - 1, y1 + m) - Math.max(0, y0 - m)) / S };
-}
-/* A white-on-transparent PNG covering exactly the matra's ink, sized to the SVG's user units.
-   Returns a data URI, or null when there is nothing to paint. */
-function _matraInkMask(word, matra, fontPx, padX, asc, W, H){
-  if(!matra || !INWORD_MATRAS.has(matra)) return null;
-  const S = _MASK_SS, cw = Math.ceil(W * S), chh = Math.ceil(H * S);
-  if(cw < 2 || chh < 2) return null;
-  const font = _mFont(fontPx * S), bx = padX * S, by = asc * S;
-
-  const full = _mScratch(cw, chh); full.x.font = font;
-  full.x.fillText(word, bx, by);
-  const A = _mAlpha(full.x, cw, chh);
-
-  /* cluster walk on the SAME scaled metrics the raster uses */
-  const meas = _mScratch(8, 8); meas.x.font = font;
-  const chs = [...word], cl = []; let x = 0, i = 0;
-  while(i < chs.length){
-    let j = i + 1, has = false;
-    while(j < chs.length && _COMB.test(chs[j])){ if(chs[j] === matra) has = true; j++; }
-    const s = chs.slice(i, j).join("");
-    cl.push({ str: s, bare: chs.slice(i, j).filter(c => c !== matra).join(""),
-              start: x, w: meas.x.measureText(s).width, has });
-    x += cl[cl.length - 1].w; i = j;
-  }
-
-  const one = _mScratch(cw, chh), two = _mScratch(cw, chh);
-  let region = new Uint8Array(cw * chh), any = false;
-
-  cl.forEach(c => {
-    if(!c.has || !c.bare) return;
-    one.x.clearRect(0, 0, cw, chh); one.x.font = font; one.x.fillStyle = "#000";
-    one.x.fillText(c.str, bx + c.start, by);
-    const C1 = _mAlpha(one.x, cw, chh);
-    const lock = _mBestDx(A, C1, cw, chh, 3 * S);      // cluster raster -> real word raster
-
-    /* the bare cluster. A post-base matra (ा ी) leaves the consonant at the cluster's left
-       edge; a pre-base matra (ि) pushes it right by the matra's own advance, so align right. */
-    const off = RIGHT_SPACING_MATRAS.has(matra) ? 0 : (c.w - meas.x.measureText(c.bare).width);
-    two.x.clearRect(0, 0, cw, chh); two.x.font = font; two.x.fillStyle = "#000";
-    two.x.fillText(c.bare, bx + c.start + off, by);
-    const C2 = _mAlpha(two.x, cw, chh);
-    const fix = _mBestDx(C1, C2, cw, chh, 2 * S);      // bare raster -> cluster raster
-    /* The seam where the consonant's top bar meets the matra's belongs to both, and is left
-       to the consonant. Eroding C2 to hand it to the matra instead was tried and reverted:
-       it shrinks the consonant EVERYWHERE, so its whole silhouette picked up an orange rim. */
-
-    for(let y = 0; y < chh; y++){
-      const r = y * cw;
-      for(let X = 0; X < cw; X++){
-        if(C1[r + X] <= _MASK_INK) continue;
-        const sx = X - fix;
-        if(sx >= 0 && sx < cw && C2[r + sx] > _MASK_INK) continue;   // belongs to the consonant
-        const tx = X + lock;
-        if(tx >= 0 && tx < cw){ region[r + tx] = 1; any = true; }
-      }
-    }
-  });
-  if(!any) return null;
-
-  /* grow half a CSS pixel so the SVG text's anti-aliased edge is covered, then hold the result
-     inside the real word ink (also grown, so the clamp cannot nibble a stroke) */
-  region = _mDilate(region, cw, chh, S / 2 | 0 || 1);
-  const inkA = new Uint8Array(cw * chh);
-  for(let k = 0; k < inkA.length; k++) inkA[k] = A[k] > _MASK_INK ? 1 : 0;
-  const grown = _mDilate(inkA, cw, chh, S);
-
-  const out = _mScratch(cw, chh), img = out.x.createImageData(cw, chh), od = img.data;
-  for(let k = 0, p = 0; k < region.length; k++, p += 4){
-    const on = region[k] && grown[k];
-    od[p] = od[p + 1] = od[p + 2] = 255; od[p + 3] = on ? 255 : 0;
-  }
-  out.x.putImageData(img, 0, 0);
-  return out.c.toDataURL("image/png");
-}
-
-/* `extraCls` lets a caller restyle the base layer — the equation chip uses it to grey out the
-   ◌ placeholder so the only coloured thing on screen is the matra itself. */
-function _matraWordSVG(word, matra, fontPx, extraCls){
+/* Pixel-accurate RED column(s) for the matra(s) in `word`. The matra's vertical stroke ends at
+   its advance, but its shirorekha (top bar) overhangs — a navy end-cap on the last matra, or the
+   connector toward the next letter on a medial one. So: left = consonant advance; right = the next
+   consonant's BODY left (found by scanning the LOWER band, below the continuous top bar) or the
+   word's ink-right for the last cluster. That paints the whole matra + its bar red with no navy
+   sliver, and stops before the next letter's body. Canvas raster uses the real Baloo 2 (recomputed
+   on fonts.ready by refreshMatraWords, so fallback-metric first paints self-correct). */
+function _matraClipCols(word, matra, fontPx){
   _mCx = _mCx || (_mCv = document.createElement("canvas")).getContext("2d");
-  _mCx.font = _mFont(fontPx);
+  const ctx = _mCx, font = `800 ${fontPx}px "Baloo 2","Noto Sans Devanagari",sans-serif`;
+  ctx.font = font;
+  const ch = [...word], cl = []; let x = 0, i = 0;
+  while(i < ch.length){ let j = i + 1, hasM = false;
+    while(j < ch.length && _COMB.test(ch[j])){ if(ch[j] === matra) hasM = true; j++; }
+    const cw = ctx.measureText(ch.slice(i, j).join("")).width;
+    cl.push({ start: x, consW: ctx.measureText(ch[i]).width, cw, hasM }); x += cw; i = j; }
+  const W = Math.ceil(x) + 4, H = Math.ceil(fontPx * 1.4);
+  _mCv.width = W; _mCv.height = H; ctx.font = font; ctx.textBaseline = "alphabetic"; ctx.fillStyle = "#000";
+  ctx.clearRect(0, 0, W, H); ctx.fillText(word, 0, Math.round(fontPx));
+  const d = ctx.getImageData(0, 0, W, H).data, ink = (X, Y)=> d[(Y * W + X) * 4 + 3] > 40;
+  let y0 = H, y1 = 0;
+  for(let Y = 0; Y < H; Y++) for(let X = 0; X < W; X++){ if(ink(X, Y)){ if(Y < y0) y0 = Y; if(Y > y1) y1 = Y; break; } }
+  const bTop = Math.round(y0 + (y1 - y0) * 0.40), bBot = Math.round(y1 - (y1 - y0) * 0.02);   // below the shirorekha
+  const colInk = new Array(W).fill(false);
+  for(let X = 0; X < W; X++) for(let Y = bTop; Y <= bBot; Y++){ if(ink(X, Y)){ colInk[X] = true; break; } }
+  const runs = []; let s = null;
+  for(let X = 0; X < W; X++){ if(colInk[X] && s === null) s = X; else if(!colInk[X] && s !== null){ runs.push([s, X - 1]); s = null; } }
+  if(s !== null) runs.push([s, W - 1]);
+  let inkRight = 0; for(let X = W - 1; X >= 0; X--){ let a = false; for(let Y = 0; Y < H; Y++){ if(ink(X, Y)){ a = true; break; } } if(a){ inkRight = X; break; } }
+  const cols = [];
+  cl.forEach((c, idx)=>{ if(!c.hasM) return;
+    const advEnd = c.start + c.cw, left = c.start + c.consW;
+    let right;
+    if(idx === cl.length - 1){ right = inkRight + Math.max(4, fontPx * 0.06); }    // last cluster → generously past the end-cap (nothing to the right, so free)
+    else { const before = runs.filter(r => r[0] < advEnd);                         // medial → the next consonant's body-left + ~1px, so the whole
+           const matraRight = before.length ? before[before.length - 1][1] : advEnd; //   connector bar is red (only the body's faint AA edge is grazed)
+           const next = runs.find(r => r[0] > matraRight);
+           right = (next ? next[0] : advEnd) + Math.max(1, fontPx * 0.012); }
+    cols.push([left, Math.max(right, advEnd)]);
+  });
+  return cols;
+}
+function _matraWordSVG(word, matra, fontPx){
+  _mCx = _mCx || (_mCv = document.createElement("canvas")).getContext("2d");
+  _mCx.font = `800 ${fontPx}px "Baloo 2","Noto Sans Devanagari",sans-serif`;
   const totalW = _mCx.measureText(word).width;
+  const cols = _matraClipCols(word, matra, fontPx);
   const padX = fontPx * 0.12, asc = fontPx * 0.92, desc = fontPx * 0.30;
   const W = totalW + padX * 2, H = asc + desc, uid = "mw" + (++_matraUid);
-  const mask = _matraInkMask(word, matra, fontPx, padX, asc, W, H);
-  const bb = _mInkBox(word, fontPx, padX, asc, W, H) || { x: 0, y: 0, w: W, h: H };
   const esc = (s)=> String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
   const tAttr = `x="${padX.toFixed(2)}" y="${asc.toFixed(2)}" text-anchor="start" font-family="'Baloo 2','Noto Sans Devanagari',sans-serif" font-weight="800" font-size="${fontPx}"`;
-  return `<svg class="matra-word${extraCls ? " " + extraCls : ""}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${bb.x.toFixed(2)} ${bb.y.toFixed(2)} ${bb.w.toFixed(2)} ${bb.h.toFixed(2)}" width="${bb.w.toFixed(2)}" height="${bb.h.toFixed(2)}" role="img" aria-label="${esc(word)}">`
-    + (mask ? `<defs><mask id="${uid}" maskUnits="userSpaceOnUse" x="0" y="0" width="${W.toFixed(2)}" height="${H.toFixed(2)}">`
-            + `<image x="0" y="0" width="${W.toFixed(2)}" height="${H.toFixed(2)}" preserveAspectRatio="none" href="${mask}" xlink:href="${mask}"/></mask></defs>` : "")
+  const clip = cols.map(([a,b])=>`<rect x="${(a+padX).toFixed(2)}" y="0" width="${Math.max(0,b-a).toFixed(2)}" height="${H.toFixed(2)}"/>`).join("");
+  return `<svg class="matra-word" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W.toFixed(2)} ${H.toFixed(2)}" width="${W.toFixed(2)}" height="${H.toFixed(2)}" role="img" aria-label="${esc(word)}">`
+    + (cols.length ? `<defs><clipPath id="${uid}">${clip}</clipPath></defs>` : "")
     + `<text class="mw-base" ${tAttr}>${esc(word)}</text>`
-    + (mask ? `<g class="mw-red" mask="url(#${uid})"><text ${tAttr}>${esc(word)}</text></g>` : "")
+    + (cols.length ? `<g class="mw-red" clip-path="url(#${uid})"><text ${tAttr}>${esc(word)}</text></g>` : "")
     + `</svg>`;
 }
-/* the standalone ◌<matra> chip used in the equation and on the flying matra */
-function matraChipSVG(matra, fontPx){
-  return _matraWordSVG(matraGlyph(matra || ""), matra, fontPx, "mw-chip");
-}
-/* rebuild the matra SVGs (the mask depends on font metrics — recompute once the web font has
-   actually loaded, so a first paint with fallback metrics can't leave the orange mis-masked). */
+/* rebuild the matra SVGs (clip columns depend on font metrics — recompute once the web font
+   has actually loaded, so a first paint with fallback metrics can't leave the red mis-clipped). */
 function refreshMatraWords(root){
-  (root || document).querySelectorAll("[data-mw-word]").forEach(box=>{
-    box.innerHTML = _matraWordSVG(box.dataset.mwWord, box.dataset.mwMatra,
-                                  parseFloat(box.dataset.mwFs) || 120, box.dataset.mwCls || "");
+  (root || document).querySelectorAll(".meet-letter-box[data-mw-word]").forEach(box=>{
+    box.innerHTML = _matraWordSVG(box.dataset.mwWord, box.dataset.mwMatra, parseFloat(box.dataset.mwFs) || 120);
   });
 }
 
@@ -4520,7 +4366,7 @@ const SlideModules = {
          tutorial card from CSS (measured: 210px tall each, which is what pushed .tut-card past the
          stage). The pair path now asks for a compact size; every single-letter caller is unchanged. */
       const _box = (txt, matra, fsOverride)=> {
-        const iw = matra && INWORD_MATRAS.has(matra);
+        const iw = matra && RIGHT_SPACING_MATRAS.has(matra);
         const fs = fsOverride || _mlFit(txt);
         return `<div class="meet-letter-box"${iw ? ` data-mw-word="${txt}" data-mw-matra="${matra}" data-mw-fs="${fs}"` : ""}>`
           + (iw ? _matraWordSVG(txt, matra, fs)
@@ -4552,9 +4398,9 @@ const SlideModules = {
             <span class="pic-label">${slide.data.word_hi}</span>
           </div>`;
       }
-      // Every matra this lesson teaches (ा ी ि) is now painted in-word by _box, so no callout
-      // is needed. A matra outside INWORD_MATRAS still falls back to the coloured ◌<matra> chip.
-      if(slide.data.matra && !INWORD_MATRAS.has(slide.data.matra)){
+      // Right-spacing matras (ा …) are now coloured RED in-word by _box → no callout needed.
+      // Other matras (े ै ि …) can't be recoloured in-word, so keep the coloured ◌<matra> callout.
+      if(slide.data.matra && !RIGHT_SPACING_MATRAS.has(slide.data.matra)){
         const col = document.createElement("div"); col.className = "meet-col";
         col.appendChild(wrap);
         const mh = document.createElement("div"); mh.className = "matra-hint";
@@ -7835,7 +7681,7 @@ SlideModules.MATRA_BUILD = {
       '<div class="mb-eq"><div class="mb-eq-line">' +
         '<span class="mb-cons ink-glyph">' + (d.consonant || "") + '</span>' +
         '<span class="mb-op">+</span>' +
-        '<span class="mb-m mb-slot"></span>' +
+        '<span class="mb-m mb-slot ink-glyph"></span>' +
         '<span class="mb-op">=</span>' +
         '<span class="mb-syl ink-glyph"></span>' +
       '</div></div>';
@@ -7845,17 +7691,19 @@ SlideModules.MATRA_BUILD = {
     row.appendChild(a2);
 
     /* --- panel 3: the finished word + its picture ---------------------------------------
-       "Highlight only the ा matra inside जाल" (rows #31, #56, #78) — done by the pixel-exact
-       ink mask (§10c), which paints the whole matra and nothing beyond it. ि goes through the
-       same path now, so this panel no longer needs the ◌ि callout it used to carry.
-       [r6] The result used to sit in a .meet-letter-box — a 340px card with the word centred
-       inside it — while panel 1's base word was bare text. Measured, that left 9px between जल
-       and its picture but ~120px between जाल and its picture. Both panels are word-then-
-       picture on the same .mb-word row now, so the two gaps match by construction. */
+       "Highlight only the ा matra inside जाल" (rows #31, #56, #78). For ा and ी this uses the
+       engine's proven pixel-column SVG. For ि it CANNOT — ि is a reordering matra, typed after
+       its consonant and drawn before it, so the column method paints part of the द/ब instead.
+       Measured and reverted once already (4_ENGINE/CHANGES.md); the documented fallback is the
+       ◌ि callout under the word. Rows #56 and #70 are flagged back for this reason. */
     const p3 = document.createElement("div"); p3.className = "mb-panel mb-hidden";
-    p3.innerHTML = '<div class="mb-word mb-result" data-mw-word="' + (d.result_word || "") +
-                   '" data-mw-matra="' + d.matra + '" data-mw-fs="84">' +
-                   _matraWordSVG(d.result_word || "", d.matra, 84) + '</div>' +
+    const resultBox = isPre
+      ? '<div class="mb-word mb-result">' + (d.result_word || "") + '</div>' +
+        '<div class="matra-hint">\u0907\u0938 \u0936\u092c\u094d\u0926 \u0915\u0940 \u092e\u093e\u0924\u094d\u0930\u093e — ' +
+        '<span class="matra-hl ink-glyph">\u25cc' + d.matra + '</span></div>'
+      : '<div class="meet-letter-box mb-result" data-mw-word="' + (d.result_word || "") + '" data-mw-matra="' + d.matra +
+        '" data-mw-fs="84">' + _matraWordSVG(d.result_word || "", d.matra, 84) + '</div>';
+    p3.innerHTML = resultBox +
                    '<div class="mb-pic">' + imgOrEmoji(d.result_img, d.result_emoji, "", "mb-emoji") + '</div>';
     row.appendChild(p3);
 
@@ -7877,9 +7725,7 @@ SlideModules.MATRA_BUILD = {
       state.demoRunning = false;
       [a1, p2, a2, p3].forEach(e => e.classList.remove("mb-hidden"));
       if(consEl) consEl.classList.add("lit");
-      slot.innerHTML = matraChipSVG(d.matra || "", 76);
-      slot.classList.remove("mb-slot-wait"); slot.classList.add("mb-slot-in");
-      sylEl.textContent = d.syllable || "";
+      slot.textContent = matraGlyph(d.matra || ""); sylEl.textContent = d.syllable || "";
       setNavActive(true); };
 
     /* Each step waits for the PREVIOUS CLIP TO END, then holds a short beat — the SME asks for
@@ -7890,60 +7736,25 @@ SlideModules.MATRA_BUILD = {
       (next)=> play(A("base")   || null, ()=> setTimeout(next, 520)),
       // 2 · the consonant lights inside the base word
       (next)=>{ if(consEl) consEl.classList.add("lit"); sfxChime(); setTimeout(next, 620); },
-      /* 3 · the matra flies into place — from the LEFT for ि, from the RIGHT for ा/ी (row #58)
-         [r6] "the transition does not feel smooth." It was three hard cuts in a row. The flier
-         was position:absolute with no offsets, so it settled at .mb-eq's static position — NOT
-         over the slot — and was then deleted in the very frame the slot's glyph appeared, so
-         the matra visibly jumped sideways and popped. It now flies to the slot's MEASURED
-         centre, overshoots a little and settles, and hands over with a cross-fade. */
+      // 3 · the matra flies into place — from the LEFT for ि, from the RIGHT for ा/ी (row #58)
       (next)=>{
         show(a1); show(p2);
-        const eq  = p2.querySelector(".mb-eq");
-        /* Fill the slot NOW but hold it invisible, so the equation's layout is already final
-           when the flier is parked — otherwise the slot grows as it fills and the matra lands
-           a few px off the mark it was aimed at. */
-        slot.innerHTML = matraChipSVG(d.matra || "", 76);
-        slot.classList.add("mb-slot-wait");
         const fly = document.createElement("span");
-        fly.className = "mb-fly";
-        fly.innerHTML = matraChipSVG(d.matra || "", 76);
-        eq.appendChild(fly);
-        /* Park it exactly over the slot, then let the keyframes start it offset from there.
-           offsetLeft/offsetTop, NOT getBoundingClientRect: the stage carries a --scale
-           transform, so rects come back in screen px while style.left is written in CSS px —
-           measured, feeding rects straight back in landed the matra 13px left of the slot. */
-        requestAnimationFrame(()=>{
-          fly.style.left = (slot.offsetLeft + (slot.offsetWidth  - fly.offsetWidth)  / 2) + "px";
-          fly.style.top  = (slot.offsetTop  + (slot.offsetHeight - fly.offsetHeight) / 2) + "px";
-          fly.style.setProperty("--mb-fx", (isPre ? -118 : 118) + "px");
-          fly.classList.add("mb-fly-go");
-          sfxOr("sfx_pop", ()=> sfxTap());
-        });
-        setTimeout(()=>{                       // cross-fade: the slot fades up as the flier fades out
-          slot.classList.remove("mb-slot-wait");
-          slot.classList.add("mb-slot-in");
-          fly.classList.add("mb-fly-done");
-          setTimeout(()=> fly.remove(), 300);
-          setTimeout(next, 420);
-        }, 760);
+        fly.className = "mb-fly " + (isPre ? "fly-left" : "fly-right");
+        fly.textContent = matraGlyph(d.matra || "");
+        p2.querySelector(".mb-eq").appendChild(fly);
+        sfxOr("sfx_pop", ()=> sfxTap());
+        setTimeout(()=>{ fly.remove(); slot.textContent = matraGlyph(d.matra || ""); setTimeout(next, 260); }, 640);
       },
-      /* 4 · ज becomes जा. The second hard cut: a bare textContent swap made the old glyph
-         vanish and the new one appear between two frames. It dissolves up now, and the whole
-         equation gives a small nod so the eye follows the change. */
-      (next)=>{
-        sylEl.textContent = d.syllable || "";
-        sylEl.classList.remove("mb-syl-in"); void sylEl.offsetWidth; sylEl.classList.add("mb-syl-in");
-        const eq = p2.querySelector(".mb-eq");
-        if(eq){ eq.classList.remove("mb-settle"); void eq.offsetWidth; eq.classList.add("mb-settle"); }
-        sfxChime();
-        setTimeout(()=> play(A("onset") || null, ()=> setTimeout(next, 560)), 340);
-      },
+      // 4 · ज becomes जा — the equation resolves, and the new sound is spoken
+      (next)=>{ sylEl.textContent = d.syllable || ""; sfxChime();
+                setTimeout(()=> play(A("onset") || null, ()=> setTimeout(next, 560)), 240); },
       // 5 · the remaining letters join and the finished word appears
       (next)=>{ show(a2); show(p3); sfxCorrect();
                 requestAnimationFrame(()=> refreshMatraWords(host));
                 setTimeout(next, 520); },
       // 6 · the matra is highlighted inside the finished word, and that word is spoken
-      (next)=>{ const mw = p3.querySelector(".matra-word");
+      (next)=>{ const mw = p3.querySelector(".matra-word") || p3.querySelector(".matra-hl");
                 if(mw) mw.classList.add("mw-pulse");
                 play(A("result") || null, ()=>{ if(mw) mw.classList.remove("mw-pulse"); setTimeout(next, 420); }); },
       // 7 · the three sounds contrasted: ज , जा , जाल  (deck: "give a small pause between each")
@@ -8241,13 +8052,13 @@ SlideModules.MATRA_FILL = {
              that way renders हिरण as a detached ि hook followed by हरण: the exact wrong-glyph
              failure the ि work has hit before. So once the slot is solved the whole word is
              re-rendered as ONE shaped text run. ा and ी additionally keep the red in-word
-             highlight (the pixel-exact ink mask, §10c) — including ि, which the old column
-             method could not isolate. */
+             highlight (the engine's proven pixel-column SVG); ि uses plain shaped text, because
+             the column method cannot isolate a reordering matra — see 4_ENGINE/CHANGES.md. */
           const wEl = train.faceEls[si].querySelector(".mf-word");
           const full = slots[si].word;
           if(wEl && full){
             setTimeout(()=>{
-              wEl.innerHTML = INWORD_MATRAS.has(slots[si].matra)
+              wEl.innerHTML = RIGHT_SPACING_MATRAS.has(slots[si].matra)
                 ? '<span class="meet-letter-box mf-done" data-mw-word="' + full + '" data-mw-matra="' +
                   slots[si].matra + '" data-mw-fs="44">' + _matraWordSVG(full, slots[si].matra, 44) + '</span>'
                 : '<span class="mf-done ink-glyph">' + full + '</span>';
@@ -8545,12 +8356,12 @@ SlideModules.MEET_EXAMPLES = {
     col.appendChild(wrap);
     host.appendChild(col);
 
-    /* Render ONE example. Every matra is highlighted INSIDE the word by the pixel-exact ink
-       mask (§10c) — ा, ी and ि alike. [r6] ि used to fall back to a ◌ि callout box slotted in
-       under the word; that box made page 5 sit differently from pages 3 and 7 and pushed the
-       picture down, so all three pages now share one shape: word, then picture. */
+    /* Render ONE example. ा and ी get the engine's proven in-word red (pixel-column SVG); ि
+       cannot — it is a reordering matra and the column method paints part of the द/त instead
+       (measured and reverted, see 4_ENGINE/CHANGES.md), so it keeps the ◌ि callout. Rows #56/#70
+       are flagged back for this reason. */
     const render = (ex)=>{
-      const usesInWord = ex.matra && INWORD_MATRAS.has(ex.matra);
+      const usesInWord = ex.matra && RIGHT_SPACING_MATRAS.has(ex.matra);
       wrap.innerHTML =
         (usesInWord
           ? '<div class="meet-letter-box" data-mw-word="' + ex.word_hi + '" data-mw-matra="' + ex.matra +

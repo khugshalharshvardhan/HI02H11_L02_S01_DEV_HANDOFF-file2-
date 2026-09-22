@@ -1946,16 +1946,16 @@ body.is-start .phase-gate{
 .ps-w.shake{animation:coachShake 420ms ease-in-out;}
 .ps-w.ghosted{box-shadow:0 0 0 4px rgba(255,193,60,.8);animation:coachPulse 1200ms ease-in-out infinite;}
 /* the lens the child drags (row #184) */
-.ps-lens{position:absolute;width:150px;height:150px;border-radius:50%;cursor:grab;touch-action:none;z-index:50;
-  border:9px solid #4EA3F0;background:radial-gradient(circle at 34% 30%,rgba(255,255,255,.60),rgba(190,225,255,.20));
-  box-shadow:0 6px 14px rgba(11,61,140,.22),inset 0 0 22px rgba(255,255,255,.55);
-  opacity:1;}
+/* The magnifier is the supplied artwork. Its GLASS is not the centre of the image — measured at
+   67.9% across / 35.2% down, radius 25% of the width — so the magnify hit-test below targets the
+   glass, not the element box, or the child would be "looking" through the handle. */
+.ps-lens{position:absolute;width:196px;height:180px;cursor:grab;touch-action:none;z-index:50;
+  opacity:1;filter:drop-shadow(0 6px 10px rgba(11,61,140,.28));}
+.ps-lens img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;}
 .ps-lens.ps-lens-in{animation:psLensIn 520ms ease-out both;}
 @keyframes psLensIn{from{transform:translateY(120px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-.ps-lens::after{content:"";position:absolute;right:-34px;bottom:-30px;width:26px;height:74px;border-radius:12px;
-  background:linear-gradient(180deg,#A9713C,#7E5228);transform:rotate(-40deg);transform-origin:top left;}
 .ps-lens.dragging{cursor:grabbing;}
-.ps-lens.final-glow{box-shadow:0 0 0 8px rgba(78,190,106,.5),0 6px 14px rgba(11,61,140,.22);}
+.ps-lens.final-glow{filter:drop-shadow(0 0 12px rgba(78,190,106,.95)) drop-shadow(0 6px 10px rgba(11,61,140,.28));}
 /* the ghost guide (rows #185-#189, #191) — the SME asked for a ghost explicitly.
    ui_ghost.webp is not in the assets kit; the <img> falls back to the glyph so the screen is
    never broken while the art is outstanding. Flagged in CHANGES.md. */
@@ -8015,6 +8015,9 @@ SlideModules.POEM_SEARCH = {
 
     /* the lens (row #184) and the ghost (rows #185-#189) */
     const lens = document.createElement("div"); lens.className = "ps-lens ps-lens-in";
+    lens.innerHTML = '<img src="assets/UI/ui_magnifier.webp" alt="">';
+    /* where the GLASS sits inside that artwork, measured off the file */
+    const GLASS = { x: 0.679, y: 0.352, r: 0.25 };
     const ghost = document.createElement("div"); ghost.className = "ps-ghost";
     ghost.innerHTML = '<img src="assets/UI/ui_ghost.webp" alt="" ' +
       'onerror="this.replaceWith(document.createTextNode(\'\\u{1F47B}\'));">';
@@ -8177,7 +8180,8 @@ SlideModules.POEM_SEARCH = {
       function magnify(){
         const lr = lens.getBoundingClientRect();
         if(!lr.width) return;                                 // throttled preview -> no-op, never throw
-        const cx = lr.left + lr.width / 2, cy = lr.top + lr.height / 2, rad = lr.width / 2;
+        const cx = lr.left + lr.width * GLASS.x, cy = lr.top + lr.height * GLASS.y,
+              rad = lr.width * GLASS.r;
         words.forEach(w => {
           const r = w.getBoundingClientRect();
           const dx = Math.max(r.left - cx, 0, cx - r.right);
