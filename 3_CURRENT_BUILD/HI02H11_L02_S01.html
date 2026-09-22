@@ -1800,7 +1800,12 @@ body.is-start .phase-gate{
    was here before, which read as a bar under the train rather than as a railway. The ends are
    masked to full strength across the middle ~46% so the track fades out instead of cutting the
    screen in half with a hard rule. */
-.train-track{position:absolute;left:-7%;right:-7%;bottom:0;height:var(--tc-rail-h,20px);pointer-events:none;z-index:1;
+/* [r10] Anchored by its TOP, not its bottom. `bottom:0` put the whole 18px of rail head and
+   sleepers in the 18px ABOVE the shell's floor — and the shell's floor IS the wheel contact line,
+   so the track ran through the wheels instead of under them. `top:100%` starts the rail head
+   exactly at the contact point and hangs the sleepers below it, which is the same contract the
+   cover's .lt-track has always had: the rail head's TOP edge is the ground line. */
+.train-track{position:absolute;left:-7%;right:-7%;top:100%;height:var(--tc-rail-h,20px);pointer-events:none;z-index:1;
   /* The line has to be LONGER than the train, so the train has track to arrive along and track
      left in front of it. It spans the full width of the screen and only the outer edges fade;
      the cover's 27%/73% stops were cut for a 634px train in a 1080px clip and here they made the
@@ -1876,14 +1881,15 @@ body.is-start .phase-gate{
    artwork's alpha instead. */
 .coach-body.hover{filter:brightness(1.06) drop-shadow(0 0 10px rgba(78,190,106,.65));}
 .coach-body.correct{filter:drop-shadow(0 0 4px var(--ok,#4EBE6A)) drop-shadow(0 0 16px rgba(78,190,106,.85)) brightness(1.04);}
-.coach-body.wrong{animation:coachShake 460ms ease-in-out;
-  filter:drop-shadow(0 0 4px var(--wrong,#F9695E)) drop-shadow(0 0 14px rgba(249,105,94,.8));}
+.coach-body.wrong{animation:coachShake 460ms ease-in-out;}   /* [r11] wiggle only — no red */
 @keyframes coachShake{0%,100%{transform:translateX(0) rotate(0);}
   14%{transform:translateX(-10px) rotate(-1.4deg);}
   34%{transform:translateX(9px) rotate(1.2deg);}
   54%{transform:translateX(-7px) rotate(-.9deg);}
   76%{transform:translateX(5px) rotate(.6deg);}}
-@media (prefers-reduced-motion:reduce){.coach-body.wrong{animation:none;}}
+/* with motion off there is no wiggle to feel, so the one moment red IS the feedback */
+@media (prefers-reduced-motion:reduce){.coach-body.wrong{animation:none;
+  filter:drop-shadow(0 0 4px var(--wrong,#F9695E));}}
 .coach-body.locked{filter:saturate(.92);}
 /* rung-2 nudge: the coach PULSES, the hand points — the answer is never given (row #134) */
 .coach-body.nudge{animation:coachPulse 1200ms ease-in-out infinite;}
@@ -2113,15 +2119,28 @@ body.is-start .phase-gate{
 .stage .train-coach.opt-cell:hover{transform:none;border-color:transparent;box-shadow:none;}
 .stage .train-coach.opt-cell:hover .coach-body{filter:brightness(1.06) drop-shadow(0 0 10px rgba(78,190,106,.6));}
 .stage .train-coach.opt-cell .coach-word{font-size:44px;font-weight:800;color:var(--navy);}
-/* "Wrong coach should wiggle / shake" + a red glow that follows the coach's outline */
-.stage .train-coach.opt-cell.wrong-flash .coach-body{animation:coachShake 460ms ease-in-out;
-  filter:drop-shadow(0 0 4px var(--wrong,#F9695E)) drop-shadow(0 0 14px rgba(249,105,94,.8));}
+/* [r11] "Wrong coach should wiggle / shake" — and NOTHING else. The red glow is gone: the deck
+   asks for a wiggle, and on a painted coach a red outline reads as damage to the artwork rather
+   than as feedback. The shake IS the answer. */
+.stage .train-coach.opt-cell.wrong-flash .coach-body{animation:coachShake 460ms ease-in-out;}
 .stage .train-coach.opt-cell.correct{background:none;border:none;box-shadow:none;}
 /* "Correct coach should glow / highlight" */
 .stage .train-coach.opt-cell.correct .coach-body{filter:drop-shadow(0 0 4px var(--ok,#4EBE6A)) drop-shadow(0 0 18px rgba(78,190,106,.85)) brightness(1.04);}
-.stage .train-coach.opt-cell.crossed .coach-body{filter:grayscale(.65);opacity:.6;}
+/* [r11] A LOCKED COACH IS DIMMED, NOT BOXED. .opt-cell.crossed is written for a rectangular
+   answer card: it paints a white fill, a border and a 3px ring, all `!important`, which round a
+   shaped bitmap is a pale rectangle floating behind the coach — exactly what it looked like.
+   The cell's own chrome is stripped (matching !important so it actually wins) and the dimming
+   moves onto the coach itself, so what greys out is the coach and nothing else. The lock is
+   untouched: pointer-events still comes from .opt-cell.crossed. */
+.stage .train-coach.opt-cell.crossed{
+  background:none !important; border:none !important; box-shadow:none !important;
+  border-radius:0 !important; opacity:1 !important;}
+.stage .train-coach.opt-cell.crossed .coach-body{filter:grayscale(.72);opacity:.5;}
+.stage .train-coach.opt-cell.crossed .coach-face{opacity:.55;}
 .stage .train-coach.opt-cell.crossed::after{content:none;}          /* the giant tick/cross never belongs on a coach */
-.stage .train-coach.opt-cell.faded{opacity:.35;}
+/* .faded is the terminal-help dim; it carries no box, but keep it on the coach for the same reason */
+.stage .train-coach.opt-cell.faded{opacity:1 !important;background:none !important;box-shadow:none !important;}
+.stage .train-coach.opt-cell.faded .coach-body{opacity:.34;filter:saturate(.6);}
 .stage .train-coach.opt-cell.opt-speaking .coach-body{filter:drop-shadow(0 0 4px #4EA3F0) drop-shadow(0 0 14px rgba(78,163,240,.7));}
 .stage .train-coach.opt-cell.reveal-hold .coach-body,
 .stage .train-coach.opt-cell.nudge .coach-body{animation:coachPulse 1200ms ease-in-out infinite;}
@@ -9130,12 +9149,14 @@ const TrainChrome = {
        text, only VO should play." The VO waits for the train: mountSlide's auto chain is held
        here and released once the arrival sound has had a beat to clear. */
     let _promptGo = null, _parked = false;
-    state.promptGate = (go)=>{ if(_parked) go(); else _promptGo = go; };
+    const _afterPrompt = ()=>{ if(typeof cfg.on_prompt_done === "function") cfg.on_prompt_done(); };
+    const _release = (go)=> go(_afterPrompt);
+    state.promptGate = (go)=>{ if(_parked) _release(go); else _promptGo = go; };
     const settle = ()=>{
       rail.classList.remove("tr-entering");
       shell.classList.add("tc-parked");               /* drops the sprite layer, reveals the png */
       _parked = true;
-      if(_promptGo){ const g = _promptGo; _promptGo = null; setTimeout(g, 320); }
+      if(_promptGo){ const g = _promptGo; _promptGo = null; setTimeout(()=> _release(g), 320); }
       if(typeof cfg.on_enter === "function") cfg.on_enter();
     };
     if(cfg.entry !== false && !reduce){
@@ -9502,7 +9523,14 @@ SlideModules.TRAIN_SORT = {
                                              : (b.label || "")),
       coach_body: bins.map(()=> ""),
       drop_zone: true, multi, maxH: 208,    /* labels above + the card tray below */
-      on_enter: ()=>{ train.popLabels(240); setTimeout(rise, bins.length * 240); }
+      /* [r11] The tray used to rise with the labels, which put the cards on screen a full clip
+         BEFORE they could be picked up: the engine's drag gate ignores a press while any VO is
+         sounding, so for the length of the instruction every tile was visible, inert and silent.
+         Measured at about nine seconds from mount once the prompt was moved behind the train's
+         arrival. They rise when the instruction FINISHES now, so a card on screen is a card that
+         can be dragged. */
+      on_enter: ()=> train.popLabels(240),
+      on_prompt_done: ()=> rise()
     });
     bins.forEach((b, i)=>{ train.coachEls[i].dataset.key = b.key; train.body(i).dataset.key = b.key; });
 
@@ -9526,8 +9554,10 @@ SlideModules.TRAIN_SORT = {
     });
     host.appendChild(tray);
     /* "Picture cards fade/slide up from the bottom." (rows #144, #175) */
-    const rise = ()=> [...tray.children].forEach((t, i)=> setTimeout(()=>{
-      t.classList.remove("tt-rise"); void t.offsetWidth; t.classList.add("tt-rise"); }, i * 110));
+    tray.classList.add("tt-wait");                     /* [r11] held until the instruction ends */
+    const rise = ()=> { tray.classList.remove("tt-wait");
+      [...tray.children].forEach((t, i)=> setTimeout(()=>{
+        t.classList.remove("tt-rise"); void t.offsetWidth; t.classList.add("tt-rise"); }, i * 110)); };
 
     state.attempts = 0; state.locked = false;
     setNavActive(false);
@@ -9636,7 +9666,8 @@ SlideModules.MATRA_FILL = {
       coach_label: slots.map(s => ({ img: s.img, emoji: s.emoji })),   // "A related picture can be shown above each coach" (row #150)
       coach_body: slots.map(()=> ""),
       drop_zone: true, maxH: 208,          /* picture plates above + the matra tray below */
-      on_enter: ()=>{ train.popLabels(240); setTimeout(rise, slots.length * 240); }
+      on_enter: ()=> train.popLabels(240),
+      on_prompt_done: ()=> rise()          /* [r11] see TRAIN_SORT — a tile on screen is draggable */
     });
 
     /* render  ज [_] ल   /   पर [_]   /   [_] ह रण  — the blank sits where the matra is DRAWN */
@@ -9677,8 +9708,10 @@ SlideModules.MATRA_FILL = {
       tray.appendChild(t);
     });
     host.appendChild(tray);
-    const rise = ()=> [...tray.children].forEach((t, i)=> setTimeout(()=>{
-      t.classList.remove("tt-rise"); void t.offsetWidth; t.classList.add("tt-rise"); }, i * 110));
+    tray.classList.add("tt-wait");                     /* [r11] held until the instruction ends */
+    const rise = ()=> { tray.classList.remove("tt-wait");
+      [...tray.children].forEach((t, i)=> setTimeout(()=>{
+        t.classList.remove("tt-rise"); void t.offsetWidth; t.classList.add("tt-rise"); }, i * 110)); };
 
     state.attempts = 0; state.locked = false;
     setNavActive(false);                                   // row #152
@@ -10225,7 +10258,10 @@ function mountSlide(idx){
   // (so students can't skip before hearing it). SKIP when the module owns its audio
   // (state.ownsAudio) — else this chain stomps/truncates the module's own timed VO.
   if(!state.ownsAudio){
-    const _go = ()=> autoPlayChain(slide, navUnlock);   // [24a N7b] same unlock the replay chips re-apply
+    // [24a N7b] navUnlock is the same unlock the replay chips re-apply.
+    // [r11] `after` lets a gated module act on the END of the chain as well as its start — the
+    // drag screens use it to put their tray up only once the instruction has been spoken.
+    const _go = (after)=> autoPlayChain(slide, ()=>{ navUnlock(); if(after) after(); });
     if(typeof state.promptGate === "function") state.promptGate(_go); else _go();
   }
   armIdleVo();   // [27b] start the 7s silent-inactivity watch (all four TEST phases; no-op elsewhere)
