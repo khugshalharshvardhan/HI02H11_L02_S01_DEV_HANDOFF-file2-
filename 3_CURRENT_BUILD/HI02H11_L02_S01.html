@@ -2067,9 +2067,41 @@ body.is-start .phase-gate{
      shrink this item to fit, taking the clip width with it.
    · padding-top + an equal negative margin-top buys 130px of headroom INSIDE the clip for the
      smoke plume (it rises ~95px above the chimney) while leaving the layout exactly where it
-     was. Without it the clip would behead the plume. */
+     was. Without it the clip would behead the plume. padding-BOTTOM does the same for the rail:
+     the artwork leaves only 5px under the wheels (they touch at y=177 of 182, measured
+     identically in all 36 cells), so the rail needs the rest of its height carved out below,
+     again with a matching negative margin so nothing in the card moves. */
 .lt-clip{position:relative;flex:0 0 auto;width:1080px;max-width:1080px;overflow:hidden;
-  display:flex;justify-content:center;padding-top:130px;margin-top:-130px;}
+  display:flex;justify-content:center;
+  --lt-rail-h:20px;         /* rail head + sleeper stubs */
+  --lt-art-foot:5px;        /* transparent gap under the wheels in the artwork: 182 - 177 */
+  padding-top:130px;margin-top:-130px;
+  padding-bottom:calc(var(--lt-rail-h) - var(--lt-art-foot));
+  margin-bottom:calc(var(--lt-art-foot) - var(--lt-rail-h));}
+
+/* THE RAIL. Belongs to the CLIP, not the wrap: a track does not travel, the train travels along
+   it — so it spans the full 1080px and stays put while the loco slides over it. It is the first
+   child of the clip so it paints BEHIND the train without needing a z-index fight.
+   Side elevation, so there is ONE rail, not two: you see the near rail and the sleeper ends
+   below it. Palette borrowed from the in-game .train-track so the cover and the seven activity
+   screens read as the same railway.
+   The ends FADE, and they fade early: masked to full strength only across the middle ~48%, which
+   is about the train's own length in the 1080px clip. A full-width hard-edged rail was tried and
+   read as a dashed rule cutting the card in half rather than as a railway — at this scale the
+   track has to be quiet enough to sit under the train instead of competing with it. Weights were
+   compared side by side: 6px rail with 17px ties was too heavy, a 3px hairline with 62%-opacity
+   ties lost the track read altogether, and this is the middle one. */
+.lt-track{position:absolute;left:0;right:0;bottom:0;height:var(--lt-rail-h);pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 2%,#000 27%,#000 73%,transparent 98%);
+          mask-image:linear-gradient(90deg,transparent 2%,#000 27%,#000 73%,transparent 98%);}
+/* the rail head the wheels sit on — its TOP edge is the ground line, so changing this height
+   never moves the contact point */
+.lt-track::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;border-radius:3px;
+  background:linear-gradient(180deg,#B3C0CD 0,#93A2B1 60%,#7C8B9A 100%);}
+/* sleeper ends, showing the card between them */
+.lt-track::after{content:"";position:absolute;left:0;right:0;top:6px;height:8px;border-radius:2px;
+  background:repeating-linear-gradient(90deg,
+    rgba(185,138,94,.80) 0 9px, rgba(0,0,0,0) 9px 22px);}
 /* .lt-wrap stays a shrink-to-fit flex item so it hugs the 634px artwork: every translateX %
    below, and the matra placement, are relative to the ARTWORK's width, not the clip's. */
 .lt-wrap{position:relative;display:block;line-height:0;--lt-drift:var(--lt-drift-move,56px);}
@@ -9272,6 +9304,10 @@ function boot(){
       (function(){ const probe = new Image();
         probe.onerror = ()=>{ if(trainEl.parentNode) trainEl.replaceWith(TrainChrome.locoSVG()); };
         probe.src = SPR.src; })();
+      /* rail FIRST, so it paints behind the train by DOM order rather than a z-index fight */
+      const rail = document.createElement("div"); rail.className = "lt-track";
+      rail.setAttribute("aria-hidden", "true");
+      clip.appendChild(rail);
       clip.appendChild(wrap); el.appendChild(clip);
 
       /* Place each matra on its coach panel, and the smoke on the chimney, from the image's

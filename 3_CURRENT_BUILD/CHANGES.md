@@ -1101,3 +1101,46 @@ What was done:
   captures it points at are still on disk under `_review_shots/`.
 
 The clipped file is kept beside this one as `CHANGES.md.clipped.bak` — nothing was thrown away.
+
+---
+
+## Follow-up changes — 2026-09-22 (eleventh round) — a rail under the train
+
+| # | ask | what was done |
+|---|---|---|
+| P1 | "add track below the train to make it even better" | `.lt-track` — a rail belonging to the **clip**, not to the wrap, because a track does not travel, the train travels along it. So it spans the full 1080px and holds still while the loco slides over it, and it is the clip's FIRST child so it paints behind the train by DOM order rather than a z-index fight. Drawn as a **side elevation**: one rail head plus sleeper ends below it, not two rails — the artwork is a flat side view. Palette borrowed from the in-game `.train-track` so the cover and the seven activity screens read as the same railway. |
+
+### Where the ground line is, measured
+
+The wheels touch at **y=177 of 182**, and — usefully — at exactly 177 in **all 36 cells**, so the
+contact line does not wobble as the sprite steps. The rail head's TOP edge is pinned to it, which
+means changing the rail's thickness can never move the contact point.
+
+The artwork leaves only 5px under the wheels, so the rail needs the rest of its height carved out
+below the clip: `padding-bottom: calc(var(--lt-rail-h) - var(--lt-art-foot))` with a matching
+negative `margin-bottom`, the same trick already used at the top for the smoke plume's headroom.
+Both numbers are named variables rather than magic constants. Verified that nothing below moved —
+the शुरू करें button sits at the same y as before — and that the wheels rest on the rail to **0.00px**.
+
+### The first attempt looked worse, and why
+
+A full-width, hard-edged 6px rail with 17px ties read as a **dashed rule cutting the card in half**
+rather than as a railway: at this scale the track has to be quiet enough to sit under the train
+instead of competing with it. Three weights were rendered side by side before choosing:
+
+| variant | result |
+|---|---|
+| 6px rail, 17px ties, full width | too heavy — a horizontal divider |
+| **5px rail, 9px ties at 80%, masked to the middle 46%** | **chosen** |
+| 3px hairline, 8px ties at 62%, masked to 40% | lost the track read altogether |
+
+The ends fade rather than stopping dead at the card edge — a hard cut looks like a bug, a fade
+looks like the track carrying on out of frame. Full strength spans the middle ~46%, which is about
+the train's own length inside the 1080px clip.
+
+### Verified
+
+Wheels on rail to 0.00px; rail inside the card at both ends; the train paints in front of it
+(hit-test at a point over the loco returns `.lt-train`); the track is already under the loco as it
+enters from the right, and still under it parked. All 16 slides mount, **zero console errors, zero
+4xx**, layout below the train unchanged.
