@@ -124,6 +124,31 @@ def require_engine():
 #     0.73-1.05s vs 1.53-2.21s with a comma; ten clips shipped half-spoken this way)
 # =============================================================================================
 VO = {
+    # ---- «मात्रा टोकरी» (G7) — carried over from the standalone build, ids renamed to
+    # this lesson's convention. The clips themselves are the SME's takes, transcoded
+    # from mp3 to the .ogg every other clip here uses so they ride the normal VO path.
+    "vo_mt_intro": "टोकरी को उँगली से इधर-उधर ले जाओ।",
+    "vo_mt_round_aa": "आ की मात्रा वाले शब्दों को टोकरी में डालो।",
+    "vo_mt_round_i": "अब इ की मात्रा वाले शब्दों को टोकरी में डालो।",
+    "vo_mt_round_ee": "अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालो।",
+    "vo_mt_cheer_i": "बहुत बढ़िया! अब इ की मात्रा वाले शब्दों को टोकरी में डालो।",
+    "vo_mt_cheer_ee": "बहुत बढ़िया! अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालो।",
+    "vo_mt_done": "शाबाश! तुमने सभी मात्राओं के सही शब्दों को टोकरी में रख लिया है।",
+    "vo_mt_w_naav": "नाव",
+    "vo_mt_w_haath": "हाथ",
+    "vo_mt_w_baal": "बाल",
+    "vo_mt_w_kaam": "काम",
+    "vo_mt_w_daal": "दाल",
+    "vo_mt_w_din": "दिन",
+    "vo_mt_w_til": "तिल",
+    "vo_mt_w_sir": "सिर",
+    "vo_mt_w_dil": "दिल",
+    "vo_mt_w_hiran": "हिरन",
+    "vo_mt_w_nadi": "नदी",
+    "vo_mt_w_teer": "तीर",
+    "vo_mt_w_chini": "चीनी",
+    "vo_mt_w_machhli": "मछली",
+    "vo_mt_w_neem": "नीम",
     # ---- landing (deck page 3) -------------------------------------------------------------
     "vo_landing": "हेलो दोस्त! मैं हूँ स्विफ्टी। आज हम मात्राओं के बारे में जानेंगे।",
 
@@ -504,6 +529,43 @@ SLIDES = [
         "signals": {"on_complete": ["poem_search_correct"]},
     },
     {   # deck page 19 · N/C — ships as built
+        # «मात्रा टोकरी» - the catch-the-word arcade, folded in as the last activity before the
+        # celebration. It was delivered as a standalone single-game build; its own title screen
+        # and win overlay are dropped (this lesson has both already) and the rest is a module.
+        # Three rounds live INSIDE it (ा then ि then ी), so it is one slide, not three: the
+        # round-to-round praise clips are authored as single takes that carry the next
+        # instruction, and splitting them across slides would cut every one of them in half.
+        "id": "G7", "phase": "practice", "eis": "enactive", "type": "MATRA_TOKRI",
+        "prompt_hi": "",          # X2: nothing written on screen, the VO carries it
+        "audio": A(prompt="vo_mt_intro"),
+        # The module carries its own ROUNDS table, but every clip it will reach for is declared
+        # HERE so the engine warms it, the receipt checks it, and a missing take shows up in the
+        # build rather than as silence on the twelfth word of round three.
+        "data": {"clips": [
+                {"audio": "vo_mt_round_aa"},
+                {"audio": "vo_mt_round_i"},
+                {"audio": "vo_mt_round_ee"},
+                {"audio": "vo_mt_cheer_i"},
+                {"audio": "vo_mt_cheer_ee"},
+                {"audio": "vo_mt_done"},
+                {"audio": "vo_mt_w_naav"},
+                {"audio": "vo_mt_w_haath"},
+                {"audio": "vo_mt_w_baal"},
+                {"audio": "vo_mt_w_kaam"},
+                {"audio": "vo_mt_w_daal"},
+                {"audio": "vo_mt_w_din"},
+                {"audio": "vo_mt_w_til"},
+                {"audio": "vo_mt_w_sir"},
+                {"audio": "vo_mt_w_dil"},
+                {"audio": "vo_mt_w_hiran"},
+                {"audio": "vo_mt_w_nadi"},
+                {"audio": "vo_mt_w_teer"},
+                {"audio": "vo_mt_w_chini"},
+                {"audio": "vo_mt_w_machhli"},
+                {"audio": "vo_mt_w_neem"}
+        ]},
+    },
+    {
         "id": "CEL", "phase": "practice", "eis": "enactive", "type": "CELEBRATION",
         "prompt_hi": "शाबाश! आज हमने सीखा — आ, इ और ई की मात्रा पहचानना, और मात्रा वाले शब्द पढ़ना।",
         "audio": A(prompt="vo_cel_prompt", sfx="sfx_celebrate"),

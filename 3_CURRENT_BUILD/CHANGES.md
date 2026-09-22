@@ -1147,6 +1147,244 @@ enters from the right, and still under it parked. All 16 slides mount, **zero co
 
 ---
 
+## Follow-up changes — 2026-09-22 (twelfth round) — «मात्रा टोकरी» folded in as slide 16
+
+A standalone single-game build (`Matra Tokri-BV, G1`) was dropped into `3_CURRENT_BUILD/`. The ask
+was to put it in the lesson before the last page, drop its own first and last pages, and stop it
+being a second project living inside the first.
+
+### Ported, not embedded
+
+No iframe, no second engine. Of the game's ~1600 lines of script only the **809-line game** came
+across; its stage scaler and its copy of the FLN animation kit were dropped because this engine
+already has both. It is now `SlideModules.MATRA_TOKRI`, slide **G7**, sitting between POEM_SEARCH
+and CELEBRATION — **17 slides, 116 audio ids**.
+
+| the two pages removed | what replaced it |
+|---|---|
+| title screen (cover art + play button) | the slide mount IS the play button — `startGame()` runs on mount |
+| win overlay (mascot, stars, confetti, `vo-win`) | `endGame()` celebrates **in place** and unlocks आगे; this lesson already ends on CELEBRATION. The praise clip was kept — the screen went, the words stayed |
+
+### One project, not two
+
+The give-away that something is bolted on is duplicated infrastructure, so none was kept:
+
+* **One audio path.** The game called `SwiftPalAudio` / `SFX` / `Bgm` / `SwiftPalSound` /
+  `SwiftPalGame`. Rather than rewrite ~30 call sites, those five names are **shims onto this
+  engine**. Its 22 clips were transcoded mp3 → .ogg, renamed to this lesson's convention
+  (`vo_mt_*`), and **declared in the card** so they are warmed, preloaded and checked by the
+  receipt like every other clip — not fetched out of a private `audio/` folder.
+* **One feedback bed.** Its correct/wrong sounds are gone; it uses the lesson's own `sfxCorrect` /
+  `sfxWrongSoft`. A child should not hear two different "correct" sounds depending which screen
+  they are on. Only `sfx_mt_burst` was genuinely new.
+* **No background music.** `bgm.ogg` is not shipped: no other slide has any, and a bed under one
+  screen reads as a bug.
+* **Assets consolidated** into `assets/UI/` (`mt_` prefix, 14 files) and `assets/Audio/VO|SFX/`.
+  Bundle grew **1.2MB**. The three `bgdeco_*.svg` it carried were byte-identical to the ones
+  already here and were not duplicated.
+
+### Four collisions, each found by measurement rather than by running it and hoping
+
+| | |
+|---|---|
+| `#nudgeHand` | the engine already owns that id — the game's renamed `#mtNudgeHand` (the kit takes it as an option, so one line) |
+| bare `.drop` | would have reached the engine's `.blk.drop` on other slides — scoped to `.mt-game` |
+| `html` / `body` / `.stage` backdrop | three rules painting the game's garden plate on the PAGE. Fine when the game is the page; here they would have repainted the whole lesson on every screen. Moved onto `.mt-game` |
+| `body.is-start` | the game used it for its title screen; it is **this lesson's landing state**, so that rule would have replaced the cover behind the train |
+
+Class and keyframe collisions were enumerated up front (87 game classes against the engine's 1192;
+33 keyframes against the engine's) — the only real keyframe overlaps were the three sky-drift ones,
+which were dropped as duplicates anyway.
+
+### Two things that only showed up in the browser
+
+* **Load order.** The kit recipes the engine lacks (nudge, correct-select, wrong-select,
+  object-outline — the last is load-bearing: the basket's green/red ring is derived from the
+  artwork's own alpha) were inserted beside the other slide modules, which is **before** the
+  engine's `FLNMotion` core at line 11582. They threw on parse and took the whole module
+  registration with them (`no module for MATRA_TOKRI`). Moved after the core.
+* **The game's own SFX bus shadowed the shim.** `var SFX = (function(){...})()` inside the game
+  body re-assigned the shim declared above it, so it went on fetching `audio/wrong.ogg` — a 404.
+  That bus, `Bgm`, and the ducking wrapper that existed only to duck the music are removed.
+
+### The chrome had to get out of the way
+
+The lesson's furniture is laid out for a card-and-options screen and collides with an arcade: आगे
+sits bottom-centre, which is exactly where the basket is, and Swiftee's circle sits top-left on the
+catch-track. `.stage.mt-play` hides the nav button, the mascot and the header for the duration.
+**आगे returns the moment the third round ends** — it is the child's only way out, so it is not
+hidden a frame longer than the game runs.
+
+Slides that mount outside `#slideHost` need a teardown, and there was no hook, so one was added:
+`clearHost()` — the single exit every slide passes through — now calls `window.__slideCleanup`,
+which cancels the rAF loop, releases the window listeners and removes the stage layer.
+
+### The receipt was lying, and is not any more
+
+The 22 new clips reported **0.00s** and failed the truncation check. So did 4 clips that have been
+failing for weeks and that I had twice written off as "pre-existing". The cause was the same for
+all 26: `dur()` read duration through Python's `wave`, which cannot open Ogg or Opus, so the one
+check this script exists for was **blind to every non-WAV clip in the bundle**. It tries `ffprobe`
+first now and falls back to `wave` when it is absent.
+
+Asset receipt: **0 FAIL, 0 WARN** — the first fully clean run in this file's history.
+
+### Verified
+
+All 17 slides mount; **zero console errors, zero 4xx**. The arcade plays (words fall, basket
+catches, dots fill), `__mtFinish()` → आगे → CELEBRATION, and the stage layer plus its `mt-play`
+class are gone afterwards. The cover page is untouched: train parked on cell 35, three matras
+centred.
+
+### Where the source went
+
+`3_CURRENT_BUILD/Matra Tokri-BV, G1/` is **gone from the build folder** — that was the "second
+project inside the first". Its README, the standalone `index.html`, the 11MB `_raw` art and the
+audio build scripts are kept at `_SOURCE/matra_tokri/` for provenance, and `_SOURCE/` is in
+`.vercelignore`, so none of it deploys. Delete it if you would rather not carry it.
+
+---
+
+## Follow-up changes — 2026-09-22 (thirteenth round) — correcting the port
+
+Two regressions against the standalone build, both caused by the same decision: I skipped the
+game's `shared/core.css` and three of the kit recipes on the assumption this engine already had
+equivalents. It has equivalents for the *stage*; it does not for everything those files carried.
+
+| # | reported | cause and fix |
+|---|---|---|
+| Q1 | "the progress bar was on the right side, but you made it to the left" | `core.css` is where this game's **HUD** is laid out, not just its stage: `.stats` is `position:absolute; right:28px; top:50%`, and `.game-header` is the absolutely-positioned band it sits in. Dropping that stylesheet left `.stats` unpositioned, so it fell to the top-left as a plain flex child. Restored `.game-header` positioning, `.stats`, `.stat-chip`, `.stars`, `.star`, `starPop`, `.feedback-pop` and `feedbackPop`, all scoped to `.mt-game`, along with the `--pal-*` tokens they read. Measured after: the track sits **30px from the right edge** of the game box. |
+| Q2 | "originally there were many levels, currently missing" | **Only round 1 was reachable.** `levelCheer()` — the beat between rounds — calls `FLNMotion.confetti.burst()`, and the confetti recipe was one of the three I did not carry across. `FLNMotion.confetti` was undefined, so the call threw, round 2 never started and the game sat on ◌ा forever. The whole recipe (CSS + JS) is now installed. |
+
+### What I should have done instead of assuming
+
+Enumerated the dependency rather than eyeballing it. Doing that now: the game calls **eight**
+`FLNMotion.*` APIs — `guard`, `still`, `nudge`, `correctSelect`, `wrongSelect`, `objectOutline`,
+`starBurst`, `confetti` — and exactly one of them, `confetti`, was missing from this engine. One
+line of checking would have caught it before it shipped.
+
+The same check now covers markup and runtime classes: all **24** classes in the game's markup and
+all **19** it adds at runtime resolve to a rule in the engine.
+
+### Verified by actually playing it through
+
+Auto-played with the basket tracking the lowest falling word:
+
+```
+ROUND 1 reached: ◌ा   (t+0s)
+ROUND 2 reached: ◌ि   (t+35s)
+ROUND 3 reached: ◌ी   (t+66s)
+GAME COMPLETE          (t+103s) - आगे unlocked
+```
+
+All three rounds, zero console errors, zero 4xx. Progress bar on the right. All 17 slides still
+mount; the cover is untouched (train on cell 35, three matras centred). Receipt: **0 FAIL, 0 WARN**.
+
+---
+
+## Follow-up changes — 2026-09-22 (fourteenth round) — the letterbox
+
+| # | reported | fix |
+|---|---|---|
+| R1 | "there is a white bar outside the main bg, it doesn't look good" | The stage is a fixed 16:9 box, so on any other aspect there is a margin above and below it, and it was showing the page's own `#F2F7FA` — measured as a hard near-white band against the sky at the top and the grass at the bottom. |
+
+**Why a gradient is not the right answer here.** The band has to meet **sky at one end and grass
+at the other**, so no single colour or vertical ramp matches both seams. The standalone build had
+already solved this: it painted the PAGE with the same plate at `cover`, so every colour in the
+margin matches the edge it touches, because it is literally the same artwork. Those rules were
+dropped in the port for a good reason — they painted `html`/`body` globally and would have
+repainted all 17 slides — so the same idea is back on `body.mt-page`, a class that exists only
+while the arcade is mounted.
+
+It lives on **body, not in the stage**: `.stage` carries a transform, which would capture a fixed
+layer and shrink it back to the stage box — the same trap the engine's own `.start-bg` comment
+warns about.
+
+Measured, top and bottom strips of the margin: **#F2F7FA → rgb(126,195,254) sky at the top and
+rgb(121,198,73) grass at the bottom**, at both a taller-than-16:9 and a wider-than-16:9 viewport.
+
+Checked for leaks: `mt-page` is absent on the landing, absent on all 16 other slides, present only
+on the arcade, and the body background returns to `none` on the way out. All 17 slides mount, zero
+console errors, zero 4xx, receipt 0 FAIL / 0 WARN.
+
+---
+
+## Follow-up changes — 2026-09-22 (fifteenth round) — the letterbox, properly this time
+
+Round fourteen filled the margin with the plate at `cover`. That removed the white, but `cover`
+scales the image **independently of the stage's own copy**, so the horizon landed at a different
+height either side of the stage edge and stepped at the seam. Worse than the white bar.
+
+### The margin is now the plate's edge column, continued
+
+Sampled the plate's left and right edge columns (they agree to within ~1%) as a
+fraction-of-height → colour profile, and `paintPageEdge()` writes it as a `linear-gradient` whose
+stops are positioned in **viewport pixels computed from the stage's measured box**. The horizon in
+the margin is therefore at the same y as the horizon in the scene *by construction*, at any
+viewport, and re-anchors on resize. Outside the stage the end stops clamp flat, which is exactly
+what a top/bottom margin wants.
+
+**The horizon's outline is a 4px BAND, not a line** (rows 495-498 of the plate). Sampling it with
+a single stop let CSS interpolate straight through it, so the margin drew a thin pale line where
+the scene has a thick dark one — measured at the seam, luminance 184 against the scene's 153, with
+the row position already correct. Those four rows plus their two blend rows are now six stops,
+one per row.
+
+Measured across the seam, margin against scene:
+
+| | |
+|---|---|
+| sky rows | diff **0-2** of 255 |
+| grass rows | diff **0-4** |
+| top seam (tall viewport) | mean **0.9**, max 2.7, zero columns over threshold |
+| bottom seam | mean **2.2**, max 5.0, zero over threshold |
+| left/right seam | mean **2.5**, and the 16 rows that exceed it are the outline band itself, where a 1px offset is a large colour difference |
+
+### A real bug this surfaced
+
+Leaving the slide **mid-game** threw `Cannot set properties of null (setting 'textContent')`.
+Cancelling the rAF loop was not enough: the game schedules a lot of deferred work — round banners,
+the level cheer, VO callbacks, the tutorial hand — and a child can tap आगे in the middle of any of
+it, after which a pending `setTimeout` fires against elements the teardown has already removed.
+`setTimeout` is now shadowed for the module scope and every id tracked, so `__slideCleanup` cancels
+them in one line without touching ~30 call sites.
+
+Verified by bailing out of the arcade at **0.5s, 2s, 4s and 9s**: no errors, and the teardown is
+complete every time — class off, inline background cleared, stage layer gone.
+
+All 17 slides mount, zero console errors, zero 4xx, no leak of `mt-page` onto any other slide, and
+the gradient re-anchors correctly after a viewport resize.
+
+---
+
+## Follow-up changes — 2026-09-22 (sixteenth round) — the between-rounds wash
+
+| # | reported | fix |
+|---|---|---|
+| S1 | "in celebration screen the white faded bg should cover the entire screen" | `.level-cheer` — the white wash that comes up with Swifty between rounds — was `position:absolute; inset:0` inside `.mt-game`, so it covered the stage box and stopped at the letterbox. The margins stayed fully saturated while the middle was washed out, which is what made it look like a panel rather than a screen. |
+
+`position:fixed` alone does not fix this: **`.stage` carries a transform, and a transformed
+ancestor becomes the containing block for a fixed descendant**, so a fixed layer created inside
+the stage is captured and snaps straight back to the stage box — the same trap the engine's own
+`.start-bg` comment warns about, and the same one that sent the page backdrop to `<body>` last
+round. So the overlay node itself is lifted out to `<body>` on mount and is `position:fixed;
+inset:0; z-index:9000` there, clearing the stage and the nav button.
+
+Because it no longer lives inside `root`, it no longer disappears when `root` does, so the
+teardown tracks and removes it separately.
+
+Verified at 1700x780 (margins left and right): the veil measures **1700x780 against a 1700x780
+viewport**, its parent is `BODY`, and the wash is identical inside and outside the old stage
+edge — sampled across the full width, every sky sample is `rgb(206,235,254)` and every grass
+sample `rgb(194,229,172)`, the only exception being the basket. The confetti spreads the full
+width too, since its host moved with it.
+
+Teardown checked on the nastiest path — leaving the slide **while the cheer is up**, at 1s and at
+5s: the overlay node and the stage layer are both gone, no errors. Across a full 17-slide walk the
+cheer node is left behind on no slide. Zero console errors, zero 4xx, receipt 0 FAIL / 0 WARN.
+
+---
+
 ## Follow-up — 2026-09-22 · one train for the whole lesson, and page 8's ladder
 
 ### The two trains are now one
