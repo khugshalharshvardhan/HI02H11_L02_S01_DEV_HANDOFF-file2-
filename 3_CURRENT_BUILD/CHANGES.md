@@ -1354,3 +1354,31 @@ complete every time — class off, inline background cleared, stage layer gone.
 
 All 17 slides mount, zero console errors, zero 4xx, no leak of `mt-page` onto any other slide, and
 the gradient re-anchors correctly after a viewport resize.
+
+---
+
+## Follow-up changes — 2026-09-22 (sixteenth round) — the between-rounds wash
+
+| # | reported | fix |
+|---|---|---|
+| S1 | "in celebration screen the white faded bg should cover the entire screen" | `.level-cheer` — the white wash that comes up with Swifty between rounds — was `position:absolute; inset:0` inside `.mt-game`, so it covered the stage box and stopped at the letterbox. The margins stayed fully saturated while the middle was washed out, which is what made it look like a panel rather than a screen. |
+
+`position:fixed` alone does not fix this: **`.stage` carries a transform, and a transformed
+ancestor becomes the containing block for a fixed descendant**, so a fixed layer created inside
+the stage is captured and snaps straight back to the stage box — the same trap the engine's own
+`.start-bg` comment warns about, and the same one that sent the page backdrop to `<body>` last
+round. So the overlay node itself is lifted out to `<body>` on mount and is `position:fixed;
+inset:0; z-index:9000` there, clearing the stage and the nav button.
+
+Because it no longer lives inside `root`, it no longer disappears when `root` does, so the
+teardown tracks and removes it separately.
+
+Verified at 1700x780 (margins left and right): the veil measures **1700x780 against a 1700x780
+viewport**, its parent is `BODY`, and the wash is identical inside and outside the old stage
+edge — sampled across the full width, every sky sample is `rgb(206,235,254)` and every grass
+sample `rgb(194,229,172)`, the only exception being the basket. The confetti spreads the full
+width too, since its host moved with it.
+
+Teardown checked on the nastiest path — leaving the slide **while the cheer is up**, at 1s and at
+5s: the overlay node and the stage layer are both gone, no errors. Across a full 17-slide walk the
+cheer node is left behind on no slide. Zero console errors, zero 4xx, receipt 0 FAIL / 0 WARN.

@@ -3273,10 +3273,14 @@ body.mt-page{ background:#7FC2FE; }
      Shown between rounds while ONE clip both praises and gives the next
      instruction. It sits under the round banner (120) so the banner still
      reads on top when the next round opens. */
+  /* FIXED, and parented to <body> by the module - not absolute inside .mt-game. The wash has to
+     cover the WHOLE SCREEN including the letterbox, and .stage carries a transform, so a fixed
+     layer created inside it is captured and snaps back to the stage box. Moving the node out is
+     the only way it can reach the margins. z-index clears the stage and the nav button. */
   .level-cheer {
-    position: absolute;
+    position: fixed;
     inset: 0;
-    z-index: 110;
+    z-index: 9000;
     display: none;
     align-items: center;
     justify-content: center;
@@ -11352,6 +11356,11 @@ SlideModules.MATRA_TOKRI = {
         '</div>' +
         '<div class="feedback-pop" id="feedback"></div>';
     stage.appendChild(root);
+    /* The between-rounds wash must cover the letterbox too, and a fixed layer created inside
+       .stage is captured by its transform. So the cheer overlay is lifted out to <body>; it is
+       tracked separately because it no longer goes away when `root` does. */
+    const cheerEl = root.querySelector(".level-cheer");
+    document.body.appendChild(cheerEl);
 
       /* ---- host shims -------------------------------------------------------------------
          The game was written against the single-game shell (SwiftPalAudio / SFX / Bgm /
@@ -12128,6 +12137,7 @@ SlideModules.MATRA_TOKRI = {
         window.removeEventListener('resize', readStageScale);
         _mtTimers.forEach(window.clearTimeout);
         _mtTimers.length = 0;
+        if (cheerEl && cheerEl.parentNode) cheerEl.remove();   // lives on <body>, not in root
         stage.classList.remove("mt-play");
         document.body.classList.remove("mt-page");
         document.body.style.backgroundImage = "";
