@@ -2816,8 +2816,11 @@ html.no-anim .ol-alpha,html.no-anim .ol-band{animation:none !important;}
    at the other. Those rules were dropped in the port because they painted html/body globally and
    would have repainted all 17 slides. Same idea, gated on a class that exists only while the
    arcade is mounted. Lives on BODY, not in the stage: .stage carries a transform, which would
-   capture a fixed layer and shrink it back to the stage box. */
-body.mt-page{ background:#7EC2FD url("assets/UI/mt_bg_plate.webp") center / cover no-repeat; }
+   capture a fixed layer and shrink it back to the stage box.
+   NOT the plate at `cover`: that scales it independently of the stage's own copy, so the horizon
+   landed at a different height in the margin than in the scene and stepped at the seam. The
+   gradient is written by paintPageEdge() from the stage's MEASURED box instead - see there. */
+body.mt-page{ background:#7FC2FE; }
 
 /* WHILE THE ARCADE IS BEING PLAYED IT OWNS THE STAGE. The lesson's chrome is laid out for a
    card-and-options screen and collides with an arcade: the आगे button sits at bottom-centre,
@@ -11277,7 +11280,47 @@ SlideModules.MATRA_TOKRI = {
        the way out, which is where the rAF loop and the window listeners are released. */
     const stage = $("stage");
     stage.classList.add("mt-play");
-    document.body.classList.add("mt-page");   // letterbox matches the scene, see body.mt-page
+    document.body.classList.add("mt-page");
+
+    /* EVERY TIMER THIS SLIDE STARTS, TRACKED. The game schedules a lot of deferred work - round
+       banners, the level cheer, VO callbacks, the tutorial hand - and a child can tap आगे in the
+       middle of any of it. Cancelling the rAF loop was not enough: a pending setTimeout would
+       still fire against elements the teardown had already removed, which threw
+       "Cannot set properties of null (setting 'textContent')" on the way out. Shadowing
+       setTimeout for the whole module scope catches all of them without touching ~30 call
+       sites, and clearing them is one line in __slideCleanup. */
+    const _mtTimers = [];
+    const setTimeout = (fn, ms) => { const id = window.setTimeout(fn, ms); _mtTimers.push(id); return id; };
+
+    /* THE LETTERBOX IS THE PLATE'S EDGE COLUMN, CONTINUED. Sampled as the mean of the plate's
+       left and right edge columns (they agree to within ~1%), as fraction-of-height -> colour;
+       the dark stop at .6636 is the horizon's own outline. The stops are then positioned in
+       VIEWPORT pixels from the stage's measured box, so the horizon in the margin is by
+       construction at the same y as the horizon in the scene - which is exactly what `cover`
+       could not guarantee. Outside the stage the end stops clamp flat, which is what a
+       top/bottom margin wants. */
+    const MT_EDGE = [[0,"#7FC2FE"],[.0801,"#84C7FD"],[.1736,"#90D0FC"],[.2670,"#9CDCFD"],
+      [.3605,"#AAEAFC"],[.4539,"#B8F4FD"],[.5340,"#C4FAFC"],[.6008,"#CCFAFD"],[.6342,"#CEFBFC"],
+      [.6515,"#D0FCFE"],[.6569,"#D0F8FA"],[.6582,"#D4FDFF"],[.6595,"#B8E6F6"],
+      /* the horizon's outline is a 4px BAND in the plate (rows 495-498), not a line. Sampling it
+         with one stop let CSS interpolate straight through it, so the margin drew a thin pale
+         line where the scene has a thick dark one - measured at the seam: luminance 184 against
+         the scene's 153, with the row position already correct. These six stops are those rows
+         one for one, so the band has the same weight on both sides of the edge. */
+      [.6609,"#3E6E82"],[.6622,"#104158"],[.6636,"#174651"],[.6649,"#386556"],[.6662,"#ACD4AC"],
+      [.6676,"#CCF2AE"],[.6689,"#C5EC97"],[.6702,"#C7ED91"],[.6782,"#C2F78A"],[.6943,"#8ED257"],
+      [.7477,"#86CE50"],[.8545,"#78C648"],[1,"#78C44A"]];
+    const paintPageEdge = ()=>{
+      const r = stage.getBoundingClientRect();
+      if(!r.height) return;
+      const at = (f)=> (r.top + f * r.height).toFixed(1) + "px";
+      const mid = MT_EDGE.map(s => s[1] + " " + at(s[0])).join(",");
+      document.body.style.backgroundImage =
+        "linear-gradient(180deg," + MT_EDGE[0][1] + " 0px," + mid + "," +
+        MT_EDGE[MT_EDGE.length - 1][1] + " 100%)";
+    };
+    paintPageEdge();
+    window.addEventListener("resize", paintPageEdge);
     const root = document.createElement("div");
     root.className = "mt-game";
     host.setAttribute("data-mt", "1");
@@ -12083,8 +12126,12 @@ SlideModules.MATRA_TOKRI = {
         window.removeEventListener('pointermove', onPointerMove);
         window.removeEventListener('pointerdown', onPointerDown);
         window.removeEventListener('resize', readStageScale);
+        _mtTimers.forEach(window.clearTimeout);
+        _mtTimers.length = 0;
         stage.classList.remove("mt-play");
         document.body.classList.remove("mt-page");
+        document.body.style.backgroundImage = "";
+        window.removeEventListener("resize", paintPageEdge);
         if (root.parentNode) root.remove();
       };
   }

@@ -1306,3 +1306,51 @@ rgb(121,198,73) grass at the bottom**, at both a taller-than-16:9 and a wider-th
 Checked for leaks: `mt-page` is absent on the landing, absent on all 16 other slides, present only
 on the arcade, and the body background returns to `none` on the way out. All 17 slides mount, zero
 console errors, zero 4xx, receipt 0 FAIL / 0 WARN.
+
+---
+
+## Follow-up changes — 2026-09-22 (fifteenth round) — the letterbox, properly this time
+
+Round fourteen filled the margin with the plate at `cover`. That removed the white, but `cover`
+scales the image **independently of the stage's own copy**, so the horizon landed at a different
+height either side of the stage edge and stepped at the seam. Worse than the white bar.
+
+### The margin is now the plate's edge column, continued
+
+Sampled the plate's left and right edge columns (they agree to within ~1%) as a
+fraction-of-height → colour profile, and `paintPageEdge()` writes it as a `linear-gradient` whose
+stops are positioned in **viewport pixels computed from the stage's measured box**. The horizon in
+the margin is therefore at the same y as the horizon in the scene *by construction*, at any
+viewport, and re-anchors on resize. Outside the stage the end stops clamp flat, which is exactly
+what a top/bottom margin wants.
+
+**The horizon's outline is a 4px BAND, not a line** (rows 495-498 of the plate). Sampling it with
+a single stop let CSS interpolate straight through it, so the margin drew a thin pale line where
+the scene has a thick dark one — measured at the seam, luminance 184 against the scene's 153, with
+the row position already correct. Those four rows plus their two blend rows are now six stops,
+one per row.
+
+Measured across the seam, margin against scene:
+
+| | |
+|---|---|
+| sky rows | diff **0-2** of 255 |
+| grass rows | diff **0-4** |
+| top seam (tall viewport) | mean **0.9**, max 2.7, zero columns over threshold |
+| bottom seam | mean **2.2**, max 5.0, zero over threshold |
+| left/right seam | mean **2.5**, and the 16 rows that exceed it are the outline band itself, where a 1px offset is a large colour difference |
+
+### A real bug this surfaced
+
+Leaving the slide **mid-game** threw `Cannot set properties of null (setting 'textContent')`.
+Cancelling the rAF loop was not enough: the game schedules a lot of deferred work — round banners,
+the level cheer, VO callbacks, the tutorial hand — and a child can tap आगे in the middle of any of
+it, after which a pending `setTimeout` fires against elements the teardown has already removed.
+`setTimeout` is now shadowed for the module scope and every id tracked, so `__slideCleanup` cancels
+them in one line without touching ~30 call sites.
+
+Verified by bailing out of the arcade at **0.5s, 2s, 4s and 9s**: no errors, and the teardown is
+complete every time — class off, inline background cleared, stage layer gone.
+
+All 17 slides mount, zero console errors, zero 4xx, no leak of `mt-page` onto any other slide, and
+the gradient re-anchors correctly after a viewport resize.
