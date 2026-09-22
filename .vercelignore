@@ -29,6 +29,11 @@
 
 # The source GIF. It is re-encoded into assets/UI/train_cover.webp, which is what the page loads.
 3_CURRENT_BUILD/assets/GIFandVIDEO/
+# Source art the page never requests. train_spritesheet.png is encoded at build time into
+# assets/UI/train_spritesheet.webp (5702KB -> 1076KB); train.png is the hi-res standing train,
+# now unused because the sheet serves the stopped train too. Kept on disk, kept out of the bundle.
+3_CURRENT_BUILD/assets/Images/train_spritesheet.png
+3_CURRENT_BUILD/assets/Images/train.png
 
 # ── General ──────────────────────────────────────────────────────────────────
 __pycache__/

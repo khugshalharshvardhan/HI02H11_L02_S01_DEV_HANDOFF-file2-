@@ -60,6 +60,33 @@ REQUIRED_FEATURES = [
      "silent-on-late-correct is missing — a 3rd-attempt success would still be praised (row X1)"),
     ('classList.toggle("no-prompt"',
      "the empty-prompt band collapse is missing — the train screens would show an empty blue pill"),
+    # --- the cover-page entrance (deck page 3 / rows #6, #8, #9, #14) ---
+    ("train_spritesheet.webp",
+     "the cover is off the SME spritesheet — back on the train.gif re-encode, which carries the "
+     "black-matte fringe and the palette dither the sheet does not have"),
+    ("spin:71, rest:35",
+     "the spin/rest pair has drifted — SPIN must be congruent to REST mod 36 or the train's "
+     "last frame jumps as it stops"),
+    ("window.__landingTrainEnter",
+     "the train entrance is not deferred — it would run BEHIND the 1600ms brand loader and be "
+     "over before the child sees the landing"),
+    ('class="lt-smoke"',
+     "no chimney smoke on the cover train"),
+    # --- the VO / SFX folder split ---
+    ('const VO_DIR  = "assets/Audio/VO/"',
+     "the engine is back on a flat assets/Audio folder — every VO path would 404"),
+    ('const SFX_DIR = "assets/Audio/SFX/"',
+     "the engine is back on a flat assets/Audio folder — every SFX path would 404"),
+    ("const _inkCentre",
+     "the matras are back to BOX-centring — ि and ी paint a hook the others do not, so they "
+     "sit ~6.5px high in their panels unless the INK is what gets centred"),
+    ("const spinSprite",
+     "the spritesheet frame driver is gone — the travelling train would be a single frame"),
+    ("travelEase(p) * SPR.spin",
+     "the chug is no longer coupled to the travel easing — the wheels would run at a constant "
+     "rate and stop dead the instant the loco halts, which is what read as abrupt"),
+    ("_inkCentre(sp)",
+     "placeTrainParts is no longer using the ink centre to place the matras"),
 ]
 
 # ि must NOT be in the right-spacing set: it is a reordering matra and the pixel-column method
@@ -553,8 +580,13 @@ def main():
     if unknown:
         raise SystemExit(f"  X  slides reference audio ids with no text authored: {unknown}")
 
+    # [audio-split] SFX and VO live in separate folders. One helper, so the card, the
+    # existence check below and the engine's VO_DIR/SFX_DIR can never drift apart.
+    def audio_path(k):
+        return f"assets/Audio/{'SFX' if k.startswith('sfx_') else 'VO'}/{k}.ogg"
+
     CARD["assets"] = {
-        "audio": {k: f"assets/Audio/{k}.ogg" for k in sorted(used_audio)},
+        "audio": {k: audio_path(k) for k in sorted(used_audio)},
         "audio_text": {k: VO[k] for k in sorted(used_audio)},
         "image": {k: f"assets/Images/{k}.png" for k in sorted(IMAGES)},
         "audio_ext": "ogg",
@@ -590,16 +622,19 @@ def main():
     assert "</head>" in html, "no </head> in built HTML — preload injection would be silent"
     html = html.replace("</head>", links + "</head>", 1)
 
+    # newline="" (i.e. NO newline translation). Python's default text mode rewrote every LF
+    # as CRLF on Windows, so a rebuild that changed NOTHING still reported 18k changed lines
+    # and buried the real diff. The engine template is LF; the build output now matches it.
     html_path = os.path.join(OUT, f"{CODE}.html")
-    open(html_path, "w", encoding="utf-8").write(html)
-    with open(os.path.join(OUT, "card.json"), "w", encoding="utf-8") as f:
+    with open(html_path, "w", encoding="utf-8", newline="") as f:
+        f.write(html)
+    with open(os.path.join(OUT, "card.json"), "w", encoding="utf-8", newline="") as f:
         f.write(json.dumps(CARD, ensure_ascii=False, indent=2))
 
     # ---- report what still has to be produced -------------------------------------------------
-    audio_dir = os.path.join(OUT, "assets", "Audio")
     img_dir = os.path.join(OUT, "assets", "Images")
-    missing_audio = [k for k in sorted(used_audio)
-                     if not os.path.exists(os.path.join(audio_dir, k + ".ogg"))]
+    on_disk_audio = lambda k: os.path.exists(os.path.join(OUT, audio_path(k).replace("/", os.sep)))
+    missing_audio = [k for k in sorted(used_audio) if not on_disk_audio(k)]
     missing_img = [k for k in sorted(IMAGES)
                    if not os.path.exists(os.path.join(img_dir, k + ".png"))]
 
@@ -618,8 +653,7 @@ def main():
     if os.path.exists(prev):
         oldtext = json.load(open(prev, encoding="utf-8"))["assets"]["audio_text"]
         rerec = [k for k in sorted(used_audio)
-                 if k in oldtext and oldtext[k] != VO[k]
-                 and os.path.exists(os.path.join(audio_dir, k + ".ogg"))]
+                 if k in oldtext and oldtext[k] != VO[k] and on_disk_audio(k)]
         print(f"  RE-RECORD (file exists, TEXT CHANGED): {', '.join(rerec) or 'none'}")
 
 

@@ -616,3 +616,281 @@ means updating `GLASS` in the module.
 
 `assets/Images` 2.2MB → 3.4MB (the new art is higher resolution). Bundle 52MB; the deploy after
 `.vercelignore` is unaffected in shape and still well inside limits.
+
+---
+
+## Follow-up changes — 2026-09-21 (third round) — the cover page
+
+Final build sha `8b289eea9be3`. Receipt unchanged: the 4 FAIL / 1 WARN it reports are all one
+pre-existing thing — `sfx_celebrate`, `vo_pt_guided`, `vo_pt_practice`, `vo_pt_tutorial` are
+**Opus**, and `_verify_assets.py` reads duration through `wave`, so it scores them 0.00s. Nothing in
+this round touched them.
+
+| # | ask | what was done |
+|---|---|---|
+| H1 | the train should enter from the right to the centre "with a proper animation" | Two things were wrong, and the second is why G1 never landed. **(a) It was playing to nobody.** `boot()` runs *behind* the brand loader, which holds for a minimum of 1600ms — the 1.7s entrance started at mount, so by the time the loader faded the train was already parked. The entrance is now a deferred `window.__landingTrainEnter()` that the loader's own `ready()` fires, next to the landing VO, so travel, chug and greeting all start on the frame the child first sees the card. **(b) 115% was not off-screen.** The wrap is 634px and sits at x=349 in the 1333px stage, so 115% (729px) left ~230px of train already in view at frame 1: it popped in half-arrived. Now 168% (1065px), which clears the stage edge. Travel is 2600ms with per-keyframe easing — a long decelerating roll, ~14px past centre, then the buffer rebound back onto it — plus a 2.5px bob on the loco that stops on arrival so the matras land on a still panel. |
+| H2 | use the two new SFX (`train.mp3`, `wistle.mp3`) | Both ids were **synthesised stand-ins** until now (rows F4 / G2 — no SFX generator exists in the kit, so they were built from filtered noise and sine partials). Replaced with the audio team's takes: `wistle.mp3` → **`sfx_whistle.ogg`** (its leading 0.26s of silence trimmed; 1.40s, 32kHz) and `train.mp3` → **`sfx_train_move.ogg`** (the source opens with a whistle of its own for ~1.2s, so the chug bed is cut from 1.35s; 3.40s, fading 2.60→3.40s so it ducks exactly as the whistle sounds on arrival; 16kHz, because the source is 11kHz mono and anything higher is empty bytes). Levels matched to the bed they play in rather than to the source: peak −13.7 / RMS −29.4 dB for the chug (the synth one was −14.0 / −28.7) and peak −6.9 / RMS −22.6 for the whistle (`sfx_train_arrive` is −6.7 / −22.4). Confirmed in-browser that both decode and play — `_sfxHave` reports `true` for both ids, i.e. the real file, not the procedural fallback. *(Superseded in round four — see H2′: the levels went up again and the synth takes were deleted rather than archived.)* |
+| H3 | "there is some kind of distortion in the gif of the train" — **still**, after G3 | G3 fixed a *third* problem (lossy WebP ringing) and left the two real ones untouched, because both live **in the frames** and no re-encode can reach them. Measured: **(a)** the GIF carries 1-bit alpha flattened onto a **black matte**, so the whole silhouette is ringed by 1–3px of near-black — pure `[2,0,0]` two pixels deep at the chimney — dithered into a speckled halo, and the gradients carry an ordered dither; **(b)** all **36 frames are drawn independently**, so the loco *morphs* as it loops: cab width, chimney, cowcatcher and drive rod all change shape (per-frame deviation from the median silhouette spans 143k–475k, a 3.3x spread). Fix: keep **one** frame — frame 1, measured closest to the per-pixel median — and rebuild it. The matte is black, so an edge pixel reads `observed = α × true_colour`; the true colour is recovered by normalised-convolution inpainting outward from 3px inside the silhouette, and α falls out as `luminance(observed) / luminance(true)`. That reconstructs a genuine anti-aliased edge rather than just cutting the halo off, and a sub-pixel blur clears the dither. Written at 2x (1268×364) for retina as `assets/UI/train_cover_clean.webp`: **904KB → 334KB lossless**. The train's *life* is CSS now — travel, bob and chimney smoke — so nothing warps, and the matras sit on a steady panel instead of riding a wobbling frame. |
+| H4 | "leaving smoke from the chimney" | 7 puff `<i>`s on a zero-size `.lt-smoke` anchor that `placeTrainParts()` pins to the chimney mouth (8.4% across, 13% down, measured off the artwork — the same method as the matras, so it survives a re-render at another size). They rise 104px, spread to 1.9x and fade on a 1610ms loop. Two details that were each wrong once: the puffs are **not white** — the card ground is `#F2F9FE` and the first pass was invisible against it, so the body is a light blue-grey with a white highlight; and the delays are **negative**, one full period spread across the 7, so the plume is already established on the frame the train appears instead of the loco entering with a bare chimney. The trail streams back hard while it is moving (`--lt-drift-move`, 9.8% of the artwork) and stands almost upright once parked (`--lt-drift-rest`, 2.2%) — swapped through a var the `.lt-arrived` class can win, because the JS-written value is an inline style and would otherwise outrank any class rule. Disabled under `prefers-reduced-motion` along with the travel and the bob (verified: all three report `animation-name: none`, train at its rest x, matras at opacity 1). |
+| H5 | housekeeping, while in here | Three entries added to the build script's `REQUIRED_FEATURES` guard so a re-copied engine cannot silently lose this round: the clean art, the deferred entrance, and the smoke. The build now writes **LF, not CRLF** — Python's default text mode was translating every newline, so a rebuild that changed *nothing* still reported 18k changed lines and buried the real diff. |
+
+### Verified
+
+All 16 slides mount with **zero console errors and zero 4xx**. Landing timeline measured in Chromium
+at 1440×820: the entrance starts as the loader dismisses, the train comes in off-stage at
+x=921 → 594 → 443 → 371 (past centre) → settles at 378, `lt-arrived` and the whistle land at
++2600ms, and the matras still reveal on the landing VO's end as before. The only 404 on the page is
+`sfx_sparkle.ogg`, which is pre-existing and by design — it is one of the five deck SFX (row X4)
+that were never produced, and `sfxOr()` falls back to its procedural tone.
+
+### One thing left to decide
+
+`assets/UI/train_cover.webp` (904KB, the animated re-encode) is now **unreferenced**. It has been
+left on disk rather than deleted, because it is the SME's supplied artwork in its last-shipped
+form. If you want the bundle clean it can go — nothing requests it.
+
+---
+
+## Follow-up changes — 2026-09-21 (fourth round) — corrections to the third
+
+Three of round three's four answers were wrong in a way my own captures did not show. Recorded as
+corrections rather than quiet edits, because each one is a lesson about the check that missed it.
+
+| # | ask | what was done |
+|---|---|---|
+| H3′ | "you made it worse, see the quality of the train, there is too much grain around the train" *(the grain fix below stands; the single-frame decision it was built on was reversed in round five — see H3″)* | **Correct, and it was my un-matte.** Measured on the shipped file: **19,527 pixels sat between alpha 1 and 95** — a 3px band of *noisy fractional* alpha ringing the whole silhouette, which is exactly the speckled halo it was supposed to remove. The cause: the textbook un-matte (α = `luminance(observed) / luminance(true)`) reads its numbers from a source that is **ordered-dithered**, so the recovered α inherits the dither instead of averaging it away. Colour and alpha are two independent problems and are solved separately now — colour still comes from normalised-convolution inpainting (that part worked), but alpha is rebuilt **geometrically**: de-speckle the binary silhouette at 4x (blur → threshold), then add one ~1.5px AA ramp. Partial-alpha pixels **19,527 → 8,826**, and now a clean monotonic rim instead of noise. Also re-encoded **lossless** (334KB) — the WebP was not the culprit, its alpha histogram was byte-identical to the source PNG's, but with quality being the complaint there is no reason to leave a lossy step in the chain. **The check that missed it:** I inspected the edge at 8x against white and against black, where a low-alpha halo is nearly invisible. The grain shows against the card's own `#F2F9FE` ground — which is what the user was looking at. A partial-alpha *pixel count* would have caught it in one line, and is now printed by the script every run. |
+| H1′ | "the train should come from the right (but not from outside the box)" | Round three ran it in from off the **stage** edge, so it spent the first half of the journey drawn on the blue ground *outside* the white card. New `.lt-clip` — 1080px wide (the card interior is 1114px) with `overflow:hidden` — makes the card the track: the loco is **revealed at the card's right edge** rather than flying across the background to reach it. Verified: clip spans x 137–1303, card 118–1322. Two things it needs in order not to break: `flex:0 0 auto`, or `.sg-art`'s 760px flex row shrinks the item and takes the clip width with it; and `padding-top:130px` with an equal negative `margin-top`, which buys the smoke plume (it rises ~95px above the chimney) headroom *inside* the clip without moving the layout — otherwise the clip beheads it. The `translateX` start is now **136%** (862px; the wrap sits at x=223 inside the clip), not 168%. |
+| H1″ | "reduce the speed of the train" | Duration 2600ms → **3400ms**, but the duration was the smaller half of the problem: the easing was `cubic-bezier(.24,.60,.24,1)`, which is **53% of the way there in the first 20% of the time**. It read as a dart followed by a crawl, and lengthening it would only have made the crawl longer. Now `cubic-bezier(.40,.20,.45,1)` — 17% / 50% / 80% at t = 20 / 40 / 60% — so it is already rolling as it clears the card edge, near-constant through the middle, braking at the end. Measured frame by frame in Chromium: **143 → 162 → 194 → 177 → 130 → 80 → 42** px per 335ms interval — it genuinely accelerates, cruises, then decelerates into the stop. |
+| H2′ | "use the sfx I've added and remove the old sfx that you generated for train · increase the SFX volume little · also use train whistle sfx as well" | **`sfx_train_arrive` was still synthesised** — round three replaced only two of the three train ids. All three are now cut from the audio team's files, and `assets/Audio/_superseded_synth/` (round three's archive of the generated takes) is **deleted**: nothing generated for the train remains. `sfx_train_arrive.ogg` is train.mp3 0.10–1.65s, the recording's own whistle-and-chuff onset — the right sound for the in-game `TrainChrome` entry it backs on 7 screens. **Volume** raised two ways, because the asset level was only half of it: the files went up (chug peak −9.7 / RMS −25.4 dB, whistle −3.9 / −19.6, arrive −2.4 / −19.4 — all checked for clipping; +9 dB on the arrive cut hit 0.0 dBFS and was backed off to +5) **and `playSfx(id, vol)` takes a gain now**, defaulting to the house 0.7 so every other caller is untouched, with the three train ids passing **1.0**. Net about +6 to +7 dB. **The whistle** fires as the train settles, per the deck ("whistles as it settles") — and there is now a likely reason it was not audible before: Web Audio starts **suspended** until a real gesture on most mobile browsers, and a suspended context accepts `start()` and plays **silence, with no error**, so on a cold open both train sounds were thrown away. The landing VO already had a first-gesture fallback; the train has its own now — if the context is not `running` when the entrance fires, the first pointerdown resumes it and sounds the whistle, since by then the travel is over and the whistle is the only beat still worth hearing. |
+
+### Verified
+
+The lossless re-encode is pixel-identical to the source PNG (max delta 0). All three train ids
+report `_sfxHave = true` — the real recordings, not the procedural fallbacks — including
+`sfx_train_arrive` after mounting a `TRAIN_TAP` screen. All 16 slides mount with zero console
+errors; the only 404 remains the pre-existing `sfx_sparkle.ogg` (deck row X4, never produced,
+procedural fallback by design). `prefers-reduced-motion` still kills the travel, the bob and the
+smoke, and leaves the train at its rest position.
+
+### Still open
+
+The whistle sounds **once**, on arrival. A real engine would also whistle on approach, but at t=0
+that lands on top of the opening of the landing VO, so it was left out — say if you want it there
+anyway.
+
+---
+
+## Follow-up changes — 2026-09-21 (fifth round) — the motion comes back
+
+| # | ask | what was done |
+|---|---|---|
+| H3″ | "in the original gif the wheel of the train was moving … also there is slight movement in the train cart which is still missing … you are just using the static image of train" | **Right, and collapsing to one frame was the wrong call.** I treated all of the frame-to-frame variation as defect; part of it is the animation. What I also had wrong about the mechanism: the wheels are **concentric rings**, so rotating a wheel sprite in CSS would show literally nothing — what reads as "the wheels are turning" is the red **drive rod** and its two yellow **crank pins** changing angle frame by frame, plus the carts' own bob. Neither can be synthesised from a still, and neither can be rigged by cutting the sprite up, because the rod's motion is drawn rather than rigid. So all **36 frames are back at the original 50ms**, each run through the same repair that fixed the grain. Measured before deciding: the loop has **no repeating period** (mean frame delta never returns toward zero at any lag from 1 to 18), so the frames could not be subsampled to save weight without losing smoothness. Encoded lossy **q90 with `alpha_quality=100`**, so the repaired edge survives byte for byte — partial-alpha pixels per frame is **4664, identical to the source frames** — while the RGB compresses: **898KB** at encoder method=6 (method=4 gave 946KB at the same measured fidelity), i.e. slightly lighter than the animated asset that shipped before any of this. Lossless measured **3.2MB** and was rejected. The CSS bob added in round three is **removed**: the frames carry their own, and stacking the two double-bounced the loco. |
+| H2″ | "the whistle of the train is still missing so use that as well" | **It was playing the whole time.** I tapped every `AudioBufferSourceNode.start()` and logged each buffer's duration and peak amplitude: the whistle fired at **5216ms, peak 0.578, non-silent** — while the landing VO ran **1799–6289ms at peak 0.911**, so speech masked all but its tail. Round four's "raise the volume" could never have fixed that: it is a **masking** problem, not a level problem, and I should have measured the overlap instead of the file. Two changes. The whistle now sounds **as the train enters** rather than as it settles — which is also what deck row 11 actually asked for ("a soft train arrival / whistle SFX when the train **enters**"); "as it settles" was round three's own invention. And `enterLanding()` holds the greeting back **900ms** so the whistle's body plays in the clear. Only the automatic first play is delayed — the listen chip and the autoplay fallback both call `playLanding()` directly, and it no-ops once the start gate is hidden, so a child who taps through inside the window is never talked over by a late greeting. Verified timeline: **whistle 1797→3197ms, chug 1801→5201, VO 2690→7180** — 893ms of clear air for the whistle, with only the chug (peak 0.282) beneath it. |
+
+### A near-miss worth recording
+
+While editing the engine, `io.open(path, "w")` **truncated `4_ENGINE/lesson_template.html` to 0
+bytes**. Open-for-write truncates immediately, and the `.write()` that followed raised
+`UnicodeEncodeError` on a bad escape in my own comment text before writing a single byte.
+
+Recovered exactly, by reversing the build transform on `3_CURRENT_BUILD/HI02H11_L02_S01.html`:
+strip the generated first-slide preload links, then restore the engine's own `cardData` payload
+from `git show HEAD`. Then proved it rather than assuming it — the diff against HEAD contained
+only the 8 intended hunks, and rebuilding from the recovered engine produced a file
+**byte-identical** to the build that existed before the truncation.
+
+Edits now go through a helper that encodes to bytes **first**, writes a sibling temp file, and
+`os.replace()`s it, so a failed encode can never destroy the original.
+
+### Unrelated, but found while editing this file
+
+`CHANGES.md` carries **54 truncated UTF-8 sequences** — Devanagari characters cut mid-codepoint,
+all of them at line ends inside the round-one and round-two tables (first at byte 3552). They
+predate this work and the lost bytes are not recoverable from the file itself; the quoted VO lines
+around them are readable in `card.json` and `VO_RECORDING_LIST.md` if anyone needs to repair them.
+Every edit since has been made with `surrogateescape` so the damage is preserved rather than
+widened.
+
+### Verified
+
+All three train ids report `_sfxHave = true` — the real recordings, not the procedural fallbacks —
+including `sfx_train_arrive` after mounting a `TRAIN_TAP` screen. The sprite is confirmed animating
+*in the page*: 60–80k pixels change between screenshots taken 150ms apart. All 16 slides mount with
+zero console errors; the only 404 remains the pre-existing `sfx_sparkle.ogg`.
+`prefers-reduced-motion` still kills the travel and the smoke — the artwork's own frames are not a
+CSS animation and cannot be stopped from CSS, leaving a couple of pixels of cart bob.
+
+---
+
+## Follow-up changes — 2026-09-22 (sixth round) — one sound palette, two folders
+
+| # | ask | what was done |
+|---|---|---|
+| J1 | "remove all the current sfx used for the train and use these `sfx_train_arrive`, `sfx_train_move`, `sfx_whistle`, remove any other sfx used there" | The three ids were already the only *train* sounds — what was also firing on train chrome was **`sfxSparkle`**, twice: on the cover as each matra popped onto its coach, and in `TrainChrome.popLabels()` as each coach label appeared. Both removed; the pops are still visual. The train's palette is now exactly the three: **`sfx_whistle`** on the cover's entry and on `TrainChrome.complete()`, **`sfx_train_move`** under the cover's travel, **`sfx_train_arrive`** on the shared shell's rail entry (7 in-game screens). Measured on a cold load, the cover now fires exactly three buffers: whistle 1.40s at 1783ms, chug 3.40s at 1786ms, landing VO 4.49s at 2685ms — nothing else. **Deliberately NOT removed:** `sfxCorrect` / `sfxWrongSoft` / `sfxChime` / `sfxShake` and the remaining `sfxSparkle` calls inside the slide modules. Those are answer feedback, not train chrome, and they are the same sounds the other nine screens use — silencing them would leave a child with no audible right/wrong signal on 7 of 16 screens. Say the word if you want that too. |
+| J2 | "put all the sfx in one folder and VO in another" | `assets/Audio/` is now **`assets/Audio/SFX/`** (8 effects + the two source recordings `train.mp3` / `wistle.mp3`) and **`assets/Audio/VO/`** (169 clips). Nothing is left at the Audio root. Rather than rewrite the ~80 places that inlined `"assets/Audio/" + id + "." + AUDIO_EXT`, the engine now declares **`VO_DIR`** and **`SFX_DIR`** once beside `AUDIO_EXT` and every path is built from one of them — 159 literals rewritten mechanically, the two `playSfx`/`sfxOr` sites pointed at `SFX_DIR`, and a **future split is a one-line edit**. The builder writes the folder into `CARD.assets.audio` from the same `sfx_` rule, and the engine guard gained two entries so a re-copied engine that has drifted back to a flat folder is refused rather than shipping 404s. |
+
+### The bug the folder split introduced, and how it surfaced
+
+`warmCardAudio()` prefetches **every** id in the card, and it built them all as VO. After the split
+that requested `assets/Audio/VO/sfx_celebrate.ogg` — a 404 on every page load, because
+`sfx_celebrate` is the one SFX the card declares (the CELEBRATION slide's `audio.sfx`). It was
+invisible in the old flat layout and only a **whole-lesson walk** caught it, not the cover.
+
+Fixed with a single resolver, `audioSrc(id)`, which prefers the card's own map — authoritative,
+since the builder writes the folder into it — and falls back to the `sfx_` prefix rule for ids the
+card does not declare. `warmCardAudio` and the `vo_landing` fallback both use it now.
+
+### Verified
+
+Whole-lesson walk in Chromium, all 16 slides: **97 distinct audio files fetched (93 VO + 4 SFX),
+zero console errors, zero 4xx** — the first fully clean run of this work. (The long-standing
+`sfx_sparkle.ogg` 404 is gone from the cover too, because the cover no longer calls it; the three
+module call sites remain and still fall back to their procedural tone by design.) Asset receipt:
+**94/94 clips present** through the new paths, 0 orphans, and the same 4 pre-existing FAILs, which
+are Opus clips the WAV-only duration checker cannot read. `.vercelignore` needed no change — it
+never named the Audio folder, so both subfolders deploy.
+
+### One judgement call to confirm
+
+The two **source** recordings (`train.mp3`, `wistle.mp3`, 157KB together) are in `assets/Audio/SFX/`
+with the effects cut from them, so the provenance stays next to the result — but they are
+unreferenced and will deploy. Add them to `.vercelignore` if you would rather the bundle carried
+only what the page requests.
+
+---
+
+## Follow-up changes — 2026-09-22 (seventh round) — a parked still, and the verdict on the GIF
+
+| # | ask | what was done |
+|---|---|---|
+| K1 | "when train is stopped use this image" | **Wired, drop-in ready — but the image itself was not in the bundle.** Searched `assets/`, the whole handoff tree, Downloads, Desktop, Pictures and `f:/CG Game`: no image file anywhere with a modification time after the last session. So the mechanism is built and a placeholder is in it. `.lt-still` is a second `<img>` stacked on `.lt-train`, cross-faded in over 260ms when `.lt-arrived` lands, after which the animated layer goes `visibility:hidden`. Source is `hero.src_still`, default `assets/UI/train_cover_still.webp`. It is **optional**: if the file is absent the image's error handler drops `.lt-has-still` and removes the layer, so the cover degrades to exactly the previous behaviour instead of a blank box — verified both ways. Placeholder currently in place is my own cleaned frame 1 at 2x, lossless (334KB); replace the file and nothing else needs to change. Measured parked: two screenshots 250ms apart differ in **3006 pixels, all inside x 353-424 / y 121-270** — the smoke plume column. The train body is now completely static when stopped, which is what the three matras need. |
+| K2 | "still the quality of the train is still low, it looks distorted, if you think gif is not working tell me" | **The GIF is not working. Please send the spritesheet.** This is not an encoding problem and no further cleanup will fix it. Measured, per consecutive frame pair, on regions that *should be identical* if this were an authored animation: the **pink coach body + panel** changes in 30.1% of its pixels, the **green coach** 36.5%, the **loco cab + chimney** 50.4%. For comparison the parts that are *supposed* to move — the drive rod and wheels — change in 44.5% and 32.6%. **The cab and chimney change MORE than the wheels do.** Rendering the same pink coach from six frames side by side shows it directly: the cream panel changes height and corner radius, the body's proportions change, the roof highlight moves, the wheels change diameter. Every frame is an independent redraw of the whole train, so the "animation" is a redraw, not a motion — which is exactly what reads as distortion, at any quality setting, in any format. |
+
+### What the spritesheet needs to contain
+
+So the next round does not bounce again:
+
+* **One base artwork**, drawn once. Every frame must be pixel-identical except the parts that move.
+* **Only the moving parts differ per frame** — for this art that is the red drive rod and its two
+  yellow crank pins, and optionally a 1-2px vertical bob. The coach bodies, cream panels, roofs,
+  chimney and cab must not change at all.
+* **Horizontal strip, fixed cell size**, frames left to right, no padding between cells, and the
+  sheet's width an exact multiple of the cell width.
+* **Transparent PNG with real 8-bit alpha** — not GIF, and not flattened onto any matte. The
+  black-matte fringe repaired in rounds three to five came from exactly that.
+* **2x the layout size**: cells of **1268x364** (the page draws the train at 634x182 CSS px).
+* **8-16 frames** is plenty for a rod cycle; tell me the intended loop duration.
+* Plus the **parked still** as its own file, same 1268x364, same artwork with the rod at rest.
+
+Given a sheet like that the engine change is small — a steps() `background-position` animation on
+the moving layer over a static base — and the result will be genuinely crisp, smaller than the
+898KB the current animation costs, and completely free of wobble.
+
+### Verified
+
+Both branches of the still swap tested in Chromium: with the file present the animated layer hides
+and the parked train is pixel-static; with it absent the layer self-removes and the animation stays
+up, no JS errors either way. Matras still reveal, no 4xx. The engine guard gained an entry so a
+re-copied engine cannot silently lose the parked layer.
+
+### A note on how the still layer nearly shipped broken
+
+The first attempt put the fallback in an inline `onerror=""` attribute. That needs quotes nested
+three deep — HTML attribute inside a JS string inside the engine file — the escaping did not
+survive the edit, and the emitted string literal terminated early: `Unexpected string`, and the
+entire landing hero failed to build. Caught immediately because the verification walk reads
+`.lt-wrap` and it was null. The handler is attached in JS now, with no nested quoting at all, and
+it additionally re-checks `complete && !naturalWidth` because a cached 404 can finish before a
+listener is attached.
+
+---
+
+## Follow-up changes — 2026-09-22 (eighth round) — the SME spritesheet lands
+
+Two files arrived: `assets/Images/train_spritesheet.png` (3804x1092) and `assets/Images/train.png`
+(2171x724, which turned out to be the "use this when stopped" image from the previous round — it
+had been sitting in `Images/` all along and I missed it in that search). **Three rounds of
+hand-repair of the GIF are deleted.** The source art made all of it unnecessary.
+
+| # | what | detail |
+|---|---|---|
+| L1 | the sheet is the GIF's frames, re-exported properly | Verified rather than assumed: cell *i* best-matches GIF frame *i+1*, in order, all 36 of 36, at mean abs diff **4.25** — the same poses, and the 4.25 is precisely the black-matte fringe that is no longer there. Grid confirmed empirically from the transparent gutters: cells are **634x182 on a 6x6 grid** with 2px margins, exactly the layout size. Quality, measured: **255 alpha levels and 3.7% partial-alpha** (real anti-aliasing, no 1-bit matte) and **1354 distinct colours in a cab patch where the GIF had 51**. Encoded to WebP at q92 with `alpha_quality=100`: **5702KB PNG → 1076KB**, alpha byte-identical to the source, mean delta 1.26. |
+| L2 | travel now runs off the sheet, in CSS | `.lt-train` is a `div` driven by `background-position` instead of an `<img>`. Walking a 2D grid takes **two `steps()` animations, not 36 keyframes**: the column axis sweeps 6 cells per 300ms, the row axis 6 rows per 1800ms, which together visit all 36 cells at the GIF's own 50ms cadence. `steps(6)` from 0 to -100% lands exactly on the six cell offsets and never interpolates — a plain `background-position` keyframe pair would slide between cells. Verified in Chromium: consecutive samples read `-1268px -364px`, `-2536px -364px`, `-3170px -364px`, `-634px -546px` — every value an exact multiple of 634 and 182. Two side-effects worth having: parking the train is now just "stop the animation", and **`prefers-reduced-motion` finally freezes the artwork too** (it could not touch an animated WebP's internal frames). |
+| L3 | stopped state uses their hi-res still, registered | `train.png` is a different framing from the sheet — canvas aspect 2.998 against the cell's 3.483, because it carries more vertical padding. But the **train itself** measures 3.600 in the sheet and 3.613 in the still, i.e. the same drawing. So the still is cropped to its own alpha bounding box, scaled, and pasted so that box lands on **exactly** the cell's box, (2,4)-(631,178) — asserted equal after a round-trip through the encoder, so the cross-fade cannot shift the train by a pixel and one set of matra spots serves both. Written at 2x for retina: `assets/UI/train_parked.webp`, 112KB. |
+| L4 | matra spots re-measured off the parked art | Those three glyphs sit on the parked frame for the whole time they are visible, so the spots should be measured there, not off a GIF frame. Connected-component segmentation of the three cream panels gives centres at **41.25/47.80, 64.27/47.25, 87.70/47.80** — within 3px of the old values, now exact. |
+
+### Weight
+
+`train_cover_clean.webp` (898KB) and `train_cover_still.webp` (334KB), both of them mine, are
+**deleted** — nothing references them. 1232KB out, 1188KB in (1076 + 112), so the cover is
+marginally lighter than before and the art is from source rather than reconstructed.
+
+The 5702KB source PNG was moved to `assets/GIFandVIDEO/train_spritesheet.png`, next to `train.gif`:
+that is the source-art folder and it is already in `.vercelignore`, so the deployed bundle carries
+only the encoded WebP. `assets/Images/` is back to nothing but the `obj_*` content art.
+
+### Still open
+
+* The sheet is **1x** (634x182 cells), so on a retina screen the travelling train is upscaled
+  while the parked still — which is 2x — is not. If a 2x sheet (1268x364 cells) is easy to export,
+  the travel would match the parked frame's sharpness. It would cost roughly 4x the bytes, so it
+  is worth doing only if the travel still reads as soft to you.
+* `assets/UI/train_cover.webp` (904KB, the original animated re-encode) is **still unreferenced**
+  and still on disk, as flagged two rounds ago. Say the word and it goes.
+
+### Verified
+
+Whole-lesson walk in Chromium: the only train assets requested are `train_spritesheet.webp` and
+`train_parked.webp`; all 16 slides mount; **zero console errors, zero 4xx**. The sprite steps
+through discrete cells during travel, hands over to the still on arrival, and the three matras
+reveal on their panels. `prefers-reduced-motion` reports `animation-name: none` for the travel,
+the sprite and the smoke — the cover is now completely static under it for the first time.
+
+---
+
+## Follow-up changes — 2026-09-22 (ninth round) — the stop stops being a cut
+
+| # | ask | what was done |
+|---|---|---|
+| M1 | "why didn't you use train_spritesheet.png instead of train gif" | **It already was the spritesheet** — but two things I did made that impossible to tell from the outside, and both are fixed. (a) I encoded the sheet to `assets/UI/train_spritesheet.webp` (5702KB PNG is far too heavy to ship) without saying so plainly. (b) I filed the source PNG in `assets/GIFandVIDEO/`, i.e. literally next to `train.gif`, which reads as "filed away, still using the gif". The PNG is **back in `assets/Images/` where it was put**, and `.vercelignore` now excludes it and `train.png` by name so the 7.0MB of source art does not deploy while staying exactly where it was handed over. For the record: the only occurrence of `train.gif` anywhere in the built page is a CSS comment saying the repair pipeline is gone, and a network capture of a full load lists exactly two train assets — `UI/train_spritesheet.webp` and `UI/train_parked.webp`. |
+| M2 | "when you replace the gif with train image it feels abrupt and does not look smooth" | **Two separate causes, both real.** (a) The chug ran at a CONSTANT rate off a CSS `steps()` animation and then stopped dead at `TRAVEL_MS` — so the loco eased to a halt while its wheels were still going full tilt, and then everything cut at once. The frame advance is now driven per-frame from JS through **the same cubic-bezier the travel is eased with**, so the cell index is a function of distance covered rather than of the clock. Measured through a run: chug **20 → 30 → 37.5 → 35 → 25 → 15 → 0 cells/s** against train speed **322 → 500 → 550 → 420 → 248 → 112 → 0 px/s** — they rise and fall together and reach zero on the same beat. 74 cells over the travel averages 21.8fps, within a whisker of the GIF's native 20. (b) The stop and the art swap happened on the SAME frame, so they registered as one hard cut. The train now halts on a chosen **rest cell**, holds 140ms, then cross-fades 420ms (was 260). The rest cell is 74 % 36 = **2**, picked because cell 2 is the frame measured closest to the parked still (mean abs diff 11.01 against a 17.21 worst case) — so the hand-over is between two near-identical poses instead of whatever frame the clock stopped on. |
+
+### Measured, on the handover itself
+
+Screenshots every 80ms across the transition, counting pixels changed against the previous frame:
+motion winds down **17920 → 7121 → 2028 → 262**, and every frame through the cross-fade window sits
+at **196-807** — the same order as the smoke plume drifting on its own. The swap is roughly **40x
+gentler than the movement that precedes it**, which is the opposite of the spike a visible pop
+would leave. Frame-by-frame inspection shows no ghosting, no double image and no shift.
+
+### Verified
+
+Network capture of a full load lists exactly two train assets, both the SME's, and no gif. All 16
+slides mount; **zero console errors, zero 4xx**. All three matras reveal on their panels. Under
+`prefers-reduced-motion` the sprite reports cell 2 and never spins — `spinSprite()` checks the
+query itself now rather than relying on a CSS rule, so the cover is completely static.
+
+---
+
+## Follow-up changes — 2026-09-22 (tenth round) — one asset, and the matras finally centred
+
+| # | ask | what was done |
+|---|---|---|
+| N1 | "don't replace the train image, use the spritesheet for the standing train as well" | The cross-fade to a separate hi-res still is **gone**, and so is the still: `.lt-still`, `lt-has-still`, `lt-fade-still`, `lt-still-shown` and `assets/UI/train_parked.webp` are all deleted. The sheet is the train, moving or standing. The train now simply decelerates onto one cell and stays on it — which incidentally removes the abruptness of round nine **at its source** rather than smoothing it over, because there is no longer a swap to smooth. Which cell it stops on is chosen, not incidental: **cell 35**, measured as the frame closest to the per-pixel MEDIAN of all 36 (5.87 against a 9.68 worst case), so the train rests on the most representative pose rather than one of the extremes of this artwork's wobble. `SPR.spin` moved 74 → **71**, because the frame count has to be congruent to the rest cell mod 36 or the last frame jumps: 71 % 36 = 35. 71 cells over 3400ms averages **20.9fps**, which is the GIF's native rate almost exactly. Verified: 8 distinct cells sampled during travel, exactly **1** while parked (`-3170px -910px` = row 5 col 5 = cell 35), and the only train image the page fetches is `train_spritesheet.webp`. |
+| N2 | "the text written on the cart of the train should be center of that box, currently its misaligned" | **The boxes were already centred; the ink inside them was not.** Measured in the artwork's own coordinate space, the three spans sat on their panel centres to within **0.6px** — so the bug was never the positioning. The cause: a bare matra is an orphan combining mark, so the font paints it with a dotted placeholder circle, and the three paint very different amounts of an IDENTICAL line box. At 46px, **ा paints 30px tall while ि and ी paint 43px**, because those two carry a hook above the circle. Centring the box therefore left ि and ी sitting **6.5px high** in their panels and ि **2.8px left**, while ा happened to land right. `placeTrainParts()` now centres the **painted ink**: canvas `actualBoundingBox*` for the extents, and the baseline offset inside the box **measured** with a zero-size inline-block rather than derived — the half-leading formula puts it at 37.85px where the browser actually paints at 38.89, and a 1px error is visible once three glyphs have to agree on a 66px panel. Falls back to box-centring if a browser withholds ink metrics. Result, measured against the painted panels: **dx −0.42 / +0.35 / +0.08, dy −0.11 / −0.61 / +0.39 artwork px** — all three centred within 0.6px in both axes. |
+| N3 | spots re-measured for the cell we now stand on | The panel centres had been segmented off the parked still; the parked art is cell 35 now, so they were re-segmented there: **41.17/47.53, 64.27/46.98, 87.62/47.53**. |
+
+### Weight
+
+`train_parked.webp` (112KB) deleted. The cover's entire art is now **one file, `train_spritesheet.webp`
+at 1076KB** — down from 1232KB two rounds ago and 1802KB before that, and it is the SME's own art
+with no reconstruction anywhere in the chain.
+
+`assets/Images/train.png` is now unused (the sheet serves the stopped train), and stays on disk with
+its `.vercelignore` entry so it does not deploy.
+
+### Verified
+
+Whole-lesson walk: all 16 slides mount, **zero console errors, zero 4xx**, all three matras reveal.
+Travel steps through the sheet and holds a single cell once stopped. `prefers-reduced-motion` sits
+on cell 35 with no animation at all.
