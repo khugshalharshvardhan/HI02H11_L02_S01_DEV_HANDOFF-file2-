@@ -11223,9 +11223,27 @@ function boot(){
       const placeTrainParts = ()=>{
         if(!img || !img.offsetWidth) return;
         const W = img.offsetWidth, H = img.offsetHeight;
-        [...wrap.querySelectorAll(".lt-matra")].forEach((sp, i)=>{
+        /* [r24] The coach label is no longer one glyph but "“आ” (ा)", so it is sized to the CREAM
+           PANEL rather than to a fixed fraction of the train. The panels were measured off the
+           parked sprite at a 717px render: 130/126/135px wide, i.e. 0.176 of the train image at
+           its narrowest. Start at the old 0.072 and shrink only if the text overruns 90% of that,
+           so a short label keeps the size the cover was tuned with.
+           ONE size for all three coaches: आ is a wider glyph than इ/ई, so sizing each label on its
+           own gave 27px in the first coach and 31px in the other two, which reads as a mistake.
+           The smallest fit wins and every coach uses it. */
+        const _spans = [...wrap.querySelectorAll(".lt-matra")];
+        const PANEL_W = 0.176, FIT = 0.90, _maxW = W * PANEL_W * FIT;
+        let _fs = W * 0.072;                                     // 46px at the artwork's native 634
+        _spans.forEach(sp => { sp.style.fontSize = Math.round(_fs) + "px"; });
+        /* every width is read at the SAME base size and turned into one scale factor. Shrinking
+           _fs inside the measuring loop compounded instead: coach 1 pulled it to 27px, then
+           coach 2 measured its 46px width against that and so on, down to 13px. */
+        let _scale = 1;
+        _spans.forEach(sp => { if(sp.offsetWidth > _maxW) _scale = Math.min(_scale, _maxW / sp.offsetWidth); });
+        _fs = Math.max(10, _fs * _scale);
+        _spans.forEach(sp => { sp.style.fontSize = Math.round(_fs) + "px"; });
+        _spans.forEach((sp, i)=>{
           const spot = SPOTS[i] || SPOTS[SPOTS.length - 1];
-          sp.style.fontSize = Math.round(W * 0.072) + "px";      // 46px at the artwork's native 634
           /* Centre the INK on the panel, not the span's BOX — and not translate(-50%,-50%),
              which the review capture's animation freeze was discarding.
              Why the ink: a bare matra is an orphan combining mark, so the font paints it with a

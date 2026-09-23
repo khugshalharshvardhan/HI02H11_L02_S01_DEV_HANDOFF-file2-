@@ -730,7 +730,12 @@ CARD = {
     "skill_description_hi": "आ, इ, ई मात्रा वाले शब्द पढ़ता है। शब्दों में आने वाली मात्रा पहचानता है।",
     "landing_audio": "vo_landing",
     # rows #6, #8, #9, #14 — the three matra boxes ARE the train's coaches (mockup slide03)
-    "landing_hero": {"kind": "matra_train", "matras": ["ा", "ि", "ी"]},
+    # [r24 · SME] The coaches NAME the letter and bracket its matra, the same shape the
+    # TRAIN_SORT bins already use ("“आ” (ा)"). A bare ा/ि/ी is an orphan combining mark, so the
+    # font drew it with a dotted placeholder circle and the cover asked a child to read ◌ा.
+    # Order stays आ → इ → ई, which is the order every other screen in the lesson teaches in.
+    "landing_hero": {"kind": "matra_train",
+                     "matras": ["“आ” (ा)", "“इ” (ि)", "“ई” (ी)"]},
     "phase_transition_audio": {"tutorial": "vo_pt_tutorial", "guided": "vo_pt_guided",
                                "practice": "vo_pt_practice"},
     # the journey beats are a LOCKED house behaviour — preserved verbatim from the shipped card

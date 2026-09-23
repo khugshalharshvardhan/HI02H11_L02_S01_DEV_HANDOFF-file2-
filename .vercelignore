@@ -51,6 +51,10 @@ _SOURCE/
 3_CURRENT_BUILD/assets/Images/IMAGE 2.png
 3_CURRENT_BUILD/assets/Images/IMAGE 3.png
 
+# The replacement girl as delivered (1024x1536, ~1.5MB). Trimmed and scaled into
+# assets/Images/obj_ladki.png (416x640), which is what page 7 loads.
+3_CURRENT_BUILD/assets/Images/ladki.png
+
 # ── General ──────────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
