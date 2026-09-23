@@ -1645,3 +1645,97 @@ glyphs go into this file as literal characters, never as escapes.
 
 All 16 slides swept: no broken images, nothing clipped, no console errors beyond a favicon and the
 already-known missing `sfx_chime`.
+
+---
+
+## Follow-up — 2026-09-23 · train audio before the voice, the question text moved left, no red and no tick
+
+### 1 · The page VO now waits for the train to finish being audible
+
+It did not before, and the numbers say by how much. The clips, measured off the files: whistle
+**1.40s** and chug **3.40s** from the entrance, arrival **1.55s** from the moment the train parks.
+The chug ends exactly as the train stops, so the train is still sounding until **4.95s** — while
+the instruction used to start at **3.72s** and talk over the last 1.2 seconds of the arrival.
+
+The prompt is now held for the arrival clip's own length plus a beat of clear air. The length is
+read from the decoded audio buffer where we have it, so a re-cut clip needs no code change; the
+measured 1550ms is only the fallback for a first play that has not finished decoding yet.
+
+Verified on all four train screens — the instruction starts **242–265ms after** the train audio
+ends, on pages 8, 11, 13 and 14 alike.
+
+A screen with no entrance (reduced motion) waits for nothing, because there is no train audio to
+wait for.
+
+### 2 · The question text starts further left
+
+`--band-pad-l` 150px → **105px**. The text began 226.5px from the stage edge; this takes 20% of
+that distance off, so it now starts at 181.5px. It still clears the mascot, whose right edge is at
+148.5px — checked on all 17 slides, the text never runs under it.
+
+### 3 · A wrong answer only shakes, and a right one has no tick
+
+* **The red is gone from a wrong TAP.** The coach was still getting a red ring and a pink wash,
+  and the reason is worth recording: `.stage.thm-toybox .opt-cell.wrong-flash` is **(0,4,0)** —
+  four classes — so the (0,3,0) neutraliser written for the coach never reached it, whatever the
+  source order. Stripped at matching weight now. Its `buzzShake` went with it: the coach body
+  already runs `coachShake`, and both together made the coach shake against itself.
+* **The red is gone from a wrong DROP** on the sort and fill screens, where the cream panel used
+  to wash red. Watched every class change through a deliberate wrong drop: the zone takes `wrong`,
+  runs `coachShake`, and **no frame carries red** — background transparent throughout.
+* **The green tick badge is gone.** `.opt-cell.correct::after` draws a 64px tick disc on the
+  corner of an answer card; on a coach it hung off the artwork. The correct coach's own green glow
+  is the feedback now. The cross badge was already suppressed; both are handled in one rule.
+
+### Verified
+
+All 17 slides swept: no broken images, nothing clipped, the question text clear of the mascot on
+every slide, and no console errors beyond a favicon.
+
+---
+
+## Follow-up — 2026-09-23 (2) · the drop box removed, drag-and-drop unblocked, cover VO after the train
+
+### 1 · No box drawn on the coach, and the drag actually works
+
+**The box.** The coach already HAS a panel painted on it. The engine was drawing a dashed tray
+*inside* that panel, so the artwork carried a second rectangle — the "lined box on the train box".
+It is gone in every state the zone can be in: at rest, on hover, filled, filled-correct and
+filled-wrong. Checked by forcing each class in turn — the panel reports `0px none` border and a
+transparent background in all five. The only cue left is a glow on the **coach**, which follows the
+artwork's own silhouette, and the coach's existing correct/wrong feedback.
+
+**The drag.** Two separate things were refusing it, both tied to the instruction still speaking —
+and the instruction now runs 5-10s in, behind a train arrival, which is why this got much worse:
+
+* `body.vo-lock .dd-zone { pointer-events:none !important }` made every coach **un-droppable**
+  while a clip played. A child could lift a card and carry it, and the drop was then refused,
+  because `elementFromPoint` could not see the zone underneath it.
+* `installDragVoGate`'s selector list included `.tt-card`, so the **pickup itself** was swallowed.
+
+Both are lifted for the train tray only; every other mechanic keeps the lock exactly as it was.
+The instruction yields to the child instead: picking a card up stops whatever is speaking, so there
+are still never two voices.
+
+Verified by grabbing a card **while the instruction was playing** — confirmed playing at the moment
+of the first grab — and completing both sort screens: 3 of 3 on page 11, 6 of 6 on page 14, Next
+enabled on each.
+
+**Also reverted:** the `tt-wait` tray hold from the previous round. Its CSS never saved, so the
+class was inert and the cards were visible all along — the hold was not what made them dead, and
+keeping a half-applied mechanism around would only mislead the next person. The tray rises with
+the train again.
+
+### 2 · The cover greeting waits for the train too
+
+Same rule as the in-lesson screens, which the cover was not following. The greeting was held
+900ms, which clears the whistle's opening but not the chug: `sfx_train_move` runs the full length
+of the travel, so the greeting spent most of its first three and a half seconds underneath a
+moving train. It now waits the chug's own length, read from the decoded buffer with the measured
+3400ms as the fallback.
+
+Measured: train audio ends at **+3411ms**, greeting starts at **+3647ms** — a 236ms gap.
+
+Only the automatic first play is delayed. The listen chip and the autoplay fallback still call
+`playLanding()` directly, and it no-ops once the gate is hidden, so a child who taps start inside
+the window is never talked over by a late greeting.

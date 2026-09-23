@@ -39,6 +39,12 @@ _SOURCE/
 3_CURRENT_BUILD/assets/Images/train_spritesheet.png
 3_CURRENT_BUILD/assets/Images/train.png
 
+# The supplied object sheets. Each is a 2172x724 strip of three objects that has already been
+# split into its own obj_*.png / ui_*.webp, so the page never requests the strip itself. Kept on
+# disk as the source of those cuts, kept out of the bundle (about 1.4MB each).
+3_CURRENT_BUILD/assets/Images/haath, pin, neem.png
+3_CURRENT_BUILD/assets/Images/pari hiran magnifer.png
+
 # ── General ──────────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]

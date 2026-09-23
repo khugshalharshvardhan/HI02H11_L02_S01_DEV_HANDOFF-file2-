@@ -28,7 +28,7 @@
   --drag-bg:#D9ECFF; --drag-border:#8BBFFF;
   --font-hi:"Baloo 2","Noto Sans Devanagari",system-ui,sans-serif;
   --band-top:46px; --band-left:76.5px; --band-w:1214.59px; --band-h:84px;   /* r4/F6 DS header spec */
-  --band-pad-l:150px; --band-pad-r:150px; --band-radius:999px; --band-border:3px;
+  --band-pad-l:105px;   /* [r13] was 150. The text began 226.5px from the stage edge; this is 20% of that distance taken off, so it starts at 181.5px. Still clears the mascot, whose right edge is 148.5px. */ --band-pad-r:150px; --band-radius:999px; --band-border:3px;
   --band-font:30px;
   --sw-hdr-left:16.5px; --sw-hdr-top:12px; --sw-hdr-w:132px;   /* r4/F6 DS: 132px circular avatar on the pill's left end */
   --chip-size:66px;   /* [30j] 70px -> 66px, "a little slim" (Yasir). 66px is the value his own
@@ -1615,6 +1615,15 @@ body.vo-lock .stimulus-pic,
 body.vo-lock button.nav-btn{
   pointer-events:none !important;
 }
+/* [r14] THE TRAIN TRAY IS EXEMPT. `body.vo-lock .dd-zone` made every coach un-droppable for as
+   long as the instruction was speaking — the child could lift a card and drag it, and the drop
+   was then refused because elementFromPoint could not see the zone underneath. Together with the
+   JS gate below (which refused the pickup itself) that is what "drag and drop is not working"
+   was. On these screens the instruction yields to the child instead: the pickup stops the clip.
+   Scoped to the coach, so every other mechanic keeps the lock exactly as it was. */
+body.vo-lock .coach-body.dd-zone,
+body.vo-lock .coach-body.dd-zone .coach-face,
+body.vo-lock .train-tray .tt-card{ pointer-events:auto !important; }
 
 /* ===== [30k] GATE SCRIM = THE FIGMA VALUE, MEASURED NOT GUESSED =========================
    Yasir 2026-07-30, with the eyedropper open on the original Figma transition frame: #393737 at 60%.
@@ -1848,8 +1857,17 @@ body.is-start .phase-gate{
   justify-content:center;gap:4px;font-size:40px;font-weight:800;color:var(--navy);overflow:hidden;
   z-index:3;text-align:center;}
 /* an EMPTY drop zone reads as a dashed tray inside the painted panel (mockup slide14) */
-.coach-body.dropzone .coach-face{border:3px dashed rgba(11,61,140,.30);border-radius:10px;background:rgba(255,251,240,.55);}
-.coach-body.dropzone.filled .coach-face{border-color:transparent;background:none;}
+/* [r14] NO EXTRA BOX ON THE COACH. The coach already HAS a panel painted on it; drawing a
+   dashed tray inside that panel put a second rectangle on top of the artwork, which is what
+   the review called "this lined box on the train box". The painted panel IS the drop target.
+   Nothing is drawn in it at rest, on hover, or once it is filled — the only cue is a glow on
+   the coach itself while a card is over it, and the coach's own correct/wrong feedback. */
+.coach-body.dropzone .coach-face{border:none;background:none;}
+/* [r13] a blank that takes a wrong matra shakes rather than flushing red */
+.coach-face .mf-blank.dd-zone.filled.wrong,
+.mf-blank.dd-zone.filled.wrong{background:none !important;border-color:var(--matra-orange,#FF8A00) !important;
+  animation:coachShake 460ms ease-in-out;}
+.coach-body.dropzone.filled .coach-face{border:none;background:none;}
 /* [r7] The coach body carries .dd-zone so makeDraggable can find it as a drop target, but
    .dd-zone's own chrome is a 150x150 dashed tray — drawn round the whole painted coach it was a
    big blue rectangle swallowing the wheels and the track. The zone's states are moved onto the
@@ -1859,11 +1877,16 @@ body.is-start .phase-gate{
 .coach-body.dd-zone.filled,
 .coach-body.dd-zone.filled.correct,
 .coach-body.dd-zone.filled.wrong{background:none;border:none;border-radius:0;display:block;box-shadow:none;}
-.coach-body.dd-zone.hover .coach-face{background:#E6F0FF;border:3px solid var(--selected);
-  box-shadow:0 0 0 6px rgba(56,106,246,.14),0 0 14px rgba(56,106,246,.28);}
-.coach-body.dd-zone.filled .coach-face{border-width:3px;}
-.coach-body.dd-zone.filled.correct .coach-face{background:var(--correct-bg);border-color:var(--correct);border-style:dashed;}
-.coach-body.dd-zone.filled.wrong .coach-face{background:var(--wrong-bg);border-color:var(--wrong);border-style:dashed;}
+/* a card hovering over a coach glows the COACH, not a box inside it */
+.coach-body.dd-zone.hover .coach-face{background:none;border:none;box-shadow:none;}
+.coach-body.dd-zone.hover{filter:drop-shadow(0 0 5px rgba(56,106,246,.95)) drop-shadow(0 0 18px rgba(56,106,246,.6));}
+.coach-body.dd-zone.filled .coach-face{border:none;background:none;}
+.coach-body.dd-zone.filled.correct .coach-face{background:none;border:none;}
+/* [r13] A wrong drop SHAKES and nothing more. It used to wash the cream panel red, which on a
+   painted coach reads as damage to the artwork rather than as feedback — the same reason the
+   wrong-tap glow went. The coach still buzzes, so the miss is not silent. */
+.coach-body.dd-zone.filled.wrong .coach-face{background:none;border:none;}
+.coach-body.dd-zone.filled.wrong{animation:coachShake 460ms ease-in-out;}
 
 /* what a dropped card looks like once it is sitting on the painted panel: stacked, and small
    enough to stay inside the cream rather than spilling onto the coach's coloured frame */
@@ -2080,9 +2103,10 @@ body.is-start .phase-gate{
 .ps-w.ghosted{box-shadow:0 0 0 4px rgba(255,193,60,.8);animation:coachPulse 1200ms ease-in-out infinite;}
 /* the lens the child drags (row #184) */
 /* The magnifier is the supplied artwork. Its GLASS is not the centre of the image — measured at
-   67.9% across / 35.2% down, radius 25% of the width — so the magnify hit-test below targets the
-   glass, not the element box, or the child would be "looking" through the handle. */
-.ps-lens{position:absolute;width:196px;height:180px;cursor:grab;touch-action:none;z-index:50;
+   65.6% across / 39.1% down, radius 28% of the width — so the magnify hit-test below targets the
+   glass, not the element box, or the child would be "looking" through the handle.
+   Re-measure this whenever the artwork is swapped; see the note on GLASS in POEM_SEARCH. */
+.ps-lens{position:absolute;width:196px;height:189px;cursor:grab;touch-action:none;z-index:50;
   opacity:1;filter:drop-shadow(0 6px 10px rgba(11,61,140,.28));}
 .ps-lens img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;}
 .ps-lens.ps-lens-in{animation:psLensIn 520ms ease-out both;}
@@ -2122,6 +2146,13 @@ body.is-start .phase-gate{
 /* [r11] "Wrong coach should wiggle / shake" — and NOTHING else. The red glow is gone: the deck
    asks for a wiggle, and on a painted coach a red outline reads as damage to the artwork rather
    than as feedback. The shake IS the answer. */
+/* The cell's own red is stripped at matching weight. `.stage.thm-toybox .opt-cell.wrong-flash`
+   is (0,4,0) — four classes — so the (0,3,0) neutraliser above never reached it and the coach
+   kept a red ring and a pink wash on every wrong tap. Its buzzShake goes too: the coach body
+   already has coachShake, and running both made the coach shake against itself. */
+.stage .train-coach.opt-cell.wrong-flash{
+  background:none !important; border-color:transparent !important;
+  box-shadow:none !important; animation:none !important;}
 .stage .train-coach.opt-cell.wrong-flash .coach-body{animation:coachShake 460ms ease-in-out;}
 .stage .train-coach.opt-cell.correct{background:none;border:none;box-shadow:none;}
 /* "Correct coach should glow / highlight" */
@@ -2137,7 +2168,8 @@ body.is-start .phase-gate{
   border-radius:0 !important; opacity:1 !important;}
 .stage .train-coach.opt-cell.crossed .coach-body{filter:grayscale(.72);opacity:.5;}
 .stage .train-coach.opt-cell.crossed .coach-face{opacity:.55;}
-.stage .train-coach.opt-cell.crossed::after{content:none;}          /* the giant tick/cross never belongs on a coach */
+.stage .train-coach.opt-cell.crossed::after,
+.stage .train-coach.opt-cell.correct::after{content:none !important;}   /* [r13] neither the tick nor the cross belongs on a coach — the coach's own glow is the answer */
 /* .faded is the terminal-help dim; it carries no box, but keep it on the coach for the same reason */
 .stage .train-coach.opt-cell.faded{opacity:1 !important;background:none !important;box-shadow:none !important;}
 .stage .train-coach.opt-cell.faded .coach-body{opacity:.34;filter:saturate(.6);}
@@ -5458,6 +5490,10 @@ function makeDraggable(tileEl, onDrop, opts){
     if(tileEl.classList.contains("snapped") || tileEl.classList.contains("matched")) return;
     if(state.revealing) return;   // [24a N8] tray still revealing one-by-one → no grabs yet (parity with the tap path's lock)
     refScale();
+    /* [r14] Picking a tile up hands the voice to the child: whatever is speaking stops, so the
+       instruction never talks over the move and two voices can never overlap. Only tiles the VO
+       gate lets through reach this line, so this is in practice the train tray. */
+    if(typeof isPlaying !== "undefined" && isPlaying && typeof stopAudio === "function") stopAudio();
     dragging = true;
     // bind move/up on the document ONLY while dragging (removed in onUp) — otherwise every tile leaves
     // stale document listeners that pile up across the 11 drag slides.
@@ -5538,7 +5574,11 @@ function makeDraggable(tileEl, onDrop, opts){
    swallowed. 4s safety via _voStart: a stalled clip must never freeze the tiles. Scoped to draggable
    game tiles only — replay chips, nav and tap-answer cells take presses as usual. */
 (function installDragVoGate(){
-  const SEL = ".sort-item, .dd-tile, .cdm-objtile, .cdm-card, .combine-drag, .tt-card";   /* [r5] .tt-card = train tray card */
+  /* [r14] `.tt-card` is OUT of this list. It was here so a pickup could not cut the prompt, but
+     on the train screens the prompt now runs 5-10s behind a train arrival, and a card that
+     refuses to be lifted for that long reads as a broken game. The pickup stops the clip instead
+     (see makeDraggable's onDown), so there are still never two voices. */
+  const SEL = ".sort-item, .dd-tile, .cdm-objtile, .cdm-card, .combine-drag";
   // ONE decision PER PRESS, made at pointerdown (the earliest event, BEFORE the tile's own
   // speak-on-press listener can flip isPlaying). The same press's trailing mousedown/touchstart
   // INHERIT that decision — re-evaluating them would see the press's OWN audio and block the very
@@ -8980,6 +9020,20 @@ const TRAIN_SPR = {
   spin: 71, rest: 35
 };
 const TRAIN_TRAVEL_MS = 3400;        /* the cover's travel, shared so the two feel like one train */
+/* [r13] HOW LONG THE TRAIN IS STILL AUDIBLE AFTER IT STOPS. The chug (sfx_train_move, 3.40s) runs
+   exactly the length of the travel and ends as the train parks; the arrival sound then plays on
+   top of that moment. Measured: whistle 1.40s and chug 3.40s from entry, arrival 1.55s from
+   parking — so the train is still sounding until 4.95s, while the page VO used to start at
+   3.72s and talk over the last 1.2s of it. Read from the decoded buffer where we have it, so a
+   re-cut clip needs no code change; the measured 1550ms is the fallback for a first play that
+   has not finished decoding. */
+function _trainTailMs(){
+  try{
+    const src = SFX_DIR + "sfx_train_arrive." + AUDIO_EXT;
+    const b = (typeof _voiceBuffers !== "undefined") ? _voiceBuffers.get(src) : null;
+    return (b ? b.duration * 1000 : 1550) + 260;    /* + a beat of clear air before the voice */
+  }catch(e){ return 1810; }
+}
 
 /* The cover's easing, solved for y given x (Newton, then clamped). The frame advance rides
    the SAME curve as the movement, so the chug is a function of distance covered rather than of
@@ -9152,11 +9206,14 @@ const TrainChrome = {
     const _afterPrompt = ()=>{ if(typeof cfg.on_prompt_done === "function") cfg.on_prompt_done(); };
     const _release = (go)=> go(_afterPrompt);
     state.promptGate = (go)=>{ if(_parked) _release(go); else _promptGo = go; };
-    const settle = ()=>{
+    /* `tail` is how long the train is still audible after it stops. The page's own VO is held
+       for it, so the instruction never starts underneath the arrival sound. */
+    const settle = (tail)=>{
       rail.classList.remove("tr-entering");
       shell.classList.add("tc-parked");               /* drops the sprite layer, reveals the png */
       _parked = true;
-      if(_promptGo){ const g = _promptGo; _promptGo = null; setTimeout(()=> _release(g), 320); }
+      if(_promptGo){ const g = _promptGo; _promptGo = null;
+                     setTimeout(()=> _release(g), (typeof tail === "number") ? tail : 320); }
       if(typeof cfg.on_enter === "function") cfg.on_enter();
     };
     if(cfg.entry !== false && !reduce){
@@ -9171,9 +9228,9 @@ const TrainChrome = {
         else setCell(S.rest);                         /* exact landing, no rounding drift */
       };
       _raf = requestAnimationFrame(tick);
-      setTimeout(()=>{ sfxTrainArrive(); settle(); }, TRAIN_TRAVEL_MS);
+      setTimeout(()=>{ sfxTrainArrive(); settle(_trainTailMs()); }, TRAIN_TRAVEL_MS);
     } else {
-      setTimeout(settle, 0);
+      setTimeout(()=> settle(0), 0);   /* no entrance, so no train audio to wait for */
     }
 
     return {
@@ -9529,8 +9586,7 @@ SlideModules.TRAIN_SORT = {
          Measured at about nine seconds from mount once the prompt was moved behind the train's
          arrival. They rise when the instruction FINISHES now, so a card on screen is a card that
          can be dragged. */
-      on_enter: ()=> train.popLabels(240),
-      on_prompt_done: ()=> rise()
+      on_enter: ()=>{ train.popLabels(240); setTimeout(rise, bins.length * 240); }
     });
     bins.forEach((b, i)=>{ train.coachEls[i].dataset.key = b.key; train.body(i).dataset.key = b.key; });
 
@@ -9554,8 +9610,7 @@ SlideModules.TRAIN_SORT = {
     });
     host.appendChild(tray);
     /* "Picture cards fade/slide up from the bottom." (rows #144, #175) */
-    tray.classList.add("tt-wait");                     /* [r11] held until the instruction ends */
-    const rise = ()=> { tray.classList.remove("tt-wait");
+    const rise = ()=> {
       [...tray.children].forEach((t, i)=> setTimeout(()=>{
         t.classList.remove("tt-rise"); void t.offsetWidth; t.classList.add("tt-rise"); }, i * 110)); };
 
@@ -9666,8 +9721,7 @@ SlideModules.MATRA_FILL = {
       coach_label: slots.map(s => ({ img: s.img, emoji: s.emoji })),   // "A related picture can be shown above each coach" (row #150)
       coach_body: slots.map(()=> ""),
       drop_zone: true, maxH: 208,          /* picture plates above + the matra tray below */
-      on_enter: ()=> train.popLabels(240),
-      on_prompt_done: ()=> rise()          /* [r11] see TRAIN_SORT — a tile on screen is draggable */
+      on_enter: ()=>{ train.popLabels(240); setTimeout(rise, slots.length * 240); }
     });
 
     /* render  ज [_] ल   /   पर [_]   /   [_] ह रण  — the blank sits where the matra is DRAWN */
@@ -9708,8 +9762,8 @@ SlideModules.MATRA_FILL = {
       tray.appendChild(t);
     });
     host.appendChild(tray);
-    tray.classList.add("tt-wait");                     /* [r11] held until the instruction ends */
-    const rise = ()=> { tray.classList.remove("tt-wait");
+    /* "Picture cards fade/slide up from the bottom." (rows #144, #175) */
+    const rise = ()=> {
       [...tray.children].forEach((t, i)=> setTimeout(()=>{
         t.classList.remove("tt-rise"); void t.offsetWidth; t.classList.add("tt-rise"); }, i * 110)); };
 
@@ -9840,7 +9894,12 @@ SlideModules.POEM_SEARCH = {
     const lens = document.createElement("div"); lens.className = "ps-lens ps-lens-in";
     lens.innerHTML = '<img src="assets/UI/ui_magnifier.webp" alt="">';
     /* where the GLASS sits inside that artwork, measured off the file */
-    const GLASS = { x: 0.679, y: 0.352, r: 0.25 };
+    /* [r12] Re-measured for the new magnifier artwork. Found from the GOLD BEZEL, not the glass:
+       the lens interior is nearly white, so a colour mask on it catches only the rim highlight
+       (9% fill of its own box, against ~79% for a real disc). The bezel is a solid ring and its
+       largest blob gives the circle directly — centre (420,241) of 640x617, inner radius 184px.
+       r is the INNER radius, so the hit-test stops where the glass does. */
+    const GLASS = { x: 0.656, y: 0.391, r: 0.280 };
     const ghost = document.createElement("div"); ghost.className = "ps-ghost";
     ghost.innerHTML = '<img src="assets/UI/ui_ghost.webp" alt="" ' +
       'onerror="this.replaceWith(document.createTextNode(\'\\u{1F47B}\'));">';
@@ -10848,11 +10907,24 @@ function boot(){
   const enterLanding = ()=>{
     const isTrain = !!window.__landingTrainEnter;
     if(isTrain) window.__landingTrainEnter();
-    /* Hold the greeting back just long enough for the train's whistle to be heard on its own.
+    /* [r14] Hold the greeting until the train has finished being audible, the same rule the
+       in-lesson train screens follow. 900ms only cleared the whistle's opening; the chug
+       (sfx_train_move) runs the full length of the travel, so the greeting spent most of its
+       first three and a half seconds underneath a moving train. The wait is the chug's own
+       length read from the decoded buffer, with the measured 3400ms as the fallback for a first
+       play that has not finished decoding.
        Only the AUTOMATIC first play is delayed — the listen chip and the autoplay fallback both
        call playLanding() directly, and playLanding() itself no-ops once the gate is hidden, so a
        child who taps the start button inside the window is never talked over by a late greeting. */
-    if(isTrain) setTimeout(playLanding, 900); else playLanding();
+    if(isTrain){
+      let wait = 3400;
+      try{
+        const src = SFX_DIR + "sfx_train_move." + AUDIO_EXT;
+        const b = (typeof _voiceBuffers !== "undefined") ? _voiceBuffers.get(src) : null;
+        if(b) wait = b.duration * 1000;
+      }catch(e){}
+      setTimeout(playLanding, wait + 300);
+    } else playLanding();
   };
   const sgVo = $("sgVo"); if(sgVo) sgVo.onclick = (e)=>{ e.stopPropagation(); playLanding(); };
   // ---- [engine JS] r4/P2 boot loader: loader.gif until assets warm, then it dismisses ITSELF into

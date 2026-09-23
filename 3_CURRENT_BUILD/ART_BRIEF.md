@@ -165,3 +165,42 @@ No button carries text; the Hindi is on each as `aria-label`. The start button a
 
 The hint bulb and the audio chip are unchanged live SVG — their wave arcs animate while a clip
 plays, which a flat background would have killed.
+
+## Your artwork, round two — 2026-09-23
+
+Two more 2172x724 sheets, three objects each, already carrying real alpha. Both split cleanly on
+true zero-ink columns — no speckle bridging this time, so no measured-valley fallback was needed.
+
+| from | key | what | size |
+|---|---|---|---|
+| `haath, pin, neem.png` | `obj_haath` | open hand | 527x640 |
+| | `obj_pin` | red push pin | 421x606 |
+| | `obj_neem` | neem tree | 640x575 |
+| `pari hiran magnifer.png` | `obj_pari` | fairy | 592x640 |
+| | `obj_hiran` | fawn | 425x640 |
+| | `assets/UI/ui_magnifier.webp` | magnifying glass | 640x617, lossless |
+
+Every cut was autocropped, capped to 640px and checked for a sane opaque fraction (33-54%) before
+being written. The six files they replace are kept in the session scratchpad, not deleted in place.
+
+### The magnifier moved its glass, so POEM_SEARCH was re-measured
+
+The new lens sits **up and to the right** of the handle, where the old one sat differently.
+`GLASS` in POEM_SEARCH is now `{ x: 0.656, y: 0.391, r: 0.280 }` (was `{0.679, 0.352, 0.25}`).
+
+It was measured off the **gold bezel**, not the glass. The lens interior is nearly white, so a
+colour mask on it catches only the rim highlight — 9% fill of its own bounding box, against the
+~79% a real disc would give. The bezel is a solid ring, and its largest connected blob gives the
+circle directly: centre (420, 241) of 640x617, outer radius 212px, inner radius 184px. `r` is the
+**inner** radius, so the hit-test stops where the glass does rather than reaching onto the frame.
+
+Verified by placing the glass centre on each of the first five poem words in turn: the word aimed
+at is under the glass every time. It also catches 2-4 neighbours, which is unchanged behaviour —
+the glass is simply wider than the word spacing in this poem.
+
+`.ps-lens` went from 196x180 to 196x189 to match the new artwork's aspect.
+
+### The source sheets stay on disk, out of the bundle
+
+Both strips are listed in `.vercelignore`. They are the source of the cuts and worth keeping, but
+the page never requests them and each is about 1.4MB.
