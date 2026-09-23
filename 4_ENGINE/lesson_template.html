@@ -4006,6 +4006,42 @@ function _resumeVoiceAudio(){
   if(c && c.state==="suspended") try{ const p=c.resume(); if(p&&p.catch)p.catch(()=>{}); }catch(e){}
   return c;
 }
+/* [r23] AUTOPLAY ON A REAL ORIGIN - why the cover sounds right locally and wrong when deployed.
+   A SUSPENDED AudioContext accepts start() and plays SILENCE: no error, no rejected promise,
+   no onended. So on a cold open at an https origin the cover started its whistle, its chug and
+   then the greeting exactly on schedule and threw all three away, and because the greeting had
+   already been "played" it never came back. Measured on this build, same browser, same files:
+       autoplay allowed  -> context "running",   sfx 1.72s / 1.72s, greeting 5.42s  - correct
+       autoplay blocked  -> context "suspended", same three times, nothing audible at all
+   A local file:// (or an origin the browser has high media engagement for) is the first case;
+   a fresh *.vercel.app domain is the second, which is exactly the reported difference.
+   Anything that MUST BE HEARD goes through here instead of straight onto a timer. */
+function _afterAudioUnlock(fn){
+  const EVTS = ["pointerdown", "touchstart", "keydown"];
+  let ran = false;
+  const fire = ()=>{
+    if(ran) return; ran = true;
+    EVTS.forEach(e => window.removeEventListener(e, arm, true));
+    fn();
+  };
+  /* Two callers, one rule. Cold (no gesture yet) this leaves resume() pending and waits for the
+     first touch. Called FROM INSIDE a gesture - the listen chip is that case - resume() succeeds
+     there and then, so fn runs on this tap rather than waiting for the next one. Either way fn
+     is released only once the context actually reads "running": a start() issued in the same
+     tick as resume() is still thrown away silently. */
+  const attempt = ()=>{
+    const c = _voiceContext();
+    if(!c){ fire(); return; }                 /* no Web Audio at all - nothing to unlock */
+    if(c.state === "running"){ fire(); return; }
+    try{
+      const pr = c.resume();
+      if(pr && pr.then) pr.then(()=>{ if(c.state === "running") setTimeout(fire, 60); }, ()=>{});
+    }catch(e){}
+  };
+  const arm = ()=> attempt();
+  attempt();
+  if(!ran) EVTS.forEach(e => window.addEventListener(e, arm, true));
+}
 function _loadVoiceBuffer(src){
   if(!src) return Promise.reject(new Error("missing audio source"));
   if(_voiceBuffers.has(src)) return Promise.resolve(_voiceBuffers.get(src));
@@ -11252,12 +11288,9 @@ function boot(){
            has no sound at all. The landing VO already carries a first-gesture fallback for
            exactly this; the train needs its own, because by the time the child taps the travel
            is long over and the whistle is the only beat still worth hearing. */
-        const _ac0 = (typeof _voiceContext === "function") ? _voiceContext() : null;
-        if(!_ac0 || _ac0.state !== "running"){
-          window.addEventListener("pointerdown", ()=>{
-            _resumeVoiceAudio(); setTimeout(()=> sfxWhistle(), 90);
-          }, { once:true });
-        }
+        /* [r23] The first-gesture whistle used to be armed here too. It now lives in
+           enterLanding(), the only place that also knows when the GREETING may go - two
+           independent listeners meant the whistle fired twice and raced the voice. */
       };
       /* never strand the landing on a loader that failed to dismiss — enter anyway */
       setTimeout(()=>{ if(window.__landingTrainEnter) window.__landingTrainEnter(); }, 3200);
@@ -11349,10 +11382,26 @@ function boot(){
   { const sg = $("startGate");
     if(sg) sg.addEventListener("pointerdown", ()=>{ disarmStartNudge(); armStartNudge(); }, true); }
 
+  /* [r23] ONE greeting, whoever asks for it. On a locked context the first gesture can reach
+     TWO waiting callers at once - the held whistle-then-greeting from enterLanding(), and the
+     listen chip if that is what the child happened to tap - and the greeting played twice,
+     the second cutting the first. _landingVoT is the held one; _landingVoOn says it is already
+     talking, so the later caller stands down instead of restarting it. */
+  let _landingVoT = 0, _landingVoOn = false, _landingHeld = false;
   const playLanding = ()=>{ if($("startGate").classList.contains("hidden")) return;
+    clearTimeout(_landingVoT); _landingVoT = 0;
+    if(_landingVoOn) return;
     setStartBtnReady(false); disarmStartNudge();
-    play(landSrc, ()=>{ if(window.__landingTrainReveal) window.__landingTrainReveal();
-                        setStartBtnReady(true); armStartNudge(); }); };
+    /* through the unlock: the listen chip is often the child's FIRST gesture on a deployed
+       build, and speaking straight away there put the greeting into a still-suspended context -
+       silent, and spent, so the chip appeared to do nothing at all. */
+    _afterAudioUnlock(()=>{
+      if($("startGate").classList.contains("hidden")) return;   /* started while we waited */
+      _landingVoOn = true;
+      play(landSrc, ()=>{ _landingVoOn = false;
+                          if(window.__landingTrainReveal) window.__landingTrainReveal();
+                          setStartBtnReady(true); armStartNudge(); });
+    }); };
   /* never strand the child behind a clip that never ends or never starts */
   setTimeout(()=>{ if(_onLandingNow() && $("sgBtn") && $("sgBtn").disabled){
     setStartBtnReady(true); armStartNudge(); } }, 12000);
@@ -11380,8 +11429,16 @@ function boot(){
         const b = (typeof _voiceBuffers !== "undefined") ? _voiceBuffers.get(src) : null;
         if(b) wait = b.duration * 1000;
       }catch(e){}
-      setTimeout(playLanding, wait + 300);
-    } else playLanding();
+      /* [r23] Unlocked - unchanged: the chug runs under the travel and the greeting follows it.
+         Locked - the travel is silent whatever we do (no gesture has happened yet), so the
+         greeting is NOT burned on the timer. It is held with the whistle for the first touch and
+         still arrives in the designed order: effect first, voice after it. sfx_whistle is 1.40s,
+         so 1700ms leaves the same clear air the 3.40s chug gets. */
+      const _ac = (typeof _voiceContext === "function") ? _voiceContext() : null;
+      if(_ac && _ac.state === "running") setTimeout(playLanding, wait + 300);
+      else { _landingHeld = true;      /* read by the [30m] fallback during the gesture */
+             _afterAudioUnlock(()=>{ sfxWhistle(); _landingVoT = setTimeout(playLanding, 1700); }); }
+    } else _afterAudioUnlock(playLanding);
   };
   const sgVo = $("sgVo"); if(sgVo) sgVo.onclick = (e)=>{ e.stopPropagation(); playLanding(); };
   // ---- [engine JS] r4/P2 boot loader: loader.gif until assets warm, then it dismisses ITSELF into
@@ -11424,7 +11481,13 @@ function boot(){
     const _a = (typeof currentAudio !== "undefined") ? currentAudio : null;
     /* [31x] a buffer clip has no element to inspect — isPlaying + a live source is the real signal. */
     const _audible = !!(isPlaying && (currentVoiceSource || (_a && !_a.paused && !_a.ended)));
-    if(!_audible) playLanding(); }, { once:true });
+    /* [r23] If the cover is HOLDING a whistle-then-greeting for this very gesture, that
+       sequence owns the greeting. Firing here as well started the voice in the same tick as
+       the whistle instead of after it - the deployed build's symptom was the SFX and the VO
+       arriving together. _landingHeld is set back at enterLanding(), so it is already true
+       when this listener runs; _landingVoT is not set until resume() settles and cannot be
+       used here. */
+    if(!_audible && !_landingHeld) playLanding(); }, { once:true });
 
   let _starting=false;
   $("sgBtn").onclick = async()=>{

@@ -683,10 +683,10 @@
             "ok_audio": "vo_oh_aa_ok_aam",
             "more_audio": "vo_oh_aa_more_aam",
             "correct": true,
-            "x": 17.5,
-            "y": 15.0,
-            "w": 20,
-            "h": 20
+            "x": 19.1,
+            "y": 18.6,
+            "w": 21.5,
+            "h": 19.1
           },
           {
             "word_hi": "माला",
@@ -695,10 +695,10 @@
             "ok_audio": "vo_oh_aa_ok_maala",
             "more_audio": "vo_oh_aa_more_maala",
             "correct": true,
-            "x": 66.0,
-            "y": 55.5,
-            "w": 10,
-            "h": 17
+            "x": 66.7,
+            "y": 65.9,
+            "w": 9.5,
+            "h": 10.0
           },
           {
             "word_hi": "गाजर",
@@ -707,10 +707,10 @@
             "ok_audio": "vo_oh_aa_ok_gaajar",
             "more_audio": "vo_oh_aa_more_gaajar",
             "correct": true,
-            "x": 45.0,
-            "y": 84.0,
-            "w": 22,
-            "h": 15
+            "x": 45.8,
+            "y": 82.4,
+            "w": 20.9,
+            "h": 15.9
           },
           {
             "word_hi": "ताला",
@@ -721,28 +721,28 @@
             "correct": true,
             "x": 94.0,
             "y": 51.0,
-            "w": 8,
-            "h": 14
+            "w": 5.0,
+            "h": 11.0
           },
           {
             "word_hi": "पतंग",
             "audio": "vo_name_patang",
             "emoji": "🪁",
             "wrong_audio": "vo_oh_w_patang_aa",
-            "x": 36.5,
-            "y": 29.0,
-            "w": 13,
-            "h": 20
+            "x": 36.9,
+            "y": 28.7,
+            "w": 10.5,
+            "h": 15.9
           },
           {
             "word_hi": "सूरज",
             "audio": "vo_name_sooraj",
             "emoji": "☀️",
             "wrong_audio": "vo_oh_w_sooraj_aa",
-            "x": 73.2,
-            "y": 12.5,
-            "w": 10,
-            "h": 14
+            "x": 72.5,
+            "y": 10.8,
+            "w": 9.9,
+            "h": 19.7
           }
         ]
       },
@@ -778,10 +778,10 @@
             "ok_audio": "vo_oh_i_ok_chidiya",
             "more_audio": "vo_oh_i_more_chidiya",
             "correct": true,
-            "x": 44.5,
-            "y": 21.0,
-            "w": 11,
-            "h": 13
+            "x": 44.7,
+            "y": 22.3,
+            "w": 8.1,
+            "h": 13.2
           },
           {
             "word_hi": "हिरण",
@@ -790,10 +790,10 @@
             "ok_audio": "vo_oh_i_ok_hiran",
             "more_audio": "vo_oh_i_more_hiran",
             "correct": true,
-            "x": 68.0,
-            "y": 51.5,
-            "w": 12,
-            "h": 28
+            "x": 69.7,
+            "y": 51.8,
+            "w": 10.2,
+            "h": 26.6
           },
           {
             "word_hi": "किताब",
@@ -802,10 +802,10 @@
             "ok_audio": "vo_oh_i_ok_kitaab",
             "more_audio": "vo_oh_i_more_kitaab",
             "correct": true,
-            "x": 21.5,
-            "y": 66.0,
-            "w": 11,
-            "h": 13
+            "x": 21.2,
+            "y": 65.8,
+            "w": 12.0,
+            "h": 14.0
           },
           {
             "word_hi": "पिन",
@@ -814,40 +814,40 @@
             "ok_audio": "vo_oh_i_ok_pin",
             "more_audio": "vo_oh_i_more_pin",
             "correct": true,
-            "x": 49.3,
-            "y": 86.0,
-            "w": 9,
-            "h": 13
+            "x": 50.3,
+            "y": 84.3,
+            "w": 6.0,
+            "h": 9.0
           },
           {
             "word_hi": "कुत्ता",
             "audio": "vo_name_kutta",
             "emoji": "🐶",
             "wrong_audio": "vo_oh_w_kutta",
-            "x": 46.8,
-            "y": 64.5,
-            "w": 11,
-            "h": 16
+            "x": 46.1,
+            "y": 63.0,
+            "w": 11.0,
+            "h": 15.9
           },
           {
             "word_hi": "गेंद",
             "audio": "vo_name_gend",
             "emoji": "⚽",
             "wrong_audio": "vo_oh_w_gend_i",
-            "x": 36.6,
-            "y": 65.5,
-            "w": 8,
-            "h": 12
+            "x": 37.1,
+            "y": 66.4,
+            "w": 6.2,
+            "h": 10.0
           },
           {
             "word_hi": "सूरज",
             "audio": "vo_name_sooraj",
             "emoji": "☀️",
             "wrong_audio": "vo_oh_w_sooraj_i",
-            "x": 78.6,
-            "y": 12.0,
-            "w": 10,
-            "h": 15
+            "x": 77.6,
+            "y": 10.9,
+            "w": 11.1,
+            "h": 18.1
           }
         ]
       },
@@ -883,10 +883,10 @@
             "ok_audio": "vo_oh_ee_ok_ladki",
             "more_audio": "vo_oh_ee_more_ladki",
             "correct": true,
-            "x": 54.5,
-            "y": 28.0,
-            "w": 11,
-            "h": 15
+            "x": 53.8,
+            "y": 30.0,
+            "w": 12.0,
+            "h": 16.5
           },
           {
             "word_hi": "पानी",
@@ -895,10 +895,10 @@
             "ok_audio": "vo_oh_ee_ok_paani",
             "more_audio": "vo_oh_ee_more_paani",
             "correct": true,
-            "x": 51.5,
+            "x": 51.1,
             "y": 44.0,
-            "w": 7,
-            "h": 13
+            "w": 5.5,
+            "h": 11.0
           },
           {
             "word_hi": "घड़ी",
@@ -907,10 +907,10 @@
             "ok_audio": "vo_oh_ee_ok_ghadi",
             "more_audio": "vo_oh_ee_more_ghadi",
             "correct": true,
-            "x": 80.5,
-            "y": 65.0,
-            "w": 10,
-            "h": 18
+            "x": 80.9,
+            "y": 65.4,
+            "w": 7.2,
+            "h": 18.5
           },
           {
             "word_hi": "मछली",
@@ -919,30 +919,30 @@
             "ok_audio": "vo_oh_ee_ok_machhli",
             "more_audio": "vo_oh_ee_more_machhli",
             "correct": true,
-            "x": 7.8,
-            "y": 72.0,
-            "w": 11,
-            "h": 12
+            "x": 8.2,
+            "y": 73.3,
+            "w": 10.2,
+            "h": 8.9
           },
           {
             "word_hi": "कुत्ता",
             "audio": "vo_name_kutta",
             "emoji": "🐶",
             "wrong_audio": "vo_oh_w_kutta",
-            "x": 35.9,
-            "y": 61.5,
-            "w": 12,
-            "h": 19
+            "x": 36.2,
+            "y": 61.4,
+            "w": 10.4,
+            "h": 19.1
           },
           {
             "word_hi": "किताब",
             "audio": "vo_name_kitaab",
             "emoji": "📕",
             "wrong_audio": "vo_oh_w_kitaab_ee",
-            "x": 65.5,
-            "y": 70.5,
-            "w": 11,
-            "h": 11
+            "x": 65.4,
+            "y": 70.2,
+            "w": 12.7,
+            "h": 8.3
           }
         ]
       },
