@@ -204,3 +204,38 @@ the glass is simply wider than the word spacing in this poem.
 
 Both strips are listed in `.vercelignore`. They are the source of the cuts and worth keeping, but
 the page never requests them and each is about 1.4MB.
+
+## The object hunt's art — 2026-09-23
+
+Eight objects generated for deck slides 18-20, same recipe as the rest (flat green field, keyed
+against the measured border colour, green dominance applied last):
+
+`obj_aam` · `obj_gaajar` · `obj_taala` · `obj_kitaab` · `obj_chidiya` · `obj_ghadi` ·
+`obj_machhli` · `obj_paani_g` — all 512px-capped PNGs with real alpha.
+
+माला, पिन, हिरण and लड़की were already in the bundle and are reused.
+
+**A sanity check that was wrong.** The book was rejected three times at 98-99% opaque. A
+rectangular object legitimately fills its own bounding box, so opacity alone cannot tell a failed
+key from a boxy subject. The test that works is whether the autocrop is much smaller than the
+source canvas — the book's crop is 19% of it, which proves the background came away.
+
+## The object-hunt scenes — 2026-09-23
+
+Three delivered scenes, one per hunt, shipping as WebP:
+
+| file | from | size |
+|---|---|---|
+| `assets/UI/scene_hunt1.webp` | `IMAGE 1.png` | 199KB (from 1863KB) |
+| `assets/UI/scene_hunt2.webp` | `IMAGE 2.png` | 225KB (from 2014KB) |
+| `assets/UI/scene_hunt3.webp` | `IMAGE 3.png` | 257KB (from 2157KB) |
+
+q88, mean delta 2.3-2.6. Lossy is right for these — they are painted scenes with soft gradients,
+unlike the flat-vector train art, where lossy was measured and rejected.
+
+**The scene box must keep the artwork's aspect ratio (1672:941).** The hotspots are authored as
+percentages of the picture; `background-size:cover` crops whatever does not fit and silently moves
+the painted objects out from under them. If these scenes are ever re-cut at a different ratio, the
+`aspect-ratio` on `.oh-scene` has to move with them.
+
+The source PNGs stay on disk and are listed in `.vercelignore`.

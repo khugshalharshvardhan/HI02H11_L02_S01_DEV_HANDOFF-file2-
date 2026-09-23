@@ -1855,19 +1855,22 @@ body.is-start .phase-gate{
 .coach-body{position:relative;transition:filter .16s ease, transform .16s ease;}
 .coach-face{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;
   justify-content:center;gap:4px;font-size:40px;font-weight:800;color:var(--navy);overflow:hidden;
-  z-index:3;text-align:center;}
+  z-index:3;text-align:center;padding:5px;box-sizing:border-box;}
 /* an EMPTY drop zone reads as a dashed tray inside the painted panel (mockup slide14) */
-/* [r14] NO EXTRA BOX ON THE COACH. The coach already HAS a panel painted on it; drawing a
-   dashed tray inside that panel put a second rectangle on top of the artwork, which is what
-   the review called "this lined box on the train box". The painted panel IS the drop target.
-   Nothing is drawn in it at rest, on hover, or once it is filled — the only cue is a glow on
-   the coach itself while a card is over it, and the coach's own correct/wrong feedback. */
-.coach-body.dropzone .coach-face{border:none;background:none;}
+/* [r15] THE DASHED DROP BOX, FITTED TO THE PANEL. An earlier round drew this as a small tray
+   floating inside the painted panel, which read as a second rectangle on the artwork. It is
+   sized and rounded to the panel itself now (see paint() in TrainChrome), so what the child
+   aims at and what they see are the same shape. It shows only while the coach is EMPTY. */
+.coach-body.dropzone .coach-face{
+  border:3px dashed rgba(11,61,140,.34);
+  background:rgba(255,255,255,.34);
+  box-sizing:border-box;
+  transition:border-color .16s ease,background .16s ease,box-shadow .16s ease;}
 /* [r13] a blank that takes a wrong matra shakes rather than flushing red */
 .coach-face .mf-blank.dd-zone.filled.wrong,
 .mf-blank.dd-zone.filled.wrong{background:none !important;border-color:var(--matra-orange,#FF8A00) !important;
   animation:coachShake 460ms ease-in-out;}
-.coach-body.dropzone.filled .coach-face{border:none;background:none;}
+.coach-body.dropzone.filled .coach-face{border:none;background:none;}   /* solved: the box goes */
 /* [r7] The coach body carries .dd-zone so makeDraggable can find it as a drop target, but
    .dd-zone's own chrome is a 150x150 dashed tray — drawn round the whole painted coach it was a
    big blue rectangle swallowing the wheels and the track. The zone's states are moved onto the
@@ -1877,26 +1880,37 @@ body.is-start .phase-gate{
 .coach-body.dd-zone.filled,
 .coach-body.dd-zone.filled.correct,
 .coach-body.dd-zone.filled.wrong{background:none;border:none;border-radius:0;display:block;box-shadow:none;}
-/* a card hovering over a coach glows the COACH, not a box inside it */
-.coach-body.dd-zone.hover .coach-face{background:none;border:none;box-shadow:none;}
+/* a card over the coach: the box firms up AND the coach glows, so the target is unmistakable */
+.coach-body.dd-zone.hover .coach-face{border-color:var(--selected,#386AF6);border-style:solid;
+  background:rgba(230,240,255,.66);box-shadow:0 0 0 4px rgba(56,106,246,.16) inset;}
 .coach-body.dd-zone.hover{filter:drop-shadow(0 0 5px rgba(56,106,246,.95)) drop-shadow(0 0 18px rgba(56,106,246,.6));}
-.coach-body.dd-zone.filled .coach-face{border:none;background:none;}
-.coach-body.dd-zone.filled.correct .coach-face{background:none;border:none;}
+.coach-body.dd-zone.filled .coach-face{border:none;background:none;box-shadow:none;}
+.coach-body.dd-zone.filled.correct .coach-face{background:none;border:none;box-shadow:none;}
 /* [r13] A wrong drop SHAKES and nothing more. It used to wash the cream panel red, which on a
    painted coach reads as damage to the artwork rather than as feedback — the same reason the
    wrong-tap glow went. The coach still buzzes, so the miss is not silent. */
 .coach-body.dd-zone.filled.wrong .coach-face{background:none;border:none;}
 .coach-body.dd-zone.filled.wrong{animation:coachShake 460ms ease-in-out;}
 
-/* what a dropped card looks like once it is sitting on the painted panel: stacked, and small
-   enough to stay inside the cream rather than spilling onto the coach's coloured frame */
+/* [r16] A DROPPED CARD FITS THE BOX. It used to be sized in percentages of its own content, so a
+   tall picture or a long word could push past the panel and sit on the coach's coloured frame.
+   The card now fills the face exactly and everything inside is bounded by it: the picture takes
+   the room the label does not, and neither can overflow. */
 .coach-face .tt-card{display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:2px;max-width:100%;max-height:100%;}
-.coach-face .tt-card img{width:auto;height:auto;max-width:74%;max-height:62%;object-fit:contain;}
-.coach-face .tt-card .tt-emoji{font-size:clamp(20px,34%,46px);line-height:1;}
-.coach-face .tt-card .tt-lbl{font-size:26px;line-height:1.05;}
-.coach-face.multi{flex-wrap:wrap;gap:4px;align-content:center;}
-.coach-face.multi .tt-card img{max-width:44%;max-height:44%;}
+  gap:2px;width:100%;height:100%;min-width:0;min-height:0;padding:0;box-sizing:border-box;
+  background:none;border:none;box-shadow:none;overflow:hidden;}
+.coach-face .tt-card img{flex:1 1 auto;width:100%;height:auto;min-height:0;max-height:100%;
+  object-fit:contain;}
+.coach-face .tt-card .tt-emoji{flex:0 1 auto;font-size:min(46px,8vh);line-height:1;}
+.coach-face .tt-card .tt-lbl{flex:0 0 auto;font-size:clamp(15px,2.0vh,24px);line-height:1.05;
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.coach-face .tt-card .tt-glyph{flex:0 0 auto;font-size:clamp(22px,4.4vh,44px);line-height:1;}
+/* a card with no label gives the picture the whole box */
+.coach-face.multi{flex-wrap:wrap;gap:3px;align-content:center;}
+.coach-face.multi .tt-card{width:auto;height:auto;max-width:47%;max-height:47%;}
+.coach-face.multi .tt-card img{max-width:100%;max-height:100%;}
+/* the word on a TRAIN_TAP coach is bounded the same way */
+.coach-face .coach-word{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
 /* --- the seven coach states the deck names (rows #98,#131,#132,#133,#134,#136) --------
    [r7] These were box-shadow rings round a rectangle. The coach is a SHAPED bitmap now, so a
@@ -1947,19 +1961,42 @@ body.is-start .phase-gate{
 @media (prefers-reduced-motion:reduce){.train-steam span{animation:none;opacity:0;}}
 
 /* the tray of draggable cards under the train (rows #126, #144, #163, #175) */
-.train-tray{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px;margin-top:22px;
+.train-tray{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px;
+  margin-top:22px;margin-bottom:40px;   /* [r19] clear of the आगे pill — it was 18px away */
   max-width:1120px;}
 .train-tray .tt-card{background:#FFFFFF;border:3px solid #CFE3FA;border-radius:14px;padding:10px 14px;
   display:flex;flex-direction:column;align-items:center;gap:6px;min-width:104px;cursor:grab;
   box-shadow:0 3px 0 rgba(11,61,140,.10);touch-action:none;
   opacity:1;transform:translateY(0);}
-.train-tray .tt-card.tt-rise{animation:ttRise 380ms ease-out both;}
+/* [r19] `backwards`, NOT `both`, and this was the whole reason a drag looked dead. ttRise ends on
+   transform:translateY(0); with a forwards fill that end state STAYS APPLIED, and a CSS animation
+   beats an inline style — so makeDraggable's transform was being written on every pointer move
+   and never rendered. The card sat still in the tray while the drop quietly worked, because the
+   drop hit-tests the POINTER, not the card. `backwards` keeps the staggered entry (hidden until
+   each card's turn) and lets the element return to its own styles once it has played. */
+.train-tray .tt-card.tt-rise{animation:ttRise 380ms ease-out backwards;}
+/* [r19] A CARRIED CARD MUST LOOK CARRIED. Dropping its chrome (the sibling build's treatment)
+   made it read as an ordinary cell in our layout — picked up and put down, it looked identical,
+   so the drag was invisible. It keeps its card now and is LIFTED instead: a blue halo, a deep
+   shadow under it, and the 1.08 scale makeDraggable already applies. The flight and the rejected
+   shake stay as ported from HI02H11_L01_S01.
+   · flying:  .97s on their curve, the real tile, landing on transitionend
+   · rejected: the card shakes on the way home rather than only the target flashing */
+.train-tray .tt-card.dragging{cursor:grabbing;z-index:70;transition:none;
+  background:#FFFFFF;border-color:#5C9BFF;
+  box-shadow:0 0 0 4px rgba(56,106,246,.34),0 18px 30px rgba(11,61,140,.34);}
+.tt-card.tt-fly{transition:transform .97s cubic-bezier(.32,.78,.3,1);z-index:60;pointer-events:none;
+  will-change:transform;}
+.tt-card.tt-shake{animation:buzzShake .44s;}
+@media (prefers-reduced-motion:reduce){.tt-card.tt-fly{transition:none;}.tt-card.tt-shake{animation:none;}}
 @keyframes ttRise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:translateY(0);}}
 .train-tray .tt-card img{width:78px;height:78px;object-fit:contain;}
 .train-tray .tt-card .tt-emoji{font-size:60px;line-height:1;}
 .train-tray .tt-card .tt-lbl{font-size:30px;font-weight:800;color:var(--navy);}
 .train-tray .tt-card .tt-glyph{font-size:52px;font-weight:800;color:var(--navy);line-height:1;}
-.train-tray .tt-card.dragging{transform:scale(1.08);cursor:grabbing;z-index:60;box-shadow:0 10px 18px rgba(11,61,140,.22);}
+/* [r17] the old carried style is folded into the ported one above. It sat LATER in the file at
+   the same weight, so its shadow won and the sibling's never showed; its transform:scale() also
+   fought makeDraggable's own inline transform, which is what actually follows the pointer. */
 .train-tray .tt-card.snapped{box-shadow:none;border-color:transparent;background:transparent;}
 .train-tray .tt-card.tile-disabled{pointer-events:none;opacity:.4;}
 /* a card that has been dropped INTO a coach shrinks to fit the coach face */
@@ -2131,6 +2168,82 @@ body.is-start .phase-gate{
 .ps-spark{position:absolute;width:12px;height:12px;border-radius:50%;background:#FFC13C;pointer-events:none;z-index:54;
   animation:psSpark 700ms ease-out forwards;}
 @keyframes psSpark{from{transform:scale(.4);opacity:1;}to{transform:scale(1.8) translateY(-24px);opacity:0;}}
+
+/* ===== OBJECT_HUNT (deck slides 18, 19, 20) ==========================================
+   An outdoor scene the child hunts in. Objects are positioned cards, not a painted hotspot
+   map, so each one can glow, shake and be nudged at on its own — see the module's note. */
+.oh-wrap{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:10px;}
+/* [r16] The scene keeps the ARTWORK'S OWN ASPECT RATIO and the image fills it exactly.
+   `cover` was tried first and is wrong here: it crops whatever does not fit, which silently
+   moves the painted objects out from under the hotspots placed on them — the carrot patch's
+   hotspot ended up over the dog. With the box at the picture's ratio, a percentage in the data
+   is the same percentage of the picture, and a hotspot cannot drift. */
+.oh-scene{position:relative;min-height:0;border-radius:26px;overflow:hidden;
+  aspect-ratio:1672 / 941; height:100%; width:auto; max-width:100%;
+  background-size:100% 100%;background-position:center;background-repeat:no-repeat;
+  background-color:#CFEBFB;box-shadow:inset 0 0 0 3px rgba(11,61,140,.07);}
+/* the fallback if the painted scene cannot be fetched: the hotspots show their emoji so the
+   screen is still playable rather than a blank blue rectangle */
+.oh-wrap:not(.oh-noscene) .oh-fall{display:none;}
+.oh-wrap.oh-noscene .oh-scene{background-image:none!important;
+  background:linear-gradient(180deg,#CFEBFB 0%,#E6F5FD 46%,#EAF7E4 62%,#CDEBAE 100%);}
+.oh-fall{font-size:64px;line-height:1;pointer-events:none;}
+
+/* the matra being hunted, kept on screen throughout */
+.oh-chip{position:absolute;right:10px;top:-2px;z-index:6;display:flex;align-items:center;gap:10px;
+  background:#FFF8E7;border:3px solid #F0D98A;border-radius:18px;padding:4px 16px;
+  box-shadow:0 4px 0 rgba(11,61,140,.08);}
+.oh-chip-l{font-size:34px;font-weight:800;color:var(--navy);line-height:1;}
+.oh-chip-m .matra-word{display:block;height:40px;width:auto;color:var(--navy);}
+
+/* ONE HOTSPOT. Transparent at rest — the deck is explicit that nothing is highlighted until the
+   child interacts, or the scene tells them the answer. Every state is a ring drawn on the
+   hotspot, because the object itself is painted into the scene and cannot be moved or scaled. */
+.oh-obj{position:absolute;transform:translate(-50%,-50%);
+  background:none;border:none;padding:0;cursor:pointer;z-index:3;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  transition:box-shadow .18s ease,background .18s ease;}
+.oh-obj:hover{background:rgba(255,255,255,.14);box-shadow:0 0 0 3px rgba(255,255,255,.5);}
+
+/* tapped: a soft glowing outline */
+.oh-obj.oh-sel{background:rgba(78,163,240,.16);
+  box-shadow:0 0 0 4px #4EA3F0,0 0 20px 6px rgba(78,163,240,.55);}
+/* found: stays lit, locked, and carries a tick so the collected set is readable at a glance */
+.oh-obj.oh-got{pointer-events:none;}
+.oh-obj.oh-glow{background:rgba(78,190,106,.18);
+  box-shadow:0 0 0 4px var(--ok,#4EBE6A),0 0 22px 6px rgba(78,190,106,.55);}
+/* [r17 · SME] NO TICK AND NO BADGE. A found object is marked by its border turning green and
+   nothing else — the ring above is the whole answer. */
+.oh-obj.oh-got{animation:ohPop 460ms cubic-bezier(.34,1.5,.6,1);}
+@keyframes ohPop{0%{transform:translate(-50%,-50%) scale(1);}
+                 45%{transform:translate(-50%,-50%) scale(1.14);}
+                 100%{transform:translate(-50%,-50%) scale(1);}}
+/* wrong: a small shake and NO lasting highlight (deck) */
+.oh-obj.oh-bad{animation:ohShake 480ms ease-in-out;}
+@keyframes ohShake{0%,100%{transform:translate(-50%,-50%) rotate(0);}
+  18%{transform:translate(-50%,-50%) rotate(-5deg);}
+  42%{transform:translate(-50%,-50%) rotate(4.5deg);}
+  66%{transform:translate(-50%,-50%) rotate(-3deg);}
+  86%{transform:translate(-50%,-50%) rotate(1.6deg);}}
+/* rung 2: the remaining correct objects pulse under the hand */
+.oh-obj.oh-pulse{animation:ohPulse 1200ms ease-in-out infinite;}
+@keyframes ohPulse{0%,100%{box-shadow:0 0 0 3px rgba(255,193,60,.85);background:rgba(255,193,60,.10);}
+                   50%{box-shadow:0 0 0 7px rgba(255,193,60,.55),0 0 22px 8px rgba(255,193,60,.4);
+                       background:rgba(255,193,60,.2);}}
+@media (prefers-reduced-motion:reduce){
+  .oh-obj.oh-bad,.oh-obj.oh-got,.oh-obj.oh-pulse{animation:none;}
+}
+
+/* the magnifier glides to whatever was tapped */
+.oh-lens{position:absolute;left:0;top:0;width:150px;height:145px;z-index:5;pointer-events:none;
+  opacity:0;transition:left .45s cubic-bezier(.3,.8,.35,1),top .45s cubic-bezier(.3,.8,.35,1),opacity .25s ease;
+  filter:drop-shadow(0 6px 10px rgba(11,61,140,.3));}
+.oh-lens.show{opacity:1;}
+.oh-lens img{width:100%;height:100%;object-fit:contain;display:block;}
+@media (prefers-reduced-motion:reduce){.oh-lens{transition:opacity .2s ease;}}
+
+/* [r21] the progress dots are gone — a found object stays lit in the scene instead */
 
 /* --- TRAIN_TAP: the coach IS the option cell ----------------------------------------
    mountTapOptions puts its feedback classes on .train-coach; these rules map each one onto the
@@ -5482,6 +5595,54 @@ function refreshMatraWords(root){
 }
 
 /* ---------- 11. DRAG-DROP PRIMITIVE ---------- */
+/* [r17] THE DROP ANIMATION FROM HI02H11_L01_S01's page 10, ported rather than re-invented.
+   Its flyTileTo moves the REAL tile with a CSS transition and lands on `transitionend`, then
+   re-parents it — where my first attempt flew a throwaway copy on a fixed timer. Moving the real
+   tile is better for the reason their build gives: the thing the child was holding is the thing
+   that arrives, so there is never a frame with two of it, and the landing is driven by the
+   animation actually finishing rather than by a timer that can disagree with it.
+     · .97s on their curve, which is a deliberately unhurried arc a child can follow
+     · scale .86 on landing, so it visibly settles INTO the box
+     · a fail-safe land() at 1600ms, because a dropped transitionend must never stall the slide */
+/* [r20] Fisher-Yates. `sort(()=> Math.random() - 0.5)` is not a shuffle: the comparator is
+   inconsistent, so the result is biased and on three items it very often comes back in the order
+   it went in — which is why the tray looked fixed. */
+function shuffled(arr){
+  const r = (arr || []).slice();
+  for(let i = r.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = r[i]; r[i] = r[j]; r[j] = t;
+  }
+  return r;
+}
+/* [r20] NO LONGER CALLED. This is HI02H11_L01_S01's flight, ported in r17, and on their build it
+   animates a DEMO tile that has not been dragged. On a real drop it replays the move the child
+   just made: makeDraggable clears the tile's transform before handing over, so the card snaps
+   home and then flies the same path again — "kind of repeating the drop animation", which is
+   exactly what it looked like. Drops are instant now. Kept, and kept documented, because the
+   helper is right for any tile that travels WITHOUT having been dragged. */
+function flyTileTo(tile, into, done){
+  let landed = false;
+  const land = ()=>{
+    if(landed) return; landed = true;
+    tile.removeEventListener("transitionend", land);
+    tile.classList.remove("tt-fly"); tile.style.transform = "";
+    if(done) done();
+  };
+  try{
+    const from = tile.getBoundingClientRect(), to = into.getBoundingClientRect();
+    if(!from.width || !to.width || matchMedia("(prefers-reduced-motion: reduce)").matches){ land(); return; }
+    const sc = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--scale")) || 1;
+    const dx = ((to.left + to.width / 2) - (from.left + from.width / 2)) / sc;
+    const dy = ((to.top + to.height / 2) - (from.top + from.height / 2)) / sc;
+    tile.addEventListener("transitionend", land, { once: true });
+    tile.classList.add("tt-fly");
+    requestAnimationFrame(()=>{
+      tile.style.transform = "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px) scale(.86)";
+    });
+    setTimeout(land, 1600);
+  }catch(e){ land(); }
+}
 function makeDraggable(tileEl, onDrop, opts){
   let startX=0, startY=0, dx=0, dy=0, dragging=false;
   let scale = 1;
@@ -5490,6 +5651,7 @@ function makeDraggable(tileEl, onDrop, opts){
     if(tileEl.classList.contains("snapped") || tileEl.classList.contains("matched")) return;
     if(state.revealing) return;   // [24a N8] tray still revealing one-by-one → no grabs yet (parity with the tap path's lock)
     refScale();
+    tileEl.classList.remove("tt-rise");   /* [r19] never let an entry animation pin the transform */
     /* [r14] Picking a tile up hands the voice to the child: whatever is speaking stops, so the
        instruction never talks over the move and two voices can never overlap. Only tiles the VO
        gate lets through reach this line, so this is in practice the train tray. */
@@ -8913,6 +9075,40 @@ function earnedHand(el, slide){
 }
 /* the phase-gate bypass, deliberately a SEPARATE function so pointNudgeAt's gate stays intact
    and greppable — nothing else in the engine can reach this path. */
+/* [r19] THE HAND SHOWS THE MOVE, not just the destination. Ported from HI02H11_L01_S01, where
+   page 10 uses it to demonstrate a drag: the hand starts under the card the child should pick up,
+   travels to the middle of the box it belongs in, and repeats. A hand that only points at the
+   answer tells a child WHICH, never HOW — and on a drag screen HOW is the thing they are stuck on.
+   The start points from BELOW (the fingertip is at the top of the art, so it hangs under what it
+   indicates); the destination is the box's CENTRE, or the hand reads as "drag past this". */
+function travelNudge(fromEl, toEl, loops){
+  try{
+    const nh = $("nudgeHand");
+    if(!fromEl || !toEl || !nh || typeof nh.animate !== "function"){ _forceNudgeAt(toEl || fromEl); return; }
+    stopNudge();
+    const stage = document.querySelector(".slide-stage") || document.getElementById("stage");
+    const sw = stage.getBoundingClientRect();
+    const sc = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--scale")) || 1;
+    const under = (el)=>{ const r = el.getBoundingClientRect();
+      return { left: (r.left - sw.left)/sc + r.width/sc/2 - 48,
+               top:  (r.top  - sw.top )/sc + r.height/sc + 4 }; };
+    const into  = (el)=>{ const r = el.getBoundingClientRect();
+      return { left: (r.left - sw.left)/sc + r.width/sc/2 - 48,
+               top:  (r.top  - sw.top )/sc + r.height/sc/2 - 8 }; };
+    if(stage !== nh.parentNode) stage.appendChild(nh);
+    const a = under(fromEl), b = into(toEl);
+    nh.style.left = a.left + "px"; nh.style.top = a.top + "px";
+    nh.classList.add("show", "hint-glow");
+    const anim = nh.animate(
+      [ { left:a.left+"px", top:a.top+"px", offset:0 },
+        { left:a.left+"px", top:a.top+"px", offset:.18 },
+        { left:b.left+"px", top:b.top+"px", offset:.72 },
+        { left:b.left+"px", top:b.top+"px", offset:1 } ],
+      { duration:1800, iterations:(loops > 0 ? loops : Infinity), easing:"ease-in-out" });
+    state._handTravel = anim;
+    if(loops > 0) anim.onfinish = ()=>{ if(state._handTravel === anim) stopNudge(); };
+  }catch(e){ _forceNudgeAt(toEl || fromEl); }
+}
 function _forceNudgeAt(el){
   if(!el || !el.getBoundingClientRect) return;
   const nh = $("nudgeHand");
@@ -8928,6 +9124,21 @@ function _forceNudgeAt(el){
    procedural tone, so the deck's feedback beats are audible now and swap to the real take with
    no code change. */
 const _sfxHave = new Map();
+/* [r17] Say a word without taking the engine's VO lock. Hovering an object must name it, and
+   that naming must not gate taps, not count as "a clip is playing", and not stop whatever the
+   lesson is saying from resuming. A bare <audio> element, replaced on each call so two names can
+   never overlap. Ported from HI02H11_L01_S01, which uses it for the same purpose. */
+let _hoverVoice = null;
+function speakNoLock(src){
+  if(!src || isMuted) return;
+  try{
+    if(_hoverVoice){ _hoverVoice.pause(); _hoverVoice = null; }
+    const a = new Audio(src);
+    _hoverVoice = a;
+    a.play().catch(()=>{});
+  }catch(e){}
+}
+function stopNoLock(){ try{ if(_hoverVoice){ _hoverVoice.pause(); _hoverVoice = null; } }catch(e){} }
 function sfxOr(id, fallback, vol){
   if(isMuted) return;             /* [r5-mute] neither the file nor the procedural stand-in */
   if(!id){ if(fallback) fallback(); return; }
@@ -9005,10 +9216,15 @@ const TRAIN_ART = {
   src: "assets/UI/train_still.webp", W: 2171, H: 724,
   ink: { x: 17, y: 48, w: 2138, h: 592 },
   cut: [17, 650, 1151, 1642, 2155],
-  /* the cream panel a word sits on, measured per coach (centre + size, art px) */
-  panel: [null, { cx: 894, cy: 341, w: 409, h: 417 },
-                { cx: 1392, cy: 340, w: 396, h: 418 },
-                { cx: 1892, cy: 339, w: 418, h: 417 }]
+  /* The cream panel a word sits on, per coach (centre + size + corner radius, art px).
+     [r16] RE-MEASURED, and the old numbers were wrong: h:417 was a colour bbox that had swallowed
+     the coach's roof highlight above the panel and its lower body below it, so the drop box drawn
+     from it was half again too tall and sat low. Found by FLOOD-FILLING the light region from each
+     coach's own centre, which the sheen banding cannot split — proved by drawing both candidate
+     boxes back onto the artwork. The panel is 404x231, not 409x417. */
+  panel: [null, { cx: 898, cy: 330, w: 404, h: 231, r: 22 },
+                { cx: 1394, cy: 327, w: 392, h: 223, r: 21 },
+                { cx: 1898, cy: 330, w: 410, h: 229, r: 22 }]
 };
 const TRAIN_SPR = {
   src: "assets/UI/train_spritesheet.webp", cw: 634, ch: 182, cols: 6, rows: 6,
@@ -9168,10 +9384,14 @@ const TrainChrome = {
       /* the word/card sits ON the coach's painted cream panel, placed from the measurement
          above rather than from padding — the panel is not centred in the coach slice */
       const face = document.createElement("div"); face.className = "coach-face" + (cfg.multi ? " multi" : "");
+      /* The face IS the painted panel: the drop target has to line up with what the child sees.
+         0.94/0.90 keeps the dashed outline just inside the panel's painted edge rather than on
+         top of it, and the radius is the panel's OWN measured corner so the two curves agree. */
       face.style.left   = ((pan.cx - a.x0) * k) + "px";
       face.style.top    = ((pan.cy - A.ink.y) * k) + "px";
       face.style.width  = (pan.w * k * 0.94) + "px";
       face.style.height = (pan.h * k * 0.90) + "px";
+      face.style.borderRadius = Math.max(4, Math.round((pan.r || pan.w * 0.054) * k)) + "px";
       face.innerHTML = _coachCell((cfg.coach_body || [])[i]);
       body.appendChild(face);
 
@@ -9206,6 +9426,11 @@ const TrainChrome = {
     const _afterPrompt = ()=>{ if(typeof cfg.on_prompt_done === "function") cfg.on_prompt_done(); };
     const _release = (go)=> go(_afterPrompt);
     state.promptGate = (go)=>{ if(_parked) _release(go); else _promptGo = go; };
+    /* [r19] The held prompt belongs to THIS slide. mountSlide replaces state.promptGate on every
+       mount, so if it is no longer ours the child has moved on and the clip must not be spoken
+       over whatever they are looking at now. */
+    const _myGate = state.promptGate;
+    const _stillMine = ()=> state.promptGate === _myGate;
     /* `tail` is how long the train is still audible after it stops. The page's own VO is held
        for it, so the instruction never starts underneath the arrival sound. */
     const settle = (tail)=>{
@@ -9213,7 +9438,8 @@ const TrainChrome = {
       shell.classList.add("tc-parked");               /* drops the sprite layer, reveals the png */
       _parked = true;
       if(_promptGo){ const g = _promptGo; _promptGo = null;
-                     setTimeout(()=> _release(g), (typeof tail === "number") ? tail : 320); }
+                     setTimeout(()=>{ if(_stillMine()) _release(g); },
+                                (typeof tail === "number") ? tail : 320); }
       if(typeof cfg.on_enter === "function") cfg.on_enter();
     };
     if(cfg.entry !== false && !reduce){
@@ -9592,8 +9818,8 @@ SlideModules.TRAIN_SORT = {
 
     /* "Three draggable word cards appear below the train" / "picture cards only" */
     const tray = document.createElement("div"); tray.className = "train-tray";
-    const shuffled = items.slice().sort(()=> Math.random() - 0.5);
-    shuffled.forEach(it => {
+    /* [r20] a real shuffle, so the tray order genuinely changes between runs */
+    shuffled(items).forEach(it => {
       const t = document.createElement("div"); t.className = "tt-card";
       t.dataset.key = it.key;
       if(it.audio) t.dataset.audio = it.audio;
@@ -9633,6 +9859,7 @@ SlideModules.TRAIN_SORT = {
         if(body.dataset.key === t.dataset.key){
           /* ---- correct: snap, sparkle, lock (rows #132, #139, #170) ---- */
           leaveTrayGhost(t);
+          /* [r20] instant — the child has already carried it here; anything further is a replay */
           t.classList.add("snapped");
           train.faceEls[idx].appendChild(t);
           placed++;
@@ -9673,6 +9900,10 @@ SlideModules.TRAIN_SORT = {
         } else {
           /* ---- wrong: the coach shakes, the card returns, the ladder speaks (rows #133-#134) ---- */
           body.classList.remove("wrong"); void body.offsetWidth; body.classList.add("wrong");
+          /* [r17] the card shakes as well as the coach, as the sibling build does — the tile the
+             child was holding is the thing they are looking at */
+          t.classList.remove("tt-shake"); void t.offsetWidth; t.classList.add("tt-shake");
+          setTimeout(()=> t.classList.remove("tt-shake"), 460);
           sfxShake();
           setTimeout(()=> body.classList.remove("wrong"), 460);
           const n = (wrongN.get(t) || 0) + 1; wrongN.set(t, n);
@@ -9689,7 +9920,9 @@ SlideModules.TRAIN_SORT = {
               const gb = goal.querySelector(".coach-body");
               gb.classList.add("nudge");
               state.helpShown = true; state.scaffoldLevel = 2;
-              earnedHand(gb, slide);
+              /* [r19] SHOW THE MOVE. A hand parked on the right coach says WHICH; on a drag screen
+                 the child is stuck on HOW. It travels from the card to the coach and repeats. */
+              travelNudge(t, gb);
               SwiftPAL.emit("hint_shown", { slide_id: slide.id, rung: 2, phase: slide.phase });
             }
           }
@@ -9755,7 +9988,10 @@ SlideModules.MATRA_FILL = {
     /* "Below the train, matra options will appear: आ (ा) · इ (ि) · ई (ी)" (row #151).
        reuse_options: the same three matras serve all three blanks, so a card is NOT consumed. */
     const tray = document.createElement("div"); tray.className = "train-tray";
-    (d.options || []).forEach(m => {
+    /* [r20] shuffled too. These three were rendered in authored order every single time, so the
+       matra a child wanted was always in the same place and the screen could be solved by
+       position rather than by reading it. */
+    shuffled(d.options || []).forEach(m => {
       const t = document.createElement("div"); t.className = "tt-card";
       t.dataset.key = m;
       t.innerHTML = '<span class="tt-glyph ink-glyph">' + matraGlyph(m) + '</span>';
@@ -9786,11 +10022,15 @@ SlideModules.MATRA_FILL = {
         const si = +blank.dataset.slot;
         state.attempts++;
         if(blank.dataset.key === t.dataset.key){
-          /* the matra snaps in and the word completes (row #156) */
+          /* the matra snaps in and the word completes (row #156). The card is seen to travel
+             into the blank first; the glyph appears as it lands. */
           blank.classList.add("filled");
           body.classList.add("filled");           /* makeDraggable refuses a filled zone -> a solved coach is done */
-          blank.innerHTML = '<span class="mf-fill ink-glyph">' + t.dataset.key + '</span>';
           blank.classList.remove("nudge");
+          /* [r20] instant. reuse_options: the card itself stays in the tray for the next blank. */
+          t.style.transform = "";
+          blank.innerHTML = '<span class="mf-fill ink-glyph">' + t.dataset.key + '</span>';
+          centerAllGlyphs(blank);
           /* "As soon as the child drops the correct matra, THE WORD WILL BE COMPLETED." (row #147)
              The blank has to sit in the matra's DRAWN position, which means the word is built from
              separate spans — and Devanagari does NOT shape across element boundaries. Leaving it
@@ -9833,6 +10073,10 @@ SlideModules.MATRA_FILL = {
         } else {
           /* "Wrong area shakes · Matra returns to original place · Only VO" (rows #157, #158) */
           body.classList.remove("wrong"); void body.offsetWidth; body.classList.add("wrong");
+          /* [r17] the card shakes as well as the coach, as the sibling build does — the tile the
+             child was holding is the thing they are looking at */
+          t.classList.remove("tt-shake"); void t.offsetWidth; t.classList.add("tt-shake");
+          setTimeout(()=> t.classList.remove("tt-shake"), 460);
           sfxShake();
           setTimeout(()=> body.classList.remove("wrong"), 460);
           t.style.transform = "";
@@ -9848,7 +10092,7 @@ SlideModules.MATRA_FILL = {
             if(goal){
               goal.classList.add("nudge");
               state.helpShown = true; state.scaffoldLevel = 2;
-              earnedHand(goal, slide);
+              travelNudge(t, goal);          /* [r19] the hand shows the drag, not just the blank */
               SwiftPAL.emit("hint_shown", { slide_id: slide.id, rung: 2, phase: slide.phase });
             }
           }
@@ -10084,6 +10328,199 @@ SlideModules.POEM_SEARCH = {
   }
 };
 
+/* ==========================================================================================
+   OBJECT_HUNT — deck slides 18, 19, 20
+   "Convert this activity into an interactive object hunt. Remove all poem/text-based
+   interaction. चित्र देखिए → वस्तु का नाम सुनिए → मात्रा पहचानिए → सही चित्र पर टैप कीजिए"
+
+   Replaces POEM_SEARCH, which is kept in this file but no longer authored against: the deck
+   retired the poem, not the screen.
+
+   The scene is BUILT FROM OBJECT CARDS at authored positions rather than painted as one
+   picture with hotspots. The deck wants each object to glow, shake, pulse and be nudged at
+   independently, and wants "a clear touch area with enough spacing for tablet interaction" —
+   none of which a single flat illustration can give without a second hit-map to maintain.
+
+   Every object speaks its OWN NAME when tapped, before any judgement: the deck's learning flow
+   puts hearing the word before identifying the matra, so a wrong tap still teaches the word.
+   ========================================================================================== */
+SlideModules.OBJECT_HUNT = {
+  mount(host, slide){
+    const d = slide.data || {};
+    const objs = d.objects || [];
+    const need = objs.filter(o => o.correct).length;
+
+    const wrap = document.createElement("div"); wrap.className = "oh-wrap";
+    /* the matra being hunted stays on screen the whole time (deck: "Keep मात्रा indicator visible") */
+    const chip = document.createElement("div"); chip.className = "oh-chip";
+    /* [r18 · SME] the letter is shown in quotes — it is being NAMED here, not read as part of a
+       word, and that is the deck's own convention («जिन शब्दों में “प” की आवाज़ सुनाई दे»). */
+    chip.innerHTML = '<span class="oh-chip-l">“' + (d.letter || "") + '”</span>' +
+                     '<span class="oh-chip-m">' + matraChipSVG(d.matra || "", 46) + '</span>';
+    wrap.appendChild(chip);
+
+    const scene = document.createElement("div"); scene.className = "oh-scene";
+    /* [r16] The SME's painted scene. The objects are IN the picture now, so what used to be an
+       object card is a hotspot over the thing the child can already see — which is what the deck
+       describes ("Keep the existing outdoor scene", "objects should remain static initially,
+       highlight appears only after interaction"). A background-image has no error event, so the
+       scene is probed separately; if it cannot be fetched the hotspots show their emoji instead
+       and the screen still works. */
+    if(d.scene){
+      scene.style.backgroundImage = 'url("' + d.scene + '")';
+      const probe = new Image();
+      probe.onerror = ()=> wrap.classList.add("oh-noscene");
+      probe.src = d.scene;
+    } else wrap.classList.add("oh-noscene");
+    wrap.appendChild(scene);
+
+    /* [r21 · SME] NO PROGRESS BAR. The found objects stay lit in the scene, which is the same
+       information in the place the child is already looking. */
+    host.appendChild(wrap);
+
+    /* a hotspot: a transparent, rounded touch area over the painted object. x/y/w/h are
+       percentages of the scene, measured by cropping each one out of the artwork and looking
+       at it, so every hotspot is known to sit on the thing it names. */
+    const cards = objs.map((o, i)=>{
+      const el = document.createElement("button");
+      el.className = "oh-obj"; el.type = "button";
+      el.style.left   = (o.x || 50) + "%";
+      el.style.top    = (o.y || 50) + "%";
+      el.style.width  = (o.w || 11) + "%";
+      el.style.height = (o.h || 16) + "%";
+      el.setAttribute("aria-label", o.word_hi || "");
+      el.innerHTML = '<span class="oh-fall">' + (o.emoji || "") + '</span>';
+      scene.appendChild(el);
+      return el;
+    });
+
+    /* the magnifier, which "moves smoothly towards the selected object" */
+    const lens = document.createElement("div"); lens.className = "oh-lens";
+    lens.innerHTML = '<img src="assets/UI/ui_magnifier.webp" alt="" ' +
+      'onerror="this.replaceWith(document.createTextNode(\'\\u{1F50D}\'));">';
+    scene.appendChild(lens);
+    /* GLASS is the same measurement POEM_SEARCH uses — the lens art's glass is not the centre of
+       its own image, so parking the element's middle on an object looks off by the handle. */
+    const GLASS = { x: 0.656, y: 0.391 };
+    const lensTo = (el)=>{
+      const sr = scene.getBoundingClientRect(), r = el.getBoundingClientRect();
+      const sc = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--scale")) || 1;
+      const lw = lens.offsetWidth, lh = lens.offsetHeight;
+      lens.style.left = (((r.left + r.width / 2) - sr.left) / sc - lw * GLASS.x) + "px";
+      lens.style.top  = (((r.top + r.height / 2) - sr.top) / sc - lh * GLASS.y) + "px";
+      lens.classList.add("show");
+    };
+
+    state.ownsAudio = true; setSwMood("teach");
+    /* [r21 · SME] "remove next button — once the image is completed it moves to the next page."
+       There is nothing to do once every object is found, so आगे would be a gate with no question
+       behind it. The pill is hidden for the whole screen rather than appearing and vanishing. */
+    $("navBtn").style.display = "none";
+    setNavActive(false);
+
+    const A = (k)=> audioFor(slide, k);
+    let found = 0, wrongN = 0, busy = false, done = false;
+
+    const finish = ()=>{
+      if(done) return; done = true;
+      wrap.classList.add("oh-done");
+      stopNudge();
+      cards.forEach((c, i)=>{ c.classList.remove("oh-pulse");
+                              if(objs[i].correct) c.classList.add("oh-glow"); });
+      confettiCannon(); sfxCorrect(); setSwMood("happy");
+      let moved = false;
+      const go = ()=>{ if(moved) return; moved = true;
+                       if(CARD.slides[state.idx] === slide) completeSlide(true); };
+      play(A("result") || null, ()=> setTimeout(go, 700));
+      setTimeout(go, 9000);            /* never strand the screen on a clip that does not end */
+    };
+
+    const nudgeAt = (el)=>{ stopNudge(); _forceNudgeAt(el); };
+
+    /* [r17 · SME] HOVER NAMES THE OBJECT. "when we move our cursor to any element or image first
+       it will read the image name so that the user will know if it is correct or not." The name is
+       spoken off the VO lock, so hovering never blocks a tap and never cuts the instruction for
+       good — and it is skipped while a judgement is being spoken, or the two would collide.
+       On a touch screen there is no hover; the tap path speaks the same name first, as before. */
+    let _hoverOn = null;
+    cards.forEach((el, i)=>{
+      const o = objs[i];
+      const nameSrcOf = ()=> o.audio ? VO_DIR + o.audio + "." + AUDIO_EXT : null;
+      el.addEventListener("pointerenter", (e)=>{
+        if(e.pointerType === "touch") return;          // a tap is not a hover
+        if(done || busy || el.classList.contains("oh-got")) return;
+        if(_hoverOn === el) return;
+        _hoverOn = el;
+        speakNoLock(nameSrcOf());
+      });
+      el.addEventListener("pointerleave", ()=>{ if(_hoverOn === el){ _hoverOn = null; stopNoLock(); } });
+      el.onclick = ()=>{
+        if(done || busy || el.classList.contains("oh-got")) return;
+        busy = true;
+        stopNudge(); stopNoLock(); _hoverOn = null;     /* the hover name yields to the real answer */
+        /* a new tap ends the rung-2 help: the hand goes, and so does the pulse on the objects
+           it was pointing at. Without this every hinted object kept throbbing for the rest of
+           the screen, including after it had been found. */
+        cards.forEach(c => c.classList.remove("oh-pulse"));
+        el.classList.add("oh-sel");
+        lensTo(el);
+        sfxTap();
+        /* the object's own name FIRST — the child is meant to hear the word, then judge it */
+        const nameSrc = o.audio ? VO_DIR + o.audio + "." + AUDIO_EXT : null;
+        play(nameSrc, ()=>{
+          if(o.correct){
+            el.classList.remove("oh-sel"); el.classList.add("oh-got", "oh-glow");
+            sfxSparkle(); starBurst();
+            found++;
+            SwiftPAL.emit(d.signal || "object_hunt_correct", {
+              slide_id: slide.id, phase: slide.phase, value: true,
+              word: o.word_hi || "", first_try: wrongN === 0,
+              attempts: wrongN + 1, latency_ms: Date.now() - state.slideStart });
+            /* [r21 · SME] "बहुत बढ़िया, X! अब और … चित्र ढूँढिए।" after each find — except the
+               LAST, where there is nothing left to find and the completion line takes over. */
+            const last = found >= need;
+            const okId = (!last && o.more_audio) ? o.more_audio : o.ok_audio;
+            const okSrc = okId ? VO_DIR + okId + "." + AUDIO_EXT : (last ? null : (A("correct") || null));
+            play(okSrc, ()=>{
+              busy = false; lens.classList.remove("show");
+              if(last) finish();
+            });
+          } else {
+            /* "Object gives a small shake. No highlight stays." */
+            el.classList.remove("oh-sel"); el.classList.add("oh-bad");
+            setTimeout(()=> el.classList.remove("oh-bad"), 520);
+            sfxWrongSoft(); setSwMood("tryagain");
+            wrongN++;
+            /* rung 1 = hint only. rung 2 = hint + the correct objects pulse + the hand points
+               at one of them (deck: "Hand nudge appears on one correct object"). */
+            const rung2 = wrongN >= _scafRule("hand_on_attempt", 2);
+            const hint = rung2 ? (A("hint2") || A("hint1")) : (A("hint1") || null);
+            /* [r21 · SME] the wrong line is about THIS object: what matra it does or does not
+               carry, then "try again". A per-object id beats the screen's generic line, which
+               only said "think again" and taught nothing about the word just tapped. */
+            const badSrc = o.wrong_audio ? VO_DIR + o.wrong_audio + "." + AUDIO_EXT
+                                         : (A("try_again") || null);
+            play(badSrc, ()=>{
+              play(hint, ()=>{
+                if(rung2){
+                  const first = cards.find((c, k)=> objs[k].correct && !c.classList.contains("oh-got"));
+                  cards.forEach((c, k)=>{ if(objs[k].correct && !c.classList.contains("oh-got")) c.classList.add("oh-pulse"); });
+                  if(first) nudgeAt(first);
+                }
+                busy = false; lens.classList.remove("show");
+              });
+            });
+          }
+        });
+      };
+    });
+
+    state.replayAudio = ()=> play(A("prompt") || null, ()=>{});
+    /* "Add the target instruction at the top" is the question band; the same line is spoken. */
+    play(A("prompt") || null, ()=>{});
+  }
+};
+
 
 /* ==========================================================================================
    MEET_EXAMPLES — deck pages 6, 8, 10 · rows #40-#50, #63-#72, #85-#94
@@ -10137,9 +10574,17 @@ SlideModules.MEET_EXAMPLES = {
     const finish = ()=>{ if(done) return; done = true;
       state.demoRunning = false; setNavActive(true); };
 
+    /* [r22 · SME] "when I skip pages then previous or next page VO clashes with each other."
+       step() checks the slide before starting each example, but ONE example then stages itself
+       for ~900ms across two nested timers before it speaks. Skipping a page inside that window
+       left the timers running, and the old slide's word clip started on top of the new slide's
+       instruction — measured: vo_ex_naak (page 3) playing on page 4, and the same on 5→6 and 7→8.
+       stopAudio() in mountSlide cannot help, because the clip had not started yet when we left.
+       Every staged step re-checks instead, so leaving the slide ends the example where it is. */
     const runOne = (after)=>{
       const ex = exs[i];
       if(!ex){ after(); return; }
+      const stale = ()=> CARD.slides[state.idx] !== slide;
       render(ex);
       /* "Word should appear first, then image should appear." */
       const box = wrap.querySelector(".meet-letter-box");
@@ -10148,15 +10593,19 @@ SlideModules.MEET_EXAMPLES = {
       box.classList.remove("mb-in"); void box.offsetWidth; box.classList.add("mb-in");
       sfxOr("sfx_pop", ()=> sfxTap());
       setTimeout(()=>{
+        if(stale()) return;
         if(pic){ pic.style.transition = "opacity .35s ease"; pic.style.opacity = "1"; }
         sfxOr("sfx_pop", ()=> sfxTap());
         /* "When VO says the matra part, the ा should glow/highlight." */
         setTimeout(()=>{
+          if(stale()) return;
           const mw = col.querySelector(".matra-word") || col.querySelector(".matra-hl");
           if(mw) mw.classList.add("mw-pulse");
           sfxChime();
           const src = ex.audio ? VO_DIR + ex.audio + "." + AUDIO_EXT : null;
-          play(src, ()=>{ if(mw) mw.classList.remove("mw-pulse"); setTimeout(after, 520); });
+          play(src, ()=>{ if(mw) mw.classList.remove("mw-pulse");
+                          if(stale()) return;
+                          setTimeout(()=>{ if(!stale()) after(); }, 520); });
         }, 380);
       }, 520);
     };
@@ -10217,6 +10666,14 @@ function clearHost(){
 }
 
 function mountSlide(idx){
+  /* [r19] SILENCE THE PAGE YOU ARE LEAVING. Nothing stopped the outgoing slide's clip, so
+     skipping forward or back left it talking underneath the new page's instruction — two voices
+     at once, which is exactly the confusion reported. stopAudio() also bumps _audioGen, and every
+     onEnd in play() is gated on that generation, so a chain that was mid-flight on the old slide
+     cannot resume and speak its next line here either. stopNoLock() catches the hover-name voice,
+     which rides outside that lock by design. */
+  stopAudio();
+  if(typeof stopNoLock === "function") stopNoLock();
   state.idx = idx;
   state.slideStart = Date.now();
   state.attempts = 0; state.selectedKey = null; state.locked = false;

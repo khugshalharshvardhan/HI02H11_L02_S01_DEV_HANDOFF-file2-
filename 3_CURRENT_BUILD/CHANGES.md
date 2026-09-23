@@ -1739,3 +1739,342 @@ Measured: train audio ends at **+3411ms**, greeting starts at **+3647ms** — a 
 Only the automatic first play is delayed. The listen chip and the autoplay fallback still call
 `playLanding()` directly, and it no-ops once the gate is hidden, so a child who taps start inside
 the window is never talked over by a late greeting.
+
+---
+
+## Follow-up — 2026-09-23 (3) · deck slides 18, 19, 20 built — the object hunt
+
+Slide 15 was the poem search and the deck retires it: *"Convert this activity into an interactive
+object hunt. Remove all poem/text-based interaction."* It is now **three** screens, one per matra,
+built from deck slides 18, 19 and 20. The lesson is 19 slides.
+
+| screen | deck slide | matra | to find |
+|---|---|---|---|
+| 15 | 18 | आ (ा) | आम · माला · गाजर · ताला |
+| 16 | 19 | छोटी इ (ि) | पिन · किताब · चिड़िया · हिरण |
+| 17 | 20 | बड़ी ई (ी) | लड़की · पानी · घड़ी · मछली |
+
+### The distractors are not random
+
+Each screen carries two wrong objects, and both are words holding one of the **other two** matras
+— नीम and पिन against आ, हाथ and तीर against ि, नाक and दिन against ी. A wrong tap therefore says
+*which* matra the child confused, the same diagnostic shape the pick slides already use. A random
+noun would only say that they missed.
+
+### Built as positioned cards, not a painted scene with hotspots
+
+The deck wants each object to glow, shake, pulse and be nudged at independently, and wants "a
+clear touch area with enough spacing for tablet interaction". A single flat illustration cannot
+give that without a second hit-map to keep in sync. Objects are therefore cards at authored
+percentages over a scene. Measured on all three screens: **6 objects, zero overlaps, none outside
+the stage.**
+
+Every object speaks **its own name first**, before any judgement — the deck's learning flow puts
+hearing the word before identifying the matra, so even a wrong tap teaches the word.
+
+Walked end to end on the आ screen:
+
+* **1st wrong** — name, then «फिर से सोचिए…», then the rung-1 hint. **No hand, nothing pulsing.**
+* **2nd wrong** — name, wrong line, then the rung-2 hint, **hand on a correct object and all four
+  targets pulsing**.
+* **Correct** — name, then «शाबाश! आम में आ की मात्रा है।», sparkle, the object locks and lights.
+* **All four** — tally 4/4, completion line, Next enabled. Confirmed on all three screens.
+
+One defect found and fixed in that walk: the rung-2 pulse never cleared, so hinted objects kept
+throbbing for the rest of the screen — including after they had been found. It now clears on the
+next tap and at completion.
+
+### Assets generated
+
+**Eight new objects** — आम, गाजर, ताला, किताब, चिड़िया, घड़ी, मछली and a glass of पानी — on the
+bundle's existing recipe (flat green field, keyed against the measured border colour with green
+dominance applied last). माला, पिन, हिरण and लड़की were already here.
+
+One keying note worth carrying forward: the book was rejected three times by the sanity check at
+98-99% opaque. That check was wrong, not the art — **a rectangular object legitimately fills its
+own bounding box.** The useful test is whether the CROP is much smaller than the source canvas
+(the book's is 19% of it), which is what proves the background was keyed.
+
+**Thirty-four new voice clips**, all duration-checked. Three needed intervention, and the pattern
+is the one this bundle has already recorded twice:
+
+* **आम, चिड़िया and घड़ी are REFUSED outright** — `finishReason: OTHER`, no content — however they
+  are punctuated. चिड़िया and घड़ी are accepted inside the carrier «यह X है।», so those two clips
+  are sentences rather than bare names.
+* **आम is refused on Kore in every phrasing tried**, bare or carried. It is recovered on **Aoede**
+  with the carrier — the same fallback voice this lesson already uses for its two दिन lines.
+  `vo_name_aam` is therefore on a different voice from the other 33. Worth an SME ear.
+
+**The three missing SFX are no longer missing.** `sfx_sparkle`, `sfx_chime` and `sfx_shake` have
+been outstanding since the first build and are what the deck asks for on a correct object, on a
+letter change and on a wrong tap. Synthesised: a rising bell shimmer, a two-note A5→D6 chime, and
+a soft low wobble with a slow vibrato and no click. They were the last 404s in the console.
+
+### Retired, not deleted
+
+`SlideModules.POEM_SEARCH` and its `vo_ps_*` clips stay in the bundle. The deck retired the poem,
+not the module, and the house rule here is never to delete. The engine guard now requires
+`OBJECT_HUNT` instead.
+
+---
+
+## Follow-up — 2026-09-23 (4) · the drop box is back, fitted, and the card is seen to travel
+
+### The dashed box, this time fitted to the painted panel
+
+An earlier round drew this as a small tray floating *inside* the coach's painted panel, which read
+as a second rectangle on the artwork and was removed. It is back, but sized to the panel itself:
+**96% of its width, 93% of its height, centred on it, with the panel's own corner radius** (15% of
+the panel's short side). So the outline sits just inside the coach's painted frame rather than on
+top of it, and what the child aims at is the shape they can see.
+
+Measured on the rendered page: the box centres at 48.7% / 49.5% of the coach and every dashed box
+on every drag screen sits inside its own coach.
+
+It shows only while the coach is **empty**, firms up to a solid blue while a card is over it, and
+disappears once the coach is solved.
+
+### The card is now seen to travel
+
+A correct drop used to re-parent the tile into the coach in a single frame: the card vanished from
+under the finger and reappeared inside the train, so the move the child had just made was never
+shown. `flyCardTo()` now flies a **copy** of the card from where they let go to the middle of the
+target, scaling it down as it lands, and calls back on arrival.
+
+A copy rather than the card itself, deliberately: the real tile is re-parented (TRAIN_SORT) or
+sprung back to the tray (MATRA_FILL) by the module that owns it, and animating a live tile
+mid-flight would fight whatever that module does next. The real card is held invisible
+(`.tt-landing`) until the copy lands, so it is never in two places at once.
+
+Wired into both drag mechanics:
+
+* **TRAIN_SORT** (pages 11, 12, 14) — the card flies into the coach, then appears there.
+* **MATRA_FILL** (page 13) — the matra flies into the blank and the glyph appears as it lands,
+  just before the word re-renders as one shaped run.
+
+Verified on all three: one flying copy immediately after release, zero after 2s, the card in the
+coach / the word completed. A dragged card also lifts off the tray now (a shadow under it while
+it is carried), so the gesture reads as picking something up.
+
+Reduced motion skips the flight and lands the card directly.
+
+---
+
+## Follow-up — 2026-09-23 (5) · the SME's scenes, and the drop box finally on the panel
+
+### 1 · Pages 15, 16, 17 use the delivered scenes
+
+`IMAGE 1/2/3.png` are the object hunt's three scenes and they match the deck exactly, distractors
+included. They ship as `assets/UI/scene_hunt{1,2,3}.webp` (q88, ~200-260KB from ~2MB sources;
+these are painted scenes with soft gradients, so lossy is right here in a way it was not for the
+flat-vector train).
+
+The hunt is rebuilt around them. What were object cards over a gradient are now **hotspots over
+the painted picture** — which is what the deck describes: *"Keep the existing outdoor scene",
+"objects should remain static initially, highlight appears only after interaction."* Each state
+is a ring drawn on the hotspot, because the object is painted into the scene and cannot be moved
+or scaled.
+
+| scene | correct | distractors |
+|---|---|---|
+| 1 · आ | आम · माला · गाजर · ताला | कुत्ता · पतंग |
+| 2 · ि | चिड़िया · हिरण · किताब · पिन | कुत्ता · गेंद |
+| 3 · ी | लड़की · पानी · घड़ी · मछली | कुत्ता · तितली |
+
+**`cover` was tried first and is wrong here.** It crops whatever does not fit, which silently
+moves the painted objects out from under the hotspots placed on them — the carrot patch's hotspot
+ended up over the dog. The scene box now carries the artwork's own aspect ratio (1672:941) and the
+image fills it exactly, so a percentage in the data is the same percentage of the picture and a
+hotspot cannot drift.
+
+Every hotspot was placed by cropping it out of the artwork and looking at it, then **re-cropped
+from the live rendered page** and looked at again. All 18 land on the object they name. No two
+overlap (two pairs did on the first pass — गाजर/कुत्ता and लड़की/पानी — and were spaced apart),
+and the smallest touch target is 45px at review scale.
+
+If the scene cannot be fetched the hotspots show their emoji instead, so the screen stays playable
+rather than becoming a blank blue rectangle.
+
+### 2 · The drop box is on the panel now, and what lands in it fits
+
+**The box was never aligned, and the reason was a bad measurement of mine.** `TRAIN_ART.panel`
+carried `h:417` — a colour bounding box that had swallowed the coach's roof highlight above the
+panel and its lower body below it. The drop box drawn from it was half again too tall and sat low.
+
+Re-measured by **flood-filling the light region from each coach's own centre**, which the sheen
+banding cannot split, and proved by drawing both candidate boxes back onto the artwork: the panel
+is **404x231, not 409x417**. The corner radius is its own measured 22px rather than a guess.
+
+Measured after, on the rendered page: the dashed box sits inside the painted panel with even
+insets of **2-5px on all four sides**, on all three coaches.
+
+**What lands in the box now fits it.** A dropped card used to be sized in percentages of its own
+content, so a tall picture or a long word could push past the panel onto the coach's coloured
+frame. The card fills the face exactly and everything inside is bounded by it — the picture takes
+the room the label does not, the label truncates rather than overflows, and the face clips.
+Verified on a real drop: the card and both its children are fully inside the panel.
+
+---
+
+## Follow-up — 2026-09-23 (6) · hover names the object, and the drag feel comes from HI02H11_L01_S01
+
+### 1 · Pages 15-17: hovering an object reads its name, and a found one just turns green
+
+**Hover names it.** Moving the cursor onto any object speaks that object's name, so the child hears
+the word and judges the matra *before* committing to a tap — which is the deck's own learning flow
+(चित्र देखिए → वस्तु का नाम सुनिए → मात्रा पहचानिए → टैप कीजिए), now available without spending a try.
+
+It is spoken **off the VO lock** (`speakNoLock`, ported from HI02H11_L01_S01, which uses it for the
+same job): hovering therefore never blocks a tap, never counts as "a clip is playing", and never
+strands the instruction. A new hover replaces the previous name rather than stacking, hovering is
+ignored while a judgement is being spoken, and `pointerType === "touch"` is skipped because a tap
+is not a hover — on a touch screen the tap path speaks the same name first, as it already did.
+
+**Every object had to be named for this to work, including the distractors.** They had no clips —
+so hovering a wrong object was silent, and silence would itself have been a clue. Four clips added:
+कुत्ता, पतंग, गेंद, तितली. Verified: on each of the three screens, **6 objects hovered → 6 names
+spoken, each matching its object**.
+
+**No tick, no badge.** A found object is marked by its border turning green and nothing else.
+
+### 2 · Pages 11-14 use HI02H11_L01_S01's drag-and-drop
+
+Ported from that build rather than re-invented, with its own numbers:
+
+* **Carried** — the card *drops its chrome*: transparent background and border, under a soft blue
+  shadow (`0 12px 24px rgba(56,106,246,.30)`). What follows the finger is the picture, not a white
+  tile. One thing this needed: our older carried style sat LATER in the file at the same weight, so
+  its shadow won and the ported one never showed — and its `transform:scale(1.08)` was fighting the
+  inline transform that actually tracks the pointer. Folded into one rule.
+* **Flying** — `flyTileTo` moves the **real tile** with a `.97s cubic-bezier(.32,.78,.3,1)`
+  transition and lands on `transitionend`, then re-parents it. My previous version flew a throwaway
+  copy on a fixed timer; theirs is better for the reason their build gives — the thing the child was
+  holding is the thing that arrives, there is never a frame with two of it, and the landing is
+  driven by the animation finishing rather than by a timer that can disagree with it. It settles to
+  `scale(.86)` so it visibly goes INTO the box, with a 1600ms fail-safe because a dropped
+  `transitionend` must never stall the slide.
+* **Rejected** — the card shakes on its way home, not just the target flashing.
+
+Traced live on page 11: carried card transparent with the blue shadow, `tt-fly` held for the full
+arc, then zero flying and one card in the coach with its tray ghost left behind. Carried style
+confirmed on pages 11, 13 and 14.
+
+---
+
+## Follow-up — 2026-09-23 (7) · the named letter is in quotes
+
+Wherever a bare vowel NAMES the target on screen, it now carries the deck's own curly quotes —
+the convention its sibling already uses («जिन शब्दों में “प” की आवाज़ सुनाई दे»). A letter being
+named is a different thing from a letter being read inside a word, and the quotes say so.
+
+| where | before | after |
+|---|---|---|
+| pages 8, 9, 10 — question band | जिस डिब्बे में आ की मात्रा… | जिस डिब्बे में “आ” की मात्रा… |
+| pages 11, 14 — coach label plates | आ (ा) · इ (ि) · ई (ी) | “आ” (ा) · “इ” (ि) · “ई” (ी) |
+| pages 15, 16, 17 — question band | आ की मात्रा वाले चित्र… | “आ” की मात्रा वाले चित्र… |
+| pages 15, 16, 17 — the matra chip | आ ◌ा | “आ” ◌ा |
+
+**The VO text is deliberately untouched.** Those same sentences live twice in the build script:
+once as `prompt_hi` (what is printed) and once in the VO dict (the record of what was recorded).
+Quotes are not spoken, so changing the dict would only make a clip and its own record disagree
+about punctuation. Only the printed copy moved, and no audio needed regenerating.
+
+**Two places deliberately left alone:**
+
+* Page 12's coach labels are WORDS (जाल · सिर · कील), not named letters — nothing to quote.
+* The celebration line «आज हमने सीखा — आ, इ और ई की मात्रा पहचानना…» lists the three as a recap
+  rather than designating a target, so it reads as prose. Say the word if you want them quoted
+  there too.
+
+Checked on every slide: nothing overflows — not a label plate, not the question band.
+
+---
+
+## Follow-up — 2026-09-23 (8) · a VO that followed you between pages, and a drag that never moved
+
+### 1 · Skipping pages no longer leaves the old page talking
+
+`mountSlide` never stopped the outgoing slide's audio. Skip forward or back and the clip you were
+leaving carried on underneath the new page's instruction — two voices at once, which is the
+confusion reported.
+
+It stops now, and that fixes more than the clip you can hear: `stopAudio()` bumps `_audioGen`, and
+every `onEnd` in `play()` is gated on that generation, so a CHAIN that was mid-flight on the old
+slide cannot resume and speak its next line on the new one either. The hover-name voice is stopped
+too — it rides outside that lock by design, so it needed saying explicitly.
+
+One more leak closed with it: the train screens hold their prompt behind the train's arrival, and
+that held clip was fired by a timer with no idea which slide it belonged to. Leave during the wait
+and it spoke over whatever you had moved to. The held prompt now checks it is still the current
+slide's before releasing.
+
+Verified: skipping through six slides at 1.4s each leaves **nothing playing**, and landing on page
+9 for 13 seconds afterwards plays **only page 9's own clip**.
+
+### 2 · The card was never actually moving
+
+This is the one worth reading. `makeDraggable` writes `style.transform` on every pointer move, and
+it was being written and never rendered — the card sat still in the tray for the whole drag.
+
+The cause: `.tt-rise`, the staggered entry animation, used **`animation-fill-mode: both`**. Its
+last keyframe is `transform:translateY(0)`, a forwards fill keeps that applied for good, and a CSS
+animation beats an inline style. So every card in the tray was permanently pinned.
+
+It went unnoticed because **the drop still worked**: the drop hit-tests the POINTER, not the card,
+so cards landed correctly in their coaches while the gesture itself was invisible. Changed to
+`backwards`, which keeps the staggered entry and lets the card return to its own styles once it has
+played; `makeDraggable` also strips the class on pick-up. Measured after: a pointer moved (+60,-90)
+now moves the card (+56,-95) on screen, on all three drag screens.
+
+Also, a carried card now **looks** carried — white card kept, blue halo, deep shadow, z-index 70,
+on top of the 1.08 scale. Dropping its chrome (the sibling's treatment, ported last round) made it
+read as an ordinary cell in our layout, which is its own kind of invisible.
+
+### 3 · The hand shows the move, not just the destination
+
+`travelNudge`, ported from HI02H11_L01_S01: at rung 2 the hand starts under the card the child
+should pick up, travels to the centre of the box it belongs in, and repeats. A hand parked on the
+answer says WHICH; on a drag screen the child is stuck on HOW. Wired into both drag ladders —
+TRAIN_SORT (card → coach) and MATRA_FILL (card → blank). Verified running after two wrong drops.
+
+### 4 · The tray is clear of the आगे button
+
+It sat **18px** from the pill. Now **47-54px** on all three drag screens.
+
+---
+
+## Follow-up — 2026-09-23 (9) · instant drops, and a tray that actually shuffles
+
+### 1 · The drop no longer replays the move
+
+The flight ported in r17 was animating the journey the child had just made. `makeDraggable`'s
+`onUp` clears the tile's transform **before** it hands over to the module, so by the time the
+flight started the card had already snapped home — and it then flew the same path again. That is
+the "kind of repeating the drop animation" in the report, and it is exactly what the code did.
+
+Drops are instant now on both drag mechanics. Measured: **80ms after release the card is in the
+coach and nothing is flying.**
+
+`flyTileTo` is kept, unused, with a note saying why: on HI02H11_L01_S01 it animates a DEMO tile
+that was never dragged, which is the case it is right for. Deleting it would lose that.
+
+### 2 · The trays shuffle
+
+Neither tray was really shuffling.
+
+* TRAIN_SORT used `sort(()=> Math.random() - 0.5)`. That is not a shuffle — the comparator is
+  inconsistent, so the result is biased and on three items it very often comes back in the order
+  it went in.
+* MATRA_FILL's matra options were **not shuffled at all**. ा · ि · ी rendered in authored order
+  every single time, so the card a child wanted was always in the same place and the screen could
+  be solved by position rather than by reading it.
+
+Both now use a Fisher-Yates `shuffled()` helper. Measured over 24 mounts: pages 11 and 13 produce
+**all 6 possible orders** of their three cards, and page 14 produces **23 distinct orders out of
+24** for its six.
+
+### Worth knowing
+
+On page 14 two pictures share one coach panel, so each lands at about 39x24 at review scale
+(~54x33 at full size). They are real images, not emoji, and not broken — but it is tight. Say the
+word if you want that screen's coaches taller.

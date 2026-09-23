@@ -45,6 +45,12 @@ _SOURCE/
 3_CURRENT_BUILD/assets/Images/haath, pin, neem.png
 3_CURRENT_BUILD/assets/Images/pari hiran magnifer.png
 
+# The three object-hunt scenes as delivered. Each is ~2MB and is encoded into
+# assets/UI/scene_hunt{1,2,3}.webp (~200-260KB), which is what the page loads.
+3_CURRENT_BUILD/assets/Images/IMAGE 1.png
+3_CURRENT_BUILD/assets/Images/IMAGE 2.png
+3_CURRENT_BUILD/assets/Images/IMAGE 3.png
+
 # ── General ──────────────────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]

@@ -53,7 +53,10 @@ REQUIRED_FEATURES = [
     ("SlideModules.TRAIN_TAP",     "TRAIN_TAP module missing (deck pages 11, 12, 13)"),
     ("SlideModules.TRAIN_SORT",    "TRAIN_SORT module missing (deck pages 14, 15, 17)"),
     ("SlideModules.MATRA_FILL",    "MATRA_FILL module missing (deck page 16)"),
-    ("SlideModules.POEM_SEARCH",   "POEM_SEARCH module missing (deck page 18)"),
+    ("SlideModules.OBJECT_HUNT",   "OBJECT_HUNT module missing (deck slides 18, 19, 20 — the "
+                                   "object hunt that replaces the poem search)"),
+    (".oh-scene{",                 "the OBJECT_HUNT scene CSS is missing — the objects would "
+                                   "stack at the top-left with no scene behind them"),
     ('_scafRule("hand_on_attempt", 99)',
      "the 3-attempt ladder's rung-2 hand is missing (deck row X1)"),
     ('_scafRule("silent_on_late_correct", false)',
@@ -255,13 +258,75 @@ VO = {
     "vo_ts3_hint1":    "फिर से सुनो और सही मात्रा पहचानो।",
     "vo_ts3_hint2":    "शब्द को ध्यान से सुनो।",
 
-    # ---- Screen 15 · POEM_SEARCH (deck page 18) ----------------------------------------------
-    "vo_ps_r1":    "आ की मात्रा वाले शब्द ढूँढो।",
-    "vo_ps_r2":    "अब छोटी इ की मात्रा वाले शब्द ढूँढो।",
-    "vo_ps_r3":    "अब बड़ी ई की मात्रा वाले शब्द ढूँढो।",
-    "vo_ps_ok":    "शाबाश!",
-    "vo_ps_hint1": "फिर से देखो।",
-    "vo_ps_hint2": "ध्यान से मात्रा पहचानो।",
+    # ---- Screens 15-17 · OBJECT_HUNT (deck slides 18, 19, 20) --------------------------------
+    # The screen prompts, the ladder's two hints, and the round's closing line.
+    "vo_oh_aa_intro":  "आ की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
+    "vo_oh_i_intro":   "छोटी इ की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
+    "vo_oh_ee_intro":  "बड़ी ई की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
+    "vo_oh_aa_wrong":  "फिर से सोचिए। आ की मात्रा वाला चित्र खोजिए।",
+    "vo_oh_i_wrong":   "फिर से सोचिए। छोटी इ की मात्रा वाला चित्र खोजिए।",
+    "vo_oh_ee_wrong":  "फिर से सोचिए। बड़ी ई की मात्रा वाला चित्र खोजिए।",
+    "vo_oh_hint1":     "चित्र का नाम ध्यान से सुनिए और मात्रा पहचानिए।",
+    "vo_oh_aa_hint2":  "ध्यान से देखिए और आ की मात्रा वाले चित्र पर टैप कीजिए।",
+    "vo_oh_i_hint2":   "ध्यान से देखिए और छोटी इ की मात्रा वाले चित्र पर टैप कीजिए।",
+    "vo_oh_ee_hint2":  "ध्यान से देखिए और बड़ी ई की मात्रा वाले चित्र पर टैप कीजिए।",
+    "vo_oh_aa_done":   "शाबाश! आपने आ की मात्रा वाले सभी चित्र खोज लिए।",
+    "vo_oh_i_done":    "शाबाश! आपने छोटी इ की मात्रा वाले सभी चित्र खोज लिए।",
+    "vo_oh_ee_done":   "शाबाश! आपने बड़ी ई की मात्रा वाले सभी चित्र खोज लिए।",
+
+    # Per-object praise. ok_* names the matra (used when the screen is finished by that tap);
+    # more_* praises and sends the child back for the rest, which is what a mid-screen tap
+    # needs to hear.
+    "vo_oh_aa_ok_aam":   "शाबाश! आम में आ की मात्रा है।",
+    "vo_oh_aa_ok_maala":   "शाबाश! माला में आ की मात्रा है।",
+    "vo_oh_aa_ok_gaajar":   "शाबाश! गाजर में आ की मात्रा है।",
+    "vo_oh_aa_ok_taala":   "शाबाश! ताला में आ की मात्रा है।",
+    "vo_oh_i_ok_pin":   "शाबाश! पिन में छोटी इ की मात्रा है।",
+    "vo_oh_i_ok_kitaab":   "शाबाश! किताब में छोटी इ की मात्रा है।",
+    "vo_oh_i_ok_chidiya":   "शाबाश! चिड़िया में छोटी इ की मात्रा है।",
+    "vo_oh_i_ok_hiran":   "शाबाश! हिरण में छोटी इ की मात्रा है।",
+    "vo_oh_ee_ok_ladki":   "शाबाश! लड़की में बड़ी ई की मात्रा है।",
+    "vo_oh_ee_ok_paani":   "शाबाश! पानी में बड़ी ई की मात्रा है।",
+    "vo_oh_ee_ok_ghadi":   "शाबाश! घड़ी में बड़ी ई की मात्रा है।",
+    "vo_oh_ee_ok_machhli":   "शाबाश! मछली में बड़ी ई की मात्रा है।",
+
+    "vo_oh_aa_more_aam": "बहुत बढ़िया, आम! अब और आ की मात्रा वाले चित्र ढूँढिए।",
+    "vo_oh_aa_more_maala": "बहुत बढ़िया, माला! अब और आ की मात्रा वाले चित्र ढूँढिए।",
+    "vo_oh_aa_more_gaajar": "बहुत बढ़िया, गाजर! अब और आ की मात्रा वाले चित्र ढूँढिए।",
+    "vo_oh_aa_more_taala": "बहुत बढ़िया, ताला! अब और आ की मात्रा वाले चित्र ढूँढिए।",
+    "vo_oh_i_more_pin": "बहुत बढ़िया, पिन! अब और छोटी इ की मात्रा वाले चित्र ढूँढिए।",
+    "vo_oh_i_more_kitaab": "बहुत बढ़िया, किताब! अब और छोटी इ की मात्रा वाले चित्र ढूँढिए।",
+    "vo_oh_i_more_chidiya": "बहुत बढ़िया, चिड़िया! अब और छोटी इ की मात्रा वाले चित्र ढूँढिए।",
+    "vo_oh_i_more_hiran": "बहुत बढ़िया, हिरण! अब और छोटी इ की मात्रा वाले चित्र ढूँढिए।",
+    "vo_oh_ee_more_ladki": "बहुत बढ़िया, लड़की! अब और बड़ी ई की मात्रा वाले चित्र ढूँढिए।",
+    "vo_oh_ee_more_paani": "बहुत बढ़िया, पानी! अब और बड़ी ई की मात्रा वाले चित्र ढूँढिए।",
+    "vo_oh_ee_more_ghadi": "बहुत बढ़िया, घड़ी! अब और बड़ी ई की मात्रा वाले चित्र ढूँढिए।",
+    "vo_oh_ee_more_machhli": "बहुत बढ़िया, मछली! अब और बड़ी ई की मात्रा वाले चित्र ढूँढिए।",
+
+    # Per-distractor correction. A wrong tap must say WHICH matra the word really carries
+    # when it carries one of the other two — that names the confusion instead of just
+    # denying the answer. कुत्ता and किताब do; पतंग, सूरज and गेंद carry none of the three.
+    "vo_oh_w_patang_aa":  "पतंग में आ की मात्रा नहीं है। फिर से कोशिश कीजिए।",
+    "vo_oh_w_sooraj_aa":  "सूरज में आ की मात्रा नहीं है। फिर से कोशिश कीजिए।",
+    "vo_oh_w_sooraj_i":   "सूरज में छोटी इ की मात्रा नहीं है। फिर से कोशिश कीजिए।",
+    "vo_oh_w_gend_i":     "गेंद में छोटी इ की मात्रा नहीं है। फिर से कोशिश कीजिए।",
+    "vo_oh_w_kutta":      "कुत्ता में आ की मात्रा है। फिर से कोशिश कीजिए।",
+    "vo_oh_w_kitaab_ee":  "किताब में छोटी इ की मात्रा है। फिर से कोशिश कीजिए।",
+
+    # The object names, spoken on hover/focus so the child hears the word before judging it.
+    "vo_name_aam":     "यह आम है।",
+    "vo_name_maala":   "माला।",
+    "vo_name_gaajar":  "गाजर।",
+    "vo_name_taala":   "ताला।",
+    "vo_name_patang":  "पतंग।",
+    "vo_name_sooraj":  "यह सूरज है।",
+    "vo_name_chidiya": "यह चिड़िया है।",
+    "vo_name_kitaab":  "किताब।",
+    "vo_name_kutta":   "कुत्ता।",
+    "vo_name_gend":    "गेंद।",
+    "vo_name_ladki":   "लड़की।",
+    "vo_name_ghadi":   "यह घड़ी है।",
+    "vo_name_machhli": "मछली।",
 
     # ---- celebration (deck page 19 · N/C — ships as built) ------------------------------------
     "vo_cel_prompt": "शाबाश! आज हमने सीखा — आ, इ और ई की मात्रा पहचानना, और मात्रा वाले शब्द पढ़ना।",
@@ -386,7 +451,7 @@ SLIDES = [
         "id": "G1", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP",
         # [r8] The spoken line is written on screen in the question band on every question page
         # (8-14). This supersedes row #96 "No instruction text on screen" for these screens.
-        "prompt_hi": "जिस डिब्बे में आ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+        "prompt_hi": "जिस डिब्बे में “आ” की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
         "audio": A(prompt="vo_tt_aa_prompt", correct="vo_tt_aa_correct",
                    hint1="vo_tt_aa_hint1", hint2="vo_tt_aa_hint2",
                    reveal="vo_rev_tt_aa", try_again="vo_tt_aa_hint1"),
@@ -399,7 +464,7 @@ SLIDES = [
     },
     {   # Screen 9 · deck page 12
         "id": "G2", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP",
-        "prompt_hi": "जिस डिब्बे में छोटी इ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+        "prompt_hi": "जिस डिब्बे में छोटी “इ” की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
         "audio": A(prompt="vo_tt_i_prompt", correct="vo_tt_i_correct",
                    hint1="vo_tt_i_hint1", hint2="vo_tt_i_hint2",
                    reveal="vo_rev_tt_i", try_again="vo_tt_i_hint1"),
@@ -412,7 +477,7 @@ SLIDES = [
     },
     {   # Screen 10 · deck page 13
         "id": "G3", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP",
-        "prompt_hi": "जिस डिब्बे में बड़ी ई की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+        "prompt_hi": "जिस डिब्बे में बड़ी “ई” की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
         "audio": A(prompt="vo_tt_ee_prompt", correct="vo_tt_ee_correct",
                    hint1="vo_tt_ee_hint1", hint2="vo_tt_ee_hint2",
                    reveal="vo_rev_tt_ee", try_again="vo_tt_ee_hint1"),
@@ -429,8 +494,8 @@ SLIDES = [
         "audio": A(prompt="vo_ts1_prompt", hint1="vo_ts1_hint1", hint2="vo_ts1_hint2",
                    try_again="vo_ts1_hint1"),
         "data": {"signal": "matra_sort_correct",
-                 "bins": [{"key": "aa", "label": "आ (ा)"}, {"key": "i", "label": "इ (ि)"},
-                          {"key": "ee", "label": "ई (ी)"}],
+                 "bins": [{"key": "aa", "label": "“आ” (ा)"}, {"key": "i", "label": "“इ” (ि)"},
+                          {"key": "ee", "label": "“ई” (ी)"}],
                  "items": [
                      {"key": "aa", "word_hi": "हाथ", "img": "obj_haath", "emoji": "✋",
                       "audio": "vo_name_haath", "correct_audio": "vo_ts1_ok_haath"},
@@ -488,8 +553,8 @@ SLIDES = [
         "audio": A(prompt="vo_ts3_prompt", hint1="vo_ts3_hint1", hint2="vo_ts3_hint2",
                    try_again="vo_ts3_hint1"),
         "data": {"signal": "matra_sort_correct", "hide_labels": True, "multi": True,
-                 "bins": [{"key": "aa", "label": "आ (ा)"}, {"key": "i", "label": "इ (ि)"},
-                          {"key": "ee", "label": "ई (ी)"}],
+                 "bins": [{"key": "aa", "label": "“आ” (ा)"}, {"key": "i", "label": "“इ” (ि)"},
+                          {"key": "ee", "label": "“ई” (ी)"}],
                  "items": [
                      {"key": "aa", "word_hi": "हाथ",  "img": "obj_haath", "emoji": "✋",
                       "audio": "vo_name_haath", "correct_audio": "vo_ts3_ok_haath"},
@@ -506,27 +571,102 @@ SLIDES = [
                  ]},
         "signals": {"on_complete": ["matra_sort_correct"]},
     },
-    {   # Screen 15 · deck page 18 — «मात्रा खोजो».
-        # TARGET LIST COMPLETED per §4 Option A (ruled 2026-09-17). The deck's own list omitted
-        # चमकी and की (both ी) and मीना and गाए (both ा) — a child tapping them correctly would
-        # have been buzzed. मीना deliberately belongs to TWO rounds; the module supports that.
-        "id": "P4", "phase": "practice", "eis": "symbolic", "type": "POEM_SEARCH",
-        "prompt_hi": "",
-        # round 1's line IS this slide's instruction; naming it as the prompt role also means the
-        # replay chip and the voice-role receipt both have something to point at. The module sets
-        # state.ownsAudio, so mountSlide does NOT also autoplay it — no double voice.
-        "audio": A(prompt="vo_ps_r1", correct="vo_ps_ok", hint1="vo_ps_hint1", hint2="vo_ps_hint2",
-                   try_again="vo_ps_hint1"),
-        "data": {"signal": "poem_search_correct",
-                 "poem_lines": ["रवि लाया लाल पतंग,",
-                                "दिन में चमकी सूरज की किरण।",
-                                "नीम तले मीना गाए संग।"],
-                 "rounds": [
-                     {"matra": "ा", "targets": ["लाया", "लाल", "मीना", "गाए"], "audio": "vo_ps_r1"},
-                     {"matra": "ि", "targets": ["रवि", "दिन", "किरण"],          "audio": "vo_ps_r2"},
-                     {"matra": "ी", "targets": ["चमकी", "की", "नीम", "मीना"],  "audio": "vo_ps_r3"},
+    # ---- Screens 15-17 · OBJECT_HUNT (deck slides 18, 19, 20) --------------------------------
+    # The deck retires the poem: "Convert this activity into an interactive object hunt."
+    # Three screens, one per matra, each a hotspot layer over the delivered scene.
+    #
+    # EVERY DISTRACTOR IS AUDITED AGAINST THE TARGET. Two earlier ones were wrong and are gone:
+    # कुत्ता ends in ा, so on the आ screen a child who tapped the dog was RIGHT and was buzzed;
+    # तितली ends in ी, the same fault on the ई screen. A distractor must not contain the matra
+    # being hunted — otherwise the screen teaches the opposite of what it is for.
+    #
+    # x/y/w/h are percentages of the scene, each one placed by cropping it out of the artwork AND
+    # out of the rendered page, and looking at it.
+    {   # Screen 15 · deck slide 18 — आ की मात्रा
+        "id": "P4", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT",
+        "prompt_hi": "“आ” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
+        "audio": A(prompt="vo_oh_aa_intro", result="vo_oh_aa_done",
+                   try_again="vo_oh_aa_wrong", hint1="vo_oh_hint1", hint2="vo_oh_aa_hint2"),
+        "data": {"signal": "object_hunt_correct", "letter": "आ", "matra": "ा",
+                 "scene": "assets/UI/scene_hunt1.webp",
+                 "objects": [
+                   {"word_hi": "आम", "audio": "vo_name_aam", "emoji": "🥭",
+                    "ok_audio": "vo_oh_aa_ok_aam", "more_audio": "vo_oh_aa_more_aam",
+                    "correct": True, "x": 17.5, "y": 15.0, "w": 20, "h": 20},
+                   {"word_hi": "माला", "audio": "vo_name_maala", "emoji": "📿",
+                    "ok_audio": "vo_oh_aa_ok_maala", "more_audio": "vo_oh_aa_more_maala",
+                    "correct": True, "x": 66.0, "y": 55.5, "w": 10, "h": 17},
+                   {"word_hi": "गाजर", "audio": "vo_name_gaajar", "emoji": "🥕",
+                    "ok_audio": "vo_oh_aa_ok_gaajar", "more_audio": "vo_oh_aa_more_gaajar",
+                    "correct": True, "x": 45.0, "y": 84.0, "w": 22, "h": 15},
+                   {"word_hi": "ताला", "audio": "vo_name_taala", "emoji": "🔒",
+                    "ok_audio": "vo_oh_aa_ok_taala", "more_audio": "vo_oh_aa_more_taala",
+                    "correct": True, "x": 94.0, "y": 51.0, "w": 8, "h": 14},
+                   # distractors — neither carries ा
+                   {"word_hi": "पतंग", "audio": "vo_name_patang", "emoji": "🪁",
+                    "wrong_audio": "vo_oh_w_patang_aa", "x": 36.5, "y": 29.0, "w": 13, "h": 20},
+                   {"word_hi": "सूरज", "audio": "vo_name_sooraj", "emoji": "☀️",
+                    "wrong_audio": "vo_oh_w_sooraj_aa", "x": 73.2, "y": 12.5, "w": 10, "h": 14},
                  ]},
-        "signals": {"on_complete": ["poem_search_correct"]},
+        "signals": {"on_complete": ["object_hunt_correct"]},
+    },
+    {   # Screen 16 · deck slide 19 — छोटी इ की मात्रा
+        "id": "P5", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT",
+        "prompt_hi": "छोटी “इ” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
+        "audio": A(prompt="vo_oh_i_intro", result="vo_oh_i_done",
+                   try_again="vo_oh_i_wrong", hint1="vo_oh_hint1", hint2="vo_oh_i_hint2"),
+        "data": {"signal": "object_hunt_correct", "letter": "इ", "matra": "ि",
+                 "scene": "assets/UI/scene_hunt2.webp",
+                 "objects": [
+                   {"word_hi": "चिड़िया", "audio": "vo_name_chidiya", "emoji": "🐦",
+                    "ok_audio": "vo_oh_i_ok_chidiya", "more_audio": "vo_oh_i_more_chidiya",
+                    "correct": True, "x": 44.5, "y": 21.0, "w": 11, "h": 13},
+                   {"word_hi": "हिरण", "audio": "vo_name_hiran", "emoji": "🦌",
+                    "ok_audio": "vo_oh_i_ok_hiran", "more_audio": "vo_oh_i_more_hiran",
+                    "correct": True, "x": 68.0, "y": 51.5, "w": 12, "h": 28},
+                   {"word_hi": "किताब", "audio": "vo_name_kitaab", "emoji": "📕",
+                    "ok_audio": "vo_oh_i_ok_kitaab", "more_audio": "vo_oh_i_more_kitaab",
+                    "correct": True, "x": 21.5, "y": 66.0, "w": 11, "h": 13},
+                   {"word_hi": "पिन", "audio": "vo_name_pin", "emoji": "📌",
+                    "ok_audio": "vo_oh_i_ok_pin", "more_audio": "vo_oh_i_more_pin",
+                    "correct": True, "x": 49.3, "y": 86.0, "w": 9, "h": 13},
+                   # distractors — none carries ि. कुत्ता carries ा, which its line says.
+                   {"word_hi": "कुत्ता", "audio": "vo_name_kutta", "emoji": "🐶",
+                    "wrong_audio": "vo_oh_w_kutta", "x": 46.8, "y": 64.5, "w": 11, "h": 16},
+                   {"word_hi": "गेंद", "audio": "vo_name_gend", "emoji": "⚽",
+                    "wrong_audio": "vo_oh_w_gend_i", "x": 36.6, "y": 65.5, "w": 8, "h": 12},
+                   {"word_hi": "सूरज", "audio": "vo_name_sooraj", "emoji": "☀️",
+                    "wrong_audio": "vo_oh_w_sooraj_i", "x": 78.6, "y": 12.0, "w": 10, "h": 15},
+                 ]},
+        "signals": {"on_complete": ["object_hunt_correct"]},
+    },
+    {   # Screen 17 · deck slide 20 — बड़ी ई की मात्रा
+        "id": "P6", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT",
+        "prompt_hi": "बड़ी “ई” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
+        "audio": A(prompt="vo_oh_ee_intro", result="vo_oh_ee_done",
+                   try_again="vo_oh_ee_wrong", hint1="vo_oh_hint1", hint2="vo_oh_ee_hint2"),
+        "data": {"signal": "object_hunt_correct", "letter": "ई", "matra": "ी",
+                 "scene": "assets/UI/scene_hunt3.webp",
+                 "objects": [
+                   {"word_hi": "लड़की", "audio": "vo_name_ladki", "emoji": "👧",
+                    "ok_audio": "vo_oh_ee_ok_ladki", "more_audio": "vo_oh_ee_more_ladki",
+                    "correct": True, "x": 54.5, "y": 28.0, "w": 11, "h": 15},
+                   {"word_hi": "पानी", "audio": "vo_name_paani", "emoji": "💧",
+                    "ok_audio": "vo_oh_ee_ok_paani", "more_audio": "vo_oh_ee_more_paani",
+                    "correct": True, "x": 51.5, "y": 44.0, "w": 7, "h": 13},
+                   {"word_hi": "घड़ी", "audio": "vo_name_ghadi", "emoji": "🕐",
+                    "ok_audio": "vo_oh_ee_ok_ghadi", "more_audio": "vo_oh_ee_more_ghadi",
+                    "correct": True, "x": 80.5, "y": 65.0, "w": 10, "h": 18},
+                   {"word_hi": "मछली", "audio": "vo_name_machhli", "emoji": "🐟",
+                    "ok_audio": "vo_oh_ee_ok_machhli", "more_audio": "vo_oh_ee_more_machhli",
+                    "correct": True, "x": 7.8, "y": 72.0, "w": 11, "h": 12},
+                   # distractors — neither carries ी. तितली was removed: it ends in ी.
+                   {"word_hi": "कुत्ता", "audio": "vo_name_kutta", "emoji": "🐶",
+                    "wrong_audio": "vo_oh_w_kutta", "x": 35.9, "y": 61.5, "w": 12, "h": 19},
+                   {"word_hi": "किताब", "audio": "vo_name_kitaab", "emoji": "📕",
+                    "wrong_audio": "vo_oh_w_kitaab_ee", "x": 65.5, "y": 70.5, "w": 11, "h": 11},
+                 ]},
+        "signals": {"on_complete": ["object_hunt_correct"]},
     },
     {   # deck page 19 · N/C — ships as built
         # «मात्रा टोकरी» - the catch-the-word arcade, folded in as the last activity before the
