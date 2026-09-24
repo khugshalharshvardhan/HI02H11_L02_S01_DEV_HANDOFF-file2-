@@ -1800,8 +1800,23 @@ body.is-start .phase-gate{
 @keyframes trainIn{from{transform:translateX(86%);opacity:0;}
                    6%{opacity:1;}
                    to{transform:translateX(0);opacity:1;}}
+/* [r28 · SME] "when we finish one page's activity the train should move ahead (to the left)
+   and then all the elements of the next page come - the train will again come from the right."
+   The arrival already existed; the departure did not, so a finished page simply cut to the next
+   one. This is the arrival's mirror: same easing family, shorter, because the child has already
+   finished and is waiting rather than being introduced to anything.
+   The TRACK is deliberately not part of it. It is parented to the shell, not the rail (see
+   TrainChrome.mount), so it does not travel with the train - the line stays exactly where it is
+   while the train leaves and the next one pulls in, which is what makes the two pages read as
+   one railway rather than two screens. */
+.train-rail.tr-leaving{animation:trainOut var(--lt-depart,1500ms) cubic-bezier(.36,.02,.62,.92) both;}
+@keyframes trainOut{from{transform:translateX(0);opacity:1;}
+                    72%{opacity:1;}
+                    to{transform:translateX(-116%);opacity:0;}}
+.tr-leaving .train-steam{--tc-drift:var(--tc-drift-move,52px);}
 @media (prefers-reduced-motion:reduce){
   .train-rail.tr-entering{animation:none;transform:translateX(0);opacity:1;}
+  .train-rail.tr-leaving{animation:none;opacity:0;}
 }
 
 /* [r8] THE COVER'S TRACK, not a second one. Same rail head, same sleeper stubs, same end fade —
@@ -1962,7 +1977,11 @@ body.is-start .phase-gate{
 
 /* the tray of draggable cards under the train (rows #126, #144, #163, #175) */
 .train-tray{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px;
-  margin-top:22px;margin-bottom:40px;   /* [r19] clear of the आगे pill — it was 18px away */
+  /* [r28 · SME] "since we're removing the next button there would be empty space at the bottom,
+     so move the options a little downwards to fill it." Two things put them there: pinning the
+     track (above) drops the whole train ~100px on these pages and the tray follows it, and the
+     22/40 margins that were tuned to clear the आगे pill no longer have a pill to clear. */
+  margin-top:28px;margin-bottom:12px;
   max-width:1120px;}
 .train-tray .tt-card{background:#FFFFFF;border:3px solid #CFE3FA;border-radius:14px;padding:10px 14px;
   display:flex;flex-direction:column;align-items:center;gap:6px;min-width:104px;cursor:grab;
@@ -2108,6 +2127,17 @@ body.is-start .phase-gate{
 /* ज -> जा dissolves instead of cutting */
 .mb-syl{display:inline-block;}
 .mb-syl.mb-syl-in{animation:mbSylIn 420ms ease-out both;}
+/* [r27 · SME] "when the VO comes and says जा, pulsate it for 3-4 seconds" (दो बि on page 4,
+   की on page 6). The pulse is tied to the onset CLIP rather than a fixed repeat count, because
+   the three clips already run 3.41s (जा), 4.09s (बि) and 3.73s (की) - so it is 3-4 seconds by
+   construction, and stays right if a clip is ever re-recorded. Declared after .mb-syl-in so it
+   wins while both are present; mbSylIn is fill-mode both, so removing this returns the glyph to
+   the entrance's end state rather than snapping. */
+.mb-syl.mb-syl-say{animation:mbSylSay 760ms ease-in-out infinite;}
+@keyframes mbSylSay{
+  0%,100%{transform:scale(1);            text-shadow:0 0 0 rgba(255,138,0,0);}
+  50%    {transform:scale(1.13);         text-shadow:0 0 22px rgba(255,138,0,.55);}
+}
 @keyframes mbSylIn{from{opacity:0;transform:translateY(10px) scale(.88);}
                    to{opacity:1;transform:translateY(0) scale(1);}}
 .mb-eq.mb-settle{animation:mbSettle 420ms ease-out;}
@@ -2501,9 +2531,14 @@ html.rotated .sg-glow,html.rotated .sg-sky{
 
 /* hole punched over the centre card — it is translucent, so elements showed through.
    Our .sg-card art is 1114x456, exactly the size the kit's default hole is cut for. */
+/* [r27 · SME] "the star animation is overlapping the centre box; stars should only happen
+   OUTSIDE the box." Measured on the cover at --scale 1.132: the hole came out 1216x471 while
+   .sg-card is 1262x517 - the hole was cut 20 CSS px short on every side, so a band of card
+   border was never masked and stars drifted across it. The comment below this block always
+   said the card art is 1114x456; the hole now actually is. */
 .sg-sky{overflow:hidden;
-  --sg-hole-w:calc(1074px * var(--scale,1));
-  --sg-hole-h:calc(416px * var(--scale,1));
+  --sg-hole-w:calc(1114px * var(--scale,1));
+  --sg-hole-h:calc(456px * var(--scale,1));
   -webkit-mask-image:linear-gradient(#000,#000),linear-gradient(#000,#000);
           mask-image:linear-gradient(#000,#000),linear-gradient(#000,#000);
   -webkit-mask-size:100% 100%,var(--sg-hole-w) var(--sg-hole-h);
@@ -2554,6 +2589,11 @@ body.is-end .sg-sky{
 /* ===== FLN ANIMATION KIT: sky-burst BEGIN ===== */
 .sg-sky i.popped{visibility:hidden;}
 .sg-burst{position:fixed;z-index:95;width:0;height:0;pointer-events:none;}
+/* [r27] On the cover the burst drops BELOW the centre card (#startGate is z-index 80). A star
+   popped just outside the card throws sparks up to ~3x its own width, which used to sail over
+   the card at z-index 95; now the card covers them and the burst is only ever seen outside it.
+   The end screen keeps 95 - there the burst is the celebration and nothing should hide it. */
+body.is-start .sg-burst{z-index:79;}
 
 /* data URIs, not file refs — external SVG masks are blocked under file:// */
 .sg-burst.k-star{--shape:url("data:image/svg+xml,%3Csvg%20width=%2264%22%20height=%2264%22%20viewBox=%220%200%2064%2064%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d=%22M32%205.5c1.6%200%203%20.9%203.7%202.4l6.1%2012.4%2013.7%202c1.6.2%203%201.4%203.5%203s.1%203.3-1.1%204.4l-9.9%209.6%202.3%2013.6c.3%201.6-.4%203.3-1.7%204.2s-3.1%201.1-4.6.3L32%2051l-12.2%206.4c-1.5.8-3.2.7-4.6-.3s-2-2.6-1.7-4.2l2.3-13.6-9.9-9.6c-1.2-1.1-1.6-2.9-1.1-4.4s1.9-2.7%203.5-3l13.7-2%206.1-12.4C29%206.4%2030.4%205.5%2032%205.5z%22%20fill=%22%23fff%22/%3E%3C/svg%3E");}
@@ -2605,6 +2645,19 @@ body.is-end .sg-sky{
 @keyframes nhFx{0%,34%{opacity:0;transform:scale(.55);}46%{opacity:1;transform:scale(1);}
   58%{opacity:1;transform:scale(1.02);}78%,100%{opacity:0;transform:scale(1.12);}}
 
+/* [r25 · SME] A celebration is not the game: no basket, no word cloud, no catch line, no
+   hand. Everything the child played WITH goes; the scene and the cheer stay.
+   TWO states share the rule, because there are two celebrations on this slide:
+     .mt-ended    - the game is won, the last screen before the lesson walks on
+     .mt-cheering - [r26] a matra level is finished and Swifty comes on between rounds. The
+                    basket sat under her the whole time, and finishRound() did not call
+                    clearDrops() until AFTER the cheer, so any word still in the air hung
+                    there behind her too. */
+.mt-game.mt-ended #basket,      .mt-game.mt-cheering #basket,
+.mt-game.mt-ended #basket-front,.mt-game.mt-cheering #basket-front,
+.mt-game.mt-ended .drop-tile,   .mt-game.mt-cheering .drop-tile,
+.mt-game.mt-ended .catch-line,  .mt-game.mt-cheering .catch-line,
+.mt-game.mt-ended #mtNudgeHand, .mt-game.mt-cheering #mtNudgeHand{display:none !important;}
 #mtNudgeHand{position:absolute;width:86px;height:108px;pointer-events:none;
   opacity:0;transition:opacity .2s ease;z-index:40;}
 #mtNudgeHand.show{opacity:1;}
@@ -2614,15 +2667,22 @@ body.is-end .sg-sky{
 /* ===== FLN ANIMATION KIT: nudge-ripple BEGIN ===== */
 /* Each layer is on a 120-unit square canvas centred on the ripple origin, so
    background-size:contain + transform-origin:50% 50% scales it about the fingertip.
-   GEOMETRY, re-derived for the supplied hand: #mtNudgeHand is 86x108;
-   hand_nudge.webp is 172x181, so object-fit:contain fits it by WIDTH at scale
-   .079 -> the fingertip (175,41 in the 1089x1145 trimmed art) lands at
-   (13.8, 12.0) in the box. This hand points up-LEFT, which is why the tip is
-   near the box's left edge where the previous one sat right of centre.
-   The 94.6px FX square is offset to centre exactly there. Measured by
-   assets/_finish_art.py, which prints these two numbers — do not eyeball them. */
+   GEOMETRY. [r25 · SME] The game shipped with its own white-and-blue hand pointing
+   up-LEFT; every other screen in this lesson nudges with assets/UI/nudge_hand_new.svg,
+   a skin-toned hand with a yellow cuff pointing straight UP, and one game using a
+   different hand read as a different product. The art is swapped; the numbers below
+   are re-measured for it, not carried over.
+   #mtNudgeHand is 86x108. Rasterised into that box with object-fit:contain and the
+   ink scanned for its topmost rows, the fingertip sits at:
+       mt_hand_nudge.webp  172x181  ->  (13, 11)   <- matches the 13.8/12.0 this
+                                                      comment used to record, which is
+                                                      what validates the measurement
+       nudge_hand_new.svg   75x94   ->  (33,  7)
+   So the tip moves +20 right and -4 up, and NUDGE_OPTS is shifted by exactly that
+   much to keep the finger on the same point of the basket.
+   The 94.6px FX square is offset to centre on the tip: left = 33 - 47.3, top = 7 - 47.3. */
 #mtNudgeHand .nh-tapfx{position:absolute;width:94.6px;height:94.6px;
-  left:-33.48px;top:-35.27px;pointer-events:none;}
+  left:-14.3px;top:-40.3px;pointer-events:none;}
 #mtNudgeHand .nh-tapfx i{position:absolute;inset:0;display:block;
   background-repeat:no-repeat;background-position:center;background-size:contain;
   transform-origin:50% 50%;opacity:0;}
@@ -4757,7 +4817,7 @@ function showBox(emoji, text, theme, audioSrc, onEnd){
 }
 
 /* ---------- 8. TAP-OPTION HELPER (shared by 5 slide types) ---------- */
-function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect, optionRenderer, columnsHint, mastery, hintAction, nudgeTarget, shuffle, optionHost, navOnCorrect, tapSfx}){
+function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect, optionRenderer, columnsHint, mastery, hintAction, nudgeTarget, shuffle, optionHost, navOnCorrect, tapSfx, onAdvance}){
   /* [r5-matra-train] `optionHost` lets a mechanic own its OWN layout (the train) while still
      inheriting this function's whole answer contract — buzz + red flash + lock, the hint
      rungs, confetti + auto-advance. Without it TRAIN_TAP would have had to re-implement the
@@ -4855,6 +4915,9 @@ function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect,
         _afterWord(()=> play(_lateSilent ? null : (audioFor(slide, "correct") || null),
                             ()=> setTimeout(()=>{
                               if(navOnCorrect){ setNavActive(true); $("navBtn").onclick = ()=> completeSlide(true); }
+                              /* [r28] a slide that owns its own way out (the train pulling away)
+                                 takes over here instead of cutting straight to the next one. */
+                              else if(typeof onAdvance === "function") onAdvance();
                               else completeSlide(true);
                             }, 700)));
       } else {
@@ -5643,6 +5706,26 @@ function refreshMatraWords(root){
 /* [r20] Fisher-Yates. `sort(()=> Math.random() - 0.5)` is not a shuffle: the comparator is
    inconsistent, so the result is biased and on three items it very often comes back in the order
    it went in — which is why the tray looked fixed. */
+/* [r28 · SME] "do not put the correct option in the green coach, and reshuffle the options
+   every time the page is refreshed or revisited."
+   The train's options were placed in AUTHORED order - so across pages 8, 9 and 10 the answer
+   sat in the same coach every single run, and a child could score three for three by position
+   without reading a single word. Two rules now:
+     1. Fisher-Yates on every mount, so the order is different each visit.
+     2. If the answer lands in the GREEN coach it is swapped out of it. Green reads as "this is
+        the right one" before a child has read anything, which is the same free pass by colour. */
+const TRAIN_GREEN_COACH = 1;            /* TRAIN_COACH_COLORS[1] = #37C425 */
+function arrangeTrainOptions(opts){
+  const a = shuffled(opts || []);
+  if(a.length < 2) return a;
+  const ci = a.findIndex(o => o && o.correct);
+  if(ci !== TRAIN_GREEN_COACH) return a;
+  const pool = a.map((_, i)=> i).filter(i => i !== TRAIN_GREEN_COACH && !(a[i] && a[i].correct));
+  if(!pool.length) return a;                       /* every other coach is also correct */
+  const j = pool[Math.floor(Math.random() * pool.length)];
+  const t = a[ci]; a[ci] = a[j]; a[j] = t;
+  return a;
+}
 function shuffled(arr){
   const r = (arr || []).slice();
   for(let i = r.length - 1; i > 0; i--){
@@ -5708,6 +5791,34 @@ function makeDraggable(tileEl, onDrop, opts){
     if(opts && opts.onPick) opts.onPick();   // e.g. show a nudge at the slot this tile belongs in
     e.preventDefault();
   }
+  /* [r28 · SME] "when we drag the elements to the coach it should catch the element -
+     currently we need to push it to the centre of the coach."
+     The drop was decided by the POINTER alone. A card picked up near its edge therefore had to
+     be carried until the FINGER was inside the coach, so a card sitting squarely in the coach
+     with the finger just past the rim bounced back. The pointer still wins whenever it is over
+     a zone - that is the precise gesture and nothing about it changes. Only when it is not do
+     we fall back to the card's own rectangle, and then the zone it overlaps MOST takes it,
+     provided a third of the card is inside so that brushing past is not a drop. */
+  function zoneUnder(px, py){
+    tileEl.style.pointerEvents = "none";
+    const under = document.elementFromPoint(px, py);
+    tileEl.style.pointerEvents = "";
+    const direct = under && under.closest ? under.closest(".dd-zone") : null;
+    if(direct) return direct;
+    const r = tileEl.getBoundingClientRect();
+    const area = r.width * r.height;
+    if(!area) return null;
+    let best = null, bestA = 0;
+    document.querySelectorAll(".dd-zone").forEach(z => {
+      const b = z.getBoundingClientRect();
+      const w = Math.min(r.right, b.right) - Math.max(r.left, b.left);
+      const h = Math.min(r.bottom, b.bottom) - Math.max(r.top, b.top);
+      if(w <= 0 || h <= 0) return;
+      const a = w * h;
+      if(a > bestA){ bestA = a; best = z; }
+    });
+    return (best && bestA >= area * 0.33) ? best : null;
+  }
   function onMove(e){
     if(!dragging) return;
     const p = e.touches ? e.touches[0] : e;
@@ -5717,10 +5828,7 @@ function makeDraggable(tileEl, onDrop, opts){
     // (z-index 50, now covering the zone) doesn't mask the zone beneath it.
     const cx = p.clientX, cy = p.clientY;
     document.querySelectorAll(".dd-zone").forEach(z => z.classList.remove("hover"));
-    tileEl.style.pointerEvents = "none";
-    const under = document.elementFromPoint(cx, cy);
-    tileEl.style.pointerEvents = "";
-    const zone = under?.closest?.(".dd-zone");
+    const zone = zoneUnder(cx, cy);
     if(zone && !zone.classList.contains("filled")) zone.classList.add("hover");
     e.preventDefault();
   }
@@ -5744,11 +5852,8 @@ function makeDraggable(tileEl, onDrop, opts){
     _unbind();
     tileEl.classList.remove("dragging");
     const p = e.changedTouches ? e.changedTouches[0] : e;
-    // hide the tile from hit-testing so we detect the zone underneath it
-    tileEl.style.pointerEvents = "none";
-    const under = document.elementFromPoint(p.clientX, p.clientY);
-    tileEl.style.pointerEvents = "";
-    const zone = under?.closest?.(".dd-zone");
+    /* [r28] same rule as the hover highlight: finger first, then the card's own rectangle. */
+    const zone = zoneUnder(p.clientX, p.clientY);
     document.querySelectorAll(".dd-zone").forEach(z => z.classList.remove("hover"));
     if(zone && !zone.classList.contains("filled")){
       // snap
@@ -9436,8 +9541,43 @@ const TrainChrome = {
       rail.appendChild(c);
       coachEls.push(c); faceEls.push(body.querySelector(".coach-face")); labelEls.push(lab);
     }
+    /* [r28 · SME] "if the page changes do not change the train track - keep it intact, only
+       the train changes." The shell was `margin:auto 0`, i.e. vertically CENTRED, so its height
+       decided where the track landed and the height is not the same on every train screen.
+       Measured: the track sat at y=595 on pages 8-10 (a 278px train, no tray) but 454 / 499 /
+       484 on pages 11 / 12 / 14, where a 306px train is centred against trays of three
+       different heights. The railway therefore jumped on every single page change.
+       pin_track nails the track's own top edge to a fixed fraction of the slide host, so every
+       train screen lays its rail on the same line and only the train on it changes. 0.748 is
+       the line pages 8-10 already used - the screens with the least room to give. */
+    const pinTrack = ()=>{
+      if(!cfg.pin_track || !shell.isConnected) return;
+      const hr = host.getBoundingClientRect();
+      if(!hr.height) return;
+      const sc = parseFloat(getComputedStyle(document.documentElement)
+                   .getPropertyValue("--scale")) || 1;
+      const want = hr.top + hr.height * cfg.pin_track;        /* screen px */
+      const have = track.getBoundingClientRect().top;
+      if(!have) return;
+      const cur = parseFloat(getComputedStyle(shell).marginTop) || 0;
+      shell.style.marginTop = (cur + (want - have) / sc) + "px";
+      shell.style.marginBottom = "auto";
+    };
     shell.appendChild(track);        /* behind the rail in DOM order, so the train paints over it */
     shell.appendChild(rail);
+    /* [r28] The tray is appended by the MODULE, after this mount() returns - so a pin computed
+       on the next frame is measuring a column that does not have its tray in it yet, and the
+       sort pages landed up to 30px short of the line. Re-pinned across the first second, which
+       covers the tray going in and its rise settling. */
+    requestAnimationFrame(()=>{ pinTrack(); requestAnimationFrame(pinTrack); });
+    [120, 400, 900, 1600].forEach(ms => setTimeout(pinTrack, ms));
+    if(cfg.pin_track){
+      const _repin = ()=> pinTrack();
+      window.addEventListener("resize", _repin);
+      const _prev = window.__slideCleanup;
+      window.__slideCleanup = function(){ window.removeEventListener("resize", _repin);
+                                          if(typeof _prev === "function") _prev(); };
+    }
     host.appendChild(shell);
 
     /* If the painted train cannot be fetched, fall back to the structured locomotive exactly as
@@ -9536,6 +9676,26 @@ const TrainChrome = {
   }
 };
 window.TrainChrome = TrainChrome;
+
+/* [r28 · SME] The way OFF a train page. आगे is gone from pages 8-14, so finishing the activity
+   is what moves the lesson on: the train pulls out to the left, and the next screen's mount
+   runs its own arrival. Two timers, as everywhere else in this engine - the real one, and a
+   longer fail-safe so a dropped animation event can never strand a child on a screen that no
+   longer has a button. */
+const TRAIN_DEPART_MS = 1500;
+function trainDepartThen(train, slide){
+  let moved = false;
+  const go = ()=>{ if(moved) return; moved = true;
+                   if(CARD.slides[state.idx] === slide) completeSlide(true); };
+  const rail = train && train.rail;
+  if(!rail || !rail.isConnected){ setTimeout(go, 400); return; }
+  rail.classList.remove("tr-entering");
+  void rail.offsetWidth;
+  rail.classList.add("tr-leaving");
+  try{ sfxTrainMove(); }catch(e){}
+  setTimeout(go, TRAIN_DEPART_MS - 120);      /* hand over as the last coach clears the frame */
+  setTimeout(go, TRAIN_DEPART_MS + 1500);     /* fail-safe */
+}
 
 /* ==========================================================================================
    MATRA_PAIRS — deck page 4, Screen 1 · rows #15-#24
@@ -9664,6 +9824,19 @@ SlideModules.MATRA_BUILD = {
                    '" data-mw-matra="' + d.matra + '" data-mw-fs="84">' +
                    _matraWordSVG(d.result_word || "", d.matra, 84) + '</div>' +
                    '<div class="mb-pic">' + imgOrEmoji(d.result_img, d.result_emoji, "", "mb-emoji") + '</div>';
+    /* [r27 · SME] "the कील is looking slightly bigger - make it 10 percent smaller." Every
+       result picture is capped by the same 180x150 box, so the three are already the same
+       height; कील's art is a 389x553 spike, which fills that height as a long nail and reads
+       larger than the others even though it is not. An optional per-slide factor trims the cap
+       for that one picture instead of editing the shared box, which would shrink all three. */
+    if(d.result_img_scale){
+      const _rp = p3.querySelector(".mb-pic img, .mb-pic .mb-emoji");
+      if(_rp){
+        const _pc = (Math.max(0.1, Math.min(1, d.result_img_scale)) * 100) + "%";
+        if(_rp.tagName === "IMG"){ _rp.style.maxWidth = _pc; _rp.style.maxHeight = _pc; }
+        else _rp.style.fontSize = (96 * d.result_img_scale) + "px";
+      }
+    }
     row.appendChild(p3);
 
     host.appendChild(row);
@@ -9743,7 +9916,16 @@ SlideModules.MATRA_BUILD = {
         const eq = p2.querySelector(".mb-eq");
         if(eq){ eq.classList.remove("mb-settle"); void eq.offsetWidth; eq.classList.add("mb-settle"); }
         sfxChime();
-        setTimeout(()=> play(A("onset") || null, ()=> setTimeout(next, 560)), 340);
+        /* [r27 · SME] the finished syllable throbs for exactly as long as the clip that names
+           it, then stops. The timer is a floor, not the driver: if the clip is missing play()
+           fires its callback immediately, and the class would otherwise never come off. */
+        setTimeout(()=>{
+          sylEl.classList.remove("mb-syl-in");
+          sylEl.classList.add("mb-syl-say");
+          const _stop = ()=> sylEl.classList.remove("mb-syl-say");
+          setTimeout(_stop, 4500);
+          play(A("onset") || null, ()=>{ _stop(); setTimeout(next, 560); });
+        }, 340);
       },
       // 5 · the remaining letters join and the finished word appears
       (next)=>{ show(a2); show(p3); sfxCorrect();
@@ -9786,12 +9968,17 @@ SlideModules.MATRA_BUILD = {
 SlideModules.TRAIN_TAP = {
   mount(host, slide){
     const d = slide.data || {};
-    const opts = d.options || [];
+    /* [r28] shuffled on every mount, and never with the answer in the green coach. The coaches
+       are built FROM this array, so the shuffle has to happen before TrainChrome sees it -
+       mountTapOptions' own `shuffle` cannot be used, because optionRenderer indexes the
+       already-built coach faces. */
+    const opts = arrangeTrainOptions(d.options || []);
     const built = [];
     const train = TrainChrome.mount(host, {
       coaches: opts.length,
       coach_label: opts.map(()=> null),
       coach_body:  opts.map(()=> ""),
+      pin_track: 0.725,                   /* [r28] one railway across pages 8-14 */
       drop_zone: false, maxH: 300,          /* no labels and no tray: the train gets the room */
       on_enter: ()=> train.popLabels(0)
     });
@@ -9814,7 +10001,10 @@ SlideModules.TRAIN_TAP = {
       optionRenderer: (o, i)=> built[i],
       optionHost: train.rail,                          // cells are already in the train
       nudgeTarget: null,                               // "No instruction text on screen" — nothing to re-tap
-      navOnCorrect: true,                              // deck: "Next button becomes active"
+      /* [r28 · SME] आगे is gone from this screen. The deck's "Next button becomes active" is
+         replaced by the train itself: it pulls out to the left and the next page pulls in. */
+      navOnCorrect: false,
+      onAdvance: ()=> trainDepartThen(train, slide),
       tapSfx: true,                                    // deck: "light tap sound on selection"
       mastery: !!d.mastery
     });
@@ -9841,6 +10031,7 @@ SlideModules.TRAIN_SORT = {
       coach_label: bins.map(b => b.label_img ? { img: b.label_img, emoji: b.label_emoji }
                                              : (b.label || "")),
       coach_body: bins.map(()=> ""),
+      pin_track: 0.725,                   /* [r28] one railway across pages 8-14 */
       drop_zone: true, multi, maxH: 208,    /* labels above + the card tray below */
       /* [r11] The tray used to rise with the labels, which put the cards on screen a full clip
          BEFORE they could be picked up: the engine's drag gate ignores a press while any VO is
@@ -9878,7 +10069,7 @@ SlideModules.TRAIN_SORT = {
 
     state.attempts = 0; state.locked = false;
     setNavActive(false);
-    $("navBtn").onclick = ()=> completeSlide(true);
+    $("navBtn").style.display = "none";                /* [r28] the train is the way out */
 
     let placed = 0;
     const need = items.length;
@@ -9929,8 +10120,15 @@ SlideModules.TRAIN_SORT = {
             setTimeout(()=>{
               train.complete();
               setSwMood("celebrate"); confettiCannon();
-              setNavActive(true);
-              if(d.completion_vo) play(VO_DIR + d.completion_vo + "." + AUDIO_EXT, ()=>{});
+              /* [r28] celebrate in place, then pull out. The completion clip is given its own
+                 beat first so the whistle and the voice are not talking over each other. */
+              if(d.completion_vo){
+                play(VO_DIR + d.completion_vo + "." + AUDIO_EXT,
+                     ()=> trainDepartThen(train, slide));
+                setTimeout(()=> trainDepartThen(train, slide), 6000);
+              } else {
+                setTimeout(()=> trainDepartThen(train, slide), 900);
+              }
             }, 260);
           }
         } else {
@@ -9989,6 +10187,7 @@ SlideModules.MATRA_FILL = {
       coaches: slots.length,
       coach_label: slots.map(s => ({ img: s.img, emoji: s.emoji })),   // "A related picture can be shown above each coach" (row #150)
       coach_body: slots.map(()=> ""),
+      pin_track: 0.725,                   /* [r28] one railway across pages 8-14 */
       drop_zone: true, maxH: 208,          /* picture plates above + the matra tray below */
       on_enter: ()=>{ train.popLabels(240); setTimeout(rise, slots.length * 240); }
     });
@@ -10041,7 +10240,7 @@ SlideModules.MATRA_FILL = {
 
     state.attempts = 0; state.locked = false;
     setNavActive(false);                                   // row #152
-    $("navBtn").onclick = ()=> completeSlide(true);
+    $("navBtn").style.display = "none";                    /* [r28] the train is the way out */
 
     let filled = 0;
     const wrongN = new WeakMap();
@@ -10104,7 +10303,9 @@ SlideModules.MATRA_FILL = {
             SwiftPAL.emit(d.signal || "matra_fill_correct", {
               slide_id: slide.id, phase: slide.phase, value: true,
               attempts: state.attempts, latency_ms: Date.now() - state.slideStart });
-            setTimeout(()=>{ train.complete(); setSwMood("celebrate"); confettiCannon(); setNavActive(true); }, 260);
+            /* [r28] no आगे here either - the finished word is celebrated, then the train leaves. */
+      setTimeout(()=>{ train.complete(); setSwMood("celebrate"); confettiCannon();
+                       setTimeout(()=> trainDepartThen(train, slide), 900); }, 260);
           }
         } else {
           /* "Wrong area shakes · Matra returns to original place · Only VO" (rows #157, #158) */
@@ -11771,6 +11972,8 @@ function buildDevNav(){
   M.skyBurst = {
     defaults: {
       container:".sg-sky", when:["is-start","is-end"],
+      /* [r27] the region no star may be popped in - the cover's centre card */
+      avoid:".sg-card",
       rings:[{n:9,rad:3.1,size:.58,dur:.80},{n:7,rad:1.8,size:.78,dur:.62}],
       hues:["#FCB717","#3B7DD8","#21A74A","#E5484D","#7048D6","#F1781D"],
       kind:{s1:"k-star",s2:"k-star",s3:"k-spark",s4:"k-dot",s5:"k-dot"},
@@ -11788,10 +11991,23 @@ function buildDevNav(){
           if(M.still()) return;
           if(typeof isMuted !== "undefined" && isMuted && o.sound){ /* dev mute also silences the pop */ }
           if(!o.when.some(function(c){ return document.body.classList.contains(c); })) return;
+          /* [r27 · SME] THE CENTRE CARD IS OFF LIMITS. The mask hides the pixels of a star that
+             drifts over the card, but the element is still there with a real rect and a real
+             opacity - so this hit-test happily popped INVISIBLE stars and threw a burst across
+             the card. Worse, it then called stopPropagation/preventDefault, so an invisible
+             star sitting over शुरू करें could swallow the tap that was meant to start the lesson.
+             A tap inside the card is never a star tap, and a star overlapping the card is never
+             poppable. */
+          var _av = o.avoid ? document.querySelector(o.avoid) : null;
+          var _ar = (_av && _av.offsetWidth) ? _av.getBoundingClientRect() : null;
+          if(_ar && e.clientX >= _ar.left && e.clientX <= _ar.right &&
+                    e.clientY >= _ar.top  && e.clientY <= _ar.bottom) return;
           var els = sky.querySelectorAll("i:not(.popped)");
           for(var i = 0; i < els.length; i++){
             var el = els[i], r = el.getBoundingClientRect();
             if(r.width < 2) continue;
+            if(_ar && r.left < _ar.right && r.right > _ar.left &&
+                      r.top  < _ar.bottom && r.bottom > _ar.top) continue;
             var pad = Math.max(o.pad, r.width * o.padRatio);   // ~4px targets need slack
             if(e.clientX < r.left - pad || e.clientX > r.right  + pad ||
                e.clientY < r.top  - pad || e.clientY > r.bottom + pad) continue;
@@ -12328,9 +12544,8 @@ SlideModules.MATRA_TOKRI = {
           '</span></div>' +
           '<div id="mtNudgeHand">' +
             '<span class="nh-tapfx"><i class="fx-ro"></i><i class="fx-ri"></i><i class="fx-sp"></i></span>' +
-            '<img src="assets/UI/mt_hand_nudge.webp" alt="">' +
+            '<img src="assets/UI/nudge_hand_new.svg" alt="">' +
           '</div>' +
-          '<div class="round-banner" id="round-banner" aria-hidden="true"><div class="rb-matra" id="rb-matra">\u25CC\u093E</div></div>' +
         '</div>' +
         '<div class="level-cheer" id="level-cheer" aria-hidden="true">' +
           '<div class="lc-fx" id="lc-fx"></div>' +
@@ -12507,7 +12722,14 @@ SlideModules.MATRA_TOKRI = {
          ~547) so the hand never covers the opening words drop into, and high enough
          that the wrist clears .play-area's 654 cut. This hand points up-LEFT, so the
          body trails down-right of the tip. */
-      var NUDGE_OPTS = { hand: 'mtNudgeHand', host: '.mt-game .play-area', dx: 46, dy: -82 };
+      /* [r25] dx is shifted by the fingertip delta measured in the CSS note above
+         (+20 right): 46 - 19.2 = 26.8, so the lesson's hand points at the same spot on the
+         basket flank the game's own hand did.
+         dy STAYS -82. Correcting it to -77 for the 4px-higher tip pushed the 108px box down
+         to 659 against the play area's 654 cut and shaved the wrist - measured, 6px clipped.
+         The box bottom is the binding constraint here, not the tip, so the box keeps its
+         tuned position and the finger simply points 5px higher up the same flank. */
+      var NUDGE_OPTS = { hand: 'mtNudgeHand', host: '.mt-game .play-area', dx: 26.8, dy: -82 };
 
       // ---- State ----
       var playArea = null, basketEl = null, basketLift = null, basketArt = null;
@@ -12901,11 +13123,20 @@ SlideModules.MATRA_TOKRI = {
         clearDrops();
 
         var R = ROUNDS[i];
-        document.getElementById('rb-matra').textContent = R.matra;
+        /* [r25 · SME] The round banner is gone. It flashed the bare matra in a white disc,
+           and a bare matra is an orphan combining mark, so the font drew it as ◌ा - a
+           dotted placeholder the child was being asked to read. The VO still names the
+           round's matra and the header chip still carries it, so nothing is lost but the
+           disc. Kept null-safe rather than chasing every reference, so putting the element
+           back is the only change needed to restore it. */
         var banner = document.getElementById('round-banner');
-        banner.classList.remove('show');
-        void banner.offsetWidth;
-        banner.classList.add('show');
+        if (banner) {
+          var rb = document.getElementById('rb-matra');
+          if (rb) rb.textContent = R.matra;
+          banner.classList.remove('show');
+          void banner.offsetWidth;
+          banner.classList.add('show');
+        }
 
         // THE VO IS THE INSTRUCTION. Nothing on screen says it — the matra chip in
         // the header and the banner glyph are the only written cues, and both are
@@ -12931,6 +13162,12 @@ SlideModules.MATRA_TOKRI = {
         var el = document.getElementById('level-cheer');
         if (!el) return;
         el.classList.toggle('show', !!show);
+        /* [r26 · SME] "when one matra level is done then the bird comes on the screen - don't
+           show cloud and the tokri in that celebration screen." The flag rides levelCheer
+           itself rather than the call sites, so the playfield is hidden for exactly as long
+           as Swifty is up and comes back with the next round - including the 9s fallback
+           path, which returns through levelCheer(false) too. */
+        root.classList.toggle('mt-cheering', !!show);
         if (show) FLNMotion.confetti.burst({ host: '#lc-fx', count: 55, phases: [] });
       }
 
@@ -13031,14 +13268,30 @@ SlideModules.MATRA_TOKRI = {
         clearDrops();
         FLNMotion.nudge.hide(NUDGE_OPTS);
         /* The win overlay that used to live here is GONE - it was the game's own last page, and
-           this lesson already has one (the CELEBRATION slide). All this does now is celebrate in
-           place and hand control back: the engine unlocks आगे and the child walks on. */
-        $("stage").classList.remove("mt-play");   // hand the chrome back: आगे is the way out
+           this lesson already has one (the CELEBRATION slide).
+           [r25 · SME] "in the celebration screen of the game we don't need bucket or any word
+           cloud." clearDrops() took the falling words, but the basket, its front plate and the
+           dashed catch line stayed on screen behind the confetti - and the आगे pill was drawn
+           straight across the basket. Once the last word is caught this is a celebration, not a
+           playfield, so .mt-ended takes the whole playfield away. */
+        root.classList.add("mt-ended");
+        $("stage").classList.remove("mt-play");   // hand the chrome back
         confettiCannon();
         burstStars();
         setSwMood("celebrate");
-        play(audioSrc("vo_mt_done"), function () { setNavActive(true); });
-        setTimeout(function () { setNavActive(true); }, 4000);   // never strand on a blocked clip
+        /* [r25 · SME] "remove the next button - when the game is complete it should automatically
+           go to the next page." The same contract the object-hunt screens use: the pill is hidden
+           for good and the slide walks on when the cheer ends, with a hard cap so a clip that
+           never fires its ended event cannot strand the child on a screen with no way out. */
+        $("navBtn").style.display = "none";
+        setNavActive(false);
+        var moved = false;
+        var go = function () {
+          if (moved) return; moved = true;
+          if (CARD.slides[state.idx] === slide) completeSlide(true);
+        };
+        play(audioSrc("vo_mt_done"), function () { setTimeout(go, 700); });
+        setTimeout(go, 9000);
       }
 
       // ============ Title screen → Start ============

@@ -201,21 +201,21 @@ VO = {
     "vo_ex_ladki":    "लड़की, बोलकर देखिए। इसमें क पर बड़ी ई की मात्रा लगी है।",
 
     # ---- Screen 8 · TRAIN_TAP आ (deck page 11) -----------------------------------------------
-    "vo_tt_aa_prompt":  "जिस डिब्बे में आ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+    "vo_tt_aa_prompt":  "“आ” की मात्रा वाले शब्द पर टैप कीजिए।",
     "vo_tt_aa_correct": "शाबाश! हाथ शब्द में आ की मात्रा है।",
     "vo_tt_aa_hint1":   "फिर से सोचो। आ की मात्रा वाला शब्द कौन-सा है?",
     "vo_tt_aa_hint2":   "ध्यान से देखो और सही डिब्बे पर टैप कीजिए।",
     "vo_rev_tt_aa":     "सही डिब्बा यह है। हाथ शब्द में आ की मात्रा है।",
 
     # ---- Screen 9 · TRAIN_TAP छोटी इ (deck page 12) ------------------------------------------
-    "vo_tt_i_prompt":  "जिस डिब्बे में छोटी इ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+    "vo_tt_i_prompt":  "छोटी “इ” की मात्रा वाले शब्द पर टैप कीजिए।",
     "vo_tt_i_correct": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।",
     "vo_tt_i_hint1":   "फिर से सोचो। छोटी इ की मात्रा वाला शब्द कौन-सा है?",
     "vo_tt_i_hint2":   "ध्यान से देखो और सही डिब्बे पर टैप करो।",
     "vo_rev_tt_i":     "सही डिब्बा यह है। पिन शब्द में छोटी इ की मात्रा है।",
 
     # ---- Screen 10 · TRAIN_TAP बड़ी ई (deck page 13) -----------------------------------------
-    "vo_tt_ee_prompt":  "जिस डिब्बे में बड़ी ई की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+    "vo_tt_ee_prompt":  "बड़ी “ई” की मात्रा वाले शब्द पर टैप कीजिए।",
     "vo_tt_ee_correct": "शाबाश! पानी शब्द में बड़ी ई की मात्रा है।",
     "vo_tt_ee_hint1":   "फिर से सोचो। बड़ी ई की मात्रा वाला शब्द कौन-सा है?",
     "vo_tt_ee_hint2":   "ध्यान से देखो और सही डिब्बे पर टैप करो।",
@@ -223,7 +223,7 @@ VO = {
     "vo_name_paani":    "पानी",
 
     # ---- Screen 11 · TRAIN_SORT word -> matra coach (deck page 14) ---------------------------
-    "vo_ts1_prompt":   "हर शब्द को उसकी सही मात्रा वाली बोगी में डालिए।",
+    "vo_ts1_prompt":   "हर शब्द को उसकी सही मात्रा वाले डिब्बे में डालिए।",
     "vo_ts1_ok_haath": "शाबाश! हाथ शब्द में आ की मात्रा है।",
     "vo_ts1_ok_pin":   "शाबाश! पिन शब्द में छोटी इ की मात्रा है।",
     "vo_ts1_ok_neem":  "शाबाश! नीम शब्द में बड़ी ई की मात्रा है।",
@@ -231,7 +231,7 @@ VO = {
     "vo_ts1_hint2":    "ध्यान से देखो, इस शब्द में कौन-सी मात्रा है?",
 
     # ---- Screen 12 · TRAIN_SORT matra -> word coach (deck page 15) ---------------------------
-    "vo_ts2_prompt":  "सही मात्रा को सही शब्द वाली बोगी में डालिए।",
+    "vo_ts2_prompt":  "सही मात्रा को सही शब्द वाले डिब्बे में डालिए।",
     "vo_ts2_ok_jaal": "शाबाश! जाल शब्द में आ की मात्रा लगी है।",
     "vo_ts2_ok_sir":  "शाबाश! सिर शब्द में छोटी इ की मात्रा लगी है।",
     "vo_ts2_ok_keel": "शाबाश! कील शब्द में बड़ी ई की मात्रा लगी है।",
@@ -239,7 +239,7 @@ VO = {
     "vo_ts2_hint2":   "ध्यान से देखो और शब्द को फिर से पढ़ो।",
 
     # ---- Screen 13 · MATRA_FILL (deck page 16) -----------------------------------------------
-    "vo_mf_prompt":   "सही मात्रा को सही जगह पर खींचकर डालो और शब्द पूरा करिए।",
+    "vo_mf_prompt":   "मात्रा को सही डिब्बे में डालकर शब्द पूरा कीजिए।",
     "vo_mf_ok_jaal":  "शाबाश! जाल बन गया।",
     "vo_mf_ok_pari":  "शाबाश! परी बन गया।",
     "vo_mf_ok_hiran": "शाबाश! हिरण बन गया।",
@@ -248,7 +248,7 @@ VO = {
     "vo_name_pari":   "परी",
 
     # ---- Screen 14 · TRAIN_SORT pictures only (deck page 17) ---------------------------------
-    "vo_ts3_prompt":   "चित्र को सुनो और उसे सही मात्रा वाली बोगी में डालिए।",
+    "vo_ts3_prompt":   "चित्र देखकर उसे सही मात्रा वाले डिब्बे में डालिए।",
     "vo_ts3_ok_haath": "शाबाश! हाथ में आ की मात्रा है।",
     "vo_ts3_ok_naak":  "शाबाश! नाक में आ की मात्रा है।",
     "vo_ts3_ok_pin":   "शाबाश! पिन में छोटी इ की मात्रा है।",
@@ -434,7 +434,13 @@ SLIDES = [
         "data": {"auto": True,
                  "base_word": "कल", "base_img": "obj_kal", "base_emoji": "📅",
                  "consonant": "क", "matra": "ी", "syllable": "की",
-                 "result_word": "कील", "result_img": "obj_keel", "result_emoji": "🔩"},
+                 "result_word": "कील", "result_img": "obj_keel", "result_emoji": "🔩",
+                 # [r27 · SME] "the कील is looking slightly bigger, make it 10 percent smaller."
+                 # Every result picture shares the same 180x150 box, so all three already render
+                 # at the same 170px height - कील's art is a 389x553 spike, so filling that height
+                 # makes it read as the biggest object on the page. This trims the cap for this
+                 # one picture; the other two are untouched.
+                 "result_img_scale": 0.9},
     },
     {   # Screen 7 · deck page 10
         "id": "T7", "phase": "tutorial", "eis": "iconic", "type": "MEET_EXAMPLES",
@@ -451,7 +457,7 @@ SLIDES = [
         "id": "G1", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP",
         # [r8] The spoken line is written on screen in the question band on every question page
         # (8-14). This supersedes row #96 "No instruction text on screen" for these screens.
-        "prompt_hi": "जिस डिब्बे में “आ” की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+        "prompt_hi": "“आ” की मात्रा वाले शब्द पर टैप कीजिए।",
         "audio": A(prompt="vo_tt_aa_prompt", correct="vo_tt_aa_correct",
                    hint1="vo_tt_aa_hint1", hint2="vo_tt_aa_hint2",
                    reveal="vo_rev_tt_aa", try_again="vo_tt_aa_hint1"),
@@ -464,7 +470,7 @@ SLIDES = [
     },
     {   # Screen 9 · deck page 12
         "id": "G2", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP",
-        "prompt_hi": "जिस डिब्बे में छोटी “इ” की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+        "prompt_hi": "छोटी “इ” की मात्रा वाले शब्द पर टैप कीजिए।",
         "audio": A(prompt="vo_tt_i_prompt", correct="vo_tt_i_correct",
                    hint1="vo_tt_i_hint1", hint2="vo_tt_i_hint2",
                    reveal="vo_rev_tt_i", try_again="vo_tt_i_hint1"),
@@ -477,7 +483,7 @@ SLIDES = [
     },
     {   # Screen 10 · deck page 13
         "id": "G3", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP",
-        "prompt_hi": "जिस डिब्बे में बड़ी “ई” की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।",
+        "prompt_hi": "बड़ी “ई” की मात्रा वाले शब्द पर टैप कीजिए।",
         "audio": A(prompt="vo_tt_ee_prompt", correct="vo_tt_ee_correct",
                    hint1="vo_tt_ee_hint1", hint2="vo_tt_ee_hint2",
                    reveal="vo_rev_tt_ee", try_again="vo_tt_ee_hint1"),
@@ -490,7 +496,7 @@ SLIDES = [
     },
     {   # Screen 11 · deck page 14 — word cards into matra coaches
         "id": "G4", "phase": "guided", "eis": "enactive", "type": "TRAIN_SORT",
-        "prompt_hi": "हर शब्द को उसकी सही मात्रा वाली बोगी में डालिए।",
+        "prompt_hi": "हर शब्द को उसकी सही मात्रा वाले डिब्बे में डालिए।",
         "audio": A(prompt="vo_ts1_prompt", hint1="vo_ts1_hint1", hint2="vo_ts1_hint2",
                    try_again="vo_ts1_hint1"),
         "data": {"signal": "matra_sort_correct",
@@ -510,7 +516,7 @@ SLIDES = [
     # ============ PRACTICE · 5 screens =======================================================
     {   # Screen 12 · deck page 15 — the REVERSE mapping: matra cards into word coaches
         "id": "P1", "phase": "practice", "eis": "enactive", "type": "TRAIN_SORT",
-        "prompt_hi": "सही मात्रा को सही शब्द वाली बोगी में डालिए।",
+        "prompt_hi": "सही मात्रा को सही शब्द वाले डिब्बे में डालिए।",
         "audio": A(prompt="vo_ts2_prompt", hint1="vo_ts2_hint1", hint2="vo_ts2_hint2",
                    try_again="vo_ts2_hint1"),
         "data": {"signal": "matra_sort_correct",
@@ -529,7 +535,7 @@ SLIDES = [
         # हीरा was CORRECTED to हिरण on the SME's explicit instruction (row #149) — हीरा is
         # unusable anyway, it carries two in-scope matras (ी and ा).
         "id": "P2", "phase": "practice", "eis": "enactive", "type": "MATRA_FILL",
-        "prompt_hi": "सही मात्रा को सही जगह पर खींचकर डालो और शब्द पूरा करिए।",
+        "prompt_hi": "मात्रा को सही डिब्बे में डालकर शब्द पूरा कीजिए।",
         "audio": A(prompt="vo_mf_prompt", hint1="vo_mf_hint1", hint2="vo_mf_hint2",
                    try_again="vo_mf_hint1"),
         "data": {"signal": "matra_fill_correct",
@@ -549,7 +555,7 @@ SLIDES = [
     },
     {   # Screen 14 · deck page 17 — PICTURES ONLY, no word text at any point
         "id": "P3", "phase": "practice", "eis": "enactive", "type": "TRAIN_SORT",
-        "prompt_hi": "चित्र को सुनो और उसे सही मात्रा वाली बोगी में डालिए।",
+        "prompt_hi": "चित्र देखकर उसे सही मात्रा वाले डिब्बे में डालिए।",
         "audio": A(prompt="vo_ts3_prompt", hint1="vo_ts3_hint1", hint2="vo_ts3_hint2",
                    try_again="vo_ts3_hint1"),
         "data": {"signal": "matra_sort_correct", "hide_labels": True, "multi": True,

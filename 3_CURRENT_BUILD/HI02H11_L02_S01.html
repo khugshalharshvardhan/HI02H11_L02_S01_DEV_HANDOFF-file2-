@@ -1800,8 +1800,23 @@ body.is-start .phase-gate{
 @keyframes trainIn{from{transform:translateX(86%);opacity:0;}
                    6%{opacity:1;}
                    to{transform:translateX(0);opacity:1;}}
+/* [r28 · SME] "when we finish one page's activity the train should move ahead (to the left)
+   and then all the elements of the next page come - the train will again come from the right."
+   The arrival already existed; the departure did not, so a finished page simply cut to the next
+   one. This is the arrival's mirror: same easing family, shorter, because the child has already
+   finished and is waiting rather than being introduced to anything.
+   The TRACK is deliberately not part of it. It is parented to the shell, not the rail (see
+   TrainChrome.mount), so it does not travel with the train - the line stays exactly where it is
+   while the train leaves and the next one pulls in, which is what makes the two pages read as
+   one railway rather than two screens. */
+.train-rail.tr-leaving{animation:trainOut var(--lt-depart,1500ms) cubic-bezier(.36,.02,.62,.92) both;}
+@keyframes trainOut{from{transform:translateX(0);opacity:1;}
+                    72%{opacity:1;}
+                    to{transform:translateX(-116%);opacity:0;}}
+.tr-leaving .train-steam{--tc-drift:var(--tc-drift-move,52px);}
 @media (prefers-reduced-motion:reduce){
   .train-rail.tr-entering{animation:none;transform:translateX(0);opacity:1;}
+  .train-rail.tr-leaving{animation:none;opacity:0;}
 }
 
 /* [r8] THE COVER'S TRACK, not a second one. Same rail head, same sleeper stubs, same end fade —
@@ -1962,7 +1977,11 @@ body.is-start .phase-gate{
 
 /* the tray of draggable cards under the train (rows #126, #144, #163, #175) */
 .train-tray{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px;
-  margin-top:22px;margin-bottom:40px;   /* [r19] clear of the आगे pill — it was 18px away */
+  /* [r28 · SME] "since we're removing the next button there would be empty space at the bottom,
+     so move the options a little downwards to fill it." Two things put them there: pinning the
+     track (above) drops the whole train ~100px on these pages and the tray follows it, and the
+     22/40 margins that were tuned to clear the आगे pill no longer have a pill to clear. */
+  margin-top:28px;margin-bottom:12px;
   max-width:1120px;}
 .train-tray .tt-card{background:#FFFFFF;border:3px solid #CFE3FA;border-radius:14px;padding:10px 14px;
   display:flex;flex-direction:column;align-items:center;gap:6px;min-width:104px;cursor:grab;
@@ -2108,6 +2127,17 @@ body.is-start .phase-gate{
 /* ज -> जा dissolves instead of cutting */
 .mb-syl{display:inline-block;}
 .mb-syl.mb-syl-in{animation:mbSylIn 420ms ease-out both;}
+/* [r27 · SME] "when the VO comes and says जा, pulsate it for 3-4 seconds" (दो बि on page 4,
+   की on page 6). The pulse is tied to the onset CLIP rather than a fixed repeat count, because
+   the three clips already run 3.41s (जा), 4.09s (बि) and 3.73s (की) - so it is 3-4 seconds by
+   construction, and stays right if a clip is ever re-recorded. Declared after .mb-syl-in so it
+   wins while both are present; mbSylIn is fill-mode both, so removing this returns the glyph to
+   the entrance's end state rather than snapping. */
+.mb-syl.mb-syl-say{animation:mbSylSay 760ms ease-in-out infinite;}
+@keyframes mbSylSay{
+  0%,100%{transform:scale(1);            text-shadow:0 0 0 rgba(255,138,0,0);}
+  50%    {transform:scale(1.13);         text-shadow:0 0 22px rgba(255,138,0,.55);}
+}
 @keyframes mbSylIn{from{opacity:0;transform:translateY(10px) scale(.88);}
                    to{opacity:1;transform:translateY(0) scale(1);}}
 .mb-eq.mb-settle{animation:mbSettle 420ms ease-out;}
@@ -2501,9 +2531,14 @@ html.rotated .sg-glow,html.rotated .sg-sky{
 
 /* hole punched over the centre card — it is translucent, so elements showed through.
    Our .sg-card art is 1114x456, exactly the size the kit's default hole is cut for. */
+/* [r27 · SME] "the star animation is overlapping the centre box; stars should only happen
+   OUTSIDE the box." Measured on the cover at --scale 1.132: the hole came out 1216x471 while
+   .sg-card is 1262x517 - the hole was cut 20 CSS px short on every side, so a band of card
+   border was never masked and stars drifted across it. The comment below this block always
+   said the card art is 1114x456; the hole now actually is. */
 .sg-sky{overflow:hidden;
-  --sg-hole-w:calc(1074px * var(--scale,1));
-  --sg-hole-h:calc(416px * var(--scale,1));
+  --sg-hole-w:calc(1114px * var(--scale,1));
+  --sg-hole-h:calc(456px * var(--scale,1));
   -webkit-mask-image:linear-gradient(#000,#000),linear-gradient(#000,#000);
           mask-image:linear-gradient(#000,#000),linear-gradient(#000,#000);
   -webkit-mask-size:100% 100%,var(--sg-hole-w) var(--sg-hole-h);
@@ -2554,6 +2589,11 @@ body.is-end .sg-sky{
 /* ===== FLN ANIMATION KIT: sky-burst BEGIN ===== */
 .sg-sky i.popped{visibility:hidden;}
 .sg-burst{position:fixed;z-index:95;width:0;height:0;pointer-events:none;}
+/* [r27] On the cover the burst drops BELOW the centre card (#startGate is z-index 80). A star
+   popped just outside the card throws sparks up to ~3x its own width, which used to sail over
+   the card at z-index 95; now the card covers them and the burst is only ever seen outside it.
+   The end screen keeps 95 - there the burst is the celebration and nothing should hide it. */
+body.is-start .sg-burst{z-index:79;}
 
 /* data URIs, not file refs — external SVG masks are blocked under file:// */
 .sg-burst.k-star{--shape:url("data:image/svg+xml,%3Csvg%20width=%2264%22%20height=%2264%22%20viewBox=%220%200%2064%2064%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d=%22M32%205.5c1.6%200%203%20.9%203.7%202.4l6.1%2012.4%2013.7%202c1.6.2%203%201.4%203.5%203s.1%203.3-1.1%204.4l-9.9%209.6%202.3%2013.6c.3%201.6-.4%203.3-1.7%204.2s-3.1%201.1-4.6.3L32%2051l-12.2%206.4c-1.5.8-3.2.7-4.6-.3s-2-2.6-1.7-4.2l2.3-13.6-9.9-9.6c-1.2-1.1-1.6-2.9-1.1-4.4s1.9-2.7%203.5-3l13.7-2%206.1-12.4C29%206.4%2030.4%205.5%2032%205.5z%22%20fill=%22%23fff%22/%3E%3C/svg%3E");}
@@ -2605,6 +2645,19 @@ body.is-end .sg-sky{
 @keyframes nhFx{0%,34%{opacity:0;transform:scale(.55);}46%{opacity:1;transform:scale(1);}
   58%{opacity:1;transform:scale(1.02);}78%,100%{opacity:0;transform:scale(1.12);}}
 
+/* [r25 · SME] A celebration is not the game: no basket, no word cloud, no catch line, no
+   hand. Everything the child played WITH goes; the scene and the cheer stay.
+   TWO states share the rule, because there are two celebrations on this slide:
+     .mt-ended    - the game is won, the last screen before the lesson walks on
+     .mt-cheering - [r26] a matra level is finished and Swifty comes on between rounds. The
+                    basket sat under her the whole time, and finishRound() did not call
+                    clearDrops() until AFTER the cheer, so any word still in the air hung
+                    there behind her too. */
+.mt-game.mt-ended #basket,      .mt-game.mt-cheering #basket,
+.mt-game.mt-ended #basket-front,.mt-game.mt-cheering #basket-front,
+.mt-game.mt-ended .drop-tile,   .mt-game.mt-cheering .drop-tile,
+.mt-game.mt-ended .catch-line,  .mt-game.mt-cheering .catch-line,
+.mt-game.mt-ended #mtNudgeHand, .mt-game.mt-cheering #mtNudgeHand{display:none !important;}
 #mtNudgeHand{position:absolute;width:86px;height:108px;pointer-events:none;
   opacity:0;transition:opacity .2s ease;z-index:40;}
 #mtNudgeHand.show{opacity:1;}
@@ -2614,15 +2667,22 @@ body.is-end .sg-sky{
 /* ===== FLN ANIMATION KIT: nudge-ripple BEGIN ===== */
 /* Each layer is on a 120-unit square canvas centred on the ripple origin, so
    background-size:contain + transform-origin:50% 50% scales it about the fingertip.
-   GEOMETRY, re-derived for the supplied hand: #mtNudgeHand is 86x108;
-   hand_nudge.webp is 172x181, so object-fit:contain fits it by WIDTH at scale
-   .079 -> the fingertip (175,41 in the 1089x1145 trimmed art) lands at
-   (13.8, 12.0) in the box. This hand points up-LEFT, which is why the tip is
-   near the box's left edge where the previous one sat right of centre.
-   The 94.6px FX square is offset to centre exactly there. Measured by
-   assets/_finish_art.py, which prints these two numbers — do not eyeball them. */
+   GEOMETRY. [r25 · SME] The game shipped with its own white-and-blue hand pointing
+   up-LEFT; every other screen in this lesson nudges with assets/UI/nudge_hand_new.svg,
+   a skin-toned hand with a yellow cuff pointing straight UP, and one game using a
+   different hand read as a different product. The art is swapped; the numbers below
+   are re-measured for it, not carried over.
+   #mtNudgeHand is 86x108. Rasterised into that box with object-fit:contain and the
+   ink scanned for its topmost rows, the fingertip sits at:
+       mt_hand_nudge.webp  172x181  ->  (13, 11)   <- matches the 13.8/12.0 this
+                                                      comment used to record, which is
+                                                      what validates the measurement
+       nudge_hand_new.svg   75x94   ->  (33,  7)
+   So the tip moves +20 right and -4 up, and NUDGE_OPTS is shifted by exactly that
+   much to keep the finger on the same point of the basket.
+   The 94.6px FX square is offset to centre on the tip: left = 33 - 47.3, top = 7 - 47.3. */
 #mtNudgeHand .nh-tapfx{position:absolute;width:94.6px;height:94.6px;
-  left:-33.48px;top:-35.27px;pointer-events:none;}
+  left:-14.3px;top:-40.3px;pointer-events:none;}
 #mtNudgeHand .nh-tapfx i{position:absolute;inset:0;display:block;
   background-repeat:no-repeat;background-position:center;background-size:contain;
   transform-origin:50% 50%;opacity:0;}
@@ -3706,7 +3766,7 @@ body.mt-page{ background:#7FC2FE; }
 
 <!-- ============ CARD DATA (embedded; in prod the compiler does this) ============ -->
 <script type="application/json" id="cardData">
-{"version": "0.2", "skill_code": "HI02H11_L02_S01", "lo_code": "HI02H11_L02", "grade": "02", "attribute": "H11", "skill_type": "CORE", "part_label": "", "medium": "hi", "title": {"hi": "मात्राओं की रेल", "en": "The matra train"}, "subtitle_hi": "", "theme": "toybox", "skill_description_hi": "आ, इ, ई मात्रा वाले शब्द पढ़ता है। शब्दों में आने वाली मात्रा पहचानता है।", "landing_audio": "vo_landing", "landing_hero": {"kind": "matra_train", "matras": ["“आ” (ा)", "“इ” (ि)", "“ई” (ी)"]}, "phase_transition_audio": {"tutorial": "vo_pt_tutorial", "guided": "vo_pt_guided", "practice": "vo_pt_practice"}, "phase_transition_title": {"tutorial": "चलो, शुरू करें!", "guided": "साथ में करें।", "practice": "अब तुम्हारी बारी।"}, "phase_distribution": {"tutorial": 7, "guided": 4, "practice": 5}, "scaffold_rules": {"nudge_timeout_ms": {"guided": 6000, "practice": 8000}, "max_attempts": 3, "hand_on_attempt": 2, "silent_on_late_correct": true, "hand_in_practice": true}, "signals_expected": ["slide_entered", "slide_completed", "matra_tap_first_try", "matra_sort_correct", "matra_fill_correct", "poem_search_correct", "lesson_completed", "mastery_score"], "_emoji_fallback": {"obj_haath": "✋", "obj_naak": "👃", "obj_din": "☀️", "obj_pin": "📌", "obj_neem": "🌳", "obj_teer": "🏹", "obj_hiran": "🦌", "obj_jal": "💧", "obj_jaal": "🕸️", "obj_bal": "💪", "obj_bil": "🧾", "obj_kal": "📅", "obj_keel": "🔩", "obj_matka": "🏺", "obj_gati": "🏃", "obj_ladki": "👧", "obj_pari": "🧚"}, "slides": [{"id": "T1", "phase": "tutorial", "eis": "enactive", "type": "MATRA_PAIRS", "prompt_hi": "", "audio": {"prompt": "vo_s1_prompt"}, "data": {"auto": true, "pairs": [{"letter": "आ", "matra": "ा", "audio": "vo_matra_aa2"}, {"letter": "इ", "matra": "ि", "audio": "vo_matra_i"}, {"letter": "ई", "matra": "ी", "audio": "vo_matra_ee"}]}}, {"id": "T2", "phase": "tutorial", "eis": "iconic", "type": "MATRA_BUILD", "prompt_hi": "", "audio": {"prompt": "vo_mb_jal_intro", "base": "vo_mb_jal_base", "onset": "vo_mb_jal_onset", "result": "vo_name_jaal", "sounds": "vo_mb_jal_sounds", "explain": "vo_mb_jal_explain"}, "data": {"auto": true, "base_word": "जल", "base_img": "obj_jal", "base_emoji": "💧", "consonant": "ज", "matra": "ा", "syllable": "जा", "result_word": "जाल", "result_img": "obj_jaal", "result_emoji": "🕸️"}}, {"id": "T3", "phase": "tutorial", "eis": "iconic", "type": "MEET_EXAMPLES", "prompt_hi": "", "audio": {"prompt": "vo_ex_aa_intro"}, "data": {"auto": true, "examples": [{"word_hi": "नाक", "matra": "ा", "img": "obj_naak", "emoji": "👃", "audio": "vo_ex_naak"}, {"word_hi": "मटका", "matra": "ा", "img": "obj_matka", "emoji": "🏺", "audio": "vo_ex_matka"}]}}, {"id": "T4", "phase": "tutorial", "eis": "iconic", "type": "MATRA_BUILD", "prompt_hi": "", "audio": {"prompt": "vo_mb_bil_intro", "base": "vo_mb_bil_base", "onset": "vo_mb_bil_onset", "result": "vo_name_bil", "sounds": "vo_mb_bil_sounds", "explain": "vo_mb_bil_explain"}, "data": {"auto": true, "base_word": "बल", "base_img": "obj_bal", "base_emoji": "💪", "consonant": "ब", "matra": "ि", "syllable": "बि", "result_word": "बिल", "result_img": "obj_bil", "result_emoji": "🕳️"}}, {"id": "T5", "phase": "tutorial", "eis": "iconic", "type": "MEET_EXAMPLES", "prompt_hi": "", "audio": {"prompt": "vo_ex_i_intro"}, "data": {"auto": true, "examples": [{"word_hi": "दिन", "matra": "ि", "img": "obj_din", "emoji": "☀️", "audio": "vo_ex_din"}, {"word_hi": "गति", "matra": "ि", "img": "obj_gati", "emoji": "🏃", "audio": "vo_ex_gati"}]}}, {"id": "T6", "phase": "tutorial", "eis": "iconic", "type": "MATRA_BUILD", "prompt_hi": "", "audio": {"prompt": "vo_mb_keel_intro", "base": "vo_mb_keel_base", "onset": "vo_mb_keel_onset", "result": "vo_name_keel", "sounds": "vo_mb_keel_sounds", "explain": "vo_mb_keel_explain"}, "data": {"auto": true, "base_word": "कल", "base_img": "obj_kal", "base_emoji": "📅", "consonant": "क", "matra": "ी", "syllable": "की", "result_word": "कील", "result_img": "obj_keel", "result_emoji": "🔩"}}, {"id": "T7", "phase": "tutorial", "eis": "iconic", "type": "MEET_EXAMPLES", "prompt_hi": "", "audio": {"prompt": "vo_ex_ee_intro"}, "data": {"auto": true, "examples": [{"word_hi": "तीर", "matra": "ी", "img": "obj_teer", "emoji": "🏹", "audio": "vo_ex_teer"}, {"word_hi": "लड़की", "matra": "ी", "img": "obj_ladki", "emoji": "👧", "audio": "vo_ex_ladki"}]}}, {"id": "G1", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP", "prompt_hi": "जिस डिब्बे में “आ” की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।", "audio": {"prompt": "vo_tt_aa_prompt", "correct": "vo_tt_aa_correct", "hint1": "vo_tt_aa_hint1", "hint2": "vo_tt_aa_hint2", "reveal": "vo_rev_tt_aa", "try_again": "vo_tt_aa_hint1"}, "data": {"signal": "matra_tap_first_try", "options": [{"word_hi": "हाथ", "audio": "vo_name_haath", "correct": true}, {"word_hi": "दिन", "audio": "vo_name_din"}, {"word_hi": "नीम", "audio": "vo_name_neem"}]}, "signals": {"on_complete": ["matra_tap_first_try"]}}, {"id": "G2", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP", "prompt_hi": "जिस डिब्बे में छोटी “इ” की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।", "audio": {"prompt": "vo_tt_i_prompt", "correct": "vo_tt_i_correct", "hint1": "vo_tt_i_hint1", "hint2": "vo_tt_i_hint2", "reveal": "vo_rev_tt_i", "try_again": "vo_tt_i_hint1"}, "data": {"signal": "matra_tap_first_try", "options": [{"word_hi": "पिन", "audio": "vo_name_pin", "correct": true}, {"word_hi": "नाक", "audio": "vo_name_naak"}, {"word_hi": "तीर", "audio": "vo_name_teer"}]}, "signals": {"on_complete": ["matra_tap_first_try"]}}, {"id": "G3", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP", "prompt_hi": "जिस डिब्बे में बड़ी “ई” की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।", "audio": {"prompt": "vo_tt_ee_prompt", "correct": "vo_tt_ee_correct", "hint1": "vo_tt_ee_hint1", "hint2": "vo_tt_ee_hint2", "reveal": "vo_rev_tt_ee", "try_again": "vo_tt_ee_hint1"}, "data": {"signal": "matra_tap_first_try", "options": [{"word_hi": "पानी", "audio": "vo_name_paani", "correct": true}, {"word_hi": "नाक", "audio": "vo_name_naak"}, {"word_hi": "दिन", "audio": "vo_name_din"}]}, "signals": {"on_complete": ["matra_tap_first_try"]}}, {"id": "G4", "phase": "guided", "eis": "enactive", "type": "TRAIN_SORT", "prompt_hi": "हर शब्द को उसकी सही मात्रा वाली बोगी में डालिए।", "audio": {"prompt": "vo_ts1_prompt", "hint1": "vo_ts1_hint1", "hint2": "vo_ts1_hint2", "try_again": "vo_ts1_hint1"}, "data": {"signal": "matra_sort_correct", "bins": [{"key": "aa", "label": "“आ” (ा)"}, {"key": "i", "label": "“इ” (ि)"}, {"key": "ee", "label": "“ई” (ी)"}], "items": [{"key": "aa", "word_hi": "हाथ", "img": "obj_haath", "emoji": "✋", "audio": "vo_name_haath", "correct_audio": "vo_ts1_ok_haath"}, {"key": "i", "word_hi": "पिन", "img": "obj_pin", "emoji": "📌", "audio": "vo_name_pin", "correct_audio": "vo_ts1_ok_pin"}, {"key": "ee", "word_hi": "नीम", "img": "obj_neem", "emoji": "🌳", "audio": "vo_name_neem", "correct_audio": "vo_ts1_ok_neem"}]}, "signals": {"on_complete": ["matra_sort_correct"]}}, {"id": "P1", "phase": "practice", "eis": "enactive", "type": "TRAIN_SORT", "prompt_hi": "सही मात्रा को सही शब्द वाली बोगी में डालिए।", "audio": {"prompt": "vo_ts2_prompt", "hint1": "vo_ts2_hint1", "hint2": "vo_ts2_hint2", "try_again": "vo_ts2_hint1"}, "data": {"signal": "matra_sort_correct", "bins": [{"key": "aa", "label": "जाल"}, {"key": "i", "label": "सिर"}, {"key": "ee", "label": "कील"}], "items": [{"key": "aa", "glyph": "ा", "correct_audio": "vo_ts2_ok_jaal"}, {"key": "i", "glyph": "ि", "correct_audio": "vo_ts2_ok_sir"}, {"key": "ee", "glyph": "ी", "correct_audio": "vo_ts2_ok_keel"}]}, "signals": {"on_complete": ["matra_sort_correct"]}}, {"id": "P2", "phase": "practice", "eis": "enactive", "type": "MATRA_FILL", "prompt_hi": "सही मात्रा को सही जगह पर खींचकर डालो और शब्द पूरा करिए।", "audio": {"prompt": "vo_mf_prompt", "hint1": "vo_mf_hint1", "hint2": "vo_mf_hint2", "try_again": "vo_mf_hint1"}, "data": {"signal": "matra_fill_correct", "options": ["ा", "ि", "ी"], "reuse_options": true, "slots": [{"word": "जाल", "parts": ["ज", "ल"], "blank_at": 1, "matra": "ा", "img": "obj_jaal", "emoji": "🕸️", "audio": "vo_name_jaal", "correct_audio": "vo_mf_ok_jaal"}, {"word": "परी", "parts": ["पर"], "blank_at": 1, "matra": "ी", "img": "obj_pari", "emoji": "🧚", "audio": "vo_name_pari", "correct_audio": "vo_mf_ok_pari"}, {"word": "हिरण", "parts": ["ह", "रण"], "blank_at": 0, "matra": "ि", "img": "obj_hiran", "emoji": "🦌", "audio": "vo_name_hiran", "correct_audio": "vo_mf_ok_hiran"}]}, "signals": {"on_complete": ["matra_fill_correct"]}}, {"id": "P3", "phase": "practice", "eis": "enactive", "type": "TRAIN_SORT", "prompt_hi": "चित्र को सुनो और उसे सही मात्रा वाली बोगी में डालिए।", "audio": {"prompt": "vo_ts3_prompt", "hint1": "vo_ts3_hint1", "hint2": "vo_ts3_hint2", "try_again": "vo_ts3_hint1"}, "data": {"signal": "matra_sort_correct", "hide_labels": true, "multi": true, "bins": [{"key": "aa", "label": "“आ” (ा)"}, {"key": "i", "label": "“इ” (ि)"}, {"key": "ee", "label": "“ई” (ी)"}], "items": [{"key": "aa", "word_hi": "हाथ", "img": "obj_haath", "emoji": "✋", "audio": "vo_name_haath", "correct_audio": "vo_ts3_ok_haath"}, {"key": "aa", "word_hi": "नाक", "img": "obj_naak", "emoji": "👃", "audio": "vo_name_naak", "correct_audio": "vo_ts3_ok_naak"}, {"key": "i", "word_hi": "पिन", "img": "obj_pin", "emoji": "📌", "audio": "vo_name_pin", "correct_audio": "vo_ts3_ok_pin"}, {"key": "i", "word_hi": "हिरण", "img": "obj_hiran", "emoji": "🦌", "audio": "vo_name_hiran", "correct_audio": "vo_ts3_ok_hiran"}, {"key": "ee", "word_hi": "नीम", "img": "obj_neem", "emoji": "🌳", "audio": "vo_name_neem", "correct_audio": "vo_ts3_ok_neem"}, {"key": "ee", "word_hi": "कील", "img": "obj_keel", "emoji": "🔩", "audio": "vo_name_keel", "correct_audio": "vo_ts3_ok_keel"}]}, "signals": {"on_complete": ["matra_sort_correct"]}}, {"id": "P4", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT", "prompt_hi": "“आ” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "audio": {"prompt": "vo_oh_aa_intro", "result": "vo_oh_aa_done", "try_again": "vo_oh_aa_wrong", "hint1": "vo_oh_hint1", "hint2": "vo_oh_aa_hint2"}, "data": {"signal": "object_hunt_correct", "letter": "आ", "matra": "ा", "scene": "assets/UI/scene_hunt1.webp", "objects": [{"word_hi": "आम", "audio": "vo_name_aam", "emoji": "🥭", "ok_audio": "vo_oh_aa_ok_aam", "more_audio": "vo_oh_aa_more_aam", "correct": true, "x": 19.1, "y": 18.6, "w": 21.5, "h": 19.1}, {"word_hi": "माला", "audio": "vo_name_maala", "emoji": "📿", "ok_audio": "vo_oh_aa_ok_maala", "more_audio": "vo_oh_aa_more_maala", "correct": true, "x": 66.7, "y": 65.9, "w": 9.5, "h": 10.0}, {"word_hi": "गाजर", "audio": "vo_name_gaajar", "emoji": "🥕", "ok_audio": "vo_oh_aa_ok_gaajar", "more_audio": "vo_oh_aa_more_gaajar", "correct": true, "x": 45.8, "y": 82.4, "w": 20.9, "h": 15.9}, {"word_hi": "ताला", "audio": "vo_name_taala", "emoji": "🔒", "ok_audio": "vo_oh_aa_ok_taala", "more_audio": "vo_oh_aa_more_taala", "correct": true, "x": 94.0, "y": 51.0, "w": 5.0, "h": 11.0}, {"word_hi": "पतंग", "audio": "vo_name_patang", "emoji": "🪁", "wrong_audio": "vo_oh_w_patang_aa", "x": 36.9, "y": 28.7, "w": 10.5, "h": 15.9}, {"word_hi": "सूरज", "audio": "vo_name_sooraj", "emoji": "☀️", "wrong_audio": "vo_oh_w_sooraj_aa", "x": 72.5, "y": 10.8, "w": 9.9, "h": 19.7}]}, "signals": {"on_complete": ["object_hunt_correct"]}}, {"id": "P5", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT", "prompt_hi": "छोटी “इ” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "audio": {"prompt": "vo_oh_i_intro", "result": "vo_oh_i_done", "try_again": "vo_oh_i_wrong", "hint1": "vo_oh_hint1", "hint2": "vo_oh_i_hint2"}, "data": {"signal": "object_hunt_correct", "letter": "इ", "matra": "ि", "scene": "assets/UI/scene_hunt2.webp", "objects": [{"word_hi": "चिड़िया", "audio": "vo_name_chidiya", "emoji": "🐦", "ok_audio": "vo_oh_i_ok_chidiya", "more_audio": "vo_oh_i_more_chidiya", "correct": true, "x": 44.7, "y": 22.3, "w": 8.1, "h": 13.2}, {"word_hi": "हिरण", "audio": "vo_name_hiran", "emoji": "🦌", "ok_audio": "vo_oh_i_ok_hiran", "more_audio": "vo_oh_i_more_hiran", "correct": true, "x": 69.7, "y": 51.8, "w": 10.2, "h": 26.6}, {"word_hi": "किताब", "audio": "vo_name_kitaab", "emoji": "📕", "ok_audio": "vo_oh_i_ok_kitaab", "more_audio": "vo_oh_i_more_kitaab", "correct": true, "x": 21.2, "y": 65.8, "w": 12.0, "h": 14.0}, {"word_hi": "पिन", "audio": "vo_name_pin", "emoji": "📌", "ok_audio": "vo_oh_i_ok_pin", "more_audio": "vo_oh_i_more_pin", "correct": true, "x": 50.3, "y": 84.3, "w": 6.0, "h": 9.0}, {"word_hi": "कुत्ता", "audio": "vo_name_kutta", "emoji": "🐶", "wrong_audio": "vo_oh_w_kutta", "x": 46.1, "y": 63.0, "w": 11.0, "h": 15.9}, {"word_hi": "गेंद", "audio": "vo_name_gend", "emoji": "⚽", "wrong_audio": "vo_oh_w_gend_i", "x": 37.1, "y": 66.4, "w": 6.2, "h": 10.0}, {"word_hi": "सूरज", "audio": "vo_name_sooraj", "emoji": "☀️", "wrong_audio": "vo_oh_w_sooraj_i", "x": 77.6, "y": 10.9, "w": 11.1, "h": 18.1}]}, "signals": {"on_complete": ["object_hunt_correct"]}}, {"id": "P6", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT", "prompt_hi": "बड़ी “ई” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "audio": {"prompt": "vo_oh_ee_intro", "result": "vo_oh_ee_done", "try_again": "vo_oh_ee_wrong", "hint1": "vo_oh_hint1", "hint2": "vo_oh_ee_hint2"}, "data": {"signal": "object_hunt_correct", "letter": "ई", "matra": "ी", "scene": "assets/UI/scene_hunt3.webp", "objects": [{"word_hi": "लड़की", "audio": "vo_name_ladki", "emoji": "👧", "ok_audio": "vo_oh_ee_ok_ladki", "more_audio": "vo_oh_ee_more_ladki", "correct": true, "x": 53.8, "y": 30.0, "w": 12.0, "h": 16.5}, {"word_hi": "पानी", "audio": "vo_name_paani", "emoji": "💧", "ok_audio": "vo_oh_ee_ok_paani", "more_audio": "vo_oh_ee_more_paani", "correct": true, "x": 51.1, "y": 44.0, "w": 5.5, "h": 11.0}, {"word_hi": "घड़ी", "audio": "vo_name_ghadi", "emoji": "🕐", "ok_audio": "vo_oh_ee_ok_ghadi", "more_audio": "vo_oh_ee_more_ghadi", "correct": true, "x": 80.9, "y": 65.4, "w": 7.2, "h": 18.5}, {"word_hi": "मछली", "audio": "vo_name_machhli", "emoji": "🐟", "ok_audio": "vo_oh_ee_ok_machhli", "more_audio": "vo_oh_ee_more_machhli", "correct": true, "x": 8.2, "y": 73.3, "w": 10.2, "h": 8.9}, {"word_hi": "कुत्ता", "audio": "vo_name_kutta", "emoji": "🐶", "wrong_audio": "vo_oh_w_kutta", "x": 36.2, "y": 61.4, "w": 10.4, "h": 19.1}, {"word_hi": "किताब", "audio": "vo_name_kitaab", "emoji": "📕", "wrong_audio": "vo_oh_w_kitaab_ee", "x": 65.4, "y": 70.2, "w": 12.7, "h": 8.3}]}, "signals": {"on_complete": ["object_hunt_correct"]}}, {"id": "G7", "phase": "practice", "eis": "enactive", "type": "MATRA_TOKRI", "prompt_hi": "", "audio": {"prompt": "vo_mt_intro"}, "data": {"clips": [{"audio": "vo_mt_round_aa"}, {"audio": "vo_mt_round_i"}, {"audio": "vo_mt_round_ee"}, {"audio": "vo_mt_cheer_i"}, {"audio": "vo_mt_cheer_ee"}, {"audio": "vo_mt_done"}, {"audio": "vo_mt_w_naav"}, {"audio": "vo_mt_w_haath"}, {"audio": "vo_mt_w_baal"}, {"audio": "vo_mt_w_kaam"}, {"audio": "vo_mt_w_daal"}, {"audio": "vo_mt_w_din"}, {"audio": "vo_mt_w_til"}, {"audio": "vo_mt_w_sir"}, {"audio": "vo_mt_w_dil"}, {"audio": "vo_mt_w_hiran"}, {"audio": "vo_mt_w_nadi"}, {"audio": "vo_mt_w_teer"}, {"audio": "vo_mt_w_chini"}, {"audio": "vo_mt_w_machhli"}, {"audio": "vo_mt_w_neem"}]}}, {"id": "CEL", "phase": "practice", "eis": "enactive", "type": "CELEBRATION", "prompt_hi": "शाबाश! आज हमने सीखा — आ, इ और ई की मात्रा पहचानना, और मात्रा वाले शब्द पढ़ना।", "audio": {"prompt": "vo_cel_prompt", "sfx": "sfx_celebrate"}, "data": {}}], "assets": {"audio": {"sfx_celebrate": "assets/Audio/SFX/sfx_celebrate.ogg", "vo_cel_prompt": "assets/Audio/VO/vo_cel_prompt.ogg", "vo_ex_aa_intro": "assets/Audio/VO/vo_ex_aa_intro.ogg", "vo_ex_din": "assets/Audio/VO/vo_ex_din.ogg", "vo_ex_ee_intro": "assets/Audio/VO/vo_ex_ee_intro.ogg", "vo_ex_gati": "assets/Audio/VO/vo_ex_gati.ogg", "vo_ex_i_intro": "assets/Audio/VO/vo_ex_i_intro.ogg", "vo_ex_ladki": "assets/Audio/VO/vo_ex_ladki.ogg", "vo_ex_matka": "assets/Audio/VO/vo_ex_matka.ogg", "vo_ex_naak": "assets/Audio/VO/vo_ex_naak.ogg", "vo_ex_teer": "assets/Audio/VO/vo_ex_teer.ogg", "vo_landing": "assets/Audio/VO/vo_landing.ogg", "vo_matra_aa2": "assets/Audio/VO/vo_matra_aa2.ogg", "vo_matra_ee": "assets/Audio/VO/vo_matra_ee.ogg", "vo_matra_i": "assets/Audio/VO/vo_matra_i.ogg", "vo_mb_bil_base": "assets/Audio/VO/vo_mb_bil_base.ogg", "vo_mb_bil_explain": "assets/Audio/VO/vo_mb_bil_explain.ogg", "vo_mb_bil_intro": "assets/Audio/VO/vo_mb_bil_intro.ogg", "vo_mb_bil_onset": "assets/Audio/VO/vo_mb_bil_onset.ogg", "vo_mb_bil_sounds": "assets/Audio/VO/vo_mb_bil_sounds.ogg", "vo_mb_jal_base": "assets/Audio/VO/vo_mb_jal_base.ogg", "vo_mb_jal_explain": "assets/Audio/VO/vo_mb_jal_explain.ogg", "vo_mb_jal_intro": "assets/Audio/VO/vo_mb_jal_intro.ogg", "vo_mb_jal_onset": "assets/Audio/VO/vo_mb_jal_onset.ogg", "vo_mb_jal_sounds": "assets/Audio/VO/vo_mb_jal_sounds.ogg", "vo_mb_keel_base": "assets/Audio/VO/vo_mb_keel_base.ogg", "vo_mb_keel_explain": "assets/Audio/VO/vo_mb_keel_explain.ogg", "vo_mb_keel_intro": "assets/Audio/VO/vo_mb_keel_intro.ogg", "vo_mb_keel_onset": "assets/Audio/VO/vo_mb_keel_onset.ogg", "vo_mb_keel_sounds": "assets/Audio/VO/vo_mb_keel_sounds.ogg", "vo_mf_hint1": "assets/Audio/VO/vo_mf_hint1.ogg", "vo_mf_hint2": "assets/Audio/VO/vo_mf_hint2.ogg", "vo_mf_ok_hiran": "assets/Audio/VO/vo_mf_ok_hiran.ogg", "vo_mf_ok_jaal": "assets/Audio/VO/vo_mf_ok_jaal.ogg", "vo_mf_ok_pari": "assets/Audio/VO/vo_mf_ok_pari.ogg", "vo_mf_prompt": "assets/Audio/VO/vo_mf_prompt.ogg", "vo_mt_cheer_ee": "assets/Audio/VO/vo_mt_cheer_ee.ogg", "vo_mt_cheer_i": "assets/Audio/VO/vo_mt_cheer_i.ogg", "vo_mt_done": "assets/Audio/VO/vo_mt_done.ogg", "vo_mt_intro": "assets/Audio/VO/vo_mt_intro.ogg", "vo_mt_round_aa": "assets/Audio/VO/vo_mt_round_aa.ogg", "vo_mt_round_ee": "assets/Audio/VO/vo_mt_round_ee.ogg", "vo_mt_round_i": "assets/Audio/VO/vo_mt_round_i.ogg", "vo_mt_w_baal": "assets/Audio/VO/vo_mt_w_baal.ogg", "vo_mt_w_chini": "assets/Audio/VO/vo_mt_w_chini.ogg", "vo_mt_w_daal": "assets/Audio/VO/vo_mt_w_daal.ogg", "vo_mt_w_dil": "assets/Audio/VO/vo_mt_w_dil.ogg", "vo_mt_w_din": "assets/Audio/VO/vo_mt_w_din.ogg", "vo_mt_w_haath": "assets/Audio/VO/vo_mt_w_haath.ogg", "vo_mt_w_hiran": "assets/Audio/VO/vo_mt_w_hiran.ogg", "vo_mt_w_kaam": "assets/Audio/VO/vo_mt_w_kaam.ogg", "vo_mt_w_machhli": "assets/Audio/VO/vo_mt_w_machhli.ogg", "vo_mt_w_naav": "assets/Audio/VO/vo_mt_w_naav.ogg", "vo_mt_w_nadi": "assets/Audio/VO/vo_mt_w_nadi.ogg", "vo_mt_w_neem": "assets/Audio/VO/vo_mt_w_neem.ogg", "vo_mt_w_sir": "assets/Audio/VO/vo_mt_w_sir.ogg", "vo_mt_w_teer": "assets/Audio/VO/vo_mt_w_teer.ogg", "vo_mt_w_til": "assets/Audio/VO/vo_mt_w_til.ogg", "vo_name_aam": "assets/Audio/VO/vo_name_aam.ogg", "vo_name_bil": "assets/Audio/VO/vo_name_bil.ogg", "vo_name_chidiya": "assets/Audio/VO/vo_name_chidiya.ogg", "vo_name_din": "assets/Audio/VO/vo_name_din.ogg", "vo_name_gaajar": "assets/Audio/VO/vo_name_gaajar.ogg", "vo_name_gend": "assets/Audio/VO/vo_name_gend.ogg", "vo_name_ghadi": "assets/Audio/VO/vo_name_ghadi.ogg", "vo_name_haath": "assets/Audio/VO/vo_name_haath.ogg", "vo_name_hiran": "assets/Audio/VO/vo_name_hiran.ogg", "vo_name_jaal": "assets/Audio/VO/vo_name_jaal.ogg", "vo_name_keel": "assets/Audio/VO/vo_name_keel.ogg", "vo_name_kitaab": "assets/Audio/VO/vo_name_kitaab.ogg", "vo_name_kutta": "assets/Audio/VO/vo_name_kutta.ogg", "vo_name_ladki": "assets/Audio/VO/vo_name_ladki.ogg", "vo_name_maala": "assets/Audio/VO/vo_name_maala.ogg", "vo_name_machhli": "assets/Audio/VO/vo_name_machhli.ogg", "vo_name_naak": "assets/Audio/VO/vo_name_naak.ogg", "vo_name_neem": "assets/Audio/VO/vo_name_neem.ogg", "vo_name_paani": "assets/Audio/VO/vo_name_paani.ogg", "vo_name_pari": "assets/Audio/VO/vo_name_pari.ogg", "vo_name_patang": "assets/Audio/VO/vo_name_patang.ogg", "vo_name_pin": "assets/Audio/VO/vo_name_pin.ogg", "vo_name_sooraj": "assets/Audio/VO/vo_name_sooraj.ogg", "vo_name_taala": "assets/Audio/VO/vo_name_taala.ogg", "vo_name_teer": "assets/Audio/VO/vo_name_teer.ogg", "vo_oh_aa_done": "assets/Audio/VO/vo_oh_aa_done.ogg", "vo_oh_aa_hint2": "assets/Audio/VO/vo_oh_aa_hint2.ogg", "vo_oh_aa_intro": "assets/Audio/VO/vo_oh_aa_intro.ogg", "vo_oh_aa_wrong": "assets/Audio/VO/vo_oh_aa_wrong.ogg", "vo_oh_ee_done": "assets/Audio/VO/vo_oh_ee_done.ogg", "vo_oh_ee_hint2": "assets/Audio/VO/vo_oh_ee_hint2.ogg", "vo_oh_ee_intro": "assets/Audio/VO/vo_oh_ee_intro.ogg", "vo_oh_ee_wrong": "assets/Audio/VO/vo_oh_ee_wrong.ogg", "vo_oh_hint1": "assets/Audio/VO/vo_oh_hint1.ogg", "vo_oh_i_done": "assets/Audio/VO/vo_oh_i_done.ogg", "vo_oh_i_hint2": "assets/Audio/VO/vo_oh_i_hint2.ogg", "vo_oh_i_intro": "assets/Audio/VO/vo_oh_i_intro.ogg", "vo_oh_i_wrong": "assets/Audio/VO/vo_oh_i_wrong.ogg", "vo_pt_guided": "assets/Audio/VO/vo_pt_guided.ogg", "vo_pt_practice": "assets/Audio/VO/vo_pt_practice.ogg", "vo_pt_tutorial": "assets/Audio/VO/vo_pt_tutorial.ogg", "vo_rev_tt_aa": "assets/Audio/VO/vo_rev_tt_aa.ogg", "vo_rev_tt_ee": "assets/Audio/VO/vo_rev_tt_ee.ogg", "vo_rev_tt_i": "assets/Audio/VO/vo_rev_tt_i.ogg", "vo_s1_prompt": "assets/Audio/VO/vo_s1_prompt.ogg", "vo_ts1_hint1": "assets/Audio/VO/vo_ts1_hint1.ogg", "vo_ts1_hint2": "assets/Audio/VO/vo_ts1_hint2.ogg", "vo_ts1_ok_haath": "assets/Audio/VO/vo_ts1_ok_haath.ogg", "vo_ts1_ok_neem": "assets/Audio/VO/vo_ts1_ok_neem.ogg", "vo_ts1_ok_pin": "assets/Audio/VO/vo_ts1_ok_pin.ogg", "vo_ts1_prompt": "assets/Audio/VO/vo_ts1_prompt.ogg", "vo_ts2_hint1": "assets/Audio/VO/vo_ts2_hint1.ogg", "vo_ts2_hint2": "assets/Audio/VO/vo_ts2_hint2.ogg", "vo_ts2_ok_jaal": "assets/Audio/VO/vo_ts2_ok_jaal.ogg", "vo_ts2_ok_keel": "assets/Audio/VO/vo_ts2_ok_keel.ogg", "vo_ts2_ok_sir": "assets/Audio/VO/vo_ts2_ok_sir.ogg", "vo_ts2_prompt": "assets/Audio/VO/vo_ts2_prompt.ogg", "vo_ts3_hint1": "assets/Audio/VO/vo_ts3_hint1.ogg", "vo_ts3_hint2": "assets/Audio/VO/vo_ts3_hint2.ogg", "vo_ts3_ok_haath": "assets/Audio/VO/vo_ts3_ok_haath.ogg", "vo_ts3_ok_hiran": "assets/Audio/VO/vo_ts3_ok_hiran.ogg", "vo_ts3_ok_keel": "assets/Audio/VO/vo_ts3_ok_keel.ogg", "vo_ts3_ok_naak": "assets/Audio/VO/vo_ts3_ok_naak.ogg", "vo_ts3_ok_neem": "assets/Audio/VO/vo_ts3_ok_neem.ogg", "vo_ts3_ok_pin": "assets/Audio/VO/vo_ts3_ok_pin.ogg", "vo_ts3_prompt": "assets/Audio/VO/vo_ts3_prompt.ogg", "vo_tt_aa_correct": "assets/Audio/VO/vo_tt_aa_correct.ogg", "vo_tt_aa_hint1": "assets/Audio/VO/vo_tt_aa_hint1.ogg", "vo_tt_aa_hint2": "assets/Audio/VO/vo_tt_aa_hint2.ogg", "vo_tt_aa_prompt": "assets/Audio/VO/vo_tt_aa_prompt.ogg", "vo_tt_ee_correct": "assets/Audio/VO/vo_tt_ee_correct.ogg", "vo_tt_ee_hint1": "assets/Audio/VO/vo_tt_ee_hint1.ogg", "vo_tt_ee_hint2": "assets/Audio/VO/vo_tt_ee_hint2.ogg", "vo_tt_ee_prompt": "assets/Audio/VO/vo_tt_ee_prompt.ogg", "vo_tt_i_correct": "assets/Audio/VO/vo_tt_i_correct.ogg", "vo_tt_i_hint1": "assets/Audio/VO/vo_tt_i_hint1.ogg", "vo_tt_i_hint2": "assets/Audio/VO/vo_tt_i_hint2.ogg", "vo_tt_i_prompt": "assets/Audio/VO/vo_tt_i_prompt.ogg"}, "audio_text": {"sfx_celebrate": "celebration sound", "vo_cel_prompt": "शाबाश! आज हमने सीखा — आ, इ और ई की मात्रा पहचानना, और मात्रा वाले शब्द पढ़ना।", "vo_ex_aa_intro": "आइए, आ की मात्रा वाले कुछ शब्द देखें।", "vo_ex_din": "दिन, बोलकर देखिए। इसमें द पर छोटी इ की मात्रा लगी है।", "vo_ex_ee_intro": "आइए, बड़ी ई की मात्रा वाले कुछ शब्द देखें।", "vo_ex_gati": "गति, बोलकर देखिए। इसमें त पर छोटी इ की मात्रा लगी है।", "vo_ex_i_intro": "आइए, छोटी इ की मात्रा वाले कुछ शब्द देखें।", "vo_ex_ladki": "लड़की, बोलकर देखिए। इसमें क पर बड़ी ई की मात्रा लगी है।", "vo_ex_matka": "मटका, बोलकर देखिए। इसमें क पर आ की मात्रा लगी है।", "vo_ex_naak": "नाक, बोलकर देखिए। इसमें न पर आ की मात्रा लगी है।", "vo_ex_teer": "तीर, बोलकर देखिए। इसमें त पर बड़ी ई की मात्रा लगी है।", "vo_landing": "हेलो दोस्त! मैं हूँ स्विफ्टी। आज हम मात्राओं के बारे में जानेंगे।", "vo_matra_aa2": "आ की मात्रा", "vo_matra_ee": "बड़ी ई की मात्रा", "vo_matra_i": "छोटी इ की मात्रा", "vo_mb_bil_base": "यह शब्द बल है।", "vo_mb_bil_explain": "अब बल में छोटी इ की मात्रा लगाने पर, बिल बनता है।", "vo_mb_bil_intro": "आइए, देखें कि छोटी इ की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।", "vo_mb_bil_onset": "ब में छोटी इ की मात्रा लगाने पर, बि बनता है।", "vo_mb_bil_sounds": "ब, बि, बिल।", "vo_mb_jal_base": "यह शब्द जल है।", "vo_mb_jal_explain": "अब जल में आ की मात्रा लगाने पर, जाल बनता है।", "vo_mb_jal_intro": "आइए, देखें कि आ की मात्रा लगने से शब्द की आवाज़ कैसे बदलती है।", "vo_mb_jal_onset": "ज में आ की मात्रा लगाने पर, जा बनता है।", "vo_mb_jal_sounds": "ज, जा, जाल।", "vo_mb_keel_base": "यह शब्द कल है।", "vo_mb_keel_explain": "अब कल में बड़ी ई की मात्रा लगाने पर, कील बनता है।", "vo_mb_keel_intro": "आइए, देखें कि बड़ी ई की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।", "vo_mb_keel_onset": "क में बड़ी ई की मात्रा लगाने पर, की बनता है।", "vo_mb_keel_sounds": "क, की, कील।", "vo_mf_hint1": "फिर से सोचो।", "vo_mf_hint2": "ध्यान से देखो। कौन-सी मात्रा लगेगी?", "vo_mf_ok_hiran": "शाबाश! हिरण बन गया।", "vo_mf_ok_jaal": "शाबाश! जाल बन गया।", "vo_mf_ok_pari": "शाबाश! परी बन गया।", "vo_mf_prompt": "सही मात्रा को सही जगह पर खींचकर डालो और शब्द पूरा करिए।", "vo_mt_cheer_ee": "बहुत बढ़िया! अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालो।", "vo_mt_cheer_i": "बहुत बढ़िया! अब इ की मात्रा वाले शब्दों को टोकरी में डालो।", "vo_mt_done": "शाबाश! तुमने सभी मात्राओं के सही शब्दों को टोकरी में रख लिया है।", "vo_mt_intro": "टोकरी को उँगली से इधर-उधर ले जाओ।", "vo_mt_round_aa": "आ की मात्रा वाले शब्दों को टोकरी में डालो।", "vo_mt_round_ee": "अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालो।", "vo_mt_round_i": "अब इ की मात्रा वाले शब्दों को टोकरी में डालो।", "vo_mt_w_baal": "बाल", "vo_mt_w_chini": "चीनी", "vo_mt_w_daal": "दाल", "vo_mt_w_dil": "दिल", "vo_mt_w_din": "दिन", "vo_mt_w_haath": "हाथ", "vo_mt_w_hiran": "हिरन", "vo_mt_w_kaam": "काम", "vo_mt_w_machhli": "मछली", "vo_mt_w_naav": "नाव", "vo_mt_w_nadi": "नदी", "vo_mt_w_neem": "नीम", "vo_mt_w_sir": "सिर", "vo_mt_w_teer": "तीर", "vo_mt_w_til": "तिल", "vo_name_aam": "यह आम है।", "vo_name_bil": "बिल", "vo_name_chidiya": "यह चिड़िया है।", "vo_name_din": "दिन", "vo_name_gaajar": "गाजर।", "vo_name_gend": "गेंद।", "vo_name_ghadi": "यह घड़ी है।", "vo_name_haath": "हाथ", "vo_name_hiran": "हिरण", "vo_name_jaal": "जाल", "vo_name_keel": "कील", "vo_name_kitaab": "किताब।", "vo_name_kutta": "कुत्ता।", "vo_name_ladki": "लड़की।", "vo_name_maala": "माला।", "vo_name_machhli": "मछली।", "vo_name_naak": "नाक", "vo_name_neem": "नीम", "vo_name_paani": "पानी", "vo_name_pari": "परी", "vo_name_patang": "पतंग।", "vo_name_pin": "पिन", "vo_name_sooraj": "यह सूरज है।", "vo_name_taala": "ताला।", "vo_name_teer": "तीर", "vo_oh_aa_done": "शाबाश! आपने आ की मात्रा वाले सभी चित्र खोज लिए।", "vo_oh_aa_hint2": "ध्यान से देखिए और आ की मात्रा वाले चित्र पर टैप कीजिए।", "vo_oh_aa_intro": "आ की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "vo_oh_aa_wrong": "फिर से सोचिए। आ की मात्रा वाला चित्र खोजिए।", "vo_oh_ee_done": "शाबाश! आपने बड़ी ई की मात्रा वाले सभी चित्र खोज लिए।", "vo_oh_ee_hint2": "ध्यान से देखिए और बड़ी ई की मात्रा वाले चित्र पर टैप कीजिए।", "vo_oh_ee_intro": "बड़ी ई की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "vo_oh_ee_wrong": "फिर से सोचिए। बड़ी ई की मात्रा वाला चित्र खोजिए।", "vo_oh_hint1": "चित्र का नाम ध्यान से सुनिए और मात्रा पहचानिए।", "vo_oh_i_done": "शाबाश! आपने छोटी इ की मात्रा वाले सभी चित्र खोज लिए।", "vo_oh_i_hint2": "ध्यान से देखिए और छोटी इ की मात्रा वाले चित्र पर टैप कीजिए।", "vo_oh_i_intro": "छोटी इ की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "vo_oh_i_wrong": "फिर से सोचिए। छोटी इ की मात्रा वाला चित्र खोजिए।", "vo_pt_guided": "बहुत बढ़िया! अब हम साथ मिलकर शुरू करते हैं। चलिए, साथ में करें!", "vo_pt_practice": "वाह! अब आपकी बारी।", "vo_pt_tutorial": "ध्यान से देखिए और मेरे साथ जानिए। चलिए, शुरू करें!", "vo_rev_tt_aa": "सही डिब्बा यह है। हाथ शब्द में आ की मात्रा है।", "vo_rev_tt_ee": "सही डिब्बा यह है। पानी शब्द में बड़ी ई की मात्रा है।", "vo_rev_tt_i": "सही डिब्बा यह है। पिन शब्द में छोटी इ की मात्रा है।", "vo_s1_prompt": "आज हम आ की मात्रा, छोटी इ की मात्रा और बड़ी ई की मात्रा वाले शब्द पढ़ेंगे।", "vo_ts1_hint1": "फिर से सुनो और सही मात्रा पहचानिए।", "vo_ts1_hint2": "ध्यान से देखो, इस शब्द में कौन-सी मात्रा है?", "vo_ts1_ok_haath": "शाबाश! हाथ शब्द में आ की मात्रा है।", "vo_ts1_ok_neem": "शाबाश! नीम शब्द में बड़ी ई की मात्रा है।", "vo_ts1_ok_pin": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।", "vo_ts1_prompt": "हर शब्द को उसकी सही मात्रा वाली बोगी में डालिए।", "vo_ts2_hint1": "फिर से सोचो। इस शब्द में कौन-सी मात्रा लगी है?", "vo_ts2_hint2": "ध्यान से देखो और शब्द को फिर से पढ़ो।", "vo_ts2_ok_jaal": "शाबाश! जाल शब्द में आ की मात्रा लगी है।", "vo_ts2_ok_keel": "शाबाश! कील शब्द में बड़ी ई की मात्रा लगी है।", "vo_ts2_ok_sir": "शाबाश! सिर शब्द में छोटी इ की मात्रा लगी है।", "vo_ts2_prompt": "सही मात्रा को सही शब्द वाली बोगी में डालिए।", "vo_ts3_hint1": "फिर से सुनो और सही मात्रा पहचानो।", "vo_ts3_hint2": "शब्द को ध्यान से सुनो।", "vo_ts3_ok_haath": "शाबाश! हाथ में आ की मात्रा है।", "vo_ts3_ok_hiran": "शाबाश! हिरण में छोटी इ की मात्रा है।", "vo_ts3_ok_keel": "शाबाश! कील में बड़ी ई की मात्रा है।", "vo_ts3_ok_naak": "शाबाश! नाक में आ की मात्रा है।", "vo_ts3_ok_neem": "शाबाश! नीम में बड़ी ई की मात्रा है।", "vo_ts3_ok_pin": "शाबाश! पिन में छोटी इ की मात्रा है।", "vo_ts3_prompt": "चित्र को सुनो और उसे सही मात्रा वाली बोगी में डालिए।", "vo_tt_aa_correct": "शाबाश! हाथ शब्द में आ की मात्रा है।", "vo_tt_aa_hint1": "फिर से सोचो। आ की मात्रा वाला शब्द कौन-सा है?", "vo_tt_aa_hint2": "ध्यान से देखो और सही डिब्बे पर टैप कीजिए।", "vo_tt_aa_prompt": "जिस डिब्बे में आ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।", "vo_tt_ee_correct": "शाबाश! पानी शब्द में बड़ी ई की मात्रा है।", "vo_tt_ee_hint1": "फिर से सोचो। बड़ी ई की मात्रा वाला शब्द कौन-सा है?", "vo_tt_ee_hint2": "ध्यान से देखो और सही डिब्बे पर टैप करो।", "vo_tt_ee_prompt": "जिस डिब्बे में बड़ी ई की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।", "vo_tt_i_correct": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।", "vo_tt_i_hint1": "फिर से सोचो। छोटी इ की मात्रा वाला शब्द कौन-सा है?", "vo_tt_i_hint2": "ध्यान से देखो और सही डिब्बे पर टैप करो।", "vo_tt_i_prompt": "जिस डिब्बे में छोटी इ की मात्रा वाला शब्द है, उस डिब्बे पर टैप कीजिए।"}, "image": {"obj_bal": "assets/Images/obj_bal.png", "obj_bil": "assets/Images/obj_bil.png", "obj_din": "assets/Images/obj_din.png", "obj_gati": "assets/Images/obj_gati.png", "obj_haath": "assets/Images/obj_haath.png", "obj_hiran": "assets/Images/obj_hiran.png", "obj_jaal": "assets/Images/obj_jaal.png", "obj_jal": "assets/Images/obj_jal.png", "obj_kal": "assets/Images/obj_kal.png", "obj_keel": "assets/Images/obj_keel.png", "obj_ladki": "assets/Images/obj_ladki.png", "obj_matka": "assets/Images/obj_matka.png", "obj_naak": "assets/Images/obj_naak.png", "obj_neem": "assets/Images/obj_neem.png", "obj_pari": "assets/Images/obj_pari.png", "obj_pin": "assets/Images/obj_pin.png", "obj_teer": "assets/Images/obj_teer.png"}, "audio_ext": "ogg", "img_ext": "png"}}
+{"version": "0.2", "skill_code": "HI02H11_L02_S01", "lo_code": "HI02H11_L02", "grade": "02", "attribute": "H11", "skill_type": "CORE", "part_label": "", "medium": "hi", "title": {"hi": "मात्राओं की रेल", "en": "The matra train"}, "subtitle_hi": "", "theme": "toybox", "skill_description_hi": "आ, इ, ई मात्रा वाले शब्द पढ़ता है। शब्दों में आने वाली मात्रा पहचानता है।", "landing_audio": "vo_landing", "landing_hero": {"kind": "matra_train", "matras": ["“आ” (ा)", "“इ” (ि)", "“ई” (ी)"]}, "phase_transition_audio": {"tutorial": "vo_pt_tutorial", "guided": "vo_pt_guided", "practice": "vo_pt_practice"}, "phase_transition_title": {"tutorial": "चलो, शुरू करें!", "guided": "साथ में करें।", "practice": "अब तुम्हारी बारी।"}, "phase_distribution": {"tutorial": 7, "guided": 4, "practice": 5}, "scaffold_rules": {"nudge_timeout_ms": {"guided": 6000, "practice": 8000}, "max_attempts": 3, "hand_on_attempt": 2, "silent_on_late_correct": true, "hand_in_practice": true}, "signals_expected": ["slide_entered", "slide_completed", "matra_tap_first_try", "matra_sort_correct", "matra_fill_correct", "poem_search_correct", "lesson_completed", "mastery_score"], "_emoji_fallback": {"obj_haath": "✋", "obj_naak": "👃", "obj_din": "☀️", "obj_pin": "📌", "obj_neem": "🌳", "obj_teer": "🏹", "obj_hiran": "🦌", "obj_jal": "💧", "obj_jaal": "🕸️", "obj_bal": "💪", "obj_bil": "🧾", "obj_kal": "📅", "obj_keel": "🔩", "obj_matka": "🏺", "obj_gati": "🏃", "obj_ladki": "👧", "obj_pari": "🧚"}, "slides": [{"id": "T1", "phase": "tutorial", "eis": "enactive", "type": "MATRA_PAIRS", "prompt_hi": "", "audio": {"prompt": "vo_s1_prompt"}, "data": {"auto": true, "pairs": [{"letter": "आ", "matra": "ा", "audio": "vo_matra_aa2"}, {"letter": "इ", "matra": "ि", "audio": "vo_matra_i"}, {"letter": "ई", "matra": "ी", "audio": "vo_matra_ee"}]}}, {"id": "T2", "phase": "tutorial", "eis": "iconic", "type": "MATRA_BUILD", "prompt_hi": "", "audio": {"prompt": "vo_mb_jal_intro", "base": "vo_mb_jal_base", "onset": "vo_mb_jal_onset", "result": "vo_name_jaal", "sounds": "vo_mb_jal_sounds", "explain": "vo_mb_jal_explain"}, "data": {"auto": true, "base_word": "जल", "base_img": "obj_jal", "base_emoji": "💧", "consonant": "ज", "matra": "ा", "syllable": "जा", "result_word": "जाल", "result_img": "obj_jaal", "result_emoji": "🕸️"}}, {"id": "T3", "phase": "tutorial", "eis": "iconic", "type": "MEET_EXAMPLES", "prompt_hi": "", "audio": {"prompt": "vo_ex_aa_intro"}, "data": {"auto": true, "examples": [{"word_hi": "नाक", "matra": "ा", "img": "obj_naak", "emoji": "👃", "audio": "vo_ex_naak"}, {"word_hi": "मटका", "matra": "ा", "img": "obj_matka", "emoji": "🏺", "audio": "vo_ex_matka"}]}}, {"id": "T4", "phase": "tutorial", "eis": "iconic", "type": "MATRA_BUILD", "prompt_hi": "", "audio": {"prompt": "vo_mb_bil_intro", "base": "vo_mb_bil_base", "onset": "vo_mb_bil_onset", "result": "vo_name_bil", "sounds": "vo_mb_bil_sounds", "explain": "vo_mb_bil_explain"}, "data": {"auto": true, "base_word": "बल", "base_img": "obj_bal", "base_emoji": "💪", "consonant": "ब", "matra": "ि", "syllable": "बि", "result_word": "बिल", "result_img": "obj_bil", "result_emoji": "🕳️"}}, {"id": "T5", "phase": "tutorial", "eis": "iconic", "type": "MEET_EXAMPLES", "prompt_hi": "", "audio": {"prompt": "vo_ex_i_intro"}, "data": {"auto": true, "examples": [{"word_hi": "दिन", "matra": "ि", "img": "obj_din", "emoji": "☀️", "audio": "vo_ex_din"}, {"word_hi": "गति", "matra": "ि", "img": "obj_gati", "emoji": "🏃", "audio": "vo_ex_gati"}]}}, {"id": "T6", "phase": "tutorial", "eis": "iconic", "type": "MATRA_BUILD", "prompt_hi": "", "audio": {"prompt": "vo_mb_keel_intro", "base": "vo_mb_keel_base", "onset": "vo_mb_keel_onset", "result": "vo_name_keel", "sounds": "vo_mb_keel_sounds", "explain": "vo_mb_keel_explain"}, "data": {"auto": true, "base_word": "कल", "base_img": "obj_kal", "base_emoji": "📅", "consonant": "क", "matra": "ी", "syllable": "की", "result_word": "कील", "result_img": "obj_keel", "result_emoji": "🔩", "result_img_scale": 0.9}}, {"id": "T7", "phase": "tutorial", "eis": "iconic", "type": "MEET_EXAMPLES", "prompt_hi": "", "audio": {"prompt": "vo_ex_ee_intro"}, "data": {"auto": true, "examples": [{"word_hi": "तीर", "matra": "ी", "img": "obj_teer", "emoji": "🏹", "audio": "vo_ex_teer"}, {"word_hi": "लड़की", "matra": "ी", "img": "obj_ladki", "emoji": "👧", "audio": "vo_ex_ladki"}]}}, {"id": "G1", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP", "prompt_hi": "“आ” की मात्रा वाले शब्द पर टैप कीजिए।", "audio": {"prompt": "vo_tt_aa_prompt", "correct": "vo_tt_aa_correct", "hint1": "vo_tt_aa_hint1", "hint2": "vo_tt_aa_hint2", "reveal": "vo_rev_tt_aa", "try_again": "vo_tt_aa_hint1"}, "data": {"signal": "matra_tap_first_try", "options": [{"word_hi": "हाथ", "audio": "vo_name_haath", "correct": true}, {"word_hi": "दिन", "audio": "vo_name_din"}, {"word_hi": "नीम", "audio": "vo_name_neem"}]}, "signals": {"on_complete": ["matra_tap_first_try"]}}, {"id": "G2", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP", "prompt_hi": "छोटी “इ” की मात्रा वाले शब्द पर टैप कीजिए।", "audio": {"prompt": "vo_tt_i_prompt", "correct": "vo_tt_i_correct", "hint1": "vo_tt_i_hint1", "hint2": "vo_tt_i_hint2", "reveal": "vo_rev_tt_i", "try_again": "vo_tt_i_hint1"}, "data": {"signal": "matra_tap_first_try", "options": [{"word_hi": "पिन", "audio": "vo_name_pin", "correct": true}, {"word_hi": "नाक", "audio": "vo_name_naak"}, {"word_hi": "तीर", "audio": "vo_name_teer"}]}, "signals": {"on_complete": ["matra_tap_first_try"]}}, {"id": "G3", "phase": "guided", "eis": "iconic", "type": "TRAIN_TAP", "prompt_hi": "बड़ी “ई” की मात्रा वाले शब्द पर टैप कीजिए।", "audio": {"prompt": "vo_tt_ee_prompt", "correct": "vo_tt_ee_correct", "hint1": "vo_tt_ee_hint1", "hint2": "vo_tt_ee_hint2", "reveal": "vo_rev_tt_ee", "try_again": "vo_tt_ee_hint1"}, "data": {"signal": "matra_tap_first_try", "options": [{"word_hi": "पानी", "audio": "vo_name_paani", "correct": true}, {"word_hi": "नाक", "audio": "vo_name_naak"}, {"word_hi": "दिन", "audio": "vo_name_din"}]}, "signals": {"on_complete": ["matra_tap_first_try"]}}, {"id": "G4", "phase": "guided", "eis": "enactive", "type": "TRAIN_SORT", "prompt_hi": "हर शब्द को उसकी सही मात्रा वाले डिब्बे में डालिए।", "audio": {"prompt": "vo_ts1_prompt", "hint1": "vo_ts1_hint1", "hint2": "vo_ts1_hint2", "try_again": "vo_ts1_hint1"}, "data": {"signal": "matra_sort_correct", "bins": [{"key": "aa", "label": "“आ” (ा)"}, {"key": "i", "label": "“इ” (ि)"}, {"key": "ee", "label": "“ई” (ी)"}], "items": [{"key": "aa", "word_hi": "हाथ", "img": "obj_haath", "emoji": "✋", "audio": "vo_name_haath", "correct_audio": "vo_ts1_ok_haath"}, {"key": "i", "word_hi": "पिन", "img": "obj_pin", "emoji": "📌", "audio": "vo_name_pin", "correct_audio": "vo_ts1_ok_pin"}, {"key": "ee", "word_hi": "नीम", "img": "obj_neem", "emoji": "🌳", "audio": "vo_name_neem", "correct_audio": "vo_ts1_ok_neem"}]}, "signals": {"on_complete": ["matra_sort_correct"]}}, {"id": "P1", "phase": "practice", "eis": "enactive", "type": "TRAIN_SORT", "prompt_hi": "सही मात्रा को सही शब्द वाले डिब्बे में डालिए।", "audio": {"prompt": "vo_ts2_prompt", "hint1": "vo_ts2_hint1", "hint2": "vo_ts2_hint2", "try_again": "vo_ts2_hint1"}, "data": {"signal": "matra_sort_correct", "bins": [{"key": "aa", "label": "जाल"}, {"key": "i", "label": "सिर"}, {"key": "ee", "label": "कील"}], "items": [{"key": "aa", "glyph": "ा", "correct_audio": "vo_ts2_ok_jaal"}, {"key": "i", "glyph": "ि", "correct_audio": "vo_ts2_ok_sir"}, {"key": "ee", "glyph": "ी", "correct_audio": "vo_ts2_ok_keel"}]}, "signals": {"on_complete": ["matra_sort_correct"]}}, {"id": "P2", "phase": "practice", "eis": "enactive", "type": "MATRA_FILL", "prompt_hi": "मात्रा को सही डिब्बे में डालकर शब्द पूरा कीजिए।", "audio": {"prompt": "vo_mf_prompt", "hint1": "vo_mf_hint1", "hint2": "vo_mf_hint2", "try_again": "vo_mf_hint1"}, "data": {"signal": "matra_fill_correct", "options": ["ा", "ि", "ी"], "reuse_options": true, "slots": [{"word": "जाल", "parts": ["ज", "ल"], "blank_at": 1, "matra": "ा", "img": "obj_jaal", "emoji": "🕸️", "audio": "vo_name_jaal", "correct_audio": "vo_mf_ok_jaal"}, {"word": "परी", "parts": ["पर"], "blank_at": 1, "matra": "ी", "img": "obj_pari", "emoji": "🧚", "audio": "vo_name_pari", "correct_audio": "vo_mf_ok_pari"}, {"word": "हिरण", "parts": ["ह", "रण"], "blank_at": 0, "matra": "ि", "img": "obj_hiran", "emoji": "🦌", "audio": "vo_name_hiran", "correct_audio": "vo_mf_ok_hiran"}]}, "signals": {"on_complete": ["matra_fill_correct"]}}, {"id": "P3", "phase": "practice", "eis": "enactive", "type": "TRAIN_SORT", "prompt_hi": "चित्र देखकर उसे सही मात्रा वाले डिब्बे में डालिए।", "audio": {"prompt": "vo_ts3_prompt", "hint1": "vo_ts3_hint1", "hint2": "vo_ts3_hint2", "try_again": "vo_ts3_hint1"}, "data": {"signal": "matra_sort_correct", "hide_labels": true, "multi": true, "bins": [{"key": "aa", "label": "“आ” (ा)"}, {"key": "i", "label": "“इ” (ि)"}, {"key": "ee", "label": "“ई” (ी)"}], "items": [{"key": "aa", "word_hi": "हाथ", "img": "obj_haath", "emoji": "✋", "audio": "vo_name_haath", "correct_audio": "vo_ts3_ok_haath"}, {"key": "aa", "word_hi": "नाक", "img": "obj_naak", "emoji": "👃", "audio": "vo_name_naak", "correct_audio": "vo_ts3_ok_naak"}, {"key": "i", "word_hi": "पिन", "img": "obj_pin", "emoji": "📌", "audio": "vo_name_pin", "correct_audio": "vo_ts3_ok_pin"}, {"key": "i", "word_hi": "हिरण", "img": "obj_hiran", "emoji": "🦌", "audio": "vo_name_hiran", "correct_audio": "vo_ts3_ok_hiran"}, {"key": "ee", "word_hi": "नीम", "img": "obj_neem", "emoji": "🌳", "audio": "vo_name_neem", "correct_audio": "vo_ts3_ok_neem"}, {"key": "ee", "word_hi": "कील", "img": "obj_keel", "emoji": "🔩", "audio": "vo_name_keel", "correct_audio": "vo_ts3_ok_keel"}]}, "signals": {"on_complete": ["matra_sort_correct"]}}, {"id": "P4", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT", "prompt_hi": "“आ” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "audio": {"prompt": "vo_oh_aa_intro", "result": "vo_oh_aa_done", "try_again": "vo_oh_aa_wrong", "hint1": "vo_oh_hint1", "hint2": "vo_oh_aa_hint2"}, "data": {"signal": "object_hunt_correct", "letter": "आ", "matra": "ा", "scene": "assets/UI/scene_hunt1.webp", "objects": [{"word_hi": "आम", "audio": "vo_name_aam", "emoji": "🥭", "ok_audio": "vo_oh_aa_ok_aam", "more_audio": "vo_oh_aa_more_aam", "correct": true, "x": 19.1, "y": 18.6, "w": 21.5, "h": 19.1}, {"word_hi": "माला", "audio": "vo_name_maala", "emoji": "📿", "ok_audio": "vo_oh_aa_ok_maala", "more_audio": "vo_oh_aa_more_maala", "correct": true, "x": 66.7, "y": 65.9, "w": 9.5, "h": 10.0}, {"word_hi": "गाजर", "audio": "vo_name_gaajar", "emoji": "🥕", "ok_audio": "vo_oh_aa_ok_gaajar", "more_audio": "vo_oh_aa_more_gaajar", "correct": true, "x": 45.8, "y": 82.4, "w": 20.9, "h": 15.9}, {"word_hi": "ताला", "audio": "vo_name_taala", "emoji": "🔒", "ok_audio": "vo_oh_aa_ok_taala", "more_audio": "vo_oh_aa_more_taala", "correct": true, "x": 94.0, "y": 51.0, "w": 5.0, "h": 11.0}, {"word_hi": "पतंग", "audio": "vo_name_patang", "emoji": "🪁", "wrong_audio": "vo_oh_w_patang_aa", "x": 36.9, "y": 28.7, "w": 10.5, "h": 15.9}, {"word_hi": "सूरज", "audio": "vo_name_sooraj", "emoji": "☀️", "wrong_audio": "vo_oh_w_sooraj_aa", "x": 72.5, "y": 10.8, "w": 9.9, "h": 19.7}]}, "signals": {"on_complete": ["object_hunt_correct"]}}, {"id": "P5", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT", "prompt_hi": "छोटी “इ” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "audio": {"prompt": "vo_oh_i_intro", "result": "vo_oh_i_done", "try_again": "vo_oh_i_wrong", "hint1": "vo_oh_hint1", "hint2": "vo_oh_i_hint2"}, "data": {"signal": "object_hunt_correct", "letter": "इ", "matra": "ि", "scene": "assets/UI/scene_hunt2.webp", "objects": [{"word_hi": "चिड़िया", "audio": "vo_name_chidiya", "emoji": "🐦", "ok_audio": "vo_oh_i_ok_chidiya", "more_audio": "vo_oh_i_more_chidiya", "correct": true, "x": 44.7, "y": 22.3, "w": 8.1, "h": 13.2}, {"word_hi": "हिरण", "audio": "vo_name_hiran", "emoji": "🦌", "ok_audio": "vo_oh_i_ok_hiran", "more_audio": "vo_oh_i_more_hiran", "correct": true, "x": 69.7, "y": 51.8, "w": 10.2, "h": 26.6}, {"word_hi": "किताब", "audio": "vo_name_kitaab", "emoji": "📕", "ok_audio": "vo_oh_i_ok_kitaab", "more_audio": "vo_oh_i_more_kitaab", "correct": true, "x": 21.2, "y": 65.8, "w": 12.0, "h": 14.0}, {"word_hi": "पिन", "audio": "vo_name_pin", "emoji": "📌", "ok_audio": "vo_oh_i_ok_pin", "more_audio": "vo_oh_i_more_pin", "correct": true, "x": 50.3, "y": 84.3, "w": 6.0, "h": 9.0}, {"word_hi": "कुत्ता", "audio": "vo_name_kutta", "emoji": "🐶", "wrong_audio": "vo_oh_w_kutta", "x": 46.1, "y": 63.0, "w": 11.0, "h": 15.9}, {"word_hi": "गेंद", "audio": "vo_name_gend", "emoji": "⚽", "wrong_audio": "vo_oh_w_gend_i", "x": 37.1, "y": 66.4, "w": 6.2, "h": 10.0}, {"word_hi": "सूरज", "audio": "vo_name_sooraj", "emoji": "☀️", "wrong_audio": "vo_oh_w_sooraj_i", "x": 77.6, "y": 10.9, "w": 11.1, "h": 18.1}]}, "signals": {"on_complete": ["object_hunt_correct"]}}, {"id": "P6", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT", "prompt_hi": "बड़ी “ई” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "audio": {"prompt": "vo_oh_ee_intro", "result": "vo_oh_ee_done", "try_again": "vo_oh_ee_wrong", "hint1": "vo_oh_hint1", "hint2": "vo_oh_ee_hint2"}, "data": {"signal": "object_hunt_correct", "letter": "ई", "matra": "ी", "scene": "assets/UI/scene_hunt3.webp", "objects": [{"word_hi": "लड़की", "audio": "vo_name_ladki", "emoji": "👧", "ok_audio": "vo_oh_ee_ok_ladki", "more_audio": "vo_oh_ee_more_ladki", "correct": true, "x": 53.8, "y": 30.0, "w": 12.0, "h": 16.5}, {"word_hi": "पानी", "audio": "vo_name_paani", "emoji": "💧", "ok_audio": "vo_oh_ee_ok_paani", "more_audio": "vo_oh_ee_more_paani", "correct": true, "x": 51.1, "y": 44.0, "w": 5.5, "h": 11.0}, {"word_hi": "घड़ी", "audio": "vo_name_ghadi", "emoji": "🕐", "ok_audio": "vo_oh_ee_ok_ghadi", "more_audio": "vo_oh_ee_more_ghadi", "correct": true, "x": 80.9, "y": 65.4, "w": 7.2, "h": 18.5}, {"word_hi": "मछली", "audio": "vo_name_machhli", "emoji": "🐟", "ok_audio": "vo_oh_ee_ok_machhli", "more_audio": "vo_oh_ee_more_machhli", "correct": true, "x": 8.2, "y": 73.3, "w": 10.2, "h": 8.9}, {"word_hi": "कुत्ता", "audio": "vo_name_kutta", "emoji": "🐶", "wrong_audio": "vo_oh_w_kutta", "x": 36.2, "y": 61.4, "w": 10.4, "h": 19.1}, {"word_hi": "किताब", "audio": "vo_name_kitaab", "emoji": "📕", "wrong_audio": "vo_oh_w_kitaab_ee", "x": 65.4, "y": 70.2, "w": 12.7, "h": 8.3}]}, "signals": {"on_complete": ["object_hunt_correct"]}}, {"id": "G7", "phase": "practice", "eis": "enactive", "type": "MATRA_TOKRI", "prompt_hi": "", "audio": {"prompt": "vo_mt_intro"}, "data": {"clips": [{"audio": "vo_mt_round_aa"}, {"audio": "vo_mt_round_i"}, {"audio": "vo_mt_round_ee"}, {"audio": "vo_mt_cheer_i"}, {"audio": "vo_mt_cheer_ee"}, {"audio": "vo_mt_done"}, {"audio": "vo_mt_w_naav"}, {"audio": "vo_mt_w_haath"}, {"audio": "vo_mt_w_baal"}, {"audio": "vo_mt_w_kaam"}, {"audio": "vo_mt_w_daal"}, {"audio": "vo_mt_w_din"}, {"audio": "vo_mt_w_til"}, {"audio": "vo_mt_w_sir"}, {"audio": "vo_mt_w_dil"}, {"audio": "vo_mt_w_hiran"}, {"audio": "vo_mt_w_nadi"}, {"audio": "vo_mt_w_teer"}, {"audio": "vo_mt_w_chini"}, {"audio": "vo_mt_w_machhli"}, {"audio": "vo_mt_w_neem"}]}}, {"id": "CEL", "phase": "practice", "eis": "enactive", "type": "CELEBRATION", "prompt_hi": "शाबाश! आज हमने सीखा — आ, इ और ई की मात्रा पहचानना, और मात्रा वाले शब्द पढ़ना।", "audio": {"prompt": "vo_cel_prompt", "sfx": "sfx_celebrate"}, "data": {}}], "assets": {"audio": {"sfx_celebrate": "assets/Audio/SFX/sfx_celebrate.ogg", "vo_cel_prompt": "assets/Audio/VO/vo_cel_prompt.ogg", "vo_ex_aa_intro": "assets/Audio/VO/vo_ex_aa_intro.ogg", "vo_ex_din": "assets/Audio/VO/vo_ex_din.ogg", "vo_ex_ee_intro": "assets/Audio/VO/vo_ex_ee_intro.ogg", "vo_ex_gati": "assets/Audio/VO/vo_ex_gati.ogg", "vo_ex_i_intro": "assets/Audio/VO/vo_ex_i_intro.ogg", "vo_ex_ladki": "assets/Audio/VO/vo_ex_ladki.ogg", "vo_ex_matka": "assets/Audio/VO/vo_ex_matka.ogg", "vo_ex_naak": "assets/Audio/VO/vo_ex_naak.ogg", "vo_ex_teer": "assets/Audio/VO/vo_ex_teer.ogg", "vo_landing": "assets/Audio/VO/vo_landing.ogg", "vo_matra_aa2": "assets/Audio/VO/vo_matra_aa2.ogg", "vo_matra_ee": "assets/Audio/VO/vo_matra_ee.ogg", "vo_matra_i": "assets/Audio/VO/vo_matra_i.ogg", "vo_mb_bil_base": "assets/Audio/VO/vo_mb_bil_base.ogg", "vo_mb_bil_explain": "assets/Audio/VO/vo_mb_bil_explain.ogg", "vo_mb_bil_intro": "assets/Audio/VO/vo_mb_bil_intro.ogg", "vo_mb_bil_onset": "assets/Audio/VO/vo_mb_bil_onset.ogg", "vo_mb_bil_sounds": "assets/Audio/VO/vo_mb_bil_sounds.ogg", "vo_mb_jal_base": "assets/Audio/VO/vo_mb_jal_base.ogg", "vo_mb_jal_explain": "assets/Audio/VO/vo_mb_jal_explain.ogg", "vo_mb_jal_intro": "assets/Audio/VO/vo_mb_jal_intro.ogg", "vo_mb_jal_onset": "assets/Audio/VO/vo_mb_jal_onset.ogg", "vo_mb_jal_sounds": "assets/Audio/VO/vo_mb_jal_sounds.ogg", "vo_mb_keel_base": "assets/Audio/VO/vo_mb_keel_base.ogg", "vo_mb_keel_explain": "assets/Audio/VO/vo_mb_keel_explain.ogg", "vo_mb_keel_intro": "assets/Audio/VO/vo_mb_keel_intro.ogg", "vo_mb_keel_onset": "assets/Audio/VO/vo_mb_keel_onset.ogg", "vo_mb_keel_sounds": "assets/Audio/VO/vo_mb_keel_sounds.ogg", "vo_mf_hint1": "assets/Audio/VO/vo_mf_hint1.ogg", "vo_mf_hint2": "assets/Audio/VO/vo_mf_hint2.ogg", "vo_mf_ok_hiran": "assets/Audio/VO/vo_mf_ok_hiran.ogg", "vo_mf_ok_jaal": "assets/Audio/VO/vo_mf_ok_jaal.ogg", "vo_mf_ok_pari": "assets/Audio/VO/vo_mf_ok_pari.ogg", "vo_mf_prompt": "assets/Audio/VO/vo_mf_prompt.ogg", "vo_mt_cheer_ee": "assets/Audio/VO/vo_mt_cheer_ee.ogg", "vo_mt_cheer_i": "assets/Audio/VO/vo_mt_cheer_i.ogg", "vo_mt_done": "assets/Audio/VO/vo_mt_done.ogg", "vo_mt_intro": "assets/Audio/VO/vo_mt_intro.ogg", "vo_mt_round_aa": "assets/Audio/VO/vo_mt_round_aa.ogg", "vo_mt_round_ee": "assets/Audio/VO/vo_mt_round_ee.ogg", "vo_mt_round_i": "assets/Audio/VO/vo_mt_round_i.ogg", "vo_mt_w_baal": "assets/Audio/VO/vo_mt_w_baal.ogg", "vo_mt_w_chini": "assets/Audio/VO/vo_mt_w_chini.ogg", "vo_mt_w_daal": "assets/Audio/VO/vo_mt_w_daal.ogg", "vo_mt_w_dil": "assets/Audio/VO/vo_mt_w_dil.ogg", "vo_mt_w_din": "assets/Audio/VO/vo_mt_w_din.ogg", "vo_mt_w_haath": "assets/Audio/VO/vo_mt_w_haath.ogg", "vo_mt_w_hiran": "assets/Audio/VO/vo_mt_w_hiran.ogg", "vo_mt_w_kaam": "assets/Audio/VO/vo_mt_w_kaam.ogg", "vo_mt_w_machhli": "assets/Audio/VO/vo_mt_w_machhli.ogg", "vo_mt_w_naav": "assets/Audio/VO/vo_mt_w_naav.ogg", "vo_mt_w_nadi": "assets/Audio/VO/vo_mt_w_nadi.ogg", "vo_mt_w_neem": "assets/Audio/VO/vo_mt_w_neem.ogg", "vo_mt_w_sir": "assets/Audio/VO/vo_mt_w_sir.ogg", "vo_mt_w_teer": "assets/Audio/VO/vo_mt_w_teer.ogg", "vo_mt_w_til": "assets/Audio/VO/vo_mt_w_til.ogg", "vo_name_aam": "assets/Audio/VO/vo_name_aam.ogg", "vo_name_bil": "assets/Audio/VO/vo_name_bil.ogg", "vo_name_chidiya": "assets/Audio/VO/vo_name_chidiya.ogg", "vo_name_din": "assets/Audio/VO/vo_name_din.ogg", "vo_name_gaajar": "assets/Audio/VO/vo_name_gaajar.ogg", "vo_name_gend": "assets/Audio/VO/vo_name_gend.ogg", "vo_name_ghadi": "assets/Audio/VO/vo_name_ghadi.ogg", "vo_name_haath": "assets/Audio/VO/vo_name_haath.ogg", "vo_name_hiran": "assets/Audio/VO/vo_name_hiran.ogg", "vo_name_jaal": "assets/Audio/VO/vo_name_jaal.ogg", "vo_name_keel": "assets/Audio/VO/vo_name_keel.ogg", "vo_name_kitaab": "assets/Audio/VO/vo_name_kitaab.ogg", "vo_name_kutta": "assets/Audio/VO/vo_name_kutta.ogg", "vo_name_ladki": "assets/Audio/VO/vo_name_ladki.ogg", "vo_name_maala": "assets/Audio/VO/vo_name_maala.ogg", "vo_name_machhli": "assets/Audio/VO/vo_name_machhli.ogg", "vo_name_naak": "assets/Audio/VO/vo_name_naak.ogg", "vo_name_neem": "assets/Audio/VO/vo_name_neem.ogg", "vo_name_paani": "assets/Audio/VO/vo_name_paani.ogg", "vo_name_pari": "assets/Audio/VO/vo_name_pari.ogg", "vo_name_patang": "assets/Audio/VO/vo_name_patang.ogg", "vo_name_pin": "assets/Audio/VO/vo_name_pin.ogg", "vo_name_sooraj": "assets/Audio/VO/vo_name_sooraj.ogg", "vo_name_taala": "assets/Audio/VO/vo_name_taala.ogg", "vo_name_teer": "assets/Audio/VO/vo_name_teer.ogg", "vo_oh_aa_done": "assets/Audio/VO/vo_oh_aa_done.ogg", "vo_oh_aa_hint2": "assets/Audio/VO/vo_oh_aa_hint2.ogg", "vo_oh_aa_intro": "assets/Audio/VO/vo_oh_aa_intro.ogg", "vo_oh_aa_wrong": "assets/Audio/VO/vo_oh_aa_wrong.ogg", "vo_oh_ee_done": "assets/Audio/VO/vo_oh_ee_done.ogg", "vo_oh_ee_hint2": "assets/Audio/VO/vo_oh_ee_hint2.ogg", "vo_oh_ee_intro": "assets/Audio/VO/vo_oh_ee_intro.ogg", "vo_oh_ee_wrong": "assets/Audio/VO/vo_oh_ee_wrong.ogg", "vo_oh_hint1": "assets/Audio/VO/vo_oh_hint1.ogg", "vo_oh_i_done": "assets/Audio/VO/vo_oh_i_done.ogg", "vo_oh_i_hint2": "assets/Audio/VO/vo_oh_i_hint2.ogg", "vo_oh_i_intro": "assets/Audio/VO/vo_oh_i_intro.ogg", "vo_oh_i_wrong": "assets/Audio/VO/vo_oh_i_wrong.ogg", "vo_pt_guided": "assets/Audio/VO/vo_pt_guided.ogg", "vo_pt_practice": "assets/Audio/VO/vo_pt_practice.ogg", "vo_pt_tutorial": "assets/Audio/VO/vo_pt_tutorial.ogg", "vo_rev_tt_aa": "assets/Audio/VO/vo_rev_tt_aa.ogg", "vo_rev_tt_ee": "assets/Audio/VO/vo_rev_tt_ee.ogg", "vo_rev_tt_i": "assets/Audio/VO/vo_rev_tt_i.ogg", "vo_s1_prompt": "assets/Audio/VO/vo_s1_prompt.ogg", "vo_ts1_hint1": "assets/Audio/VO/vo_ts1_hint1.ogg", "vo_ts1_hint2": "assets/Audio/VO/vo_ts1_hint2.ogg", "vo_ts1_ok_haath": "assets/Audio/VO/vo_ts1_ok_haath.ogg", "vo_ts1_ok_neem": "assets/Audio/VO/vo_ts1_ok_neem.ogg", "vo_ts1_ok_pin": "assets/Audio/VO/vo_ts1_ok_pin.ogg", "vo_ts1_prompt": "assets/Audio/VO/vo_ts1_prompt.ogg", "vo_ts2_hint1": "assets/Audio/VO/vo_ts2_hint1.ogg", "vo_ts2_hint2": "assets/Audio/VO/vo_ts2_hint2.ogg", "vo_ts2_ok_jaal": "assets/Audio/VO/vo_ts2_ok_jaal.ogg", "vo_ts2_ok_keel": "assets/Audio/VO/vo_ts2_ok_keel.ogg", "vo_ts2_ok_sir": "assets/Audio/VO/vo_ts2_ok_sir.ogg", "vo_ts2_prompt": "assets/Audio/VO/vo_ts2_prompt.ogg", "vo_ts3_hint1": "assets/Audio/VO/vo_ts3_hint1.ogg", "vo_ts3_hint2": "assets/Audio/VO/vo_ts3_hint2.ogg", "vo_ts3_ok_haath": "assets/Audio/VO/vo_ts3_ok_haath.ogg", "vo_ts3_ok_hiran": "assets/Audio/VO/vo_ts3_ok_hiran.ogg", "vo_ts3_ok_keel": "assets/Audio/VO/vo_ts3_ok_keel.ogg", "vo_ts3_ok_naak": "assets/Audio/VO/vo_ts3_ok_naak.ogg", "vo_ts3_ok_neem": "assets/Audio/VO/vo_ts3_ok_neem.ogg", "vo_ts3_ok_pin": "assets/Audio/VO/vo_ts3_ok_pin.ogg", "vo_ts3_prompt": "assets/Audio/VO/vo_ts3_prompt.ogg", "vo_tt_aa_correct": "assets/Audio/VO/vo_tt_aa_correct.ogg", "vo_tt_aa_hint1": "assets/Audio/VO/vo_tt_aa_hint1.ogg", "vo_tt_aa_hint2": "assets/Audio/VO/vo_tt_aa_hint2.ogg", "vo_tt_aa_prompt": "assets/Audio/VO/vo_tt_aa_prompt.ogg", "vo_tt_ee_correct": "assets/Audio/VO/vo_tt_ee_correct.ogg", "vo_tt_ee_hint1": "assets/Audio/VO/vo_tt_ee_hint1.ogg", "vo_tt_ee_hint2": "assets/Audio/VO/vo_tt_ee_hint2.ogg", "vo_tt_ee_prompt": "assets/Audio/VO/vo_tt_ee_prompt.ogg", "vo_tt_i_correct": "assets/Audio/VO/vo_tt_i_correct.ogg", "vo_tt_i_hint1": "assets/Audio/VO/vo_tt_i_hint1.ogg", "vo_tt_i_hint2": "assets/Audio/VO/vo_tt_i_hint2.ogg", "vo_tt_i_prompt": "assets/Audio/VO/vo_tt_i_prompt.ogg"}, "audio_text": {"sfx_celebrate": "celebration sound", "vo_cel_prompt": "शाबाश! आज हमने सीखा — आ, इ और ई की मात्रा पहचानना, और मात्रा वाले शब्द पढ़ना।", "vo_ex_aa_intro": "आइए, आ की मात्रा वाले कुछ शब्द देखें।", "vo_ex_din": "दिन, बोलकर देखिए। इसमें द पर छोटी इ की मात्रा लगी है।", "vo_ex_ee_intro": "आइए, बड़ी ई की मात्रा वाले कुछ शब्द देखें।", "vo_ex_gati": "गति, बोलकर देखिए। इसमें त पर छोटी इ की मात्रा लगी है।", "vo_ex_i_intro": "आइए, छोटी इ की मात्रा वाले कुछ शब्द देखें।", "vo_ex_ladki": "लड़की, बोलकर देखिए। इसमें क पर बड़ी ई की मात्रा लगी है।", "vo_ex_matka": "मटका, बोलकर देखिए। इसमें क पर आ की मात्रा लगी है।", "vo_ex_naak": "नाक, बोलकर देखिए। इसमें न पर आ की मात्रा लगी है।", "vo_ex_teer": "तीर, बोलकर देखिए। इसमें त पर बड़ी ई की मात्रा लगी है।", "vo_landing": "हेलो दोस्त! मैं हूँ स्विफ्टी। आज हम मात्राओं के बारे में जानेंगे।", "vo_matra_aa2": "आ की मात्रा", "vo_matra_ee": "बड़ी ई की मात्रा", "vo_matra_i": "छोटी इ की मात्रा", "vo_mb_bil_base": "यह शब्द बल है।", "vo_mb_bil_explain": "अब बल में छोटी इ की मात्रा लगाने पर, बिल बनता है।", "vo_mb_bil_intro": "आइए, देखें कि छोटी इ की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।", "vo_mb_bil_onset": "ब में छोटी इ की मात्रा लगाने पर, बि बनता है।", "vo_mb_bil_sounds": "ब, बि, बिल।", "vo_mb_jal_base": "यह शब्द जल है।", "vo_mb_jal_explain": "अब जल में आ की मात्रा लगाने पर, जाल बनता है।", "vo_mb_jal_intro": "आइए, देखें कि आ की मात्रा लगने से शब्द की आवाज़ कैसे बदलती है।", "vo_mb_jal_onset": "ज में आ की मात्रा लगाने पर, जा बनता है।", "vo_mb_jal_sounds": "ज, जा, जाल।", "vo_mb_keel_base": "यह शब्द कल है।", "vo_mb_keel_explain": "अब कल में बड़ी ई की मात्रा लगाने पर, कील बनता है।", "vo_mb_keel_intro": "आइए, देखें कि बड़ी ई की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।", "vo_mb_keel_onset": "क में बड़ी ई की मात्रा लगाने पर, की बनता है।", "vo_mb_keel_sounds": "क, की, कील।", "vo_mf_hint1": "फिर से सोचो।", "vo_mf_hint2": "ध्यान से देखो। कौन-सी मात्रा लगेगी?", "vo_mf_ok_hiran": "शाबाश! हिरण बन गया।", "vo_mf_ok_jaal": "शाबाश! जाल बन गया।", "vo_mf_ok_pari": "शाबाश! परी बन गया।", "vo_mf_prompt": "मात्रा को सही डिब्बे में डालकर शब्द पूरा कीजिए।", "vo_mt_cheer_ee": "बहुत बढ़िया! अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालो।", "vo_mt_cheer_i": "बहुत बढ़िया! अब इ की मात्रा वाले शब्दों को टोकरी में डालो।", "vo_mt_done": "शाबाश! तुमने सभी मात्राओं के सही शब्दों को टोकरी में रख लिया है।", "vo_mt_intro": "टोकरी को उँगली से इधर-उधर ले जाओ।", "vo_mt_round_aa": "आ की मात्रा वाले शब्दों को टोकरी में डालो।", "vo_mt_round_ee": "अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालो।", "vo_mt_round_i": "अब इ की मात्रा वाले शब्दों को टोकरी में डालो।", "vo_mt_w_baal": "बाल", "vo_mt_w_chini": "चीनी", "vo_mt_w_daal": "दाल", "vo_mt_w_dil": "दिल", "vo_mt_w_din": "दिन", "vo_mt_w_haath": "हाथ", "vo_mt_w_hiran": "हिरन", "vo_mt_w_kaam": "काम", "vo_mt_w_machhli": "मछली", "vo_mt_w_naav": "नाव", "vo_mt_w_nadi": "नदी", "vo_mt_w_neem": "नीम", "vo_mt_w_sir": "सिर", "vo_mt_w_teer": "तीर", "vo_mt_w_til": "तिल", "vo_name_aam": "यह आम है।", "vo_name_bil": "बिल", "vo_name_chidiya": "यह चिड़िया है।", "vo_name_din": "दिन", "vo_name_gaajar": "गाजर।", "vo_name_gend": "गेंद।", "vo_name_ghadi": "यह घड़ी है।", "vo_name_haath": "हाथ", "vo_name_hiran": "हिरण", "vo_name_jaal": "जाल", "vo_name_keel": "कील", "vo_name_kitaab": "किताब।", "vo_name_kutta": "कुत्ता।", "vo_name_ladki": "लड़की।", "vo_name_maala": "माला।", "vo_name_machhli": "मछली।", "vo_name_naak": "नाक", "vo_name_neem": "नीम", "vo_name_paani": "पानी", "vo_name_pari": "परी", "vo_name_patang": "पतंग।", "vo_name_pin": "पिन", "vo_name_sooraj": "यह सूरज है।", "vo_name_taala": "ताला।", "vo_name_teer": "तीर", "vo_oh_aa_done": "शाबाश! आपने आ की मात्रा वाले सभी चित्र खोज लिए।", "vo_oh_aa_hint2": "ध्यान से देखिए और आ की मात्रा वाले चित्र पर टैप कीजिए।", "vo_oh_aa_intro": "आ की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "vo_oh_aa_wrong": "फिर से सोचिए। आ की मात्रा वाला चित्र खोजिए।", "vo_oh_ee_done": "शाबाश! आपने बड़ी ई की मात्रा वाले सभी चित्र खोज लिए।", "vo_oh_ee_hint2": "ध्यान से देखिए और बड़ी ई की मात्रा वाले चित्र पर टैप कीजिए।", "vo_oh_ee_intro": "बड़ी ई की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "vo_oh_ee_wrong": "फिर से सोचिए। बड़ी ई की मात्रा वाला चित्र खोजिए।", "vo_oh_hint1": "चित्र का नाम ध्यान से सुनिए और मात्रा पहचानिए।", "vo_oh_i_done": "शाबाश! आपने छोटी इ की मात्रा वाले सभी चित्र खोज लिए।", "vo_oh_i_hint2": "ध्यान से देखिए और छोटी इ की मात्रा वाले चित्र पर टैप कीजिए।", "vo_oh_i_intro": "छोटी इ की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।", "vo_oh_i_wrong": "फिर से सोचिए। छोटी इ की मात्रा वाला चित्र खोजिए।", "vo_pt_guided": "बहुत बढ़िया! अब हम साथ मिलकर शुरू करते हैं। चलिए, साथ में करें!", "vo_pt_practice": "वाह! अब आपकी बारी।", "vo_pt_tutorial": "ध्यान से देखिए और मेरे साथ जानिए। चलिए, शुरू करें!", "vo_rev_tt_aa": "सही डिब्बा यह है। हाथ शब्द में आ की मात्रा है।", "vo_rev_tt_ee": "सही डिब्बा यह है। पानी शब्द में बड़ी ई की मात्रा है।", "vo_rev_tt_i": "सही डिब्बा यह है। पिन शब्द में छोटी इ की मात्रा है।", "vo_s1_prompt": "आज हम आ की मात्रा, छोटी इ की मात्रा और बड़ी ई की मात्रा वाले शब्द पढ़ेंगे।", "vo_ts1_hint1": "फिर से सुनो और सही मात्रा पहचानिए।", "vo_ts1_hint2": "ध्यान से देखो, इस शब्द में कौन-सी मात्रा है?", "vo_ts1_ok_haath": "शाबाश! हाथ शब्द में आ की मात्रा है।", "vo_ts1_ok_neem": "शाबाश! नीम शब्द में बड़ी ई की मात्रा है।", "vo_ts1_ok_pin": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।", "vo_ts1_prompt": "हर शब्द को उसकी सही मात्रा वाले डिब्बे में डालिए।", "vo_ts2_hint1": "फिर से सोचो। इस शब्द में कौन-सी मात्रा लगी है?", "vo_ts2_hint2": "ध्यान से देखो और शब्द को फिर से पढ़ो।", "vo_ts2_ok_jaal": "शाबाश! जाल शब्द में आ की मात्रा लगी है।", "vo_ts2_ok_keel": "शाबाश! कील शब्द में बड़ी ई की मात्रा लगी है।", "vo_ts2_ok_sir": "शाबाश! सिर शब्द में छोटी इ की मात्रा लगी है।", "vo_ts2_prompt": "सही मात्रा को सही शब्द वाले डिब्बे में डालिए।", "vo_ts3_hint1": "फिर से सुनो और सही मात्रा पहचानो।", "vo_ts3_hint2": "शब्द को ध्यान से सुनो।", "vo_ts3_ok_haath": "शाबाश! हाथ में आ की मात्रा है।", "vo_ts3_ok_hiran": "शाबाश! हिरण में छोटी इ की मात्रा है।", "vo_ts3_ok_keel": "शाबाश! कील में बड़ी ई की मात्रा है।", "vo_ts3_ok_naak": "शाबाश! नाक में आ की मात्रा है।", "vo_ts3_ok_neem": "शाबाश! नीम में बड़ी ई की मात्रा है।", "vo_ts3_ok_pin": "शाबाश! पिन में छोटी इ की मात्रा है।", "vo_ts3_prompt": "चित्र देखकर उसे सही मात्रा वाले डिब्बे में डालिए।", "vo_tt_aa_correct": "शाबाश! हाथ शब्द में आ की मात्रा है।", "vo_tt_aa_hint1": "फिर से सोचो। आ की मात्रा वाला शब्द कौन-सा है?", "vo_tt_aa_hint2": "ध्यान से देखो और सही डिब्बे पर टैप कीजिए।", "vo_tt_aa_prompt": "“आ” की मात्रा वाले शब्द पर टैप कीजिए।", "vo_tt_ee_correct": "शाबाश! पानी शब्द में बड़ी ई की मात्रा है।", "vo_tt_ee_hint1": "फिर से सोचो। बड़ी ई की मात्रा वाला शब्द कौन-सा है?", "vo_tt_ee_hint2": "ध्यान से देखो और सही डिब्बे पर टैप करो।", "vo_tt_ee_prompt": "बड़ी “ई” की मात्रा वाले शब्द पर टैप कीजिए।", "vo_tt_i_correct": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।", "vo_tt_i_hint1": "फिर से सोचो। छोटी इ की मात्रा वाला शब्द कौन-सा है?", "vo_tt_i_hint2": "ध्यान से देखो और सही डिब्बे पर टैप करो।", "vo_tt_i_prompt": "छोटी “इ” की मात्रा वाले शब्द पर टैप कीजिए।"}, "image": {"obj_bal": "assets/Images/obj_bal.png", "obj_bil": "assets/Images/obj_bil.png", "obj_din": "assets/Images/obj_din.png", "obj_gati": "assets/Images/obj_gati.png", "obj_haath": "assets/Images/obj_haath.png", "obj_hiran": "assets/Images/obj_hiran.png", "obj_jaal": "assets/Images/obj_jaal.png", "obj_jal": "assets/Images/obj_jal.png", "obj_kal": "assets/Images/obj_kal.png", "obj_keel": "assets/Images/obj_keel.png", "obj_ladki": "assets/Images/obj_ladki.png", "obj_matka": "assets/Images/obj_matka.png", "obj_naak": "assets/Images/obj_naak.png", "obj_neem": "assets/Images/obj_neem.png", "obj_pari": "assets/Images/obj_pari.png", "obj_pin": "assets/Images/obj_pin.png", "obj_teer": "assets/Images/obj_teer.png"}, "audio_ext": "ogg", "img_ext": "png"}}
 </script>
 
 <!-- ============ ENGINE ============ -->
@@ -4757,7 +4817,7 @@ function showBox(emoji, text, theme, audioSrc, onEnd){
 }
 
 /* ---------- 8. TAP-OPTION HELPER (shared by 5 slide types) ---------- */
-function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect, optionRenderer, columnsHint, mastery, hintAction, nudgeTarget, shuffle, optionHost, navOnCorrect, tapSfx}){
+function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect, optionRenderer, columnsHint, mastery, hintAction, nudgeTarget, shuffle, optionHost, navOnCorrect, tapSfx, onAdvance}){
   /* [r5-matra-train] `optionHost` lets a mechanic own its OWN layout (the train) while still
      inheriting this function's whole answer contract — buzz + red flash + lock, the hint
      rungs, confetti + auto-advance. Without it TRAIN_TAP would have had to re-implement the
@@ -4855,6 +4915,9 @@ function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect,
         _afterWord(()=> play(_lateSilent ? null : (audioFor(slide, "correct") || null),
                             ()=> setTimeout(()=>{
                               if(navOnCorrect){ setNavActive(true); $("navBtn").onclick = ()=> completeSlide(true); }
+                              /* [r28] a slide that owns its own way out (the train pulling away)
+                                 takes over here instead of cutting straight to the next one. */
+                              else if(typeof onAdvance === "function") onAdvance();
                               else completeSlide(true);
                             }, 700)));
       } else {
@@ -5643,6 +5706,26 @@ function refreshMatraWords(root){
 /* [r20] Fisher-Yates. `sort(()=> Math.random() - 0.5)` is not a shuffle: the comparator is
    inconsistent, so the result is biased and on three items it very often comes back in the order
    it went in — which is why the tray looked fixed. */
+/* [r28 · SME] "do not put the correct option in the green coach, and reshuffle the options
+   every time the page is refreshed or revisited."
+   The train's options were placed in AUTHORED order - so across pages 8, 9 and 10 the answer
+   sat in the same coach every single run, and a child could score three for three by position
+   without reading a single word. Two rules now:
+     1. Fisher-Yates on every mount, so the order is different each visit.
+     2. If the answer lands in the GREEN coach it is swapped out of it. Green reads as "this is
+        the right one" before a child has read anything, which is the same free pass by colour. */
+const TRAIN_GREEN_COACH = 1;            /* TRAIN_COACH_COLORS[1] = #37C425 */
+function arrangeTrainOptions(opts){
+  const a = shuffled(opts || []);
+  if(a.length < 2) return a;
+  const ci = a.findIndex(o => o && o.correct);
+  if(ci !== TRAIN_GREEN_COACH) return a;
+  const pool = a.map((_, i)=> i).filter(i => i !== TRAIN_GREEN_COACH && !(a[i] && a[i].correct));
+  if(!pool.length) return a;                       /* every other coach is also correct */
+  const j = pool[Math.floor(Math.random() * pool.length)];
+  const t = a[ci]; a[ci] = a[j]; a[j] = t;
+  return a;
+}
 function shuffled(arr){
   const r = (arr || []).slice();
   for(let i = r.length - 1; i > 0; i--){
@@ -5708,6 +5791,34 @@ function makeDraggable(tileEl, onDrop, opts){
     if(opts && opts.onPick) opts.onPick();   // e.g. show a nudge at the slot this tile belongs in
     e.preventDefault();
   }
+  /* [r28 · SME] "when we drag the elements to the coach it should catch the element -
+     currently we need to push it to the centre of the coach."
+     The drop was decided by the POINTER alone. A card picked up near its edge therefore had to
+     be carried until the FINGER was inside the coach, so a card sitting squarely in the coach
+     with the finger just past the rim bounced back. The pointer still wins whenever it is over
+     a zone - that is the precise gesture and nothing about it changes. Only when it is not do
+     we fall back to the card's own rectangle, and then the zone it overlaps MOST takes it,
+     provided a third of the card is inside so that brushing past is not a drop. */
+  function zoneUnder(px, py){
+    tileEl.style.pointerEvents = "none";
+    const under = document.elementFromPoint(px, py);
+    tileEl.style.pointerEvents = "";
+    const direct = under && under.closest ? under.closest(".dd-zone") : null;
+    if(direct) return direct;
+    const r = tileEl.getBoundingClientRect();
+    const area = r.width * r.height;
+    if(!area) return null;
+    let best = null, bestA = 0;
+    document.querySelectorAll(".dd-zone").forEach(z => {
+      const b = z.getBoundingClientRect();
+      const w = Math.min(r.right, b.right) - Math.max(r.left, b.left);
+      const h = Math.min(r.bottom, b.bottom) - Math.max(r.top, b.top);
+      if(w <= 0 || h <= 0) return;
+      const a = w * h;
+      if(a > bestA){ bestA = a; best = z; }
+    });
+    return (best && bestA >= area * 0.33) ? best : null;
+  }
   function onMove(e){
     if(!dragging) return;
     const p = e.touches ? e.touches[0] : e;
@@ -5717,10 +5828,7 @@ function makeDraggable(tileEl, onDrop, opts){
     // (z-index 50, now covering the zone) doesn't mask the zone beneath it.
     const cx = p.clientX, cy = p.clientY;
     document.querySelectorAll(".dd-zone").forEach(z => z.classList.remove("hover"));
-    tileEl.style.pointerEvents = "none";
-    const under = document.elementFromPoint(cx, cy);
-    tileEl.style.pointerEvents = "";
-    const zone = under?.closest?.(".dd-zone");
+    const zone = zoneUnder(cx, cy);
     if(zone && !zone.classList.contains("filled")) zone.classList.add("hover");
     e.preventDefault();
   }
@@ -5744,11 +5852,8 @@ function makeDraggable(tileEl, onDrop, opts){
     _unbind();
     tileEl.classList.remove("dragging");
     const p = e.changedTouches ? e.changedTouches[0] : e;
-    // hide the tile from hit-testing so we detect the zone underneath it
-    tileEl.style.pointerEvents = "none";
-    const under = document.elementFromPoint(p.clientX, p.clientY);
-    tileEl.style.pointerEvents = "";
-    const zone = under?.closest?.(".dd-zone");
+    /* [r28] same rule as the hover highlight: finger first, then the card's own rectangle. */
+    const zone = zoneUnder(p.clientX, p.clientY);
     document.querySelectorAll(".dd-zone").forEach(z => z.classList.remove("hover"));
     if(zone && !zone.classList.contains("filled")){
       // snap
@@ -9436,8 +9541,43 @@ const TrainChrome = {
       rail.appendChild(c);
       coachEls.push(c); faceEls.push(body.querySelector(".coach-face")); labelEls.push(lab);
     }
+    /* [r28 · SME] "if the page changes do not change the train track - keep it intact, only
+       the train changes." The shell was `margin:auto 0`, i.e. vertically CENTRED, so its height
+       decided where the track landed and the height is not the same on every train screen.
+       Measured: the track sat at y=595 on pages 8-10 (a 278px train, no tray) but 454 / 499 /
+       484 on pages 11 / 12 / 14, where a 306px train is centred against trays of three
+       different heights. The railway therefore jumped on every single page change.
+       pin_track nails the track's own top edge to a fixed fraction of the slide host, so every
+       train screen lays its rail on the same line and only the train on it changes. 0.748 is
+       the line pages 8-10 already used - the screens with the least room to give. */
+    const pinTrack = ()=>{
+      if(!cfg.pin_track || !shell.isConnected) return;
+      const hr = host.getBoundingClientRect();
+      if(!hr.height) return;
+      const sc = parseFloat(getComputedStyle(document.documentElement)
+                   .getPropertyValue("--scale")) || 1;
+      const want = hr.top + hr.height * cfg.pin_track;        /* screen px */
+      const have = track.getBoundingClientRect().top;
+      if(!have) return;
+      const cur = parseFloat(getComputedStyle(shell).marginTop) || 0;
+      shell.style.marginTop = (cur + (want - have) / sc) + "px";
+      shell.style.marginBottom = "auto";
+    };
     shell.appendChild(track);        /* behind the rail in DOM order, so the train paints over it */
     shell.appendChild(rail);
+    /* [r28] The tray is appended by the MODULE, after this mount() returns - so a pin computed
+       on the next frame is measuring a column that does not have its tray in it yet, and the
+       sort pages landed up to 30px short of the line. Re-pinned across the first second, which
+       covers the tray going in and its rise settling. */
+    requestAnimationFrame(()=>{ pinTrack(); requestAnimationFrame(pinTrack); });
+    [120, 400, 900, 1600].forEach(ms => setTimeout(pinTrack, ms));
+    if(cfg.pin_track){
+      const _repin = ()=> pinTrack();
+      window.addEventListener("resize", _repin);
+      const _prev = window.__slideCleanup;
+      window.__slideCleanup = function(){ window.removeEventListener("resize", _repin);
+                                          if(typeof _prev === "function") _prev(); };
+    }
     host.appendChild(shell);
 
     /* If the painted train cannot be fetched, fall back to the structured locomotive exactly as
@@ -9536,6 +9676,26 @@ const TrainChrome = {
   }
 };
 window.TrainChrome = TrainChrome;
+
+/* [r28 · SME] The way OFF a train page. आगे is gone from pages 8-14, so finishing the activity
+   is what moves the lesson on: the train pulls out to the left, and the next screen's mount
+   runs its own arrival. Two timers, as everywhere else in this engine - the real one, and a
+   longer fail-safe so a dropped animation event can never strand a child on a screen that no
+   longer has a button. */
+const TRAIN_DEPART_MS = 1500;
+function trainDepartThen(train, slide){
+  let moved = false;
+  const go = ()=>{ if(moved) return; moved = true;
+                   if(CARD.slides[state.idx] === slide) completeSlide(true); };
+  const rail = train && train.rail;
+  if(!rail || !rail.isConnected){ setTimeout(go, 400); return; }
+  rail.classList.remove("tr-entering");
+  void rail.offsetWidth;
+  rail.classList.add("tr-leaving");
+  try{ sfxTrainMove(); }catch(e){}
+  setTimeout(go, TRAIN_DEPART_MS - 120);      /* hand over as the last coach clears the frame */
+  setTimeout(go, TRAIN_DEPART_MS + 1500);     /* fail-safe */
+}
 
 /* ==========================================================================================
    MATRA_PAIRS — deck page 4, Screen 1 · rows #15-#24
@@ -9664,6 +9824,19 @@ SlideModules.MATRA_BUILD = {
                    '" data-mw-matra="' + d.matra + '" data-mw-fs="84">' +
                    _matraWordSVG(d.result_word || "", d.matra, 84) + '</div>' +
                    '<div class="mb-pic">' + imgOrEmoji(d.result_img, d.result_emoji, "", "mb-emoji") + '</div>';
+    /* [r27 · SME] "the कील is looking slightly bigger - make it 10 percent smaller." Every
+       result picture is capped by the same 180x150 box, so the three are already the same
+       height; कील's art is a 389x553 spike, which fills that height as a long nail and reads
+       larger than the others even though it is not. An optional per-slide factor trims the cap
+       for that one picture instead of editing the shared box, which would shrink all three. */
+    if(d.result_img_scale){
+      const _rp = p3.querySelector(".mb-pic img, .mb-pic .mb-emoji");
+      if(_rp){
+        const _pc = (Math.max(0.1, Math.min(1, d.result_img_scale)) * 100) + "%";
+        if(_rp.tagName === "IMG"){ _rp.style.maxWidth = _pc; _rp.style.maxHeight = _pc; }
+        else _rp.style.fontSize = (96 * d.result_img_scale) + "px";
+      }
+    }
     row.appendChild(p3);
 
     host.appendChild(row);
@@ -9743,7 +9916,16 @@ SlideModules.MATRA_BUILD = {
         const eq = p2.querySelector(".mb-eq");
         if(eq){ eq.classList.remove("mb-settle"); void eq.offsetWidth; eq.classList.add("mb-settle"); }
         sfxChime();
-        setTimeout(()=> play(A("onset") || null, ()=> setTimeout(next, 560)), 340);
+        /* [r27 · SME] the finished syllable throbs for exactly as long as the clip that names
+           it, then stops. The timer is a floor, not the driver: if the clip is missing play()
+           fires its callback immediately, and the class would otherwise never come off. */
+        setTimeout(()=>{
+          sylEl.classList.remove("mb-syl-in");
+          sylEl.classList.add("mb-syl-say");
+          const _stop = ()=> sylEl.classList.remove("mb-syl-say");
+          setTimeout(_stop, 4500);
+          play(A("onset") || null, ()=>{ _stop(); setTimeout(next, 560); });
+        }, 340);
       },
       // 5 · the remaining letters join and the finished word appears
       (next)=>{ show(a2); show(p3); sfxCorrect();
@@ -9786,12 +9968,17 @@ SlideModules.MATRA_BUILD = {
 SlideModules.TRAIN_TAP = {
   mount(host, slide){
     const d = slide.data || {};
-    const opts = d.options || [];
+    /* [r28] shuffled on every mount, and never with the answer in the green coach. The coaches
+       are built FROM this array, so the shuffle has to happen before TrainChrome sees it -
+       mountTapOptions' own `shuffle` cannot be used, because optionRenderer indexes the
+       already-built coach faces. */
+    const opts = arrangeTrainOptions(d.options || []);
     const built = [];
     const train = TrainChrome.mount(host, {
       coaches: opts.length,
       coach_label: opts.map(()=> null),
       coach_body:  opts.map(()=> ""),
+      pin_track: 0.725,                   /* [r28] one railway across pages 8-14 */
       drop_zone: false, maxH: 300,          /* no labels and no tray: the train gets the room */
       on_enter: ()=> train.popLabels(0)
     });
@@ -9814,7 +10001,10 @@ SlideModules.TRAIN_TAP = {
       optionRenderer: (o, i)=> built[i],
       optionHost: train.rail,                          // cells are already in the train
       nudgeTarget: null,                               // "No instruction text on screen" — nothing to re-tap
-      navOnCorrect: true,                              // deck: "Next button becomes active"
+      /* [r28 · SME] आगे is gone from this screen. The deck's "Next button becomes active" is
+         replaced by the train itself: it pulls out to the left and the next page pulls in. */
+      navOnCorrect: false,
+      onAdvance: ()=> trainDepartThen(train, slide),
       tapSfx: true,                                    // deck: "light tap sound on selection"
       mastery: !!d.mastery
     });
@@ -9841,6 +10031,7 @@ SlideModules.TRAIN_SORT = {
       coach_label: bins.map(b => b.label_img ? { img: b.label_img, emoji: b.label_emoji }
                                              : (b.label || "")),
       coach_body: bins.map(()=> ""),
+      pin_track: 0.725,                   /* [r28] one railway across pages 8-14 */
       drop_zone: true, multi, maxH: 208,    /* labels above + the card tray below */
       /* [r11] The tray used to rise with the labels, which put the cards on screen a full clip
          BEFORE they could be picked up: the engine's drag gate ignores a press while any VO is
@@ -9878,7 +10069,7 @@ SlideModules.TRAIN_SORT = {
 
     state.attempts = 0; state.locked = false;
     setNavActive(false);
-    $("navBtn").onclick = ()=> completeSlide(true);
+    $("navBtn").style.display = "none";                /* [r28] the train is the way out */
 
     let placed = 0;
     const need = items.length;
@@ -9929,8 +10120,15 @@ SlideModules.TRAIN_SORT = {
             setTimeout(()=>{
               train.complete();
               setSwMood("celebrate"); confettiCannon();
-              setNavActive(true);
-              if(d.completion_vo) play(VO_DIR + d.completion_vo + "." + AUDIO_EXT, ()=>{});
+              /* [r28] celebrate in place, then pull out. The completion clip is given its own
+                 beat first so the whistle and the voice are not talking over each other. */
+              if(d.completion_vo){
+                play(VO_DIR + d.completion_vo + "." + AUDIO_EXT,
+                     ()=> trainDepartThen(train, slide));
+                setTimeout(()=> trainDepartThen(train, slide), 6000);
+              } else {
+                setTimeout(()=> trainDepartThen(train, slide), 900);
+              }
             }, 260);
           }
         } else {
@@ -9989,6 +10187,7 @@ SlideModules.MATRA_FILL = {
       coaches: slots.length,
       coach_label: slots.map(s => ({ img: s.img, emoji: s.emoji })),   // "A related picture can be shown above each coach" (row #150)
       coach_body: slots.map(()=> ""),
+      pin_track: 0.725,                   /* [r28] one railway across pages 8-14 */
       drop_zone: true, maxH: 208,          /* picture plates above + the matra tray below */
       on_enter: ()=>{ train.popLabels(240); setTimeout(rise, slots.length * 240); }
     });
@@ -10041,7 +10240,7 @@ SlideModules.MATRA_FILL = {
 
     state.attempts = 0; state.locked = false;
     setNavActive(false);                                   // row #152
-    $("navBtn").onclick = ()=> completeSlide(true);
+    $("navBtn").style.display = "none";                    /* [r28] the train is the way out */
 
     let filled = 0;
     const wrongN = new WeakMap();
@@ -10104,7 +10303,9 @@ SlideModules.MATRA_FILL = {
             SwiftPAL.emit(d.signal || "matra_fill_correct", {
               slide_id: slide.id, phase: slide.phase, value: true,
               attempts: state.attempts, latency_ms: Date.now() - state.slideStart });
-            setTimeout(()=>{ train.complete(); setSwMood("celebrate"); confettiCannon(); setNavActive(true); }, 260);
+            /* [r28] no आगे here either - the finished word is celebrated, then the train leaves. */
+      setTimeout(()=>{ train.complete(); setSwMood("celebrate"); confettiCannon();
+                       setTimeout(()=> trainDepartThen(train, slide), 900); }, 260);
           }
         } else {
           /* "Wrong area shakes · Matra returns to original place · Only VO" (rows #157, #158) */
@@ -11771,6 +11972,8 @@ function buildDevNav(){
   M.skyBurst = {
     defaults: {
       container:".sg-sky", when:["is-start","is-end"],
+      /* [r27] the region no star may be popped in - the cover's centre card */
+      avoid:".sg-card",
       rings:[{n:9,rad:3.1,size:.58,dur:.80},{n:7,rad:1.8,size:.78,dur:.62}],
       hues:["#FCB717","#3B7DD8","#21A74A","#E5484D","#7048D6","#F1781D"],
       kind:{s1:"k-star",s2:"k-star",s3:"k-spark",s4:"k-dot",s5:"k-dot"},
@@ -11788,10 +11991,23 @@ function buildDevNav(){
           if(M.still()) return;
           if(typeof isMuted !== "undefined" && isMuted && o.sound){ /* dev mute also silences the pop */ }
           if(!o.when.some(function(c){ return document.body.classList.contains(c); })) return;
+          /* [r27 · SME] THE CENTRE CARD IS OFF LIMITS. The mask hides the pixels of a star that
+             drifts over the card, but the element is still there with a real rect and a real
+             opacity - so this hit-test happily popped INVISIBLE stars and threw a burst across
+             the card. Worse, it then called stopPropagation/preventDefault, so an invisible
+             star sitting over शुरू करें could swallow the tap that was meant to start the lesson.
+             A tap inside the card is never a star tap, and a star overlapping the card is never
+             poppable. */
+          var _av = o.avoid ? document.querySelector(o.avoid) : null;
+          var _ar = (_av && _av.offsetWidth) ? _av.getBoundingClientRect() : null;
+          if(_ar && e.clientX >= _ar.left && e.clientX <= _ar.right &&
+                    e.clientY >= _ar.top  && e.clientY <= _ar.bottom) return;
           var els = sky.querySelectorAll("i:not(.popped)");
           for(var i = 0; i < els.length; i++){
             var el = els[i], r = el.getBoundingClientRect();
             if(r.width < 2) continue;
+            if(_ar && r.left < _ar.right && r.right > _ar.left &&
+                      r.top  < _ar.bottom && r.bottom > _ar.top) continue;
             var pad = Math.max(o.pad, r.width * o.padRatio);   // ~4px targets need slack
             if(e.clientX < r.left - pad || e.clientX > r.right  + pad ||
                e.clientY < r.top  - pad || e.clientY > r.bottom + pad) continue;
@@ -12328,9 +12544,8 @@ SlideModules.MATRA_TOKRI = {
           '</span></div>' +
           '<div id="mtNudgeHand">' +
             '<span class="nh-tapfx"><i class="fx-ro"></i><i class="fx-ri"></i><i class="fx-sp"></i></span>' +
-            '<img src="assets/UI/mt_hand_nudge.webp" alt="">' +
+            '<img src="assets/UI/nudge_hand_new.svg" alt="">' +
           '</div>' +
-          '<div class="round-banner" id="round-banner" aria-hidden="true"><div class="rb-matra" id="rb-matra">\u25CC\u093E</div></div>' +
         '</div>' +
         '<div class="level-cheer" id="level-cheer" aria-hidden="true">' +
           '<div class="lc-fx" id="lc-fx"></div>' +
@@ -12507,7 +12722,14 @@ SlideModules.MATRA_TOKRI = {
          ~547) so the hand never covers the opening words drop into, and high enough
          that the wrist clears .play-area's 654 cut. This hand points up-LEFT, so the
          body trails down-right of the tip. */
-      var NUDGE_OPTS = { hand: 'mtNudgeHand', host: '.mt-game .play-area', dx: 46, dy: -82 };
+      /* [r25] dx is shifted by the fingertip delta measured in the CSS note above
+         (+20 right): 46 - 19.2 = 26.8, so the lesson's hand points at the same spot on the
+         basket flank the game's own hand did.
+         dy STAYS -82. Correcting it to -77 for the 4px-higher tip pushed the 108px box down
+         to 659 against the play area's 654 cut and shaved the wrist - measured, 6px clipped.
+         The box bottom is the binding constraint here, not the tip, so the box keeps its
+         tuned position and the finger simply points 5px higher up the same flank. */
+      var NUDGE_OPTS = { hand: 'mtNudgeHand', host: '.mt-game .play-area', dx: 26.8, dy: -82 };
 
       // ---- State ----
       var playArea = null, basketEl = null, basketLift = null, basketArt = null;
@@ -12901,11 +13123,20 @@ SlideModules.MATRA_TOKRI = {
         clearDrops();
 
         var R = ROUNDS[i];
-        document.getElementById('rb-matra').textContent = R.matra;
+        /* [r25 · SME] The round banner is gone. It flashed the bare matra in a white disc,
+           and a bare matra is an orphan combining mark, so the font drew it as ◌ा - a
+           dotted placeholder the child was being asked to read. The VO still names the
+           round's matra and the header chip still carries it, so nothing is lost but the
+           disc. Kept null-safe rather than chasing every reference, so putting the element
+           back is the only change needed to restore it. */
         var banner = document.getElementById('round-banner');
-        banner.classList.remove('show');
-        void banner.offsetWidth;
-        banner.classList.add('show');
+        if (banner) {
+          var rb = document.getElementById('rb-matra');
+          if (rb) rb.textContent = R.matra;
+          banner.classList.remove('show');
+          void banner.offsetWidth;
+          banner.classList.add('show');
+        }
 
         // THE VO IS THE INSTRUCTION. Nothing on screen says it — the matra chip in
         // the header and the banner glyph are the only written cues, and both are
@@ -12931,6 +13162,12 @@ SlideModules.MATRA_TOKRI = {
         var el = document.getElementById('level-cheer');
         if (!el) return;
         el.classList.toggle('show', !!show);
+        /* [r26 · SME] "when one matra level is done then the bird comes on the screen - don't
+           show cloud and the tokri in that celebration screen." The flag rides levelCheer
+           itself rather than the call sites, so the playfield is hidden for exactly as long
+           as Swifty is up and comes back with the next round - including the 9s fallback
+           path, which returns through levelCheer(false) too. */
+        root.classList.toggle('mt-cheering', !!show);
         if (show) FLNMotion.confetti.burst({ host: '#lc-fx', count: 55, phases: [] });
       }
 
@@ -13031,14 +13268,30 @@ SlideModules.MATRA_TOKRI = {
         clearDrops();
         FLNMotion.nudge.hide(NUDGE_OPTS);
         /* The win overlay that used to live here is GONE - it was the game's own last page, and
-           this lesson already has one (the CELEBRATION slide). All this does now is celebrate in
-           place and hand control back: the engine unlocks आगे and the child walks on. */
-        $("stage").classList.remove("mt-play");   // hand the chrome back: आगे is the way out
+           this lesson already has one (the CELEBRATION slide).
+           [r25 · SME] "in the celebration screen of the game we don't need bucket or any word
+           cloud." clearDrops() took the falling words, but the basket, its front plate and the
+           dashed catch line stayed on screen behind the confetti - and the आगे pill was drawn
+           straight across the basket. Once the last word is caught this is a celebration, not a
+           playfield, so .mt-ended takes the whole playfield away. */
+        root.classList.add("mt-ended");
+        $("stage").classList.remove("mt-play");   // hand the chrome back
         confettiCannon();
         burstStars();
         setSwMood("celebrate");
-        play(audioSrc("vo_mt_done"), function () { setNavActive(true); });
-        setTimeout(function () { setNavActive(true); }, 4000);   // never strand on a blocked clip
+        /* [r25 · SME] "remove the next button - when the game is complete it should automatically
+           go to the next page." The same contract the object-hunt screens use: the pill is hidden
+           for good and the slide walks on when the cheer ends, with a hard cap so a clip that
+           never fires its ended event cannot strand the child on a screen with no way out. */
+        $("navBtn").style.display = "none";
+        setNavActive(false);
+        var moved = false;
+        var go = function () {
+          if (moved) return; moved = true;
+          if (CARD.slides[state.idx] === slide) completeSlide(true);
+        };
+        play(audioSrc("vo_mt_done"), function () { setTimeout(go, 700); });
+        setTimeout(go, 9000);
       }
 
       // ============ Title screen → Start ============
