@@ -18,9 +18,14 @@
   "landing_hero": {
     "kind": "matra_train",
     "matras": [
-      "“आ” (ा)",
-      "“इ” (ि)",
-      "“ई” (ी)"
+      "ा",
+      "ि",
+      "ी"
+    ],
+    "letters": [
+      "“आ”",
+      "“इ”",
+      "“ई”"
     ]
   },
   "phase_transition_audio": {
@@ -35,7 +40,7 @@
   },
   "phase_distribution": {
     "tutorial": 7,
-    "guided": 4,
+    "guided": 5,
     "practice": 5
   },
   "scaffold_rules": {
@@ -45,6 +50,8 @@
     },
     "max_attempts": 3,
     "hand_on_attempt": 2,
+    "hint_levels": 3,
+    "hand_on_hint3": true,
     "silent_on_late_correct": true,
     "hand_in_practice": true
   },
@@ -89,23 +96,32 @@
       },
       "data": {
         "auto": true,
+        "no_heading": true,
         "pairs": [
           {
             "letter": "आ",
             "matra": "ा",
-            "audio": "vo_matra_aa2"
+            "audio": "vo_pair_aa",
+            "cue_ms": 1569
           },
           {
             "letter": "इ",
             "matra": "ि",
-            "audio": "vo_matra_i"
+            "audio": "vo_pair_i",
+            "cue_ms": 1392
           },
           {
             "letter": "ई",
             "matra": "ी",
-            "audio": "vo_matra_ee"
+            "audio": "vo_pair_ee",
+            "cue_ms": 1746
           }
-        ]
+        ],
+        "phonemes": {
+          "ा": "vo_matra_aa2",
+          "ि": "vo_matra_i",
+          "ी": "vo_matra_ee"
+        }
       }
     },
     {
@@ -118,7 +134,7 @@
         "prompt": "vo_mb_jal_intro",
         "base": "vo_mb_jal_base",
         "onset": "vo_mb_jal_onset",
-        "result": "vo_name_jaal",
+        "result": "vo_mb_jal_explain",
         "sounds": "vo_mb_jal_sounds",
         "explain": "vo_mb_jal_explain"
       },
@@ -132,34 +148,50 @@
         "syllable": "जा",
         "result_word": "जाल",
         "result_img": "obj_jaal",
-        "result_emoji": "🕸️"
+        "result_emoji": "🕸️",
+        "travel": "down",
+        "no_heading": true,
+        "syl_ms": 2615,
+        "join_ms": 3226,
+        "sound_ms": [
+          250,
+          850,
+          1410
+        ]
       }
     },
     {
       "id": "T3",
       "phase": "tutorial",
       "eis": "iconic",
-      "type": "MEET_EXAMPLES",
+      "type": "MEET_PAIR",
       "prompt_hi": "",
       "audio": {
         "prompt": "vo_ex_aa_intro"
       },
       "data": {
         "auto": true,
+        "no_heading": true,
         "examples": [
           {
-            "word_hi": "नाक",
+            "word": "नाक",
             "matra": "ा",
             "img": "obj_naak",
             "emoji": "👃",
-            "audio": "vo_ex_naak"
+            "audio_line": "vo_ex_naak",
+            "matra_audio": null,
+            "pic_ms": 316,
+            "matra_ms": 1188
           },
           {
-            "word_hi": "मटका",
+            "word": "मटका",
             "matra": "ा",
             "img": "obj_matka",
             "emoji": "🏺",
-            "audio": "vo_ex_matka"
+            "audio_line": "vo_ex_matka",
+            "matra_audio": null,
+            "pic_ms": 611,
+            "matra_ms": 1957
           }
         ]
       }
@@ -174,7 +206,7 @@
         "prompt": "vo_mb_bil_intro",
         "base": "vo_mb_bil_base",
         "onset": "vo_mb_bil_onset",
-        "result": "vo_name_bil",
+        "result": "vo_mb_bil_explain",
         "sounds": "vo_mb_bil_sounds",
         "explain": "vo_mb_bil_explain"
       },
@@ -188,34 +220,50 @@
         "syllable": "बि",
         "result_word": "बिल",
         "result_img": "obj_bil",
-        "result_emoji": "🕳️"
+        "result_emoji": "🕳️",
+        "travel": "down",
+        "no_heading": true,
+        "syl_ms": 3248,
+        "join_ms": 3132,
+        "sound_ms": [
+          290,
+          1160,
+          1970
+        ]
       }
     },
     {
       "id": "T5",
       "phase": "tutorial",
       "eis": "iconic",
-      "type": "MEET_EXAMPLES",
+      "type": "MEET_PAIR",
       "prompt_hi": "",
       "audio": {
         "prompt": "vo_ex_i_intro"
       },
       "data": {
         "auto": true,
+        "no_heading": true,
         "examples": [
           {
-            "word_hi": "दिन",
+            "word": "दिन",
             "matra": "ि",
             "img": "obj_din",
             "emoji": "☀️",
-            "audio": "vo_ex_din"
+            "audio_line": "vo_ex_din",
+            "matra_audio": null,
+            "pic_ms": 522,
+            "matra_ms": 1961
           },
           {
-            "word_hi": "गति",
+            "word": "गति",
             "matra": "ि",
             "img": "obj_gati",
             "emoji": "🏃",
-            "audio": "vo_ex_gati"
+            "audio_line": "vo_ex_gati",
+            "matra_audio": null,
+            "pic_ms": 492,
+            "matra_ms": 1846
           }
         ]
       }
@@ -230,7 +278,7 @@
         "prompt": "vo_mb_keel_intro",
         "base": "vo_mb_keel_base",
         "onset": "vo_mb_keel_onset",
-        "result": "vo_name_keel",
+        "result": "vo_mb_keel_explain",
         "sounds": "vo_mb_keel_sounds",
         "explain": "vo_mb_keel_explain"
       },
@@ -245,34 +293,50 @@
         "result_word": "कील",
         "result_img": "obj_keel",
         "result_emoji": "🔩",
-        "result_img_scale": 0.9
+        "result_img_scale": 0.9,
+        "travel": "down",
+        "no_heading": true,
+        "syl_ms": 2962,
+        "join_ms": 3427,
+        "sound_ms": [
+          250,
+          1140,
+          2090
+        ]
       }
     },
     {
       "id": "T7",
       "phase": "tutorial",
       "eis": "iconic",
-      "type": "MEET_EXAMPLES",
+      "type": "MEET_PAIR",
       "prompt_hi": "",
       "audio": {
         "prompt": "vo_ex_ee_intro"
       },
       "data": {
         "auto": true,
+        "no_heading": true,
         "examples": [
           {
-            "word_hi": "तीर",
+            "word": "तीर",
             "matra": "ी",
             "img": "obj_teer",
             "emoji": "🏹",
-            "audio": "vo_ex_teer"
+            "audio_line": "vo_ex_teer",
+            "matra_audio": null,
+            "pic_ms": 515,
+            "matra_ms": 1932
           },
           {
-            "word_hi": "लड़की",
+            "word": "लड़की",
             "matra": "ी",
             "img": "obj_ladki",
             "emoji": "👧",
-            "audio": "vo_ex_ladki"
+            "audio_line": "vo_ex_ladki",
+            "matra_audio": null,
+            "pic_ms": 814,
+            "matra_ms": 2306
           }
         ]
       }
@@ -288,6 +352,7 @@
         "correct": "vo_tt_aa_correct",
         "hint1": "vo_tt_aa_hint1",
         "hint2": "vo_tt_aa_hint2",
+        "hint3": "vo_tt_aa_hint3",
         "reveal": "vo_rev_tt_aa",
         "try_again": "vo_tt_aa_hint1"
       },
@@ -296,15 +361,18 @@
         "options": [
           {
             "word_hi": "हाथ",
+            "matra": "ा",
             "audio": "vo_name_haath",
             "correct": true
           },
           {
             "word_hi": "दिन",
+            "matra": "ि",
             "audio": "vo_name_din"
           },
           {
             "word_hi": "नीम",
+            "matra": "ी",
             "audio": "vo_name_neem"
           }
         ]
@@ -320,12 +388,13 @@
       "phase": "guided",
       "eis": "iconic",
       "type": "TRAIN_TAP",
-      "prompt_hi": "छोटी “इ” की मात्रा वाले शब्द पर टैप कीजिए।",
+      "prompt_hi": "“इ” की मात्रा वाले शब्द पर टैप कीजिए।",
       "audio": {
         "prompt": "vo_tt_i_prompt",
         "correct": "vo_tt_i_correct",
         "hint1": "vo_tt_i_hint1",
         "hint2": "vo_tt_i_hint2",
+        "hint3": "vo_tt_i_hint3",
         "reveal": "vo_rev_tt_i",
         "try_again": "vo_tt_i_hint1"
       },
@@ -334,15 +403,18 @@
         "options": [
           {
             "word_hi": "पिन",
+            "matra": "ि",
             "audio": "vo_name_pin",
             "correct": true
           },
           {
             "word_hi": "नाक",
+            "matra": "ा",
             "audio": "vo_name_naak"
           },
           {
             "word_hi": "तीर",
+            "matra": "ी",
             "audio": "vo_name_teer"
           }
         ]
@@ -358,12 +430,13 @@
       "phase": "guided",
       "eis": "iconic",
       "type": "TRAIN_TAP",
-      "prompt_hi": "बड़ी “ई” की मात्रा वाले शब्द पर टैप कीजिए।",
+      "prompt_hi": "“ई” की मात्रा वाले शब्द पर टैप कीजिए।",
       "audio": {
         "prompt": "vo_tt_ee_prompt",
         "correct": "vo_tt_ee_correct",
         "hint1": "vo_tt_ee_hint1",
         "hint2": "vo_tt_ee_hint2",
+        "hint3": "vo_tt_ee_hint3",
         "reveal": "vo_rev_tt_ee",
         "try_again": "vo_tt_ee_hint1"
       },
@@ -372,15 +445,18 @@
         "options": [
           {
             "word_hi": "पानी",
+            "matra": "ी",
             "audio": "vo_name_paani",
             "correct": true
           },
           {
             "word_hi": "नाक",
+            "matra": "ा",
             "audio": "vo_name_naak"
           },
           {
             "word_hi": "दिन",
+            "matra": "ि",
             "audio": "vo_name_din"
           }
         ]
@@ -389,6 +465,50 @@
         "on_complete": [
           "matra_tap_first_try"
         ]
+      }
+    },
+    {
+      "id": "G4D",
+      "phase": "guided",
+      "eis": "enactive",
+      "type": "TRAIN_SORT",
+      "prompt_hi": "देखिए, शब्द को उसकी सही मात्रा वाले डिब्बे में इस तरह ले जाते हैं।",
+      "audio": {
+        "prompt": "vo_ts0_prompt"
+      },
+      "data": {
+        "demo": true,
+        "bins": [
+          {
+            "key": "aa",
+            "label": "“आ” (ा)"
+          },
+          {
+            "key": "i",
+            "label": "“इ” (ि)"
+          }
+        ],
+        "items": [
+          {
+            "key": "aa",
+            "word_hi": "हाथ",
+            "img": "obj_haath",
+            "emoji": "✋",
+            "audio": "vo_name_haath",
+            "correct_audio": "vo_ts1_ok_haath"
+          },
+          {
+            "key": "i",
+            "word_hi": "पिन",
+            "img": "obj_pin",
+            "emoji": "📌",
+            "audio": "vo_name_pin",
+            "correct_audio": "vo_ts1_ok_pin"
+          }
+        ]
+      },
+      "signals": {
+        "on_complete": []
       }
     },
     {
@@ -408,15 +528,18 @@
         "bins": [
           {
             "key": "aa",
-            "label": "“आ” (ा)"
+            "label": "“आ” (ा)",
+            "label_audio": "vo_letter_aa"
           },
           {
             "key": "i",
-            "label": "“इ” (ि)"
+            "label": "“इ” (ि)",
+            "label_audio": "vo_letter_i"
           },
           {
             "key": "ee",
-            "label": "“ई” (ी)"
+            "label": "“ई” (ी)",
+            "label_audio": "vo_letter_ee"
           }
         ],
         "items": [
@@ -426,7 +549,10 @@
             "img": "obj_haath",
             "emoji": "✋",
             "audio": "vo_name_haath",
-            "correct_audio": "vo_ts1_ok_haath"
+            "correct_audio": "vo_ts1_ok_haath",
+            "matra": "ा",
+            "hint2_audio": "vo_ts1_h2_haath",
+            "hint3_audio": "vo_ts1_h3_haath"
           },
           {
             "key": "i",
@@ -434,7 +560,10 @@
             "img": "obj_pin",
             "emoji": "📌",
             "audio": "vo_name_pin",
-            "correct_audio": "vo_ts1_ok_pin"
+            "correct_audio": "vo_ts1_ok_pin",
+            "matra": "ि",
+            "hint2_audio": "vo_ts1_h2_pin",
+            "hint3_audio": "vo_ts1_h3_pin"
           },
           {
             "key": "ee",
@@ -442,7 +571,10 @@
             "img": "obj_neem",
             "emoji": "🌳",
             "audio": "vo_name_neem",
-            "correct_audio": "vo_ts1_ok_neem"
+            "correct_audio": "vo_ts1_ok_neem",
+            "matra": "ी",
+            "hint2_audio": "vo_ts1_h2_neem",
+            "hint3_audio": "vo_ts1_h3_neem"
           }
         ]
       },
@@ -469,32 +601,44 @@
         "bins": [
           {
             "key": "aa",
-            "label": "जाल"
+            "label": "जाल",
+            "label_audio": "vo_name_jaal"
           },
           {
             "key": "i",
-            "label": "सिर"
+            "label": "सिर",
+            "label_audio": "vo_name_sir"
           },
           {
             "key": "ee",
-            "label": "कील"
+            "label": "कील",
+            "label_audio": "vo_name_keel"
           }
         ],
         "items": [
           {
             "key": "aa",
             "glyph": "ा",
-            "correct_audio": "vo_ts2_ok_jaal"
+            "correct_audio": "vo_ts2_ok_jaal",
+            "audio": "vo_letter_aa",
+            "hint2_audio": "vo_ts2_h2_aa",
+            "hint3_audio": "vo_ts2_h3_aa"
           },
           {
             "key": "i",
             "glyph": "ि",
-            "correct_audio": "vo_ts2_ok_sir"
+            "correct_audio": "vo_ts2_ok_sir",
+            "audio": "vo_letter_i",
+            "hint2_audio": "vo_ts2_h2_i",
+            "hint3_audio": "vo_ts2_h3_i"
           },
           {
             "key": "ee",
             "glyph": "ी",
-            "correct_audio": "vo_ts2_ok_keel"
+            "correct_audio": "vo_ts2_ok_keel",
+            "audio": "vo_letter_ee",
+            "hint2_audio": "vo_ts2_h2_ee",
+            "hint3_audio": "vo_ts2_h3_ee"
           }
         ]
       },
@@ -514,6 +658,7 @@
         "prompt": "vo_mf_prompt",
         "hint1": "vo_mf_hint1",
         "hint2": "vo_mf_hint2",
+        "hint3": "vo_mf_hint3",
         "try_again": "vo_mf_hint1"
       },
       "data": {
@@ -587,6 +732,7 @@
         "signal": "matra_sort_correct",
         "hide_labels": true,
         "multi": true,
+        "announce_items": true,
         "bins": [
           {
             "key": "aa",
@@ -1057,9 +1203,9 @@
       "vo_ex_naak": "assets/Audio/VO/vo_ex_naak.ogg",
       "vo_ex_teer": "assets/Audio/VO/vo_ex_teer.ogg",
       "vo_landing": "assets/Audio/VO/vo_landing.ogg",
-      "vo_matra_aa2": "assets/Audio/VO/vo_matra_aa2.ogg",
-      "vo_matra_ee": "assets/Audio/VO/vo_matra_ee.ogg",
-      "vo_matra_i": "assets/Audio/VO/vo_matra_i.ogg",
+      "vo_letter_aa": "assets/Audio/VO/vo_letter_aa.ogg",
+      "vo_letter_ee": "assets/Audio/VO/vo_letter_ee.ogg",
+      "vo_letter_i": "assets/Audio/VO/vo_letter_i.ogg",
       "vo_mb_bil_base": "assets/Audio/VO/vo_mb_bil_base.ogg",
       "vo_mb_bil_explain": "assets/Audio/VO/vo_mb_bil_explain.ogg",
       "vo_mb_bil_intro": "assets/Audio/VO/vo_mb_bil_intro.ogg",
@@ -1077,6 +1223,7 @@
       "vo_mb_keel_sounds": "assets/Audio/VO/vo_mb_keel_sounds.ogg",
       "vo_mf_hint1": "assets/Audio/VO/vo_mf_hint1.ogg",
       "vo_mf_hint2": "assets/Audio/VO/vo_mf_hint2.ogg",
+      "vo_mf_hint3": "assets/Audio/VO/vo_mf_hint3.ogg",
       "vo_mf_ok_hiran": "assets/Audio/VO/vo_mf_ok_hiran.ogg",
       "vo_mf_ok_jaal": "assets/Audio/VO/vo_mf_ok_jaal.ogg",
       "vo_mf_ok_pari": "assets/Audio/VO/vo_mf_ok_pari.ogg",
@@ -1104,7 +1251,6 @@
       "vo_mt_w_teer": "assets/Audio/VO/vo_mt_w_teer.ogg",
       "vo_mt_w_til": "assets/Audio/VO/vo_mt_w_til.ogg",
       "vo_name_aam": "assets/Audio/VO/vo_name_aam.ogg",
-      "vo_name_bil": "assets/Audio/VO/vo_name_bil.ogg",
       "vo_name_chidiya": "assets/Audio/VO/vo_name_chidiya.ogg",
       "vo_name_din": "assets/Audio/VO/vo_name_din.ogg",
       "vo_name_gaajar": "assets/Audio/VO/vo_name_gaajar.ogg",
@@ -1125,6 +1271,7 @@
       "vo_name_pari": "assets/Audio/VO/vo_name_pari.ogg",
       "vo_name_patang": "assets/Audio/VO/vo_name_patang.ogg",
       "vo_name_pin": "assets/Audio/VO/vo_name_pin.ogg",
+      "vo_name_sir": "assets/Audio/VO/vo_name_sir.ogg",
       "vo_name_sooraj": "assets/Audio/VO/vo_name_sooraj.ogg",
       "vo_name_taala": "assets/Audio/VO/vo_name_taala.ogg",
       "vo_name_teer": "assets/Audio/VO/vo_name_teer.ogg",
@@ -1141,6 +1288,9 @@
       "vo_oh_i_hint2": "assets/Audio/VO/vo_oh_i_hint2.ogg",
       "vo_oh_i_intro": "assets/Audio/VO/vo_oh_i_intro.ogg",
       "vo_oh_i_wrong": "assets/Audio/VO/vo_oh_i_wrong.ogg",
+      "vo_pair_aa": "assets/Audio/VO/vo_pair_aa.ogg",
+      "vo_pair_ee": "assets/Audio/VO/vo_pair_ee.ogg",
+      "vo_pair_i": "assets/Audio/VO/vo_pair_i.ogg",
       "vo_pt_guided": "assets/Audio/VO/vo_pt_guided.ogg",
       "vo_pt_practice": "assets/Audio/VO/vo_pt_practice.ogg",
       "vo_pt_tutorial": "assets/Audio/VO/vo_pt_tutorial.ogg",
@@ -1148,12 +1298,25 @@
       "vo_rev_tt_ee": "assets/Audio/VO/vo_rev_tt_ee.ogg",
       "vo_rev_tt_i": "assets/Audio/VO/vo_rev_tt_i.ogg",
       "vo_s1_prompt": "assets/Audio/VO/vo_s1_prompt.ogg",
+      "vo_ts0_prompt": "assets/Audio/VO/vo_ts0_prompt.ogg",
+      "vo_ts1_h2_haath": "assets/Audio/VO/vo_ts1_h2_haath.ogg",
+      "vo_ts1_h2_neem": "assets/Audio/VO/vo_ts1_h2_neem.ogg",
+      "vo_ts1_h2_pin": "assets/Audio/VO/vo_ts1_h2_pin.ogg",
+      "vo_ts1_h3_haath": "assets/Audio/VO/vo_ts1_h3_haath.ogg",
+      "vo_ts1_h3_neem": "assets/Audio/VO/vo_ts1_h3_neem.ogg",
+      "vo_ts1_h3_pin": "assets/Audio/VO/vo_ts1_h3_pin.ogg",
       "vo_ts1_hint1": "assets/Audio/VO/vo_ts1_hint1.ogg",
       "vo_ts1_hint2": "assets/Audio/VO/vo_ts1_hint2.ogg",
       "vo_ts1_ok_haath": "assets/Audio/VO/vo_ts1_ok_haath.ogg",
       "vo_ts1_ok_neem": "assets/Audio/VO/vo_ts1_ok_neem.ogg",
       "vo_ts1_ok_pin": "assets/Audio/VO/vo_ts1_ok_pin.ogg",
       "vo_ts1_prompt": "assets/Audio/VO/vo_ts1_prompt.ogg",
+      "vo_ts2_h2_aa": "assets/Audio/VO/vo_ts2_h2_aa.ogg",
+      "vo_ts2_h2_ee": "assets/Audio/VO/vo_ts2_h2_ee.ogg",
+      "vo_ts2_h2_i": "assets/Audio/VO/vo_ts2_h2_i.ogg",
+      "vo_ts2_h3_aa": "assets/Audio/VO/vo_ts2_h3_aa.ogg",
+      "vo_ts2_h3_ee": "assets/Audio/VO/vo_ts2_h3_ee.ogg",
+      "vo_ts2_h3_i": "assets/Audio/VO/vo_ts2_h3_i.ogg",
       "vo_ts2_hint1": "assets/Audio/VO/vo_ts2_hint1.ogg",
       "vo_ts2_hint2": "assets/Audio/VO/vo_ts2_hint2.ogg",
       "vo_ts2_ok_jaal": "assets/Audio/VO/vo_ts2_ok_jaal.ogg",
@@ -1172,14 +1335,17 @@
       "vo_tt_aa_correct": "assets/Audio/VO/vo_tt_aa_correct.ogg",
       "vo_tt_aa_hint1": "assets/Audio/VO/vo_tt_aa_hint1.ogg",
       "vo_tt_aa_hint2": "assets/Audio/VO/vo_tt_aa_hint2.ogg",
+      "vo_tt_aa_hint3": "assets/Audio/VO/vo_tt_aa_hint3.ogg",
       "vo_tt_aa_prompt": "assets/Audio/VO/vo_tt_aa_prompt.ogg",
       "vo_tt_ee_correct": "assets/Audio/VO/vo_tt_ee_correct.ogg",
       "vo_tt_ee_hint1": "assets/Audio/VO/vo_tt_ee_hint1.ogg",
       "vo_tt_ee_hint2": "assets/Audio/VO/vo_tt_ee_hint2.ogg",
+      "vo_tt_ee_hint3": "assets/Audio/VO/vo_tt_ee_hint3.ogg",
       "vo_tt_ee_prompt": "assets/Audio/VO/vo_tt_ee_prompt.ogg",
       "vo_tt_i_correct": "assets/Audio/VO/vo_tt_i_correct.ogg",
       "vo_tt_i_hint1": "assets/Audio/VO/vo_tt_i_hint1.ogg",
       "vo_tt_i_hint2": "assets/Audio/VO/vo_tt_i_hint2.ogg",
+      "vo_tt_i_hint3": "assets/Audio/VO/vo_tt_i_hint3.ogg",
       "vo_tt_i_prompt": "assets/Audio/VO/vo_tt_i_prompt.ogg"
     },
     "audio_text": {
@@ -1195,9 +1361,9 @@
       "vo_ex_naak": "नाक, बोलकर देखिए। इसमें न पर आ की मात्रा लगी है।",
       "vo_ex_teer": "तीर, बोलकर देखिए। इसमें त पर बड़ी ई की मात्रा लगी है।",
       "vo_landing": "हेलो दोस्त! मैं हूँ स्विफ्टी। आज हम मात्राओं के बारे में जानेंगे।",
-      "vo_matra_aa2": "आ की मात्रा",
-      "vo_matra_ee": "बड़ी ई की मात्रा",
-      "vo_matra_i": "छोटी इ की मात्रा",
+      "vo_letter_aa": "“आ” की मात्रा।",
+      "vo_letter_ee": "“ई” की मात्रा।",
+      "vo_letter_i": "“इ” की मात्रा।",
       "vo_mb_bil_base": "यह शब्द बल है।",
       "vo_mb_bil_explain": "अब बल में छोटी इ की मात्रा लगाने पर, बिल बनता है।",
       "vo_mb_bil_intro": "आइए, देखें कि छोटी इ की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।",
@@ -1213,8 +1379,9 @@
       "vo_mb_keel_intro": "आइए, देखें कि बड़ी ई की मात्रा लगाने से शब्द की आवाज़ कैसे बदलती है।",
       "vo_mb_keel_onset": "क में बड़ी ई की मात्रा लगाने पर, की बनता है।",
       "vo_mb_keel_sounds": "क, की, कील।",
-      "vo_mf_hint1": "फिर से सोचो।",
-      "vo_mf_hint2": "ध्यान से देखो। कौन-सी मात्रा लगेगी?",
+      "vo_mf_hint1": "फिर से देखिए। चित्र का नाम सोचिए और सही मात्रा लगाइए।",
+      "vo_mf_hint2": "नाम ध्यान से सुनिए। जो मात्रा सही लग रही है, वही चुनिए।",
+      "vo_mf_hint3": "देखिए, जिस शब्द पर हाथ है उसी की खाली जगह में यह मात्रा लगेगी। इसे वहीं डालिए।",
       "vo_mf_ok_hiran": "शाबाश! हिरण बन गया।",
       "vo_mf_ok_jaal": "शाबाश! जाल बन गया।",
       "vo_mf_ok_pari": "शाबाश! परी बन गया।",
@@ -1242,7 +1409,6 @@
       "vo_mt_w_teer": "तीर",
       "vo_mt_w_til": "तिल",
       "vo_name_aam": "यह आम है।",
-      "vo_name_bil": "बिल",
       "vo_name_chidiya": "यह चिड़िया है।",
       "vo_name_din": "दिन",
       "vo_name_gaajar": "गाजर।",
@@ -1263,6 +1429,7 @@
       "vo_name_pari": "परी",
       "vo_name_patang": "पतंग।",
       "vo_name_pin": "पिन",
+      "vo_name_sir": "सिर",
       "vo_name_sooraj": "यह सूरज है।",
       "vo_name_taala": "ताला।",
       "vo_name_teer": "तीर",
@@ -1279,6 +1446,9 @@
       "vo_oh_i_hint2": "ध्यान से देखिए और छोटी इ की मात्रा वाले चित्र पर टैप कीजिए।",
       "vo_oh_i_intro": "छोटी इ की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
       "vo_oh_i_wrong": "फिर से सोचिए। छोटी इ की मात्रा वाला चित्र खोजिए।",
+      "vo_pair_aa": "यह है आ। इसकी मात्रा है।",
+      "vo_pair_ee": "यह है ई। इसकी मात्रा है।",
+      "vo_pair_i": "यह है इ। इसकी मात्रा है।",
       "vo_pt_guided": "बहुत बढ़िया! अब हम साथ मिलकर शुरू करते हैं। चलिए, साथ में करें!",
       "vo_pt_practice": "वाह! अब आपकी बारी।",
       "vo_pt_tutorial": "ध्यान से देखिए और मेरे साथ जानिए। चलिए, शुरू करें!",
@@ -1286,13 +1456,26 @@
       "vo_rev_tt_ee": "सही डिब्बा यह है। पानी शब्द में बड़ी ई की मात्रा है।",
       "vo_rev_tt_i": "सही डिब्बा यह है। पिन शब्द में छोटी इ की मात्रा है।",
       "vo_s1_prompt": "आज हम आ की मात्रा, छोटी इ की मात्रा और बड़ी ई की मात्रा वाले शब्द पढ़ेंगे।",
-      "vo_ts1_hint1": "फिर से सुनो और सही मात्रा पहचानिए।",
+      "vo_ts0_prompt": "देखिए, शब्द को उसकी सही मात्रा वाले डिब्बे में इस तरह ले जाते हैं।",
+      "vo_ts1_h2_haath": "ध्यान से सुनिए — “हाथ”। “हाथ” में “आ” की मात्रा है।",
+      "vo_ts1_h2_neem": "ध्यान से सुनिए — “नीम”। “नीम” में “ई” की मात्रा है।",
+      "vo_ts1_h2_pin": "ध्यान से सुनिए — “पिन”। “पिन” में “इ” की मात्रा है।",
+      "vo_ts1_h3_haath": "“हाथ” में “आ” की मात्रा है। इसे “आ” की मात्रा वाले डिब्बे में डालिए।",
+      "vo_ts1_h3_neem": "“नीम” में “ई” की मात्रा है। इसे “ई” की मात्रा वाले डिब्बे में डालिए।",
+      "vo_ts1_h3_pin": "“पिन” में “इ” की मात्रा है। इसे “इ” की मात्रा वाले डिब्बे में डालिए।",
+      "vo_ts1_hint1": "फिर से पढ़िए। शब्द में कौन-सी मात्रा है, देखिए और उसे उसी मात्रा वाले डिब्बे में डालिए।",
       "vo_ts1_hint2": "ध्यान से देखो, इस शब्द में कौन-सी मात्रा है?",
       "vo_ts1_ok_haath": "शाबाश! हाथ शब्द में आ की मात्रा है।",
       "vo_ts1_ok_neem": "शाबाश! नीम शब्द में बड़ी ई की मात्रा है।",
       "vo_ts1_ok_pin": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।",
       "vo_ts1_prompt": "हर शब्द को उसकी सही मात्रा वाले डिब्बे में डालिए।",
-      "vo_ts2_hint1": "फिर से सोचो। इस शब्द में कौन-सी मात्रा लगी है?",
+      "vo_ts2_h2_aa": "यह “आ” की मात्रा है। देखिए, किस शब्द में यह मात्रा लगेगी।",
+      "vo_ts2_h2_ee": "यह “ई” की मात्रा है। देखिए, किस शब्द में यह मात्रा लगेगी।",
+      "vo_ts2_h2_i": "यह “इ” की मात्रा है। देखिए, किस शब्द में यह मात्रा लगेगी।",
+      "vo_ts2_h3_aa": "“आ” की मात्रा “जाल” में लगेगी। इसे “जाल” वाले डिब्बे में डालिए।",
+      "vo_ts2_h3_ee": "“ई” की मात्रा “कील” में लगेगी। इसे “कील” वाले डिब्बे में डालिए।",
+      "vo_ts2_h3_i": "“इ” की मात्रा “सिर” में लगेगी। इसे “सिर” वाले डिब्बे में डालिए।",
+      "vo_ts2_hint1": "फिर से देखिए। मात्रा को ध्यान से देखिए और उसे सही शब्द वाले डिब्बे में डालिए।",
       "vo_ts2_hint2": "ध्यान से देखो और शब्द को फिर से पढ़ो।",
       "vo_ts2_ok_jaal": "शाबाश! जाल शब्द में आ की मात्रा लगी है।",
       "vo_ts2_ok_keel": "शाबाश! कील शब्द में बड़ी ई की मात्रा लगी है।",
@@ -1308,17 +1491,20 @@
       "vo_ts3_ok_pin": "शाबाश! पिन में छोटी इ की मात्रा है।",
       "vo_ts3_prompt": "चित्र देखकर उसे सही मात्रा वाले डिब्बे में डालिए।",
       "vo_tt_aa_correct": "शाबाश! हाथ शब्द में आ की मात्रा है।",
-      "vo_tt_aa_hint1": "फिर से सोचो। आ की मात्रा वाला शब्द कौन-सा है?",
-      "vo_tt_aa_hint2": "ध्यान से देखो और सही डिब्बे पर टैप कीजिए।",
+      "vo_tt_aa_hint1": "फिर से पढ़िए। जिस शब्द में “आ” की मात्रा आ रही है, उस पर टैप कीजिए।",
+      "vo_tt_aa_hint2": "जिस शब्द में “आ” की मात्रा है, उस पर टैप कीजिए।",
+      "vo_tt_aa_hint3": "देखिए, “हाथ” में “आ” की मात्रा है। “हाथ” पर टैप कीजिए।",
       "vo_tt_aa_prompt": "“आ” की मात्रा वाले शब्द पर टैप कीजिए।",
       "vo_tt_ee_correct": "शाबाश! पानी शब्द में बड़ी ई की मात्रा है।",
-      "vo_tt_ee_hint1": "फिर से सोचो। बड़ी ई की मात्रा वाला शब्द कौन-सा है?",
-      "vo_tt_ee_hint2": "ध्यान से देखो और सही डिब्बे पर टैप करो।",
-      "vo_tt_ee_prompt": "बड़ी “ई” की मात्रा वाले शब्द पर टैप कीजिए।",
+      "vo_tt_ee_hint1": "फिर से पढ़िए। जिस शब्द में “ई” की मात्रा आ रही है, उस पर टैप कीजिए।",
+      "vo_tt_ee_hint2": "जिस शब्द में “ई” की मात्रा है, उस पर टैप कीजिए।",
+      "vo_tt_ee_hint3": "देखिए, “पानी” में “ई” की मात्रा है। “पानी” पर टैप कीजिए।",
+      "vo_tt_ee_prompt": "“ई” की मात्रा वाले शब्द पर टैप कीजिए।",
       "vo_tt_i_correct": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।",
-      "vo_tt_i_hint1": "फिर से सोचो। छोटी इ की मात्रा वाला शब्द कौन-सा है?",
-      "vo_tt_i_hint2": "ध्यान से देखो और सही डिब्बे पर टैप करो।",
-      "vo_tt_i_prompt": "छोटी “इ” की मात्रा वाले शब्द पर टैप कीजिए।"
+      "vo_tt_i_hint1": "फिर से पढ़िए। जिस शब्द में “इ” की मात्रा आ रही है, उस पर टैप कीजिए।",
+      "vo_tt_i_hint2": "जिस शब्द में “इ” की मात्रा है, उस पर टैप कीजिए।",
+      "vo_tt_i_hint3": "देखिए, “पिन” में “इ” की मात्रा है। “पिन” पर टैप कीजिए।",
+      "vo_tt_i_prompt": "“इ” की मात्रा वाले शब्द पर टैप कीजिए।"
     },
     "image": {
       "obj_bal": "assets/Images/obj_bal.png",
@@ -1340,6 +1526,2348 @@
       "obj_teer": "assets/Images/obj_teer.png"
     },
     "audio_ext": "ogg",
-    "img_ext": "png"
+    "img_ext": "png",
+    "audio_speech": {
+      "vo_cel_prompt": [
+        [
+          0.15,
+          0.98
+        ],
+        [
+          1.3,
+          2.26
+        ],
+        [
+          2.69,
+          3.05
+        ],
+        [
+          3.51,
+          3.77
+        ],
+        [
+          4.1,
+          4.3
+        ],
+        [
+          4.46,
+          5.82
+        ],
+        [
+          6.1,
+          7.06
+        ],
+        [
+          7.19,
+          7.54
+        ]
+      ],
+      "vo_ex_aa_intro": [
+        [
+          0.12,
+          0.56
+        ],
+        [
+          0.95,
+          3.01
+        ]
+      ],
+      "vo_ex_din": [
+        [
+          0.3,
+          0.76
+        ],
+        [
+          1.33,
+          2.19
+        ],
+        [
+          2.72,
+          3.73
+        ],
+        [
+          3.9,
+          5.28
+        ]
+      ],
+      "vo_ex_ee_intro": [
+        [
+          0.07,
+          3.02
+        ]
+      ],
+      "vo_ex_gati": [
+        [
+          0.11,
+          0.35
+        ],
+        [
+          0.45,
+          0.62
+        ],
+        [
+          1.04,
+          2.01
+        ],
+        [
+          2.39,
+          2.8
+        ],
+        [
+          3.09,
+          3.26
+        ],
+        [
+          3.36,
+          3.52
+        ],
+        [
+          3.62,
+          5.04
+        ]
+      ],
+      "vo_ex_i_intro": [
+        [
+          0.25,
+          0.57
+        ],
+        [
+          0.89,
+          3.1
+        ]
+      ],
+      "vo_ex_ladki": [
+        [
+          0.28,
+          0.85
+        ],
+        [
+          1.46,
+          2.29
+        ],
+        [
+          2.79,
+          3.22
+        ],
+        [
+          3.7,
+          5.68
+        ]
+      ],
+      "vo_ex_matka": [
+        [
+          0.25,
+          0.8
+        ],
+        [
+          1.17,
+          1.89
+        ],
+        [
+          2.37,
+          2.72
+        ],
+        [
+          2.83,
+          3.02
+        ],
+        [
+          3.12,
+          3.3
+        ],
+        [
+          3.53,
+          4.55
+        ]
+      ],
+      "vo_ex_naak": [
+        [
+          0.24,
+          0.63
+        ],
+        [
+          0.78,
+          0.8
+        ],
+        [
+          2.02,
+          2.73
+        ]
+      ],
+      "vo_ex_teer": [
+        [
+          0.3,
+          0.76
+        ],
+        [
+          1.24,
+          2.06
+        ],
+        [
+          2.44,
+          2.83
+        ],
+        [
+          2.98,
+          3.47
+        ],
+        [
+          3.7,
+          5.21
+        ]
+      ],
+      "vo_landing": [
+        [
+          0.21,
+          0.81
+        ],
+        [
+          1.05,
+          1.65
+        ],
+        [
+          1.79,
+          1.94
+        ],
+        [
+          2.29,
+          4.26
+        ]
+      ],
+      "vo_letter_aa": [
+        [
+          0.26,
+          0.58
+        ],
+        [
+          0.71,
+          1.0
+        ],
+        [
+          1.24,
+          1.51
+        ],
+        [
+          1.64,
+          1.87
+        ]
+      ],
+      "vo_letter_ee": [
+        [
+          0.26,
+          0.51
+        ],
+        [
+          0.65,
+          1.22
+        ],
+        [
+          1.37,
+          1.65
+        ]
+      ],
+      "vo_letter_i": [
+        [
+          0.27,
+          0.46
+        ],
+        [
+          0.91,
+          1.24
+        ],
+        [
+          1.67,
+          1.95
+        ],
+        [
+          2.13,
+          2.4
+        ]
+      ],
+      "vo_mb_bil_base": [
+        [
+          0.23,
+          1.03
+        ],
+        [
+          1.13,
+          1.75
+        ]
+      ],
+      "vo_mb_bil_explain": [
+        [
+          0.22,
+          2.85
+        ],
+        [
+          3.12,
+          4.01
+        ]
+      ],
+      "vo_mb_bil_intro": [
+        [
+          0.25,
+          4.79
+        ]
+      ],
+      "vo_mb_bil_onset": [
+        [
+          0.12,
+          0.54
+        ],
+        [
+          0.78,
+          2.72
+        ],
+        [
+          3.12,
+          3.9
+        ]
+      ],
+      "vo_mb_bil_sounds": [
+        [
+          0.29,
+          0.73
+        ],
+        [
+          1.16,
+          1.6
+        ],
+        [
+          1.97,
+          2.36
+        ]
+      ],
+      "vo_mb_jal_base": [
+        [
+          0.27,
+          0.95
+        ],
+        [
+          1.12,
+          1.69
+        ]
+      ],
+      "vo_mb_jal_explain": [
+        [
+          0.13,
+          0.4
+        ],
+        [
+          0.61,
+          1.34
+        ],
+        [
+          1.66,
+          3.07
+        ],
+        [
+          3.39,
+          4.39
+        ]
+      ],
+      "vo_mb_jal_intro": [
+        [
+          0.13,
+          0.91
+        ],
+        [
+          1.15,
+          1.3
+        ],
+        [
+          1.44,
+          2.9
+        ],
+        [
+          3.17,
+          5.23
+        ]
+      ],
+      "vo_mb_jal_onset": [
+        [
+          0.29,
+          2.2
+        ],
+        [
+          2.45,
+          3.22
+        ]
+      ],
+      "vo_mb_jal_sounds": [
+        [
+          0.24,
+          0.6
+        ],
+        [
+          0.84,
+          1.15
+        ],
+        [
+          1.41,
+          1.77
+        ]
+      ],
+      "vo_mb_keel_base": [
+        [
+          0.17,
+          0.8
+        ],
+        [
+          1.08,
+          1.55
+        ]
+      ],
+      "vo_mb_keel_explain": [
+        [
+          0.27,
+          0.44
+        ],
+        [
+          0.57,
+          1.16
+        ],
+        [
+          1.34,
+          3.18
+        ],
+        [
+          3.55,
+          4.41
+        ]
+      ],
+      "vo_mb_keel_intro": [
+        [
+          0.25,
+          0.89
+        ],
+        [
+          1.14,
+          2.8
+        ],
+        [
+          2.96,
+          4.75
+        ]
+      ],
+      "vo_mb_keel_onset": [
+        [
+          0.18,
+          2.23
+        ],
+        [
+          2.63,
+          3.5
+        ]
+      ],
+      "vo_mb_keel_sounds": [
+        [
+          0.25,
+          0.58
+        ],
+        [
+          1.14,
+          1.5
+        ],
+        [
+          2.09,
+          2.54
+        ]
+      ],
+      "vo_mf_hint1": [
+        [
+          0.25,
+          1.41
+        ],
+        [
+          1.93,
+          2.06
+        ],
+        [
+          2.18,
+          3.44
+        ],
+        [
+          3.79,
+          5.52
+        ]
+      ],
+      "vo_mf_hint2": [
+        [
+          0.25,
+          1.86
+        ],
+        [
+          2.36,
+          4.16
+        ],
+        [
+          4.56,
+          5.38
+        ]
+      ],
+      "vo_mf_hint3": [
+        [
+          0.25,
+          1.02
+        ],
+        [
+          1.44,
+          2.24
+        ],
+        [
+          2.34,
+          3.17
+        ],
+        [
+          3.59,
+          6.43
+        ],
+        [
+          7.01,
+          8.3
+        ]
+      ],
+      "vo_mf_ok_hiran": [
+        [
+          0.26,
+          1.31
+        ],
+        [
+          1.51,
+          2.35
+        ]
+      ],
+      "vo_mf_ok_jaal": [
+        [
+          0.2,
+          1.4
+        ],
+        [
+          1.6,
+          2.64
+        ]
+      ],
+      "vo_mf_ok_pari": [
+        [
+          0.17,
+          1.21
+        ],
+        [
+          1.43,
+          2.17
+        ]
+      ],
+      "vo_mf_prompt": [
+        [
+          0.26,
+          2.16
+        ],
+        [
+          2.36,
+          3.45
+        ]
+      ],
+      "vo_mt_cheer_ee": [
+        [
+          0.05,
+          1.09
+        ],
+        [
+          1.41,
+          3.4
+        ],
+        [
+          3.5,
+          4.29
+        ]
+      ],
+      "vo_mt_cheer_i": [
+        [
+          0.05,
+          0.47
+        ],
+        [
+          0.57,
+          1.01
+        ],
+        [
+          1.35,
+          1.5
+        ],
+        [
+          1.61,
+          3.98
+        ]
+      ],
+      "vo_mt_done": [
+        [
+          0.05,
+          1.09
+        ],
+        [
+          1.28,
+          3.71
+        ],
+        [
+          3.81,
+          5.1
+        ]
+      ],
+      "vo_mt_intro": [
+        [
+          0.05,
+          1.48
+        ],
+        [
+          1.96,
+          3.35
+        ]
+      ],
+      "vo_mt_round_aa": [
+        [
+          0.05,
+          0.25
+        ],
+        [
+          0.36,
+          2.16
+        ],
+        [
+          2.35,
+          3.4
+        ]
+      ],
+      "vo_mt_round_ee": [
+        [
+          0.05,
+          0.5
+        ],
+        [
+          0.86,
+          1.46
+        ],
+        [
+          1.68,
+          2.47
+        ],
+        [
+          2.57,
+          4.0
+        ],
+        [
+          4.44,
+          5.65
+        ]
+      ],
+      "vo_mt_round_i": [
+        [
+          0.05,
+          0.49
+        ],
+        [
+          0.79,
+          1.0
+        ],
+        [
+          1.1,
+          3.01
+        ],
+        [
+          3.33,
+          4.42
+        ]
+      ],
+      "vo_mt_w_baal": [
+        [
+          0.18,
+          1.1
+        ]
+      ],
+      "vo_mt_w_chini": [
+        [
+          0.05,
+          0.73
+        ]
+      ],
+      "vo_mt_w_daal": [
+        [
+          0.05,
+          0.82
+        ]
+      ],
+      "vo_mt_w_dil": [
+        [
+          0.05,
+          0.75
+        ]
+      ],
+      "vo_mt_w_din": [
+        [
+          0.05,
+          0.7
+        ]
+      ],
+      "vo_mt_w_haath": [
+        [
+          0.07,
+          0.44
+        ]
+      ],
+      "vo_mt_w_hiran": [
+        [
+          0.05,
+          0.77
+        ]
+      ],
+      "vo_mt_w_kaam": [
+        [
+          0.05,
+          0.67
+        ]
+      ],
+      "vo_mt_w_machhli": [
+        [
+          0.07,
+          0.89
+        ]
+      ],
+      "vo_mt_w_naav": [
+        [
+          0.05,
+          1.12
+        ]
+      ],
+      "vo_mt_w_nadi": [
+        [
+          0.05,
+          0.77
+        ]
+      ],
+      "vo_mt_w_neem": [
+        [
+          0.05,
+          0.9
+        ]
+      ],
+      "vo_mt_w_sir": [
+        [
+          0.05,
+          0.59
+        ]
+      ],
+      "vo_mt_w_teer": [
+        [
+          0.05,
+          0.57
+        ]
+      ],
+      "vo_mt_w_til": [
+        [
+          0.05,
+          0.5
+        ]
+      ],
+      "vo_name_aam": [
+        [
+          0.22,
+          1.03
+        ]
+      ],
+      "vo_name_chidiya": [
+        [
+          0.21,
+          1.1
+        ]
+      ],
+      "vo_name_din": [
+        [
+          0.34,
+          0.75
+        ]
+      ],
+      "vo_name_gaajar": [
+        [
+          0.25,
+          0.78
+        ]
+      ],
+      "vo_name_gend": [
+        [
+          0.19,
+          0.71
+        ]
+      ],
+      "vo_name_ghadi": [
+        [
+          0.25,
+          1.13
+        ]
+      ],
+      "vo_name_haath": [
+        [
+          0.24,
+          0.66
+        ]
+      ],
+      "vo_name_hiran": [
+        [
+          0.27,
+          0.87
+        ]
+      ],
+      "vo_name_jaal": [
+        [
+          0.3,
+          0.84
+        ]
+      ],
+      "vo_name_keel": [
+        [
+          0.35,
+          0.66
+        ]
+      ],
+      "vo_name_kitaab": [
+        [
+          0.27,
+          0.73
+        ]
+      ],
+      "vo_name_kutta": [
+        [
+          0.14,
+          0.27
+        ],
+        [
+          0.43,
+          0.61
+        ]
+      ],
+      "vo_name_ladki": [
+        [
+          0.26,
+          0.71
+        ]
+      ],
+      "vo_name_maala": [
+        [
+          0.25,
+          0.73
+        ]
+      ],
+      "vo_name_machhli": [
+        [
+          0.2,
+          0.71
+        ]
+      ],
+      "vo_name_naak": [
+        [
+          0.24,
+          0.62
+        ],
+        [
+          0.73,
+          0.75
+        ]
+      ],
+      "vo_name_neem": [
+        [
+          0.26,
+          0.69
+        ]
+      ],
+      "vo_name_paani": [
+        [
+          0.23,
+          0.67
+        ]
+      ],
+      "vo_name_pari": [
+        [
+          0.32,
+          0.75
+        ]
+      ],
+      "vo_name_patang": [
+        [
+          0.36,
+          0.8
+        ]
+      ],
+      "vo_name_pin": [
+        [
+          0.3,
+          0.69
+        ]
+      ],
+      "vo_name_sir": [
+        [
+          0.28,
+          0.85
+        ]
+      ],
+      "vo_name_sooraj": [
+        [
+          0.3,
+          0.65
+        ],
+        [
+          0.77,
+          1.38
+        ]
+      ],
+      "vo_name_taala": [
+        [
+          0.27,
+          0.76
+        ]
+      ],
+      "vo_name_teer": [
+        [
+          0.26,
+          0.76
+        ]
+      ],
+      "vo_oh_aa_done": [
+        [
+          0.18,
+          1.14
+        ],
+        [
+          1.37,
+          1.85
+        ],
+        [
+          1.97,
+          4.4
+        ]
+      ],
+      "vo_oh_aa_hint2": [
+        [
+          0.13,
+          1.23
+        ],
+        [
+          1.41,
+          1.73
+        ],
+        [
+          1.87,
+          3.43
+        ],
+        [
+          3.54,
+          4.21
+        ]
+      ],
+      "vo_oh_aa_intro": [
+        [
+          0.26,
+          1.52
+        ],
+        [
+          1.64,
+          2.45
+        ],
+        [
+          2.71,
+          3.18
+        ],
+        [
+          3.28,
+          3.94
+        ]
+      ],
+      "vo_oh_aa_wrong": [
+        [
+          0.28,
+          1.08
+        ],
+        [
+          1.61,
+          3.57
+        ]
+      ],
+      "vo_oh_ee_done": [
+        [
+          0.22,
+          1.09
+        ],
+        [
+          1.3,
+          2.15
+        ],
+        [
+          2.3,
+          4.98
+        ]
+      ],
+      "vo_oh_ee_hint2": [
+        [
+          0.25,
+          1.34
+        ],
+        [
+          1.6,
+          4.02
+        ],
+        [
+          4.14,
+          4.5
+        ]
+      ],
+      "vo_oh_ee_intro": [
+        [
+          0.15,
+          2.98
+        ],
+        [
+          3.21,
+          3.7
+        ],
+        [
+          3.8,
+          3.96
+        ],
+        [
+          4.09,
+          4.47
+        ]
+      ],
+      "vo_oh_ee_wrong": [
+        [
+          0.12,
+          0.9
+        ],
+        [
+          1.35,
+          3.43
+        ]
+      ],
+      "vo_oh_hint1": [
+        [
+          0.45,
+          0.58
+        ],
+        [
+          0.68,
+          2.39
+        ],
+        [
+          2.61,
+          3.94
+        ]
+      ],
+      "vo_oh_i_done": [
+        [
+          0.17,
+          0.98
+        ],
+        [
+          1.26,
+          4.27
+        ]
+      ],
+      "vo_oh_i_hint2": [
+        [
+          0.26,
+          1.46
+        ],
+        [
+          1.71,
+          3.88
+        ],
+        [
+          3.98,
+          4.67
+        ]
+      ],
+      "vo_oh_i_intro": [
+        [
+          0.25,
+          2.66
+        ],
+        [
+          2.97,
+          3.5
+        ],
+        [
+          3.62,
+          4.27
+        ]
+      ],
+      "vo_oh_i_wrong": [
+        [
+          0.3,
+          1.07
+        ],
+        [
+          1.51,
+          3.53
+        ]
+      ],
+      "vo_pair_aa": [
+        [
+          0.25,
+          0.99
+        ],
+        [
+          1.71,
+          2.01
+        ],
+        [
+          3.09,
+          3.58
+        ],
+        [
+          4.01,
+          4.26
+        ],
+        [
+          4.36,
+          4.73
+        ]
+      ],
+      "vo_pair_ee": [
+        [
+          0.24,
+          1.11
+        ],
+        [
+          1.89,
+          2.42
+        ],
+        [
+          3.31,
+          3.9
+        ],
+        [
+          4.32,
+          4.57
+        ],
+        [
+          4.69,
+          5.22
+        ]
+      ],
+      "vo_pair_i": [
+        [
+          0.26,
+          1.02
+        ],
+        [
+          1.42,
+          1.61
+        ],
+        [
+          2.42,
+          3.04
+        ],
+        [
+          3.32,
+          3.61
+        ],
+        [
+          3.74,
+          4.16
+        ]
+      ],
+      "vo_pt_guided": [
+        [
+          0.27,
+          1.27
+        ],
+        [
+          1.72,
+          2.08
+        ],
+        [
+          2.24,
+          3.47
+        ],
+        [
+          3.98,
+          4.32
+        ],
+        [
+          4.67,
+          5.27
+        ]
+      ],
+      "vo_pt_practice": [
+        [
+          0.29,
+          0.9
+        ],
+        [
+          1.26,
+          1.55
+        ],
+        [
+          1.7,
+          2.11
+        ]
+      ],
+      "vo_pt_tutorial": [
+        [
+          0.29,
+          1.46
+        ],
+        [
+          1.85,
+          2.59
+        ],
+        [
+          2.81,
+          3.53
+        ],
+        [
+          4.03,
+          4.39
+        ],
+        [
+          4.72,
+          5.26
+        ]
+      ],
+      "vo_rev_tt_aa": [
+        [
+          0.3,
+          1.66
+        ],
+        [
+          2.34,
+          3.42
+        ],
+        [
+          3.73,
+          4.71
+        ]
+      ],
+      "vo_rev_tt_ee": [
+        [
+          0.15,
+          1.44
+        ],
+        [
+          1.87,
+          2.72
+        ],
+        [
+          2.91,
+          4.3
+        ]
+      ],
+      "vo_rev_tt_i": [
+        [
+          0.18,
+          1.51
+        ],
+        [
+          2.2,
+          3.05
+        ],
+        [
+          3.26,
+          4.59
+        ]
+      ],
+      "vo_s1_prompt": [
+        [
+          0.28,
+          0.79
+        ],
+        [
+          1.0,
+          1.78
+        ],
+        [
+          2.19,
+          3.28
+        ],
+        [
+          3.62,
+          5.72
+        ]
+      ],
+      "vo_ts0_prompt": [
+        [
+          0.12,
+          0.61
+        ],
+        [
+          0.97,
+          4.53
+        ]
+      ],
+      "vo_ts1_h2_haath": [
+        [
+          0.23,
+          1.49
+        ],
+        [
+          2.02,
+          2.41
+        ],
+        [
+          2.56,
+          2.61
+        ],
+        [
+          3.36,
+          4.02
+        ],
+        [
+          4.48,
+          5.46
+        ]
+      ],
+      "vo_ts1_h2_neem": [
+        [
+          0.22,
+          1.48
+        ],
+        [
+          2.15,
+          2.87
+        ],
+        [
+          3.69,
+          4.59
+        ],
+        [
+          5.13,
+          5.85
+        ],
+        [
+          5.95,
+          6.38
+        ]
+      ],
+      "vo_ts1_h2_pin": [
+        [
+          0.31,
+          1.57
+        ],
+        [
+          2.29,
+          2.65
+        ],
+        [
+          3.48,
+          4.16
+        ],
+        [
+          4.72,
+          4.83
+        ],
+        [
+          5.21,
+          5.55
+        ],
+        [
+          5.65,
+          6.06
+        ]
+      ],
+      "vo_ts1_h3_haath": [
+        [
+          0.21,
+          1.01
+        ],
+        [
+          1.4,
+          2.42
+        ],
+        [
+          2.9,
+          3.29
+        ],
+        [
+          3.66,
+          5.68
+        ]
+      ],
+      "vo_ts1_h3_neem": [
+        [
+          0.26,
+          1.51
+        ],
+        [
+          1.97,
+          2.27
+        ],
+        [
+          2.39,
+          2.78
+        ],
+        [
+          2.9,
+          3.34
+        ],
+        [
+          3.91,
+          4.43
+        ],
+        [
+          4.86,
+          5.12
+        ],
+        [
+          5.23,
+          7.36
+        ]
+      ],
+      "vo_ts1_h3_pin": [
+        [
+          0.22,
+          0.9
+        ],
+        [
+          1.36,
+          1.57
+        ],
+        [
+          1.7,
+          2.61
+        ],
+        [
+          3.31,
+          3.77
+        ],
+        [
+          4.26,
+          4.48
+        ],
+        [
+          4.59,
+          6.63
+        ]
+      ],
+      "vo_ts1_hint1": [
+        [
+          0.22,
+          1.24
+        ],
+        [
+          1.75,
+          2.4
+        ],
+        [
+          2.5,
+          4.01
+        ],
+        [
+          4.39,
+          4.9
+        ],
+        [
+          5.04,
+          7.04
+        ]
+      ],
+      "vo_ts1_hint2": [
+        [
+          0.35,
+          1.3
+        ],
+        [
+          1.65,
+          3.31
+        ]
+      ],
+      "vo_ts1_ok_haath": [
+        [
+          0.29,
+          1.17
+        ],
+        [
+          1.6,
+          2.57
+        ],
+        [
+          2.91,
+          3.89
+        ]
+      ],
+      "vo_ts1_ok_neem": [
+        [
+          0.24,
+          1.2
+        ],
+        [
+          1.56,
+          2.6
+        ],
+        [
+          2.76,
+          4.12
+        ]
+      ],
+      "vo_ts1_ok_pin": [
+        [
+          0.26,
+          1.15
+        ],
+        [
+          1.64,
+          2.59
+        ],
+        [
+          2.78,
+          4.12
+        ]
+      ],
+      "vo_ts1_prompt": [
+        [
+          0.29,
+          3.38
+        ]
+      ],
+      "vo_ts2_h2_aa": [
+        [
+          0.17,
+          1.75
+        ],
+        [
+          2.02,
+          2.5
+        ],
+        [
+          2.66,
+          4.66
+        ]
+      ],
+      "vo_ts2_h2_ee": [
+        [
+          0.21,
+          0.74
+        ],
+        [
+          1.19,
+          1.46
+        ],
+        [
+          1.57,
+          1.93
+        ],
+        [
+          2.04,
+          2.4
+        ],
+        [
+          3.01,
+          3.52
+        ],
+        [
+          3.93,
+          5.7
+        ]
+      ],
+      "vo_ts2_h2_i": [
+        [
+          0.22,
+          0.59
+        ],
+        [
+          0.79,
+          1.99
+        ],
+        [
+          2.43,
+          3.06
+        ],
+        [
+          3.22,
+          5.44
+        ]
+      ],
+      "vo_ts2_h3_aa": [
+        [
+          0.21,
+          1.28
+        ],
+        [
+          1.55,
+          2.8
+        ],
+        [
+          3.25,
+          3.88
+        ],
+        [
+          4.05,
+          5.95
+        ]
+      ],
+      "vo_ts2_h3_ee": [
+        [
+          0.25,
+          0.94
+        ],
+        [
+          1.06,
+          1.32
+        ],
+        [
+          1.65,
+          2.67
+        ],
+        [
+          3.14,
+          3.47
+        ],
+        [
+          3.63,
+          5.17
+        ]
+      ],
+      "vo_ts2_h3_i": [
+        [
+          0.25,
+          0.46
+        ],
+        [
+          0.56,
+          0.93
+        ],
+        [
+          1.06,
+          1.32
+        ],
+        [
+          1.73,
+          2.93
+        ],
+        [
+          3.55,
+          3.94
+        ],
+        [
+          4.19,
+          6.01
+        ]
+      ],
+      "vo_ts2_hint1": [
+        [
+          0.18,
+          1.46
+        ],
+        [
+          2.0,
+          2.27
+        ],
+        [
+          2.38,
+          4.02
+        ],
+        [
+          4.6,
+          7.41
+        ]
+      ],
+      "vo_ts2_hint2": [
+        [
+          0.26,
+          1.28
+        ],
+        [
+          1.4,
+          2.77
+        ]
+      ],
+      "vo_ts2_ok_jaal": [
+        [
+          0.3,
+          1.35
+        ],
+        [
+          1.78,
+          2.85
+        ],
+        [
+          3.14,
+          4.26
+        ]
+      ],
+      "vo_ts2_ok_keel": [
+        [
+          0.22,
+          1.02
+        ],
+        [
+          1.31,
+          3.69
+        ]
+      ],
+      "vo_ts2_ok_sir": [
+        [
+          0.19,
+          0.81
+        ],
+        [
+          1.22,
+          2.16
+        ],
+        [
+          2.37,
+          3.85
+        ]
+      ],
+      "vo_ts2_prompt": [
+        [
+          0.31,
+          1.44
+        ],
+        [
+          1.64,
+          3.57
+        ]
+      ],
+      "vo_ts3_hint1": [
+        [
+          0.36,
+          1.15
+        ],
+        [
+          1.46,
+          3.05
+        ]
+      ],
+      "vo_ts3_hint2": [
+        [
+          0.17,
+          1.53
+        ]
+      ],
+      "vo_ts3_ok_haath": [
+        [
+          0.34,
+          1.45
+        ],
+        [
+          1.88,
+          2.66
+        ],
+        [
+          2.93,
+          3.96
+        ]
+      ],
+      "vo_ts3_ok_hiran": [
+        [
+          0.12,
+          0.97
+        ],
+        [
+          1.35,
+          1.95
+        ],
+        [
+          2.11,
+          3.36
+        ]
+      ],
+      "vo_ts3_ok_keel": [
+        [
+          0.14,
+          0.8
+        ],
+        [
+          1.22,
+          1.76
+        ],
+        [
+          1.93,
+          3.02
+        ]
+      ],
+      "vo_ts3_ok_naak": [
+        [
+          0.33,
+          1.07
+        ],
+        [
+          1.31,
+          2.78
+        ]
+      ],
+      "vo_ts3_ok_neem": [
+        [
+          0.36,
+          1.18
+        ],
+        [
+          1.54,
+          3.48
+        ]
+      ],
+      "vo_ts3_ok_pin": [
+        [
+          0.26,
+          0.84
+        ],
+        [
+          1.15,
+          2.48
+        ]
+      ],
+      "vo_ts3_prompt": [
+        [
+          0.26,
+          1.12
+        ],
+        [
+          1.33,
+          3.55
+        ]
+      ],
+      "vo_tt_aa_correct": [
+        [
+          0.32,
+          0.97
+        ],
+        [
+          1.27,
+          2.25
+        ],
+        [
+          2.51,
+          3.45
+        ]
+      ],
+      "vo_tt_aa_hint1": [
+        [
+          0.08,
+          1.35
+        ],
+        [
+          1.75,
+          3.08
+        ],
+        [
+          3.24,
+          4.85
+        ],
+        [
+          5.16,
+          6.38
+        ]
+      ],
+      "vo_tt_aa_hint2": [
+        [
+          0.29,
+          1.4
+        ],
+        [
+          1.87,
+          3.1
+        ],
+        [
+          3.5,
+          4.85
+        ]
+      ],
+      "vo_tt_aa_hint3": [
+        [
+          0.26,
+          0.8
+        ],
+        [
+          1.23,
+          1.98
+        ],
+        [
+          2.46,
+          3.1
+        ],
+        [
+          3.2,
+          3.51
+        ],
+        [
+          4.18,
+          4.98
+        ],
+        [
+          5.1,
+          5.5
+        ]
+      ],
+      "vo_tt_aa_prompt": [
+        [
+          0.29,
+          1.93
+        ],
+        [
+          2.03,
+          2.71
+        ]
+      ],
+      "vo_tt_ee_correct": [
+        [
+          0.34,
+          1.3
+        ],
+        [
+          1.7,
+          2.55
+        ],
+        [
+          2.76,
+          4.1
+        ]
+      ],
+      "vo_tt_ee_hint1": [
+        [
+          0.2,
+          1.26
+        ],
+        [
+          1.75,
+          2.82
+        ],
+        [
+          3.17,
+          4.89
+        ],
+        [
+          5.25,
+          5.66
+        ],
+        [
+          5.8,
+          5.97
+        ],
+        [
+          6.13,
+          6.6
+        ]
+      ],
+      "vo_tt_ee_hint2": [
+        [
+          0.27,
+          1.59
+        ],
+        [
+          2.05,
+          2.34
+        ],
+        [
+          2.45,
+          2.84
+        ],
+        [
+          2.94,
+          3.43
+        ],
+        [
+          3.83,
+          4.28
+        ],
+        [
+          4.4,
+          4.57
+        ],
+        [
+          4.72,
+          5.21
+        ]
+      ],
+      "vo_tt_ee_hint3": [
+        [
+          0.25,
+          0.96
+        ],
+        [
+          1.59,
+          2.32
+        ],
+        [
+          2.72,
+          3.82
+        ],
+        [
+          4.53,
+          5.37
+        ],
+        [
+          5.51,
+          6.0
+        ]
+      ],
+      "vo_tt_ee_prompt": [
+        [
+          0.14,
+          1.78
+        ],
+        [
+          1.89,
+          2.24
+        ]
+      ],
+      "vo_tt_i_correct": [
+        [
+          0.26,
+          0.9
+        ],
+        [
+          1.37,
+          2.12
+        ],
+        [
+          2.32,
+          3.5
+        ]
+      ],
+      "vo_tt_i_hint1": [
+        [
+          0.26,
+          1.34
+        ],
+        [
+          1.84,
+          2.9
+        ],
+        [
+          3.1,
+          4.67
+        ],
+        [
+          5.14,
+          5.76
+        ],
+        [
+          5.9,
+          6.32
+        ]
+      ],
+      "vo_tt_i_hint2": [
+        [
+          0.26,
+          1.33
+        ],
+        [
+          1.51,
+          2.6
+        ],
+        [
+          2.99,
+          3.34
+        ],
+        [
+          3.45,
+          4.17
+        ]
+      ],
+      "vo_tt_i_hint3": [
+        [
+          0.26,
+          0.91
+        ],
+        [
+          1.71,
+          2.34
+        ],
+        [
+          2.92,
+          3.57
+        ],
+        [
+          3.68,
+          4.09
+        ],
+        [
+          4.86,
+          5.36
+        ],
+        [
+          5.47,
+          5.65
+        ],
+        [
+          5.78,
+          6.23
+        ]
+      ],
+      "vo_tt_i_prompt": [
+        [
+          0.14,
+          2.66
+        ]
+      ]
+    },
+    "audio_dur": {
+      "sfx_celebrate": 1.09,
+      "vo_cel_prompt": 7.771,
+      "vo_ex_aa_intro": 3.171,
+      "vo_ex_din": 5.491,
+      "vo_ex_ee_intro": 3.131,
+      "vo_ex_gati": 5.171,
+      "vo_ex_i_intro": 3.371,
+      "vo_ex_ladki": 5.971,
+      "vo_ex_matka": 4.771,
+      "vo_ex_naak": 3.011,
+      "vo_ex_teer": 5.411,
+      "vo_landing": 4.491,
+      "vo_letter_aa": 2.131,
+      "vo_letter_ee": 1.891,
+      "vo_letter_i": 2.651,
+      "vo_mb_bil_base": 1.971,
+      "vo_mb_bil_explain": 4.251,
+      "vo_mb_bil_intro": 5.091,
+      "vo_mb_bil_onset": 4.091,
+      "vo_mb_bil_sounds": 2.771,
+      "vo_mb_jal_base": 1.931,
+      "vo_mb_jal_explain": 4.571,
+      "vo_mb_jal_intro": 5.411,
+      "vo_mb_jal_onset": 3.411,
+      "vo_mb_jal_sounds": 2.011,
+      "vo_mb_keel_base": 1.811,
+      "vo_mb_keel_explain": 4.651,
+      "vo_mb_keel_intro": 5.011,
+      "vo_mb_keel_onset": 3.731,
+      "vo_mb_keel_sounds": 2.771,
+      "vo_mf_hint1": 5.731,
+      "vo_mf_hint2": 5.571,
+      "vo_mf_hint3": 8.571,
+      "vo_mf_ok_hiran": 2.651,
+      "vo_mf_ok_jaal": 2.851,
+      "vo_mf_ok_pari": 2.371,
+      "vo_mf_prompt": 3.691,
+      "vo_mt_cheer_ee": 4.367,
+      "vo_mt_cheer_i": 4.059,
+      "vo_mt_done": 5.181,
+      "vo_mt_intro": 3.439,
+      "vo_mt_round_aa": 3.474,
+      "vo_mt_round_ee": 5.725,
+      "vo_mt_round_i": 4.5,
+      "vo_mt_w_baal": 1.204,
+      "vo_mt_w_chini": 0.821,
+      "vo_mt_w_daal": 0.919,
+      "vo_mt_w_dil": 0.847,
+      "vo_mt_w_din": 0.789,
+      "vo_mt_w_haath": 0.769,
+      "vo_mt_w_hiran": 0.878,
+      "vo_mt_w_kaam": 0.752,
+      "vo_mt_w_machhli": 0.983,
+      "vo_mt_w_naav": 1.225,
+      "vo_mt_w_nadi": 0.85,
+      "vo_mt_w_neem": 1.0,
+      "vo_mt_w_sir": 0.698,
+      "vo_mt_w_teer": 0.755,
+      "vo_mt_w_til": 0.589,
+      "vo_name_aam": 1.251,
+      "vo_name_chidiya": 1.331,
+      "vo_name_din": 1.051,
+      "vo_name_gaajar": 1.011,
+      "vo_name_gend": 1.011,
+      "vo_name_ghadi": 1.371,
+      "vo_name_haath": 0.891,
+      "vo_name_hiran": 1.051,
+      "vo_name_jaal": 1.131,
+      "vo_name_keel": 0.971,
+      "vo_name_kitaab": 1.011,
+      "vo_name_kutta": 0.784,
+      "vo_name_ladki": 0.944,
+      "vo_name_maala": 0.987,
+      "vo_name_machhli": 1.011,
+      "vo_name_naak": 0.971,
+      "vo_name_neem": 0.891,
+      "vo_name_paani": 0.891,
+      "vo_name_pari": 1.011,
+      "vo_name_patang": 1.131,
+      "vo_name_pin": 0.931,
+      "vo_name_sir": 1.131,
+      "vo_name_sooraj": 1.731,
+      "vo_name_taala": 0.987,
+      "vo_name_teer": 1.051,
+      "vo_oh_aa_done": 4.651,
+      "vo_oh_aa_hint2": 4.411,
+      "vo_oh_aa_intro": 4.171,
+      "vo_oh_aa_wrong": 3.811,
+      "vo_oh_ee_done": 5.211,
+      "vo_oh_ee_hint2": 4.771,
+      "vo_oh_ee_intro": 4.651,
+      "vo_oh_ee_wrong": 3.571,
+      "vo_oh_hint1": 4.251,
+      "vo_oh_i_done": 4.491,
+      "vo_oh_i_hint2": 4.851,
+      "vo_oh_i_intro": 4.451,
+      "vo_oh_i_wrong": 3.771,
+      "vo_pair_aa": 4.971,
+      "vo_pair_ee": 5.531,
+      "vo_pair_i": 4.411,
+      "vo_pt_guided": 5.64,
+      "vo_pt_practice": 2.52,
+      "vo_pt_tutorial": 5.6,
+      "vo_rev_tt_aa": 4.891,
+      "vo_rev_tt_ee": 4.531,
+      "vo_rev_tt_i": 4.771,
+      "vo_s1_prompt": 5.931,
+      "vo_ts0_prompt": 4.691,
+      "vo_ts1_h2_haath": 5.771,
+      "vo_ts1_h2_neem": 6.611,
+      "vo_ts1_h2_pin": 6.371,
+      "vo_ts1_h3_haath": 5.931,
+      "vo_ts1_h3_neem": 7.651,
+      "vo_ts1_h3_pin": 6.931,
+      "vo_ts1_hint1": 7.291,
+      "vo_ts1_hint2": 3.571,
+      "vo_ts1_ok_haath": 4.211,
+      "vo_ts1_ok_neem": 4.331,
+      "vo_ts1_ok_pin": 4.411,
+      "vo_ts1_prompt": 3.651,
+      "vo_ts2_h2_aa": 4.811,
+      "vo_ts2_h2_ee": 5.931,
+      "vo_ts2_h2_i": 5.651,
+      "vo_ts2_h3_aa": 6.171,
+      "vo_ts2_h3_ee": 5.411,
+      "vo_ts2_h3_i": 6.211,
+      "vo_ts2_hint1": 7.651,
+      "vo_ts2_hint2": 2.971,
+      "vo_ts2_ok_jaal": 4.531,
+      "vo_ts2_ok_keel": 3.971,
+      "vo_ts2_ok_sir": 4.091,
+      "vo_ts2_prompt": 3.811,
+      "vo_ts3_hint1": 3.251,
+      "vo_ts3_hint2": 1.691,
+      "vo_ts3_ok_haath": 4.211,
+      "vo_ts3_ok_hiran": 3.651,
+      "vo_ts3_ok_keel": 3.291,
+      "vo_ts3_ok_naak": 3.051,
+      "vo_ts3_ok_neem": 3.851,
+      "vo_ts3_ok_pin": 2.731,
+      "vo_ts3_prompt": 3.811,
+      "vo_tt_aa_correct": 3.731,
+      "vo_tt_aa_hint1": 6.571,
+      "vo_tt_aa_hint2": 5.131,
+      "vo_tt_aa_hint3": 5.771,
+      "vo_tt_aa_prompt": 2.891,
+      "vo_tt_ee_correct": 4.371,
+      "vo_tt_ee_hint1": 6.731,
+      "vo_tt_ee_hint2": 5.411,
+      "vo_tt_ee_hint3": 6.171,
+      "vo_tt_ee_prompt": 2.451,
+      "vo_tt_i_correct": 3.851,
+      "vo_tt_i_hint1": 6.571,
+      "vo_tt_i_hint2": 4.451,
+      "vo_tt_i_hint3": 6.491,
+      "vo_tt_i_prompt": 2.851
+    }
+  },
+  "gate": {
+    "img": "assets/UI/gate_peek.webp",
+    "peek": "assets/UI/gate_peek.webp",
+    "talk": "assets/UI/gate_talk.webp",
+    "rest": "assets/UI/gate_rest.webp",
+    "peek_ms": 1520,
+    "hold_ms": 450
+  },
+  "end_anim": {
+    "cols": 6,
+    "fw": 329,
+    "fh": 440,
+    "step_ms": 25,
+    "bits": "0000000000111110000000111111100000000000000000000000111111100000011111111100001110000011000000000000000000001111111111110000000000000000000001111111110000000000000001110000000000001111100001111111111000001110000000000000111111111111000000000000011111111111100000111001110001100001110000001111001111110000000000",
+    "vo": "vo_cel_prompt",
+    "shabaash": {
+      "src": "assets/UI/cel_shabaash.webp",
+      "pre": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "word": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "post": [
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ]
+    },
+    "talk": {
+      "src": "assets/UI/cel_talk.webp",
+      "open": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        11,
+        15,
+        16,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        28,
+        29,
+        30,
+        31,
+        32
+      ]
+    },
+    "idle": {
+      "src": "assets/UI/cel_idle.webp",
+      "loop": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ]
+    }
   }
 }
