@@ -366,7 +366,47 @@ VO = {
     "vo_oh_w_kutta":      "कुत्ता में आ की मात्रा है। फिर से कोशिश कीजिए।",
     "vo_oh_w_kitaab_ee":  "किताब में छोटी इ की मात्रा है। फिर से कोशिश कीजिए।",
 
+    # [r46] the three things the shared scene adds. सीढ़ी is the ई screen's second answer;
+    # पेड़ and मेज़ are distractors - neither carries any of the three matras.
+    "vo_oh_ee_ok_seedhi":   "शाबाश! सीढ़ी में बड़ी ई की मात्रा है।",
+    "vo_oh_ee_more_seedhi": "बहुत बढ़िया, सीढ़ी! अब और बड़ी ई की मात्रा वाले चित्र खोजिए।",
+
+
+    # [r47] THE ONE HUNT SCREEN. Three screens became one, so the question widens from
+    # “find आ” to “find any matra we have learned”, and every word in the picture has a
+    # clear answer — which is what lets the mixed-matra words be tapped at all.
+    "vo_oh_all_intro":  "जिन चित्रों के नाम में आ, इ या ई की मात्रा है, उन सब पर टैप कीजिए।",
+    "vo_oh_all_wrong":  "इस शब्द में आ, इ या ई की मात्रा नहीं है। फिर से सोचिए।",
+    "vo_oh_all_hint2":  "ध्यान से देखिए। चित्र का नाम बोलिए और उसकी मात्रा पहचानिए।",
+    "vo_oh_all_done":   "शाबाश! आपने मात्रा वाले चित्र पहचान लिए।",
+
+    "vo_oh_all_ok_makaan":     "शाबाश! मकान में आ की मात्रा है।",
+    "vo_oh_all_ok_baadal":     "शाबाश! बादल में आ की मात्रा है।",
+    "vo_oh_all_ok_kutta":      "शाबाश! कुत्ता में आ की मात्रा है।",
+    "vo_oh_all_ok_kursi":      "शाबाश! कुर्सी में बड़ी ई की मात्रा है।",
+
+    # the mid-screen line sends the child back for ANY remaining matra, not for one of
+    # them — the per-matra wording the three screens used would mislead here.
+    "vo_oh_all_more_aam":        "बहुत बढ़िया, आम! अब और मात्रा वाले चित्र खोजिए।",
+    "vo_oh_all_more_maala":      "बहुत बढ़िया, माला! अब और मात्रा वाले चित्र खोजिए।",
+    "vo_oh_all_more_makaan":     "बहुत बढ़िया, मकान! अब और मात्रा वाले चित्र खोजिए।",
+    "vo_oh_all_more_baadal":     "बहुत बढ़िया, बादल! अब और मात्रा वाले चित्र खोजिए।",
+    "vo_oh_all_more_kutta":      "बहुत बढ़िया, कुत्ता! अब और मात्रा वाले चित्र खोजिए।",
+    "vo_oh_all_more_chidiya":    "बहुत बढ़िया, चिड़िया! अब और मात्रा वाले चित्र खोजिए।",
+    "vo_oh_all_more_hiran":      "बहुत बढ़िया, हिरण! अब और मात्रा वाले चित्र खोजिए।",
+    "vo_oh_all_more_kitaab":     "बहुत बढ़िया, किताब! अब और मात्रा वाले चित्र खोजिए।",
+    "vo_oh_all_more_pin":        "बहुत बढ़िया, पिन! अब और मात्रा वाले चित्र खोजिए।",
+    "vo_oh_all_more_ghadi":      "बहुत बढ़िया, घड़ी! अब और मात्रा वाले चित्र खोजिए।",
+    "vo_oh_all_more_seedhi":     "बहुत बढ़िया, सीढ़ी! अब और मात्रा वाले चित्र खोजिए।",
+    "vo_oh_all_more_kursi":      "बहुत बढ़िया, कुर्सी! अब और मात्रा वाले चित्र खोजिए।",
+
     # The object names, spoken on hover/focus so the child hears the word before judging it.
+    "vo_name_makaan":  "मकान।",
+    "vo_name_baadal":  "बादल।",
+    "vo_name_kursi":   "कुर्सी।",
+    "vo_name_seedhi":  "सीढ़ी।",
+    "vo_name_ped":     "पेड़।",
+    "vo_name_mez":     "मेज़।",
     "vo_name_aam":     "यह आम है।",
     "vo_name_maala":   "माला।",
     "vo_name_gaajar":  "गाजर।",
@@ -382,7 +422,7 @@ VO = {
     "vo_name_machhli": "मछली।",
 
     # ---- celebration (deck page 19 · N/C — ships as built) ------------------------------------
-    "vo_cel_prompt": "शाबाश! आज हमने सीखा — आ, इ और ई की मात्रा पहचानना, और मात्रा वाले शब्द पढ़ना।",
+    "vo_cel_prompt": "बहुत बढ़िया, दोस्त! तुमने कमाल कर दिया!",
 
     # ---- reused unchanged from the existing 95-clip set ---------------------------------------
     "vo_name_haath": "हाथ",
@@ -395,6 +435,9 @@ VO = {
     "vo_pt_tutorial": "ध्यान से देखिए और मेरे साथ जानिए। चलिए, शुरू करें!",
     "vo_pt_guided":   "बहुत बढ़िया! अब हम साथ मिलकर शुरू करते हैं। चलिए, साथ में करें!",
     "vo_pt_practice": "वाह! अब आपकी बारी।",
+    # [s87 · sibling r136] the mic reminder on pages 3/5/7. A HUMAN recording, taken from their
+    # bundle as delivered: it names no matra and no word, so it is this lesson's line too.
+    "vo_mic_nudge": "इस बटन पर टैप करिए।",
     "sfx_celebrate": "celebration sound",
 }
 
@@ -403,11 +446,17 @@ VO = {
 REUSED = {
     "vo_name_haath", "vo_name_naak", "vo_name_din", "vo_name_pin", "vo_name_neem",
     "vo_name_teer", "vo_name_hiran", "vo_matra_i", "vo_matra_ee", "vo_cel_prompt",
-    "vo_pt_tutorial", "vo_pt_guided", "vo_pt_practice", "sfx_celebrate",
+    "vo_pt_tutorial", "vo_pt_guided", "vo_pt_practice", "sfx_celebrate", "vo_mic_nudge",
 }
 
 # Pictures. The ten new ones are NOT generated this pass (user decision: assets skipped); every one
 # has an emoji fallback so no screen is ever blank, and they are listed in ART_BRIEF.md.
+# [s77 · sibling r126] "every picture is WebP" - their asset round. A picture is only
+# written to the card at this extension if it EXISTS at it (see the on-disk checks below),
+# so a .webp that was never produced falls back to being reported as pending art rather
+# than shipping a 404. Set to "png" to go back.
+IMG_EXT = "webp"
+
 IMAGES = {
     # existing on disk
     "obj_haath": "✋", "obj_naak": "👃", "obj_din": "☀️", "obj_pin": "📌",
@@ -542,6 +591,18 @@ def _measure_speech(audio_ids):
 #  Pages 1-7 light things ON the words that name them, and a fixed delay cannot do that: our
 #  teaching clips run from 1.9s to 7.6s, so any constant is early on one and late on another.
 # ══════════════════════════════════════════════════════════════════════════════════════════
+def _clip_ms(path):
+    """A clip's length in ms, whatever the container. ffprobe reads both the WAV-in-.ogg files
+    this lesson generates and the real Vorbis ones it was shipped with."""
+    import subprocess
+    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                        "-of", "default=nw=1:nk=1", path], capture_output=True, text=True)
+    try:
+        return int(float(r.stdout.strip()) * 1000)
+    except Exception:
+        return 0
+
+
 def _cue_ms(audio_id, line, phrase):
     """When, inside `line`'s recording, `phrase` starts — in ms.
 
@@ -551,11 +612,15 @@ def _cue_ms(audio_id, line, phrase):
     not on the exact sample. Computed from the file on disk, so a re-recorded clip recomputes it.
     """
     path = os.path.join(OUT, "assets", "Audio", "VO", audio_id + ".ogg")
-    try:
-        with contextlib.closing(wave.open(path)) as w:
-            secs = w.getnframes() / float(w.getframerate())
-    except Exception:
+    # [s63c] ffprobe, NOT wave.open. This bundle's clips are a mix: the takes generated here are
+    # WAV inside a .ogg wrapper, but the originals include real Opus/Vorbis - and wave.open()
+    # raises "file does not start with RIFF id" on those, so every such clip silently took the
+    # 1300 ms fallback below and its cue was a constant rather than a measurement. Caught when all
+    # three transition phases reported an identical cue of 1300.
+    _ms = _clip_ms(path)
+    if not _ms:
         return 1300                      # a plausible middle for a ~4s line
+    secs = _ms / 1000.0
     i = line.find(phrase)
     if i < 0:
         return int(secs * 1000 * 0.35)
@@ -564,6 +629,48 @@ def _cue_ms(audio_id, line, phrase):
     before = len(line[:i].replace(" ", ""))
     total = len(line.replace(" ", "")) or 1
     return int(secs * 1000 * (before / float(total)))
+
+
+def _voice_runs_ms(audio_id, quiet_s=0.30):
+    """[s85 · sibling r121] Where each spoken PHRASE of a clip starts, in ms.
+
+    The runs of sound between pauses - the same reading as _sound_cues_ms, but it returns every
+    run instead of insisting on exactly n, and a longer pause (300 ms) closes a phrase so the
+    short gaps inside one do not split it.
+
+    Decoded with ffmpeg, NOT wave.open as the sibling does: this lesson's clips are a mixture of
+    WAV-in-.ogg, Vorbis and Opus, and wave.open throws on the last two - silently, which is how
+    every gate cue once came back as the same fallback number. Returns [] when the clip cannot be
+    read, and every caller has a phrase-search fallback behind it.
+    """
+    import array, subprocess
+    path = os.path.join(OUT, "assets", "Audio", "VO", audio_id + ".ogg")
+    if not os.path.exists(path):
+        return []
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", "16000",
+                          "-f", "s16le", "-"], capture_output=True).stdout
+    if not raw:
+        return []
+    a = array.array("h")
+    a.frombytes(raw[: len(raw) // 2 * 2])
+    if not len(a):
+        return []
+    hop = 160                                   # 10 ms at 16 kHz
+    peak = max(1, max(abs(v) for v in a))
+    loud = [max(abs(v) for v in a[i:i + hop]) > peak * 0.10
+            for i in range(0, len(a) - hop, hop)]
+    runs, i, minq = [], 0, int(quiet_s / 0.01)
+    while i < len(loud):
+        if loud[i]:
+            runs.append(i * 10)
+            j, q = i, 0
+            while j < len(loud) and q < minq:
+                j += 1
+                q = 0 if (j < len(loud) and loud[j]) else q + 1
+            i = j
+        else:
+            i += 1
+    return runs
 
 
 def _sound_cues_ms(audio_id, n=3):
@@ -614,9 +721,83 @@ def _sound_cues_ms(audio_id, n=3):
     return [int(r * 10) for r in runs]
 
 
+
+# ══════════════════════════════════════════════════════════════════════════════════════════
+#  [r46] THE OBJECT HUNT'S ONE SCENE, AND THE TEN THINGS IN IT THAT CAN BE TAPPED.
+#  All three screens draw the same picture and differ only in which matra is being hunted, so the
+#  cast is declared ONCE and each screen marks the two words that carry its matra. Every object is
+#  tappable on every screen; the eight that are not the answer are distractors there.
+#
+#  Nothing in this list carries more than one of the three matras - see the note at the slides.
+#  x/y/w/h are percentages of the scene, each placed by cropping it out of the artwork and looking
+#  at it, and audited for overlaps (two hotspots that overlap make a tap land on the wrong word).
+# ══════════════════════════════════════════════════════════════════════════════════════════
+HUNT_SCENE = "assets/UI/scene_hunt_all.webp"
+# word, slug, emoji, the matra it carries (None = none of the three), and the hotspot as
+# percentages of the scene. Every box was placed by cropping it out of the artwork and looking at
+# it, then audited so that no two overlap - two overlapping boxes make a tap land on the wrong word.
+# The ten things the SME named. x/y are the hotspot's CENTRE, not its top-left: .oh-obj carries
+# transform:translate(-50%,-50%), so a box authored by its corner lands half its own size up and
+# to the left of what it should cover - which is what put the hover box "in random position".
+# Each box was placed by cropping it out of the artwork and looking at it, then audited so that no
+# two overlap, because overlapping boxes make a tap land on the wrong word.
+# [r52] RE-MEASURED FOR THE UPDATED ARTWORK. The SME redrew the scene - the chair now stands clear
+# of the table, and the table, clock, garland and pin all moved with it - so every box here was
+# placed again by cropping it out of the NEW picture and looking at it. Carrying the previous
+# numbers over would have left most of these sitting on empty grass.
+# x/y are the hotspot's CENTRE: .oh-obj carries transform:translate(-50%,-50%), so a box authored
+# by its corner lands half its own size up and to the left of what it should cover.
+# Audited for overlaps - two that overlap make a tap land on the wrong word.
+HUNT_CAST = [
+    (u"आम", "aam", u"🥭", u"ा",  34.8,  15.2,   7.5,  11.5),
+    (u"माला", "maala", u"📿", u"ा",  50.0,  88.8,   8.3,   8.5),
+    (u"कुत्ता", "kutta", u"🐶", u"ा",  84.2,  67.5,  10.5,  16.0),
+    (u"चिड़िया", "chidiya", u"🐦", u"ि",  44.0,  21.8,   7.0,  13.5),
+    (u"हिरण", "hiran", u"🦌", u"ि",  69.2,  51.0,  10.5,  28.0),
+    (u"किताब", "kitaab", u"📕", u"ि",  21.0,  65.5,  13.0,  13.0),
+    (u"पिन", "pin", u"📌", u"ि",  28.2,  83.5,   4.5,   7.0),
+    (u"घड़ी", "ghadi", u"🕐", u"ी",  42.5,  79.5,   6.0,  17.0),
+    (u"कुर्सी", "kursi", u"🪑", u"ी",  65.8,  84.0,  12.5,  32.0),
+    (u"सूरज", "sooraj", u"☀️", None,  77.5,  11.0,  12.0,  20.0),
+    (u"गेंद", "gend", u"⚽", None,  36.8,  65.5,   6.5,  11.0),
+]
+# praise that already exists and still names the right matra; the rest are minted above
+HUNT_OK = {
+    "aam": "vo_oh_aa_ok_aam",
+    "chidiya": "vo_oh_i_ok_chidiya",
+    "ghadi": "vo_oh_ee_ok_ghadi",
+    "hiran": "vo_oh_i_ok_hiran",
+    "kitaab": "vo_oh_i_ok_kitaab",
+    "maala": "vo_oh_aa_ok_maala",
+    "pin": "vo_oh_i_ok_pin",
+    "seedhi": "vo_oh_ee_ok_seedhi",
+}
+
+
+def hunt_objects():
+    """The sixteen hotspots. A word is CORRECT when it carries any matra this lesson taught."""
+    out = []
+    for word, slug, emoji, m, x, y, w, h in HUNT_CAST:
+        o = {"word_hi": word, "audio": "vo_name_" + slug, "emoji": emoji,
+             "x": x, "y": y, "w": w, "h": h}
+        if m:
+            o["correct"] = True
+            o["ok_audio"] = HUNT_OK.get(slug, "vo_oh_all_ok_" + slug)
+            o["more_audio"] = "vo_oh_all_more_" + slug
+        out.append(o)
+    return out
+
+
 def A(**kw):
     """audio block helper"""
     return dict(kw)
+
+
+# [s85] read once: each MATRA_BUILD screen asks its two clips for their phrase starts, and the
+# deck below is a literal, so the decode happens here rather than six times inside it.
+_ON_jal,  _RE_jal  = _voice_runs_ms("vo_mb_jal_onset"),  _voice_runs_ms("vo_mb_jal_explain")
+_ON_bil,  _RE_bil  = _voice_runs_ms("vo_mb_bil_onset"),  _voice_runs_ms("vo_mb_bil_explain")
+_ON_keel, _RE_keel = _voice_runs_ms("vo_mb_keel_onset"), _voice_runs_ms("vo_mb_keel_explain")
 
 
 SLIDES = [
@@ -630,11 +811,35 @@ SLIDES = [
         # name it — measured per clip, because the three takes are not the same length.
         "data": {"auto": True, "no_heading": True, "pairs": [
             {"letter": "आ", "matra": "ा", "audio": "vo_pair_aa",
-             "cue_ms": _cue_ms("vo_pair_aa", VO["vo_pair_aa"], "इसकी")},
+             "cue_ms": _cue_ms("vo_pair_aa", VO["vo_pair_aa"], "इसकी"),
+             # [s89 · sibling r121.2] each part arrives on its own words. The clip is four
+             # phrases with clear pauses - «यह है» · the letter · «इसकी मात्रा है» · the matra -
+             # so the letter lands on the 2nd run, the arrow on the 2nd-last and the matra on
+             # the last. A clip that does not read as 3+ phrases falls back to the old cue.
+             **(lambda r, c: {"letter_ms": r[1] if len(r) >= 3 else 900,
+                              "arrow_ms":  r[-2] if len(r) >= 3 else c,
+                              "matra_ms":  r[-1] if len(r) >= 3 else c + 1100}
+               )(_voice_runs_ms("vo_pair_aa"), _cue_ms("vo_pair_aa", VO["vo_pair_aa"], "इसकी"))},
             {"letter": "इ", "matra": "ि", "audio": "vo_pair_i",
-             "cue_ms": _cue_ms("vo_pair_i", VO["vo_pair_i"], "इसकी")},
+             "cue_ms": _cue_ms("vo_pair_i", VO["vo_pair_i"], "इसकी"),
+             # [s89 · sibling r121.2] each part arrives on its own words. The clip is four
+             # phrases with clear pauses - «यह है» · the letter · «इसकी मात्रा है» · the matra -
+             # so the letter lands on the 2nd run, the arrow on the 2nd-last and the matra on
+             # the last. A clip that does not read as 3+ phrases falls back to the old cue.
+             **(lambda r, c: {"letter_ms": r[1] if len(r) >= 3 else 900,
+                              "arrow_ms":  r[-2] if len(r) >= 3 else c,
+                              "matra_ms":  r[-1] if len(r) >= 3 else c + 1100}
+               )(_voice_runs_ms("vo_pair_i"), _cue_ms("vo_pair_i", VO["vo_pair_i"], "इसकी"))},
             {"letter": "ई", "matra": "ी", "audio": "vo_pair_ee",
-             "cue_ms": _cue_ms("vo_pair_ee", VO["vo_pair_ee"], "इसकी")},
+             "cue_ms": _cue_ms("vo_pair_ee", VO["vo_pair_ee"], "इसकी"),
+             # [s89 · sibling r121.2] each part arrives on its own words. The clip is four
+             # phrases with clear pauses - «यह है» · the letter · «इसकी मात्रा है» · the matra -
+             # so the letter lands on the 2nd run, the arrow on the 2nd-last and the matra on
+             # the last. A clip that does not read as 3+ phrases falls back to the old cue.
+             **(lambda r, c: {"letter_ms": r[1] if len(r) >= 3 else 900,
+                              "arrow_ms":  r[-2] if len(r) >= 3 else c,
+                              "matra_ms":  r[-1] if len(r) >= 3 else c + 1100}
+               )(_voice_runs_ms("vo_pair_ee"), _cue_ms("vo_pair_ee", VO["vo_pair_ee"], "इसकी"))},
         ],
         # the bare matra, spoken on its own, for the phoneme tap
         "phonemes": {"ा": "vo_matra_aa2", "ि": "vo_matra_i", "ी": "vo_matra_ee"}},
@@ -659,13 +864,30 @@ SLIDES = [
                  "join_ms":  _cue_ms("vo_mb_jal_explain", VO["vo_mb_jal_explain"], "जाल"),
                  # «ज, जा, जाल।» - which of the three is being said, at each moment. Read from the
                  # clip's ACTUAL silences, not estimated; None if it does not resolve into three.
-                 "sound_ms": _sound_cues_ms("vo_mb_jal_sounds", 3)},
+                 "sound_ms": _sound_cues_ms("vo_mb_jal_sounds", 3),
+                 # [s85 · sibling r121/r131] the rebuilt screen stages the RIGHT-hand word on
+                 # the voice: the matra lands on the onset line's last phrase, the final
+                 # letter joins on the result line's second, and the picture arrives on its
+                 # last. Measured runs, with the old phrase search behind each as a fallback.
+                 "drop_ms": (_ON_jal[-1] if len(_ON_jal) >= 2
+                             else _cue_ms("vo_mb_jal_onset", VO["vo_mb_jal_onset"], "बनता")),
+                 "tail_ms": (_RE_jal[1] if len(_RE_jal) >= 3
+                             else _cue_ms("vo_mb_jal_explain", VO["vo_mb_jal_explain"], "ल")),
+                 "pic_ms":  (_RE_jal[-1] if len(_RE_jal) >= 2
+                             else _cue_ms("vo_mb_jal_explain", VO["vo_mb_jal_explain"], "जाल"))},
     },
     {   # Screen 3 · deck page 6
         "id": "T3", "phase": "tutorial", "eis": "iconic", "type": "MEET_PAIR",
         "prompt_hi": "",
         "audio": A(prompt="vo_ex_aa_intro"),
-        "data": {"auto": True, "no_heading": True, "examples": [
+        "data": {"auto": True, "no_heading": True,
+                 # [s87 · sibling r134] after each word's line the mic appears and pulses for the
+                 # child's turn; untapped for 7 s it asks again. Nothing is recorded.
+                 "mic_nudge_audio": "vo_mic_nudge",
+                 # [2026-10-26, as HI02H11_L02_S03 / S02 r151] the hand + «इस बटन पर टैप करिए» come at once
+                 # only after THIS page's first word (नाक, the child's first mic); every other word waits 7 s
+                 "mic_nudge_now": True,
+                 "examples": [
             {"word": "नाक",  "matra": "ा", "img": "obj_naak", "emoji": "👃",
              "audio_line": "vo_ex_naak", "matra_audio": None,
              # «नाक,» the word is already up · «बोलकर देखिए।» the picture arrives
@@ -700,13 +922,27 @@ SLIDES = [
                  "join_ms":  _cue_ms("vo_mb_bil_explain", VO["vo_mb_bil_explain"], "बिल"),
                  # «ज, जा, जाल।» - which of the three is being said, at each moment. Read from the
                  # clip's ACTUAL silences, not estimated; None if it does not resolve into three.
-                 "sound_ms": _sound_cues_ms("vo_mb_bil_sounds", 3)},
+                 "sound_ms": _sound_cues_ms("vo_mb_bil_sounds", 3),
+                 # [s85 · sibling r121/r131] the rebuilt screen stages the RIGHT-hand word on
+                 # the voice: the matra lands on the onset line's last phrase, the final
+                 # letter joins on the result line's second, and the picture arrives on its
+                 # last. Measured runs, with the old phrase search behind each as a fallback.
+                 "drop_ms": (_ON_bil[-1] if len(_ON_bil) >= 2
+                             else _cue_ms("vo_mb_bil_onset", VO["vo_mb_bil_onset"], "बनता")),
+                 "tail_ms": (_RE_bil[1] if len(_RE_bil) >= 3
+                             else _cue_ms("vo_mb_bil_explain", VO["vo_mb_bil_explain"], "ल")),
+                 "pic_ms":  (_RE_bil[-1] if len(_RE_bil) >= 2
+                             else _cue_ms("vo_mb_bil_explain", VO["vo_mb_bil_explain"], "बिल"))},
     },
     {   # Screen 5 · deck page 8
         "id": "T5", "phase": "tutorial", "eis": "iconic", "type": "MEET_PAIR",
         "prompt_hi": "",
         "audio": A(prompt="vo_ex_i_intro"),
-        "data": {"auto": True, "no_heading": True, "examples": [
+        "data": {"auto": True, "no_heading": True,
+                 # [s87 · sibling r134] after each word's line the mic appears and pulses for the
+                 # child's turn; untapped for 7 s it asks again. Nothing is recorded.
+                 "mic_nudge_audio": "vo_mic_nudge",
+                 "examples": [
             {"word": "दिन", "matra": "ि", "img": "obj_din", "emoji": "☀️",
              "audio_line": "vo_ex_din", "matra_audio": None,
              # «दिन,» the word is already up · «बोलकर देखिए।» the picture arrives
@@ -747,13 +983,27 @@ SLIDES = [
                  "join_ms":  _cue_ms("vo_mb_keel_explain", VO["vo_mb_keel_explain"], "कील"),
                  # «ज, जा, जाल।» - which of the three is being said, at each moment. Read from the
                  # clip's ACTUAL silences, not estimated; None if it does not resolve into three.
-                 "sound_ms": _sound_cues_ms("vo_mb_keel_sounds", 3)},
+                 "sound_ms": _sound_cues_ms("vo_mb_keel_sounds", 3),
+                 # [s85 · sibling r121/r131] the rebuilt screen stages the RIGHT-hand word on
+                 # the voice: the matra lands on the onset line's last phrase, the final
+                 # letter joins on the result line's second, and the picture arrives on its
+                 # last. Measured runs, with the old phrase search behind each as a fallback.
+                 "drop_ms": (_ON_keel[-1] if len(_ON_keel) >= 2
+                             else _cue_ms("vo_mb_keel_onset", VO["vo_mb_keel_onset"], "बनता")),
+                 "tail_ms": (_RE_keel[1] if len(_RE_keel) >= 3
+                             else _cue_ms("vo_mb_keel_explain", VO["vo_mb_keel_explain"], "ल")),
+                 "pic_ms":  (_RE_keel[-1] if len(_RE_keel) >= 2
+                             else _cue_ms("vo_mb_keel_explain", VO["vo_mb_keel_explain"], "कील"))},
     },
     {   # Screen 7 · deck page 10
         "id": "T7", "phase": "tutorial", "eis": "iconic", "type": "MEET_PAIR",
         "prompt_hi": "",
         "audio": A(prompt="vo_ex_ee_intro"),
-        "data": {"auto": True, "no_heading": True, "examples": [
+        "data": {"auto": True, "no_heading": True,
+                 # [s87 · sibling r134] after each word's line the mic appears and pulses for the
+                 # child's turn; untapped for 7 s it asks again. Nothing is recorded.
+                 "mic_nudge_audio": "vo_mic_nudge",
+                 "examples": [
             {"word": "तीर",   "matra": "ी", "img": "obj_teer", "emoji": "🏹",
              "audio_line": "vo_ex_teer", "matra_audio": None,
              # «तीर,» the word is already up · «बोलकर देखिए।» the picture arrives
@@ -938,90 +1188,28 @@ SLIDES = [
     #
     # x/y/w/h are percentages of the scene, each one placed by cropping it out of the artwork AND
     # out of the rendered page, and looking at it.
-    {   # Screen 15 · deck slide 18 — आ की मात्रा
+    {   # Screens 15-17, now ONE screen — the SME's combined picture.
+        # "remove the existing page 16 17 and 18 and use only the new page I added, we can teach
+        # or tap everything in it." The three single-matra hunts are retired: on one screen the
+        # question is "does this word carry a matra we have learned", which every word in the
+        # picture answers unambiguously — including किताब, चिड़िया, कुत्ता and कुर्सी, which
+        # carry two of the three and could not be placed cleanly while the screens were split.
         "id": "P4", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT",
-        "prompt_hi": "“आ” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
-        "audio": A(prompt="vo_oh_aa_intro", result="vo_oh_aa_done",
-                   try_again="vo_oh_aa_wrong", hint1="vo_oh_hint1", hint2="vo_oh_aa_hint2"),
-        "data": {"signal": "object_hunt_correct", "letter": "आ", "matra": "ा",
-                 "scene": "assets/UI/scene_hunt1.webp",
-                 "objects": [
-                   {"word_hi": "आम", "audio": "vo_name_aam", "emoji": "🥭",
-                    "ok_audio": "vo_oh_aa_ok_aam", "more_audio": "vo_oh_aa_more_aam",
-                    "correct": True, "x": 19.1, "y": 18.6, "w": 21.5, "h": 19.1},
-                   {"word_hi": "माला", "audio": "vo_name_maala", "emoji": "📿",
-                    "ok_audio": "vo_oh_aa_ok_maala", "more_audio": "vo_oh_aa_more_maala",
-                    "correct": True, "x": 66.7, "y": 65.9, "w": 9.5, "h": 10.0},
-                   {"word_hi": "गाजर", "audio": "vo_name_gaajar", "emoji": "🥕",
-                    "ok_audio": "vo_oh_aa_ok_gaajar", "more_audio": "vo_oh_aa_more_gaajar",
-                    "correct": True, "x": 45.8, "y": 82.4, "w": 20.9, "h": 15.9},
-                   {"word_hi": "ताला", "audio": "vo_name_taala", "emoji": "🔒",
-                    "ok_audio": "vo_oh_aa_ok_taala", "more_audio": "vo_oh_aa_more_taala",
-                    "correct": True, "x": 94.0, "y": 51.0, "w": 5.0, "h": 11.0},
-                   # distractors — neither carries ा
-                   {"word_hi": "पतंग", "audio": "vo_name_patang", "emoji": "🪁",
-                    "wrong_audio": "vo_oh_w_patang_aa", "x": 36.9, "y": 28.7, "w": 10.5, "h": 15.9},
-                   {"word_hi": "सूरज", "audio": "vo_name_sooraj", "emoji": "☀️",
-                    "wrong_audio": "vo_oh_w_sooraj_aa", "x": 72.5, "y": 10.8, "w": 9.9, "h": 19.7},
-                 ]},
-        "signals": {"on_complete": ["object_hunt_correct"]},
-    },
-    {   # Screen 16 · deck slide 19 — छोटी इ की मात्रा
-        "id": "P5", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT",
-        "prompt_hi": "छोटी “इ” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
-        "audio": A(prompt="vo_oh_i_intro", result="vo_oh_i_done",
-                   try_again="vo_oh_i_wrong", hint1="vo_oh_hint1", hint2="vo_oh_i_hint2"),
-        "data": {"signal": "object_hunt_correct", "letter": "इ", "matra": "ि",
-                 "scene": "assets/UI/scene_hunt2.webp",
-                 "objects": [
-                   {"word_hi": "चिड़िया", "audio": "vo_name_chidiya", "emoji": "🐦",
-                    "ok_audio": "vo_oh_i_ok_chidiya", "more_audio": "vo_oh_i_more_chidiya",
-                    "correct": True, "x": 44.7, "y": 22.3, "w": 8.1, "h": 13.2},
-                   {"word_hi": "हिरण", "audio": "vo_name_hiran", "emoji": "🦌",
-                    "ok_audio": "vo_oh_i_ok_hiran", "more_audio": "vo_oh_i_more_hiran",
-                    "correct": True, "x": 69.7, "y": 51.8, "w": 10.2, "h": 26.6},
-                   {"word_hi": "किताब", "audio": "vo_name_kitaab", "emoji": "📕",
-                    "ok_audio": "vo_oh_i_ok_kitaab", "more_audio": "vo_oh_i_more_kitaab",
-                    "correct": True, "x": 21.2, "y": 65.8, "w": 12.0, "h": 14.0},
-                   {"word_hi": "पिन", "audio": "vo_name_pin", "emoji": "📌",
-                    "ok_audio": "vo_oh_i_ok_pin", "more_audio": "vo_oh_i_more_pin",
-                    "correct": True, "x": 50.3, "y": 84.3, "w": 6.0, "h": 9.0},
-                   # distractors — none carries ि. कुत्ता carries ा, which its line says.
-                   {"word_hi": "कुत्ता", "audio": "vo_name_kutta", "emoji": "🐶",
-                    "wrong_audio": "vo_oh_w_kutta", "x": 46.1, "y": 63.0, "w": 11.0, "h": 15.9},
-                   {"word_hi": "गेंद", "audio": "vo_name_gend", "emoji": "⚽",
-                    "wrong_audio": "vo_oh_w_gend_i", "x": 37.1, "y": 66.4, "w": 6.2, "h": 10.0},
-                   {"word_hi": "सूरज", "audio": "vo_name_sooraj", "emoji": "☀️",
-                    "wrong_audio": "vo_oh_w_sooraj_i", "x": 77.6, "y": 10.9, "w": 11.1, "h": 18.1},
-                 ]},
-        "signals": {"on_complete": ["object_hunt_correct"]},
-    },
-    {   # Screen 17 · deck slide 20 — बड़ी ई की मात्रा
-        "id": "P6", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT",
-        "prompt_hi": "बड़ी “ई” की मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
-        "audio": A(prompt="vo_oh_ee_intro", result="vo_oh_ee_done",
-                   try_again="vo_oh_ee_wrong", hint1="vo_oh_hint1", hint2="vo_oh_ee_hint2"),
-        "data": {"signal": "object_hunt_correct", "letter": "ई", "matra": "ी",
-                 "scene": "assets/UI/scene_hunt3.webp",
-                 "objects": [
-                   {"word_hi": "लड़की", "audio": "vo_name_ladki", "emoji": "👧",
-                    "ok_audio": "vo_oh_ee_ok_ladki", "more_audio": "vo_oh_ee_more_ladki",
-                    "correct": True, "x": 53.8, "y": 30.0, "w": 12.0, "h": 16.5},
-                   {"word_hi": "पानी", "audio": "vo_name_paani", "emoji": "💧",
-                    "ok_audio": "vo_oh_ee_ok_paani", "more_audio": "vo_oh_ee_more_paani",
-                    "correct": True, "x": 51.1, "y": 44.0, "w": 5.5, "h": 11.0},
-                   {"word_hi": "घड़ी", "audio": "vo_name_ghadi", "emoji": "🕐",
-                    "ok_audio": "vo_oh_ee_ok_ghadi", "more_audio": "vo_oh_ee_more_ghadi",
-                    "correct": True, "x": 80.9, "y": 65.4, "w": 7.2, "h": 18.5},
-                   {"word_hi": "मछली", "audio": "vo_name_machhli", "emoji": "🐟",
-                    "ok_audio": "vo_oh_ee_ok_machhli", "more_audio": "vo_oh_ee_more_machhli",
-                    "correct": True, "x": 8.2, "y": 73.3, "w": 10.2, "h": 8.9},
-                   # distractors — neither carries ी. तितली was removed: it ends in ी.
-                   {"word_hi": "कुत्ता", "audio": "vo_name_kutta", "emoji": "🐶",
-                    "wrong_audio": "vo_oh_w_kutta", "x": 36.2, "y": 61.4, "w": 10.4, "h": 19.1},
-                   {"word_hi": "किताब", "audio": "vo_name_kitaab", "emoji": "📕",
-                    "wrong_audio": "vo_oh_w_kitaab_ee", "x": 65.4, "y": 70.2, "w": 12.7, "h": 8.3},
-                 ]},
+        "prompt_hi": "मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
+        "audio": A(prompt="vo_oh_all_intro", result="vo_oh_all_done",
+                   try_again="vo_oh_all_wrong", hint1="vo_oh_hint1", hint2="vo_oh_all_hint2"),
+                 # [r51] no letter box on this screen - the SME does not want it, and a chip
+                 # naming one matra (or even all three) adds nothing the instruction has not
+                 # already said. The engine keeps the chip for the single-matra hunts.
+                 "data": {"signal": "object_hunt_correct", "letter": "आ", "matra": "ा",
+                 "no_chip": True,
+                 # [r53] the hunt ends at TWO. Nine correct objects is a long screen, and
+                 # the point is made once the child has picked two out of the whole scene;
+                 # the rest light up at the end so nothing is lost. Completing hands
+                 # straight on to the tokri game, which is the next slide.
+                 "need": 2,
+                 "scene": HUNT_SCENE,
+                 "objects": hunt_objects()},
         "signals": {"on_complete": ["object_hunt_correct"]},
     },
     {   # deck page 19 · N/C — ships as built
@@ -1112,7 +1300,11 @@ CARD = {
     "scaffold_rules": {
         "nudge_timeout_ms": {"guided": 6000, "practice": 8000},
         "max_attempts": 3,
-        "hand_on_attempt": 2,
+        # [s68] the sibling's value. Its own engine never reads this - makeLadder hard-codes
+        # rung 1/2/3 - but THIS engine reads it in six places, and at 2 the hand arrived on the
+        # second wrong: a rung early, and on top of the rung-2 demonstration that is supposed
+        # to run with nothing taken away and no hand.
+        "hand_on_attempt": 3,
         # [r37] THE REVIEW-1 LADDER, from HI02H11_L02_S02_DEV_HANDOFF. Three rungs of three
         # different KINDS of help rather than two of the same kind:
         #   1 refocus     - the wrong thing shakes, one line is spoken, nothing is marked
@@ -1125,6 +1317,11 @@ CARD = {
         # rule is not edited - the engine widens the phase set around that one synchronous call
         # and restores it (see withHand3). Set this false and [28f] applies exactly as before.
         "hand_on_hint3": True,
+        # [s68] carried from the sibling's card. Declarative in both engines - neither reads
+        # them - but they are the written record of the two rulings this ladder enforces:
+        # after rung 3 only the correct answer is live, and the answer is never handed over.
+        "lock_after_hint3": True,
+        "reveal_on_attempt": None,
         "silent_on_late_correct": True,
         "hand_in_practice": True,
     },
@@ -1136,23 +1333,120 @@ CARD = {
 }
 
 
-def gate_spec():
-    """peek once -> talk while the gate VO sounds -> rest, from the moment it ends.
+GATE_SEEK = "assets/UI/swifty_gate_seek.webp"
+GATE_TALK_SHEET = "assets/UI/swifty_gate_talk.webp"
+GATE_TALK_FIRST, GATE_TALK_LAST, GATE_TALK_COLS = 37, 67, 8
+# the phrase each transition screen puts on the title line - the engine's PHASE_GATE_TITLE, which
+# is what the typewriter types, so the two must agree or the cue lands on the wrong words
+GATE_TITLE = {"tutorial": u"\u091a\u0932\u093f\u090f, \u0936\u0941\u0930\u0942 \u0915\u0930\u0947\u0902!",
+              "guided":   u"\u091a\u0932\u093f\u090f, \u0938\u093e\u0925 \u092e\u0947\u0902 \u0915\u0930\u0947\u0902!",
+              "practice": u"\u0905\u092c \u0906\u092a\u0915\u0940 \u092c\u093e\u0930\u0940!"}
+GATE_VO = {"tutorial": "vo_pt_tutorial", "guided": "vo_pt_guided", "practice": "vo_pt_practice"}
 
-    peek_ms is read off the file rather than guessed, so the talk starts on her last rising frame.
-    Falls back to the engine's own stock gate if the art is not on disk.
+
+def _voiced_segs(path, lo_ms, hi_ms):
+    """The stretches inside [lo, hi] where the clip is actually voiced, in ms.
+
+    25 ms RMS frames, voice = above -42 dBFS, gaps under 150 ms bridged, runs under 50 ms dropped.
+    The engine types the phrase's letters only inside these, on the clip's own clock, so the line
+    finishes exactly when she stops talking instead of running on timers of its own.
     """
-    peek = os.path.join(OUT, "assets", "UI", "gate_peek.webp")
-    if not os.path.isfile(peek):
+    import array, subprocess
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", "16000",
+                          "-f", "s16le", "-"], capture_output=True).stdout
+    if not raw:
         return None
-    try:
-        from PIL import Image, ImageSequence
-        ms = sum((f.info.get("duration") or 40) for f in ImageSequence.Iterator(Image.open(peek)))
-    except Exception:
-        ms = 1520
-    return {"img": "assets/UI/gate_peek.webp", "peek": "assets/UI/gate_peek.webp",
-            "talk": "assets/UI/gate_talk.webp", "rest": "assets/UI/gate_rest.webp",
-            "peek_ms": ms, "hold_ms": 450}
+    a = array.array("h")
+    a.frombytes(raw[: len(raw) // 2 * 2])
+    thr = 32768 * 10 ** (-42 / 20.0)
+    segs = []
+    for i in range(0, len(a) - 400, 400):
+        ms = i // 16
+        if not (lo_ms - 150 <= ms <= hi_ms + 200):
+            continue
+        r = (sum(x * x for x in a[i:i + 400]) / 400.0) ** 0.5
+        if r > thr:
+            if segs and ms - segs[-1][1] < 150:
+                segs[-1][1] = ms + 25
+            else:
+                segs.append([ms, ms + 25])
+    segs = [x for x in segs if x[1] - x[0] >= 50]
+    return segs or None
+
+
+def _lip_track(path):
+    """One character per 25 ms: '1' where the clip is loud AND near its own local peak.
+
+    The same measurement the celebration uses - a syllable nucleus, not merely "voice on", so the
+    beak opens per syllable and shuts in the dips rather than hanging open through a whole word.
+    """
+    import array, math, subprocess
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", "16000",
+                          "-f", "s16le", "-"], capture_output=True).stdout
+    if not raw:
+        return None
+    a = array.array("h")
+    a.frombytes(raw[: len(raw) // 2 * 2])
+    step = 400                                                   # 25 ms at 16 kHz
+    rms = [math.sqrt(sum(x * x for x in a[i:i + step]) / step) for i in range(0, len(a) - step, step)]
+    if not rms:
+        return None
+    mx = max(rms) or 1
+    W = 4
+    bits = ["1" if (r > 0.10 * mx and r >= 0.62 * max(rms[max(0, i - W):i + W + 1])) else "0"
+            for i, r in enumerate(rms)]
+    t = "".join(bits).replace("101", "111").replace("101", "111").replace("010", "000")
+    return t if "1" in t else None
+
+
+def gate_spec():
+    """The sibling's transition screen, measured against THIS lesson's clips.
+
+    Falls back to None (the engine's stock gate) when the art is not on disk, so a bundle without
+    the seeking bird still runs.
+    """
+    src = os.path.join(OUT, GATE_SEEK)
+    if not os.path.isfile(src):
+        return None
+    # [s81 · sibling r142] NO TALK SHEET. The transition screen is Hindi-game-gender-identify's
+    # now (see [s80]); its Swifty is a finished animation, not a mouth driven frame by frame, so
+    # the sheet this used to slice out of the seeking bird - and the lip-sync track measured
+    # against it - have nobody to read them. What the new screen still takes from here is
+    # title_cue_ms: where in each of OUR clips the phrase begins. That is measured below, as before.
+    g = {"img": GATE_SEEK}
+
+    cue, dur, voice, lips = {}, {}, {}, {}
+    for phase, vo in GATE_VO.items():
+        vp = os.path.join(OUT, "assets", "Audio", "VO", vo + ".ogg")
+        if not os.path.isfile(vp) or vo not in VO:
+            continue
+        line, title = VO[vo], GATE_TITLE[phase]
+        # where the on-screen phrase begins inside the spoken line, and how long is left after it
+        # ffprobe, not wave: the clips recorded for this lesson are WAV in a .ogg wrapper, but the
+        # ORIGINAL gate takes are real Vorbis - wave.open() raises "file does not start with RIFF
+        # id" on those and the except swallowed it, so the cue was computed against a made-up
+        # 4000 ms and the phrase typed over the wrong part of the audio. Measured, not guessed.
+        total = _clip_ms(vp)
+        if not total:
+            continue
+        c = _cue_ms(vo, line, title[:6]) if title[:6] in line else int(total * 0.55)
+        cue[phase] = c
+        dur[phase] = max(300, total - c)
+        v = _voiced_segs(vp, c, c + dur[phase])
+        if v:
+            voice[phase] = v
+            # pin the cue and the span to where the voice ACTUALLY starts and stops in that window
+            cue[phase] = v[0][0]
+            dur[phase] = max(300, v[-1][1] - v[0][0])
+        t = _lip_track(vp)
+        if t:
+            lips[phase] = {"bits": t, "step_ms": 25}
+    g["title_cue_ms"] = cue
+    g["title_dur_ms"] = dur
+    if voice:
+        g["title_voice_ms"] = voice
+    # [s81] `lips` is measured above but no longer written to the card - nothing draws a mouth.
+    return g
 
 
 def cel_anim():
@@ -1226,6 +1520,7 @@ def main():
                                                  # no duration, no preload and no karaoke timing,
                                                  # and PENDING VO stopped checking them.
                                                  "audio_line", "matra_audio",
+                                                 "ok_audio", "more_audio", "wrong_audio",
                                                  "try_again", "correct", "reveal", "sfx")
                                            and re.fullmatch(r"(vo|sfx)_[\w]+", v)):
                     used_audio.add(v)
@@ -1248,9 +1543,17 @@ def main():
     CARD["assets"] = {
         "audio": {k: audio_path(k) for k in sorted(used_audio)},
         "audio_text": {k: VO[k] for k in sorted(used_audio)},
-        "image": {k: f"assets/Images/{k}.png" for k in sorted(IMAGES)},
+        # [s77 · sibling r126] the pictures ship as WebP. IMG_EXT in the engine has always read
+        # this ("the twin of AUDIO_EXT"); until now the build wrote ".png" here and in the three
+        # places below, so there was nothing for it to read. IMG_EXT is resolved once, at the
+        # top of the emit, and every path is built from it.
+        "img_ext": IMG_EXT,
+        "image": {k: f"assets/Images/{k}.{IMG_EXT}" for k in sorted(IMAGES)},
         "audio_ext": "ogg",
-        "img_ext": "png",
+        # [s77] was a second, hard-coded "img_ext": "png" in this same dict literal - a later
+        # duplicate key silently wins in Python, so the card shipped .webp paths with a "png"
+        # extension beside them and the engine fetched every picture twice over.
+
     }
 
     # [r31] the ported gate + celebration, both measured from this lesson's own files
@@ -1292,9 +1595,9 @@ def main():
                     _walk_img(v)
     _walk_img(CARD["slides"][:3])
     on_disk = [k for k in first_keys
-               if os.path.exists(os.path.join(OUT, "assets", "Images", k + ".png"))]
+               if os.path.exists(os.path.join(OUT, "assets", "Images", k + "." + IMG_EXT))]
     links = "".join(f'<link rel="preload" as="image" fetchpriority="high" '
-                    f'href="assets/Images/{k}.png">' for k in on_disk)
+                    f'href="assets/Images/{k}.{IMG_EXT}">' for k in on_disk)
     assert "</head>" in html, "no </head> in built HTML — preload injection would be silent"
     html = html.replace("</head>", links + "</head>", 1)
 
@@ -1312,7 +1615,7 @@ def main():
     on_disk_audio = lambda k: os.path.exists(os.path.join(OUT, audio_path(k).replace("/", os.sep)))
     missing_audio = [k for k in sorted(used_audio) if not on_disk_audio(k)]
     missing_img = [k for k in sorted(IMAGES)
-                   if not os.path.exists(os.path.join(img_dir, k + ".png"))]
+                   if not os.path.exists(os.path.join(img_dir, k + "." + IMG_EXT))]
 
     types = sorted(set(s["type"] for s in CARD["slides"]))
     print(f"  Built {CODE}: {len(CARD['slides'])} slides · {len(used_audio)} audio ids · "
@@ -1322,7 +1625,12 @@ def main():
     print(f"  PENDING ART ({len(missing_img)}): {', '.join(missing_img) or 'none'}")
     print(f"  reused unchanged: {len(REUSED & used_audio)} clips")
     _g = CARD.get("gate"); _c = CARD.get("end_anim")
-    print(f"  gate: {'peek/talk/rest, peek ' + str(_g['peek_ms']) + 'ms' if _g else 'stock (art missing)'}")
+    if _g:
+        _cm = _g.get("title_cue_ms", {})
+        print("  gate: peeking Swifty + whoosh; headline cue (ms into the clip) %s"
+              % {k: _cm[k] for k in sorted(_cm)})
+    else:
+        print("  gate: stock (art missing)")
     print(f"  celebration: {'lip-sync ' + str(len(_c['bits'])) + ' steps x 25ms' if _c else 'stock mascot'}")
     _sp = CARD["assets"].get("audio_speech", {})
     print(f"  karaoke timing: {len(CARD['assets'].get('audio_dur', {}))} clips measured, "

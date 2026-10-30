@@ -129,3 +129,10 @@ copy, because they would benefit every lesson and belong upstream:
 - tapping a matra **inside** a rendered word — Screen 12
 
 Both are noted in `_DESIGN_MAPPING.md` with the substitutions used instead.
+
+## 2026-10-26 — mic hand nudge timing (as HI02H11_L02_S03 / S02 `8e8fd29` r151)
+
+Pages 3 / 5 / 7 (MEET_PAIR): after page 3's FIRST word (नाक) the hand goes to the mic and «इस बटन पर टैप करिए»
+plays at once (0.35 s after the line, set by `data.mic_nudge_now` on T3); every other word (मटका, दिन, गति, तीर,
+लड़की) waits for 7 s of inactivity. Either way it repeats every 7 s until the mic is tapped. Measured: नाक 0.39 s,
+the other five 7.0-7.1 s. Pre-change build output: `../_backup_pre_mic_nudge_2026-10-26/`.
