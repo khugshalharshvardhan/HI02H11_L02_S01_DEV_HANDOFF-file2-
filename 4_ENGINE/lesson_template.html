@@ -3329,11 +3329,25 @@ body.mt-page{ background:#7FC2FE; }
     border: 0;
     transition: background 0.25s, box-shadow 0.25s;
   }
-  /* [s67] the pips are laid out, not placed. They used to be five elements at five hard-coded
-     offsets; with PER_ROUND driving how many exist, fixed offsets would strand or overflow them.
-     The track centres whatever number it is given, at the same 36px spacing the offsets had. */
-  #catch-track { display:flex; align-items:center; justify-content:center; gap:14px; }
-  .catch-dot { position:relative; left:auto; right:auto; flex:0 0 auto; }
+  /* [s67] made the pip COUNT follow PER_ROUND and centred the dots with flex, so a round of two
+     would not strand three of the five hard-coded offsets.
+     [REV-4b] AND IT PUT THEM OUTSIDE THE PLANK. It overrode `left` and `right` but left the
+     `top:30px` above standing, and under `position:relative` that is no longer a position - it is
+     a 30 px shove DOWNWARD from wherever flex has placed the dot. Measured on the built page with
+     both dots filled: they painted below the plank entirely, at 43.1 % and 56.9 % across, where
+     the sockets are at 20.76 / 34.71 / 48.80 / 63.19 / 77.49 %. A dot is transparent until it is
+     caught, so this only ever showed itself at the moment a child got one RIGHT.
+     Flex was the wrong tool: the sockets are at fixed places in a painted picture, so the dots
+     have to be too. Each one goes back on its own socket centre - the same measurements as the
+     comment above - and because they are addressed by position, any count up to the plank's five
+     still works, which is what [s67] needed. */
+  #catch-track { display:block; }
+  .catch-dot { position:absolute; top:30px; right:auto; transform:translateX(-50%); }
+  .catch-dot:nth-child(1) { left:20.76%; }
+  .catch-dot:nth-child(2) { left:34.71%; }
+  .catch-dot:nth-child(3) { left:48.80%; }
+  .catch-dot:nth-child(4) { left:63.19%; }
+  .catch-dot:nth-child(5) { left:77.49%; }
   .catch-dot.done {
     background:
       radial-gradient(circle at 34% 28%, rgba(255,255,255,0.7) 0%, transparent 55%),
@@ -3862,6 +3876,8 @@ body.mt-page{ background:#7FC2FE; }
   box-shadow:0 4px 0 #D6D6D6;cursor:default;animation:none;}
 .sg-btn.sg-waiting:active{transform:translateX(-50%);}
 .lt-br{ font-size:.78em; opacity:.92; }
+/* [REV-2 · file4 r121] the arrow between the letter and its matra on the cover's coaches */
+.lt-arr{ display:inline-block; font-size:.62em; color:#7FA8D9; margin:0 .16em; vertical-align:.14em; }
 .train-shell.lt-cover .train-track{
   left:50%; right:auto; width:1030px; transform:translateX(-50%);
 }
@@ -4587,6 +4603,61 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 .mx-v2 .mx-wordrow.mp-in{ animation:mxFadeIn .42s ease-out both; }
 @keyframes mxFadeIn{ from{ opacity:0; } to{ opacity:1; } }
 @media (prefers-reduced-motion:reduce){ .mx-v2 .mx-wordrow.mp-in{ animation:none; } }
+
+/* [REV-B1] WORD_BUILD. The blank is wider than MATRA_FILL's because an अक्षर is wider than a
+   mark, and the tail sits hard against it so «_ल» reads as one word with a hole in it rather
+   than as two things side by side. */
+.wb-word{ display:flex; align-items:center; justify-content:center; gap:2px;
+  font-size:44px; font-weight:800; color:var(--navy); }
+.wb-blank{ display:inline-flex; align-items:center; justify-content:center;
+  min-width:72px; height:60px; border:3px dashed rgba(255,138,0,.85); border-radius:10px;
+  background:rgba(255,138,0,.08); margin:0 2px; box-sizing:border-box; }
+.wb-blank.filled{ border-style:solid; border-color:transparent; background:transparent; }
+.wb-blank .wb-inakshar{ color:#FF8A00; }
+.wb-blank.nudge{ animation:coachPulse 1200ms ease-in-out infinite; }
+.wb-blank.wb-blink{ border-color:#386AF6; background:#EAF2FF;
+  animation:mfBlink 820ms ease-in-out infinite; }
+.wb-blank.wb-pulse{ animation:coachPulse 1200ms ease-in-out infinite; }
+.wb-tail{ font-family:var(--font-hi); }
+.wb-done{ font-family:var(--font-hi); }
+/* the अक्षर on a tray card, and the card that rung 3 points the child at */
+.wb-akshar{ font-family:var(--font-hi); font-size:46px; font-weight:800; color:var(--navy);
+  line-height:1.1; }
+.wb-card.wb-callout{ animation:coachPulse 1200ms ease-in-out infinite; }
+.wb-card.wb-used{ opacity:0; pointer-events:none; }
+@media (prefers-reduced-motion:reduce){
+  .wb-blank.wb-blink, .wb-blank.nudge, .wb-blank.wb-pulse, .wb-card.wb-callout{ animation:none; }
+}
+
+/* ==========================================================================================
+   [REV-4 · S04 587a927] «मात्रा टोकरी» - the three asks from the file-5 build, as that
+   commit made them. Its game is this one carried over, so these are its rules verbatim.
+   ========================================================================================== */
+/* 1. THE ROUND'S MATRA ON THE BASKET'S PLAQUE. The plaque is in the ART (a wooden frame, a cream
+      panel and two brass rivets, centred at 75.3 % of the basket's height); the game writes only
+      the mark on it, in the lesson's orange, so it changes with the round. It lives in the front
+      layer, so it moves and wiggles with the basket.
+      --mt-ink-dy centres the INK on the panel rather than the line box: the hook of ी rises
+      above the letters, so the two are not the same thing. */
+.mt-game .basket-front .bf-art { position: relative; }
+.mt-game .basket-matra {
+  --mt-ink-dy: 4px;          /* measured: ink centred on the cream panel */
+  position: absolute; left: 50%; top: 75.3%;
+  transform: translate(-50%, -50%);
+  font-family: var(--pal-font-hi); font-weight: 800; font-size: 34px; line-height: 1;
+  color: #E8590C; white-space: nowrap; pointer-events: none;
+}
+.mt-game .basket-matra > span { display: block; transform: translateY(var(--mt-ink-dy)); }
+.mt-game .basket-matra:empty { display: none; }
+/* 2. NO RED ON A WRONG CATCH: "just keep the wiggle and the sfx". The basket keeps its idle white
+      outline and only wiggles; the word's cloud keeps its own colour and only shakes. The wrong
+      sound is untouched, and so is the green of a right catch. */
+.mt-game #basket-art.is-wrong { --ol-c: var(--ol-idle, #FFFFFF); }
+.mt-game .drop-tile.wg-wrong .dt-cloud { filter: hue-rotate(var(--cloud-hue, 0deg)) saturate(1.2); }
+/* 3. THE BIGGER BASKET: both layers 258 x 194, same bottom; the catch line moves with the rim
+      (10 px below CATCH_Y 489, as before) - see BASKET_W / CATCH_Y in the module. */
+.mt-game .basket, .mt-game .basket-front { width: 258px; height: 194px; }
+.mt-game .catch-line { bottom: 155px; }
 </style>
 <!-- [s76 · sibling r126] THE COVER'S TRAIN COMES BEFORE ANYTHING ELSE ON THE LINE. These two
      are the cover's own pictures (TRAIN_ART.src / TRAIN_SPR.src); asked for in the head at high
@@ -5924,12 +5995,17 @@ function armIdleVo(){
   if(_idleVoFired){ stopIdleVo(); return; }      // [27f] one reminder per slide — already spent
   _idleSince = 0;                                // any (re)arm restarts the silence clock
   const slide = CARD.slides[state.idx];
-  if(!slide || slide.type === "CELEBRATION" || !IDLE_VO_PHASES.has(slide.phase)){ stopIdleVo(); return; }
+  /* [REV-D1 · done r77] NOR THE GAME. It speaks for itself and the child steers it with drags
+     this listener never sees, so 7 s in, the lesson would decide they were idle and read the
+     instruction again over a game already running. */
+  if(!slide || slide.type === "CELEBRATION" || slide.type === "MATRA_TOKRI"
+     || !IDLE_VO_PHASES.has(slide.phase)){ stopIdleVo(); return; }
   if(_idleVoTimer) return;                       // ticker already running for this slide
   const ms = (CARD.scaffold_rules && CARD.scaffold_rules.idle_vo_replay_ms) || 7000;
   _idleVoTimer = setInterval(()=>{
     const s = CARD.slides[state.idx];
-    if(!s || s.type === "CELEBRATION" || !IDLE_VO_PHASES.has(s.phase)){ stopIdleVo(); return; }
+    if(!s || s.type === "CELEBRATION" || s.type === "MATRA_TOKRI"
+       || !IDLE_VO_PHASES.has(s.phase)){ stopIdleVo(); return; }
     // HOLD (not stop) on every transient busy flag. state.locked MUST be a hold: besides "answered
     // correctly" it is also set TRANSIENTLY while reveal_seq narrates the options one by one (see the
     // _enableAll() that clears it). Treating it as terminal killed the ticker 0.6s into every guided
@@ -5938,10 +6014,12 @@ function armIdleVo(){
     if(state.locked || state.hintActive || isPlaying || state.revealing || state.demoRunning){ _idleSince = 0; return; }
     if(!_idleSince){ _idleSince = Date.now(); return; }
     if(Date.now() - _idleSince < ms) return;
-    // [27f] ONE reminder, then done for this slide. Mark spent and stop the ticker BEFORE speaking,
-    // so a pointerdown arriving during the replay cannot re-arm it.
-    _idleVoFired = true;
-    stopIdleVo();
+    /* [REV-D1 · done r150] NOT ONE REMINDER - ONE EVERY 7 SECONDS OF SILENCE.
+       [27f] stopped the ticker here, so a child who sat still heard the instruction exactly once
+       and then nothing at all. The ticker now keeps watching, and because the reminder is itself
+       sound the clock holds while it plays: the next one comes 7 s after it ENDS, and so on,
+       until the child acts, the page is answered (state.locked above) or it is left. */
+    _idleSince = 0;
     SwiftPAL.emit("idle_vo_replay", { slide_id: s.id, phase: s.phase });
     if(state.replayAudio) state.replayAudio(); else autoPlayChain(s);
   }, IDLE_VO_TICK);
@@ -6158,6 +6236,10 @@ function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect,
         // LAYERED SCAFFOLD (A1): L1 re-listen → L2 hint → L3 REVEAL at max_attempts (never stuck).
         const _maxA = (CARD.scaffold_rules && CARD.scaffold_rules.max_attempts) || 3;
         $("hintBtn").classList.add("show","hint-glow");
+        /* [REV-D6 · done r146] THE BUZZ GETS ITS OWN BEAT. The red flash and the wrong sound used
+           to be talked over by the tapped word, which starts the instant the finger lifts. The
+           whole feedback chain - the word, then the rung - now waits for them to finish. */
+        afterWrong(()=>
         _afterWord(()=>{   // speak the tapped word FIRST, then the layered feedback VO (no overlap)
           _fb = true;                        /* [28t] from here the audio is FEEDBACK — a retry may interrupt it */
           /* [r37] RUNG 3 - GUIDE. The answer glows, the hand goes to it and everything else
@@ -6199,7 +6281,7 @@ function mountTapOptions({slide, host, signalName, stimulus, options, isCorrect,
           // [24a A2] 1st wrong: the slide's OWN hint1 clip when authored ("यह … नहीं है…"), else the
           // generic try_again — additive, cards without hint1 are byte-for-byte unchanged.
           else { state.scaffoldLevel = Math.max(state.scaffoldLevel, 1); play(audioFor(slide, "hint1") || audioFor(slide, "try_again") || null, ()=>{ _fb = false; }); }
-        });
+        }));   /* [REV-D6] closes afterWrong( */
       }
     };
     if(!optionHost || cell.parentNode !== grid) grid.appendChild(cell);
@@ -6982,6 +7064,23 @@ function shuffled(arr){
   }
   return r;
 }
+/* [REV-D5 · done r83] "options will be shuffle each time we visit the page". They were - but a
+   FAIR shuffle deals the same order again by chance, and on a three-card tray that happens often
+   enough to look like no shuffle at all. Each screen remembers the order it dealt last (for this
+   session, keyed by slide) and deals again if it would repeat it. Sixteen tries is a bound, not a
+   guarantee: a list with one distinct arrangement simply keeps it. */
+const _lastDeal = new Map();
+function shuffledFresh(list, key){
+  const src = list || [];
+  const sig = arr => arr.map(x => src.indexOf(x)).join(",");
+  let a = shuffled(src);
+  if(key && src.length > 1){
+    for(let i = 0; i < 16 && sig(a) === _lastDeal.get(key); i++) a = shuffled(src);
+    _lastDeal.set(key, sig(a));
+  }
+  return a;
+}
+
 /* [r20] NO LONGER CALLED. This is HI02H11_L01_S01's flight, ported in r17, and on their build it
    animates a DEMO tile that has not been dragged. On a real drop it replays the move the child
    just made: makeDraggable clears the tile's transform before handing over, so the card snaps
@@ -12269,8 +12368,9 @@ SlideModules.TRAIN_SORT = {
       const h = tray.offsetHeight;
       if(h) tray.style.minHeight = h + "px";
     });
-    /* [r20] a real shuffle, so the tray order genuinely changes between runs */
-    shuffled(items).forEach(it => {
+    /* [r20] a real shuffle, so the tray order genuinely changes between runs
+       [REV-D5] ...and never the same order twice running - see shuffledFresh */
+    shuffledFresh(items, slide.id + ":items").forEach(it => {
       const t = document.createElement("div"); t.className = "tt-card";
       t.dataset.key = it.key;
       if(it.audio) t.dataset.audio = it.audio;
@@ -12329,7 +12429,18 @@ SlideModules.TRAIN_SORT = {
         if(CARD.slides[state.idx] !== slide) return;
         if(i >= cards.length){
           setSwMood("celebrate");
-          setTimeout(()=> trainDepartThen(train, slide), 1100);
+          /* [REV-B4] the demo hands the task over before it goes. `completion_vo` was only read
+             on the real completion path, which a demo never reaches. */
+          if(d.completion_vo){
+            setTimeout(()=>{
+              let gone = false;
+              const go = ()=>{ if(gone) return; gone = true; trainDepartThen(train, slide); };
+              play(VO_DIR + d.completion_vo + "." + AUDIO_EXT, go);
+              setTimeout(go, 6000);          /* a clip that never ends must not strand the train */
+            }, 700);
+          } else {
+            setTimeout(()=> trainDepartThen(train, slide), 1100);
+          }
           return;
         }
         const t = cards[i]; i++;
@@ -12387,6 +12498,29 @@ SlideModules.TRAIN_SORT = {
       });
       if(!multi) body.classList.add("filled");     // "Only one word can be placed inside each coach" (row #130)
       body.classList.add("correct"); body.classList.remove("nudge");
+      /* [REV-D10 · done r134 / r121] THE MATRA LIGHTS AS THE WORD LANDS - the reason it belongs in
+         this coach, marked at the moment the child is looking at it. Until now a matra was only
+         ever lit during rung 2, so a child who got every word right first time never saw one.
+         Then every word ALREADY in this coach is re-marked, two frames on: the first card is
+         drawn large while it has the panel to itself and shrinks when a second arrives, which
+         left its mark measured for the old size and sitting off the glyph.
+         Nothing happens on the picture round - its labels are hidden on purpose. */
+      if(!hideLabels && typeof matraHLSoon === "function"){
+        const _lbl = t.querySelector(".tt-lbl");
+        if(_lbl && t.dataset.matra) matraHLSoon(_lbl, t.dataset.matra, { glow:true });
+        if(multi){
+          const face = train.faceEls[idx];
+          requestAnimationFrame(()=> requestAnimationFrame(()=>{
+            if(!face || !face.isConnected) return;
+            face.querySelectorAll(".tt-card.snapped .tt-lbl").forEach(l => {
+              const card = l.closest(".tt-card");
+              if(!card || !card.dataset.matra) return;
+              if(typeof matraClear === "function") matraClear(l);
+              matraHLSoon(l, card.dataset.matra, { glow:true });
+            });
+          }));
+        }
+      }
       sfxSparkle();
       fbCorrect();     /* [s79 · sibling r147] the success sound on EVERY correct drop... */
       /* [s82 · sibling r139] BUG_08 case 1 ends here: the locked card is in its coach, so every
@@ -12643,7 +12777,7 @@ SlideModules.MATRA_FILL = {
     /* [r20] shuffled too. These three were rendered in authored order every single time, so the
        matra a child wanted was always in the same place and the screen could be solved by
        position rather than by reading it. */
-    shuffled(d.options || []).forEach(m => {
+    shuffledFresh(d.options || [], slide.id + ":options").forEach(m => {
       const t = document.createElement("div"); t.className = "tt-card";
       t.dataset.key = m;
       t.innerHTML = '<span class="tt-glyph ink-glyph">' + matraGlyph(m) + '</span>';
@@ -12841,6 +12975,258 @@ SlideModules.MATRA_FILL = {
         }
       }, {
         onTap: ()=>{ /* a matra card has no word to speak */ }
+      });
+    });
+  }
+};
+
+/* ==========================================================================================
+   WORD_BUILD — deck page 16 · [REV-B1], from HI02H11_L02_S02_DEV_HANDOFF's round-3 note.
+   "The child drags a whole अक्षर (जा / हि / नी), not a bare matra. Only the last letter is
+   visible in each coach (_ल)."  Dropping «ा» into a hole asks whether the mark is recognised;
+   dropping «जा» asks whether it is READ, which is this lesson's objective.
+   Written against this engine's TrainChrome, as a sibling of MATRA_FILL above - same ladder,
+   same tray, same train - with the done sample's own decisions kept. See the patch note.
+   ========================================================================================== */
+SlideModules.WORD_BUILD = {
+  mount(host, slide){
+    const d = slide.data || {};
+    const slots = d.slots || [];
+
+    const train = TrainChrome.mount(host, {
+      coaches: slots.length,
+      /* the picture IS the question here, so it takes the label slot a matra name would use */
+      coach_label: slots.map(s2 => ({ img: s2.img, emoji: s2.emoji })),
+      coach_body: slots.map(()=> ""),
+      pin_track: 0.725,                   /* one railway across the drag screens */
+      drop_zone: true, maxH: 208,
+      on_enter: ()=>{ train.popLabels(240); setTimeout(rise, slots.length * 240); }
+    });
+
+    /* render  [_] ल  /  [_] रण  /  [_] म  — the blank is the अक्षर that carries the matra */
+    slots.forEach((s2, i)=>{
+      train.faceEls[i].innerHTML =
+        '<div class="wb-word">' +
+          '<span class="wb-blank dd-zone"></span>' +
+          '<span class="wb-tail">' + (s2.tail || "") + '</span>' +
+        '</div>';
+      const blank = train.faceEls[i].querySelector(".wb-blank");
+      blank.classList.remove("dd-zone");        /* the coach body is the zone - see the handler */
+      blank.dataset.head = s2.head || "";
+      blank.dataset.slot = String(i);
+      if(s2.name_audio) blank.dataset.audio = s2.name_audio;
+      train.coachEls[i].dataset.key = s2.head || "";
+      /* the picture speaks its word, the way MATRA_FILL's does */
+      if(s2.name_audio){
+        const lab = train.labelEls[i];
+        lab.style.cursor = "pointer";
+        lab.setAttribute("role", "button");
+        lab.onclick = ()=>{ if(!isPlaying) play(VO_DIR + s2.name_audio + "." + AUDIO_EXT, ()=>{}); };
+      }
+    });
+
+    /* "Below the train, show draggable options: जा · हि · नी" plus a distractor. */
+    const tray = document.createElement("div"); tray.className = "train-tray wb-tray";
+    requestAnimationFrame(()=>{                 /* the row keeps its height as it empties */
+      if(!tray.isConnected) return;
+      const h = tray.offsetHeight;
+      if(h) tray.style.minHeight = h + "px";
+    });
+    shuffledFresh(d.options || [], slide.id + ":options").forEach(o => {
+      const t = document.createElement("div"); t.className = "tt-card wb-card";
+      t.dataset.akshar = o.akshar;
+      if(o.audio) t.dataset.audio = o.audio;
+      t.innerHTML = '<span class="wb-akshar ink-glyph">' + o.akshar + '</span>';
+      tray.appendChild(t);
+    });
+    host.appendChild(tray);
+    const rise = ()=> {
+      [...tray.children].forEach((t, i)=> setTimeout(()=>{
+        t.classList.remove("tt-rise"); void t.offsetWidth; t.classList.add("tt-rise"); }, i * 110)); };
+
+    state.attempts = 0; state.locked = false;
+    setNavActive(false);
+    $("navBtn").style.display = "none";                /* the train is the way out */
+
+    let filled = 0;
+    const wrongN = new WeakMap();
+    const maxA = _scafRule("max_attempts", 3);
+
+    /* which coach is still a question - a filled blank has had its holder replaced by the
+       finished word, so "still has an empty .wb-blank" is the same question */
+    const _firstEmpty = ()=> [...host.querySelectorAll(".wb-blank")]
+                              .find(b => !b.classList.contains("filled")) || null;
+    /* the अक्षर that completes a given blank, if it is still in the tray */
+    const _tileFor = (blank)=> blank ? [...tray.children].find(
+        c => !c.classList.contains("snapped") && c.dataset.akshar === blank.dataset.head) : null;
+
+    [...tray.children].forEach(tile => {
+      makeDraggable(tile, (zone, t)=>{
+        /* the whole coach body is the zone, not the 52px blank: a child aiming at a thumb-sized
+           dashed box and landing 10px out would get no feedback at all */
+        const body = zone.closest(".coach-body"); if(!body) return;
+        const blank = body.querySelector(".wb-blank"); if(!blank) return;
+        if(blank.classList.contains("filled")) return;
+        /* rung 3 has already named this letter's blank; from here it goes there and nowhere
+           else. The refusal costs no attempt and makes no noise - the screen has stopped asking
+           a question of this card. */
+        if(t.dataset.only && blank.dataset.slot !== t.dataset.only) return;
+        const si = +blank.dataset.slot;
+        const slot = slots[si] || {};
+        state.attempts++;
+        if(t.dataset.akshar + (slot.tail || "") === slot.word){
+          blank.classList.add("filled");
+          body.classList.add("filled");           /* makeDraggable refuses a filled zone */
+          blank.classList.remove("nudge", "wb-pulse");
+          blank.innerHTML = '<span class="wb-inakshar ink-glyph">' + t.dataset.akshar + '</span>';
+          centerAllGlyphs(blank);
+          /* THE OPTION IS CONSUMED - it belongs to exactly one word. (MATRA_FILL keeps its cards
+             because one matra can serve several blanks; an अक्षर cannot.) The siblings slide up
+             to close the gap, the same FLIP the sort screens use. */
+          t.style.transform = "";
+          t.classList.add("snapped", "wb-used");
+          setTimeout(()=>{
+            if(!t.isConnected) return;
+            const row = t.parentElement;
+            const sibs = (row && row.classList.contains("train-tray"))
+              ? [...row.children].filter(c => c !== t).map(c => ({el: c, r: c.getBoundingClientRect()}))
+              : [];
+            t.remove();
+            sibs.forEach(({el, r})=>{
+              const now = el.getBoundingClientRect();
+              const dx = r.left - now.left, dy = r.top - now.top;
+              if(!dx && !dy) return;
+              el.style.transition = "none";
+              el.style.transform  = "translate(" + dx + "px," + dy + "px)";
+              void el.offsetWidth;
+              el.style.transition = "transform .34s cubic-bezier(.33,1,.68,1)";
+              el.style.transform  = "";
+              el.addEventListener("transitionend", function _done(){
+                el.style.transition = ""; el.style.transform = "";
+                el.removeEventListener("transitionend", _done);
+              });
+            });
+          }, 420);
+          /* "Option snaps into the blank space. The complete word appears." ONE shaped run, a
+             beat later - «हि» and «रण» left as two spans draw a detached hook and then हरण,
+             because Devanagari does not shape across element boundaries. The matra the child
+             just supplied stays marked. */
+          const wEl = train.faceEls[si].querySelector(".wb-word");
+          if(wEl && slot.word){
+            setTimeout(()=>{
+              if(!wEl.isConnected) return;
+              wEl.innerHTML = '<span class="wb-done ink-glyph">' + slot.word + '</span>';
+              if(slot.matra && typeof matraHLSoon === "function")
+                matraHLSoon(wEl.querySelector(".wb-done"), slot.matra, { glow:true });
+            }, 420);
+          }
+          body.classList.add("correct");
+          filled++;
+          sfxSparkle();
+          fbCorrect();                    /* the success sound on every correct drop */
+          if(state.helpShown){
+            stopNudge();
+            host.querySelectorAll(".wb-blank.nudge, .wb-blank.wb-pulse")
+                .forEach(b => b.classList.remove("nudge", "wb-pulse"));
+            [...tray.children].forEach(c => c.classList.remove("wb-callout"));
+            clearHold(tray);
+            state.helpShown = false; state.scaffoldLevel = 0;
+          }
+          SwiftPAL.emit("word_build_item", { slide_id: slide.id, word: slot.word, attempts: state.attempts });
+          /* «शाबाश! जाल बन गया।» per slot, and SILENT if the child needed the whole
+             ladder ("Correct Answer on 3rd Attempt … No VO required"). */
+          const late = _scafRule("silent_on_late_correct", false) && (wrongN.get(blank) || 0) >= (maxA - 1);
+          if(!late && slot.correct_audio) play(VO_DIR + slot.correct_audio + "." + AUDIO_EXT, ()=>{});
+          if(filled === slots.length){
+            state.locked = true;
+            SwiftPAL.emit(d.signal || "word_build_correct", {
+              slide_id: slide.id, phase: slide.phase, value: true,
+              attempts: state.attempts, latency_ms: Date.now() - state.slideStart });
+            setTimeout(()=>{ train.complete(); setSwMood("celebrate"); confettiCannon();
+                             setTimeout(()=> trainDepartThen(train, slide), 900); }, 260);
+          }
+        } else {
+          /* "गलत डिब्बे में डाला गया अक्षर soft shake करके अपनी जगह वापस आ जाएगा।" */
+          body.classList.remove("wrong"); void body.offsetWidth; body.classList.add("wrong");
+          t.classList.remove("tt-shake"); void t.offsetWidth; t.classList.add("tt-shake");
+          setTimeout(()=> t.classList.remove("tt-shake"), 460);
+          sfxShake();
+          setTimeout(()=> body.classList.remove("wrong"), 460);
+          t.style.transform = "";
+          const n = (wrongN.get(blank) || 0) + 1; wrongN.set(blank, n);
+          SwiftPAL.emit("answer_wrong", { slide_id: slide.id, phase: slide.phase, attempts: state.attempts });
+          setSwMood("tryagain");
+          t.classList.remove("tr-cshake"); void t.offsetWidth; t.classList.add("tr-cshake");
+          setTimeout(()=> t.classList.remove("tr-cshake"), 560);
+
+          /* the shake and the wrong sound first; the hint 750 ms later */
+          afterWrong(()=>{
+            if(hintLevels() >= 3 && n === 2){
+              /* RUNG 2 - DEMONSTRATE. "तीनों चित्रों के नाम एक-एक करके read out करें …
+                 नाम बोलते समय वह चित्र glow करे और उसके डिब्बे की खाली जगह blink करे।" A coach whose
+                 blank is already filled is skipped - its name is no longer a question. */
+              state.scaffoldLevel = 2; state.hintUsed = true;
+              SwiftPAL.emit("hint_shown", { slide_id: slide.id, level: 2, phase: slide.phase });
+              const steps = [...host.querySelectorAll(".wb-blank")]
+                .filter(b => !b.classList.contains("filled"))
+                .map(b => (next)=>{
+                  const coach = b.closest(".train-coach");
+                  if(coach) coach.classList.add("is-read");
+                  b.classList.add("wb-blink");
+                  sayH(b.dataset.audio, ()=> setTimeout(()=>{
+                    if(coach) coach.classList.remove("is-read");
+                    b.classList.remove("wb-blink");
+                    next();
+                  }, 280));
+                });
+              hintHold((fin)=> hintSeq(steps, fin),
+                       ()=> play(audioFor(slide, "hint2") || midHint(slide) || null, ()=>{}));
+            }
+            else if(hintLevels() >= 3 && n >= maxA){
+              /* RUNG 3 - GUIDE. The hand carries a letter to the blank it fills. Normally that is
+                 the tile the child is holding. For the distractor there is no such blank - it
+                 completes nothing - so the hand leaves it alone and travels from the letter that
+                 DOES fill the next empty coach, to that coach. Withholding the hand here left the
+                 one child who most needed rung 3 with nothing but a glow. */
+              state.scaffoldLevel = 3; state.hintUsed = true; state.helpShown = true;
+              let goal = [...host.querySelectorAll(".wb-blank")].find(
+                b => !b.classList.contains("filled") && b.dataset.head === t.dataset.akshar);
+              let from = t;
+              if(!goal){ goal = _firstEmpty(); from = _tileFor(goal); }
+              if(goal && from){
+                goal.classList.add("nudge", "wb-pulse");
+                from.dataset.only = goal.dataset.slot;   /* see the guard at the top */
+                if(from !== t) from.classList.add("wb-callout");
+                withHand3(()=> travelNudge(from, goal));
+              }
+              SwiftPAL.emit("hint_shown", { slide_id: slide.id, level: 3, phase: slide.phase });
+              const sl3 = goal ? slots[+goal.dataset.slot] : null;
+              play(clipOf(sl3 && sl3.hint3_audio) || audioFor(slide, "hint3")
+                   || midHint(slide) || null, ()=>{});
+            }
+            else {
+              /* RUNG 1 - REFOCUS. "No hand nudge. Only VO." */
+              state.scaffoldLevel = Math.max(state.scaffoldLevel, 1);
+              play(((n <= 1) ? (audioFor(slide, "hint1") || audioFor(slide, "try_again"))
+                             : midHint(slide)) || null, ()=>{});
+              if(hintLevels() < 3 && n >= _scafRule("hand_on_attempt", 99)){
+                const goal = [...host.querySelectorAll(".wb-blank")].find(
+                  b => !b.classList.contains("filled") && b.dataset.head === t.dataset.akshar);
+                if(goal){
+                  goal.classList.add("nudge");
+                  state.helpShown = true; state.scaffoldLevel = 2;
+                  travelNudge(t, goal);
+                  SwiftPAL.emit("hint_shown", { slide_id: slide.id, rung: 2, phase: slide.phase });
+                }
+              }
+            }
+          });
+        }
+      }, {
+        /* "Optional word support VO when a card is tapped: जा / हि / नी — this helps the child
+           connect the picture, the sound and the correct word formation." */
+        onTap:  ()=>{ if(tile.dataset.audio && !isPlaying) play(VO_DIR + tile.dataset.audio + "." + AUDIO_EXT, ()=>{}); },
+        onPick: ()=>{ if(tile.dataset.audio && !isPlaying) play(VO_DIR + tile.dataset.audio + "." + AUDIO_EXT, ()=>{}); }
       });
     });
   }
@@ -13324,6 +13710,35 @@ SlideModules.OBJECT_HUNT = {
                ? Math.max(1, Math.min(_allCorrect, Math.floor(d.need)))
                : _allCorrect;
 
+    /* [REV-3 · SME] A QUOTA PER MATRA. "we have to find at least 2 words for each matra - आ ke
+       2 word, इ ke 2 words, ई ke 2 words - then we can go to the next page."
+       `need` above counts finds of ANY kind, so two आ words finished the screen and a child
+       could leave without once looking for an इ or an ई - on the screen whose whole job is
+       telling the three apart. With `need_per_matra` the target is per GROUP, and the screen
+       ends only when every group is satisfied.
+       Each quota is clamped to what the scene actually holds: a group with fewer objects than
+       the card asks for needs all of them, and can never leave the slide unfinishable.
+       An object with no `matra` is still correct and still praised - it simply belongs to no
+       quota, so it cannot be what the screen is waiting for. */
+    const _perNeed = (typeof d.need_per_matra === "number" && d.need_per_matra > 0)
+                   ? Math.floor(d.need_per_matra) : 0;
+    const _groups = Object.create(null);          /* matra -> { total, need, found } */
+    if(_perNeed){
+      objs.forEach(o => {
+        if(!o.correct || !o.matra) return;
+        (_groups[o.matra] = _groups[o.matra] || { total: 0, need: 0, found: 0 }).total++;
+      });
+      Object.keys(_groups).forEach(k => { _groups[k].need = Math.min(_perNeed, _groups[k].total); });
+    }
+    const _quotaKeys = Object.keys(_groups);
+    const _quotaMet = ()=> _quotaKeys.every(k => _groups[k].found >= _groups[k].need);
+    /* is this object one the screen is still waiting for? */
+    const _stillWanted = (o)=>{
+      if(!_perNeed || !o.matra) return true;
+      const g = _groups[o.matra];
+      return !g || g.found < g.need;
+    };
+
     const wrap = document.createElement("div"); wrap.className = "oh-wrap";
     /* the matra being hunted stays on screen the whole time (deck: "Keep मात्रा indicator visible") */
     const chip = document.createElement("div"); chip.className = "oh-chip";
@@ -13467,13 +13882,15 @@ SlideModules.OBJECT_HUNT = {
             el.classList.remove("oh-sel"); el.classList.add("oh-got", "oh-glow");
             sfxSparkle(); starBurst();
             found++;
+            if(_perNeed && o.matra && _groups[o.matra]) _groups[o.matra].found++;
             SwiftPAL.emit(d.signal || "object_hunt_correct", {
               slide_id: slide.id, phase: slide.phase, value: true,
               word: o.word_hi || "", first_try: wrongN === 0,
               attempts: wrongN + 1, latency_ms: Date.now() - state.slideStart });
             /* [r21 · SME] "बहुत बढ़िया, X! अब और … चित्र ढूँढिए।" after each find — except the
                LAST, where there is nothing left to find and the completion line takes over. */
-            const last = found >= need;
+            /* [REV-3] with a quota it is the GROUPS that decide, not the running total */
+            const last = _perNeed ? _quotaMet() : (found >= need);
             const okId = (!last && o.more_audio) ? o.more_audio : o.ok_audio;
             const okSrc = okId ? VO_DIR + okId + "." + AUDIO_EXT : (last ? null : (A("correct") || null));
             play(okSrc, ()=>{
@@ -13498,8 +13915,15 @@ SlideModules.OBJECT_HUNT = {
             play(badSrc, ()=>{
               play(hint, ()=>{
                 if(rung2){
-                  const first = cards.find((c, k)=> objs[k].correct && !c.classList.contains("oh-got"));
-                  cards.forEach((c, k)=>{ if(objs[k].correct && !c.classList.contains("oh-got")) c.classList.add("oh-pulse"); });
+                  /* [REV-3] the hand points at a matra that is still owed. Without this it
+                     pointed at any unfound object, which on a part-finished screen could send
+                     the child after a group they had already completed. */
+                  const _open = (k)=> objs[k].correct && !cards[k].classList.contains("oh-got")
+                                   && _stillWanted(objs[k]);
+                  const _any  = (k)=> objs[k].correct && !cards[k].classList.contains("oh-got");
+                  const _pick = cards.some((c, k)=> _open(k)) ? _open : _any;
+                  const first = cards.find((c, k)=> _pick(k));
+                  cards.forEach((c, k)=>{ if(_pick(k)) c.classList.add("oh-pulse"); });
                   if(first) nudgeAt(first);
                 }
                 busy = false; lens.classList.remove("show");
@@ -13985,11 +14409,24 @@ function completeSlide(success){
      of by phase string collapses that pair, and a phase with no round (mastery) still gets no gate,
      which is the ruling: three rounds, no round 4. */
   const nextRound = PHASE_ROUND[next && next.phase], curRound = PHASE_ROUND[slide.phase];
-  if(next && nextRound && nextRound !== curRound
+  /* [REV-A4 · done r83] A ROUND'S GATE CAN BE PINNED TO A SLIDE.
+     CARD.gate.at = { <round>: <slide id> } opens that round's gate in front of the named slide
+     instead of where its phase first begins. «अब आपकी बारी!» belongs in front of the
+     टोकरी game, not in front of the first practice page. Pinning moves only the GATE: every
+     page keeps its phase, and with it the hint ladder and hand rules the phase decides -
+     relabelling the pages would have changed how they teach. Additive: a card with no `at` gets
+     exactly the gate it always got. */
+  const _pin = (CARD.gate && CARD.gate.at) || {};
+  let gRound = (next && nextRound && nextRound !== curRound && !_pin[nextRound]) ? nextRound : null;
+  for(const r in _pin) if(next && _pin[r] === next.id) gRound = r;
+  const gPhase = !gRound ? null
+    : (PHASE_ROUND[next.phase] === gRound ? next.phase
+       : Object.keys(PHASE_ROUND).find(p => PHASE_ROUND[p] === gRound && PHASE_GATE_TITLE[p]));
+  if(next && gRound && gPhase
      && next.type !== "CELEBRATION" && next.type !== "PHASE_TRANSITION"
-     && PHASE_GATE_TITLE[next.phase] && !_gatedPhases.has(nextRound)){
-    _gatedPhases.add(nextRound);
-    afterConfetti(()=>{ if(state.idx === fromIdx) phaseBlurTransition(()=> mountSlide(nextIdx), next.phase); });
+     && PHASE_GATE_TITLE[gPhase] && !_gatedPhases.has(gRound)){
+    _gatedPhases.add(gRound);
+    afterConfetti(()=>{ if(state.idx === fromIdx) phaseBlurTransition(()=> mountSlide(nextIdx), gPhase); });
     return;
   }
   afterConfetti(()=>{ if(state.idx === fromIdx) mountSlide(nextIdx); });
@@ -14719,13 +15156,19 @@ function boot(){
      path below still sounds it for a keyboard press, which has no pointerdown, and _playPressAt
      stops the two from doubling up on a real tap. */
   (function uiSfx(){
+    /* [REV-C2] the card names these two sounds (`ui_sfx`), the way the done sample's does.
+       The ids this engine has always used stay as the fallback, so a card with no ui_sfx sounds
+       exactly as it did. */
+    const _U = (typeof CARD !== "undefined" && CARD.ui_sfx) || {};
+    const _sfxPlay = ()=> _U.play ? playSfx(_U.play) : sfxPlayButton();
+    const _sfxNext = ()=> _U.next ? playSfx(_U.next) : sfxNextButton();
     const sg = $("sgBtn");
     if(sg) sg.addEventListener("pointerdown", ()=>{
       if(sg.disabled || _starting || sg.classList.contains("sg-waiting")) return;
       if(getComputedStyle(sg).visibility === "hidden") return;   /* held back until the greeting ends */
-      _playPressAt = performance.now(); _resumeVoiceAudio(); sfxPlayButton(); }, true);
+      _playPressAt = performance.now(); _resumeVoiceAudio(); _sfxPlay(); }, true);
     ["navBtn", "endBtn"].forEach(id => { const b = $(id); if(!b) return;
-      b.addEventListener("click", ()=>{ if(!b.disabled) sfxNextButton(); }, true); });
+      b.addEventListener("click", ()=>{ if(!b.disabled) _sfxNext(); }, true); });
   })();
   $("sgBtn").onclick = async()=>{
     /* ADDITIVE: activity_launched — the child tapping शुरू करें. The only verb of the seven
@@ -14752,7 +15195,9 @@ function boot(){
        a keyboard press has no pointerdown and arrives here, so the clip is played unless the
        pointer handler has just done it. stopAudio() above cannot cut it either way - playSfx
        builds its own buffer source rather than taking over currentVoiceSource. */
-    if(!(performance.now() - _playPressAt < 1500)) sfxPlayButton();
+    if(!(performance.now() - _playPressAt < 1500)){
+      const _u = (CARD.ui_sfx && CARD.ui_sfx.play); if(_u) playSfx(_u); else sfxPlayButton();
+    }
     /* [31x] hold the start until slide 1's clips are decoded, so a fast tap cannot beat the warm.
        Capped: a stalled network must never strand the child on the landing. */
     await Promise.race([_initialAudioWarmPromise,new Promise(resolve=>setTimeout(resolve,3000))]);
@@ -15565,12 +16010,15 @@ SlideModules.MATRA_TOKRI = {
     const root = document.createElement("div");
     root.className = "mt-game";
     host.setAttribute("data-mt", "1");
-      /* [s67 · SME] "at least 2 things of each letter" - two target words per matra, three
-         rounds, then the game ends into the celebration.
+      /* [s67] cut this to two - "at least 2 things of each letter".
+         [REV-4c · SME] FIVE, as the file-5 game plays it. Each round's pool holds exactly five
+         words and `pending` splices one out per catch, so five is the number that empties it:
+         the round and its pool end together, which is what the pool was built for. The plank
+         paints five sockets too, so at two there were three that could never fill.
          DECLARED HERE, before the markup that reads it: `var` hoists the NAME but not the VALUE,
          so with the declaration further down PER_ROUND was undefined when the pip track was built
          and new Array(undefined + 1) threw "Invalid array length" - the slide never mounted. */
-      var PER_ROUND         = 2;
+      var PER_ROUND         = 5;
 
       root.innerHTML =
         '<div class="game-header"><div class="stats">' +
@@ -15585,7 +16033,9 @@ SlideModules.MATRA_TOKRI = {
             '<div class="ol ol-alpha" id="basket-art"><img src="assets/UI/mt_basket.webp" alt="" aria-hidden="true"></div>' +
           '</span></div>' +
           '<div class="basket-front" id="basket-front" aria-hidden="true"><span class="basket-lift" id="basket-front-lift">' +
-            '<div class="bf-art" id="basket-front-art"><img src="assets/UI/mt_basket_front.webp" alt=""></div>' +
+            '<div class="bf-art" id="basket-front-art"><img src="assets/UI/mt_basket_front.webp" alt="">' +
+              /* [REV-4 · S04] the round's matra on the basket - written at the round start below */
+              '<span class="basket-matra" id="basket-matra" aria-hidden="true"></span></div>' +
           '</span></div>' +
           '<div id="mtNudgeHand">' +
             '<span class="nh-tapfx"><i class="fx-ro"></i><i class="fx-ri"></i><i class="fx-sp"></i></span>' +
@@ -15683,7 +16133,8 @@ SlideModules.MATRA_TOKRI = {
             { w: 'तिल',  id: 'til'   },
             { w: 'सिर',  id: 'sir'   },
             { w: 'दिल',  id: 'dil'   },
-            { w: 'हिरन', id: 'hiran' }
+            /* [REV-4c] हिरण, not हिरन - the spelling its own clip and every other screen uses */
+            { w: 'हिरण', id: 'hiran' }
           ],
           other: ['नाव', 'हाथ', 'काम', 'नदी', 'तीर', 'मछली']
         },
@@ -15698,7 +16149,7 @@ SlideModules.MATRA_TOKRI = {
             { w: 'मछली',  id: 'machhli' },
             { w: 'नीम',   id: 'neem'    }
           ],
-          other: ['बाल', 'दाल', 'दिन', 'तिल', 'सिर', 'हिरन']
+          other: ['बाल', 'दाल', 'दिन', 'तिल', 'सिर', 'हिरण']
         }
       ];
 
@@ -15736,15 +16187,20 @@ SlideModules.MATRA_TOKRI = {
       var GRAVITY        = 8;       // gentle acceleration
       var TARGET_RATIO   = 0.55;    // probability a spawn is a target-matra word
 
-      var BASKET_W          = 206;
+      /* [REV-4 · S04] "make the tokri a little bigger so that the matra box is IN the tokri".
+         25 % up - 206 x 155 -> 258 x 194, the art's own 1.333 aspect, still standing on the grass
+         at the same bottom - and every number derived from its size moves with it: the catch
+         width (half the rim, which is the art's full width), CATCH_Y, the catch depth, and the
+         nudge hand's dx, because the right flank is now 13 px further out. */
+      var BASKET_W          = 258;
       /* Both measured off the painted basket by assets/_finish_art.py, not guessed:
          its widest opaque row spans 99.6% of the art's width (the old inline SVG's
          rim was rx 90 of a 200-wide viewBox, i.e. 90%) and sits 19.1% down the frame
          (the SVG's was 24.7%). A wider, higher rim than the drawing it replaced — so
          both numbers move, or the catch box drifts off what the child can see. */
-      var BASKET_CATCH_HALF = 103;  // the rim IS the art's full width, so BASKET_W / 2
-      var CATCH_Y           = 517;  // play-area px: basket top 473 + 28.5% of 155
-      var CATCH_DEPTH       = 52;   // how far past the rim a word still counts as caught
+      var BASKET_CATCH_HALF = 129;  // the rim IS the art's full width, so BASKET_W / 2
+      var CATCH_Y           = 489;  // play-area px: basket top 434 + 28.5% of 194 (was 473 + 28.5% of 155)
+      var CATCH_DEPTH       = 65;   // how far past the rim a word still counts as caught
 
       /* vo-good-1/2/3 are no longer played: the between-rounds praise is now the
          first half of each vo-level-* celebration clip, so it cannot be cut off by
@@ -15773,7 +16229,7 @@ SlideModules.MATRA_TOKRI = {
          to 659 against the play area's 654 cut and shaved the wrist - measured, 6px clipped.
          The box bottom is the binding constraint here, not the tip, so the box keeps its
          tuned position and the finger simply points 5px higher up the same flank. */
-      var NUDGE_OPTS = { hand: 'mtNudgeHand', host: '.mt-game .play-area', dx: 26.8, dy: -82 };
+      var NUDGE_OPTS = { hand: 'mtNudgeHand', host: '.mt-game .play-area', dx: 39.8, dy: -82 };
 
       // ---- State ----
       var playArea = null, basketEl = null, basketLift = null, basketArt = null;
@@ -16167,6 +16623,12 @@ SlideModules.MATRA_TOKRI = {
         clearDrops();
 
         var R = ROUNDS[i];
+        /* [REV-4 · S04] "put the relevant matra's symbol on the tokri - when the child is looking
+           for आ की मात्रा words, the basket carries the आ matra." The label sits on the basket's
+           front, so it rides and wiggles with it, and changes with the round: ◌ा, then ◌ि, then
+           ◌ी - drawn on its dotted circle, the way page 1 and the sort cards show a bare mark. */
+        var bm = document.getElementById('basket-matra');
+        if (bm) bm.innerHTML = R.matra ? "<span>" + R.matra + "</span>" : "";
         /* [r25 · SME] The round banner is gone. It flashed the bare matra in a white disc,
            and a bare matra is an orphan combining mark, so the font drew it as ◌ा - a
            dotted placeholder the child was being asked to read. The VO still names the
@@ -16428,6 +16890,114 @@ SlideModules.MATRA_TOKRI = {
 
 
 boot();
+
+/* [REV-C1 · done r99 / r100 / r110] THE LESSON'S BACKGROUND MUSIC.
+   Yasir: "a bg music used across the file except the game, as it already has its own; at 65-70 %
+   volume; when any VO or sfx is playing reduce the volume so the VO can be heard".
+   One looping <audio> element, not a decoded buffer: four minutes of stereo decoded is about
+   90 MB, which a tablet does not have to spare. Its volume is steered every frame -
+       nothing else sounding      BASE
+       a sound effect sounding    SFX     (train chug, right / wrong, the button sounds …)
+       a voice-over speaking      VO      (the engine's own isPlaying - every clip)
+   dropping fast and coming back slowly, so a word is never sung over and the bed does not pump
+   between clips. It falls silent on the मात्रा टोकरी page - the game is its own thing - and
+   comes back after it.
+   [r100] "the bg music should only play when we click on the play button": it starts on that tap
+   and on nothing else, which is also the user gesture a browser needs to let it play at all. */
+const BGM = (function(){
+  const BASE = 0.30, SFX = 0.15, VO = 0.08;   /* the done sample's final QA levels (r139/r143/r144):
+     0.68 was called loud three times over. Under 0.32 the old effect level would have RAISED the
+     music on every effect, so both steps scale with the base - about half under an effect and a
+     quarter under the voice, the proportions r99 set. */
+  const src = "assets/Audio/bgm_lesson." + AUDIO_EXT;
+  let el = null, vol = 0, started = false, sfxUntil = 0;
+  const live = new Set();
+  const make = ()=>{
+    if(el) return el;
+    el = new Audio(src); el.loop = true; el.preload = "auto"; el.volume = 0;
+    /* [r110] "once the bg music completes, play it again". `loop` is set, but a browser can still
+       let a long streamed track finish - its seek back to the start fails on a stream it cannot
+       seek - and then the music simply stops. If it ever ends, it starts again from the top. */
+    el.addEventListener("ended", ()=>{
+      try{ el.currentTime = 0; }catch(e){}
+      if(started) el.play().catch(()=>{});
+    });
+    return el;
+  };
+  const tryStart = ()=>{
+    if(started) return;
+    make();
+    const p = el.play();
+    if(p && p.then) p.then(()=>{ started = true; }, ()=>{});
+    else started = true;
+  };
+  /* the one page that keeps its own sound to itself */
+  const onGame = ()=>{
+    try{
+      const sl = CARD.slides[state.idx];
+      return !!(sl && sl.type === "MATRA_TOKRI"
+                && document.body && !document.body.classList.contains("is-start"));
+    }catch(e){ return false; }
+  };
+  let last = performance.now(), lastPos = -1, movedAt = performance.now();
+  const tick = ()=>{
+    const now = performance.now(), dt = Math.min(0.1, (now - last) / 1000); last = now;
+    /* [r110] …and if it should be playing but has not moved for 2 s - stuck at its end, or
+       stalled - it is started again, from the top when it is at the end */
+    if(el && started && !el.paused && !onGame()){
+      if(el.currentTime !== lastPos){ lastPos = el.currentTime; movedAt = now; }
+      else if(now - movedAt > 2000){
+        movedAt = now;
+        try{ if(el.ended || (el.duration && el.duration - el.currentTime < 1.5)) el.currentTime = 0; }catch(e){}
+        el.play().catch(()=>{});
+      }
+    } else movedAt = now;
+    if(el && started){
+      let want = BASE;
+      if(sfxUntil > now || live.size) want = SFX;
+      if(typeof isPlaying !== "undefined" && isPlaying) want = VO;
+      if(onGame()) want = 0;
+      const tc = want < vol ? 0.12 : 0.6;
+      vol += (want - vol) * (1 - Math.exp(-dt / tc));
+      if(Math.abs(want - vol) < 0.002) vol = want;
+      try{ el.volume = Math.max(0, Math.min(1, vol)); }catch(e){}
+      if(want === 0 && vol < 0.003 && !el.paused) el.pause();
+      else if(want > 0 && el.paused) el.play().catch(()=>{});
+    }
+  };
+  (function loop(){ tick(); requestAnimationFrame(loop); })();
+  setInterval(tick, 250);                        /* keeps steering if frames are throttled */
+  /* the play button's tap - the same gesture that lets the browser play it at all */
+  const hookPlay = ()=>{ const b = document.getElementById("sgBtn"); if(!b) return false;
+    b.addEventListener("click", ()=>{ if(!b.disabled) tryStart(); }, true); return true; };
+  if(!hookPlay()) document.addEventListener("DOMContentLoaded", hookPlay);
+  return {
+    /* an <audio> sound effect: the music stays down for as long as it plays */
+    track(a){ if(!a) return; live.add(a);
+      const off = ()=> live.delete(a);
+      a.addEventListener("ended", off, { once:true }); a.addEventListener("pause", off, { once:true });
+      a.addEventListener("error", off, { once:true }); setTimeout(off, 12000); },
+    /* a buffer sound effect of known (or guessed) length */
+    duckFor(sec){ sfxUntil = Math.max(sfxUntil, performance.now() + (sec || 1) * 1000 + 150); },
+    get volume(){ return vol; }, get element(){ return el; }
+  };
+})();
+window.__lessonBgm = BGM;
+/* the engine's buffered sound effects (celebration, the two button sounds) duck it too */
+if(typeof window.playSfx === "function" && !window.playSfx.__bgm){
+  const _psOrig = window.playSfx;
+  window.playSfx = function(id){
+    let sec = 1.0;
+    try{
+      const path = "assets/Audio/SFX/" + id + "." + AUDIO_EXT;
+      const b = (typeof _voiceBuffers !== "undefined") && _voiceBuffers.get(path);
+      if(b && isFinite(b.duration)) sec = b.duration;
+    }catch(e){}
+    BGM.duckFor(sec);
+    return _psOrig.apply(this, arguments);
+  };
+  window.playSfx.__bgm = true;
+}
 
 /* [s61] THE PLAY BUTTON APPEARS, from HI02H11_L02_S02_DEV_HANDOFF/4_ENGINE/train_modules.js
    ([r98] playButtonAppears), carried over as written.
@@ -16747,11 +17317,17 @@ confettiCannon = function(){
       coach_label: ms.map(()=> null),
       /* `lt-pending` holds each matra invisible until the train has parked — the SME asks for
          them "one by one" AFTER the arrival, so they land on a coach that is standing still */
-      /* r7: «उ (ु)» — the letter with its matra in brackets, the same form the G4 bins use,
-         so the cover names the pair exactly as the sorting screens later will. */
+      /* r7 put the matra in brackets after its letter - «उ (ु)» - to match the sort bins,
+         which read «“आ” (ा)» at the time.
+         [REV-2 · file4 r121] «remove bracket from the matra and put an arrow»: «आ → ◌ा». The
+         arrow says the letter GIVES the mark, which a bracket does not; and the bins lose their
+         brackets in this same round, so the form r7 was matching no longer exists.
+         matraGlyph() is what puts the dotted ring under a bare mark, so it has something to sit
+         on instead of hanging off the preceding glyph. */
       coach_body: ms.map((m, i) => ({ html: '<span class="lt-matra lt-pending">' +
-        ((hero.letters && hero.letters[i]) ? hero.letters[i] + ' <span class="lt-br">(' +
-          matraGlyph(m) + ')</span>' : matraGlyph(m)) + "</span>" })),
+        ((hero.letters && hero.letters[i]) ? hero.letters[i] +
+          '<span class="lt-arr">\u2192</span><span class="lt-br">' +
+          matraGlyph(m) + '</span>' : matraGlyph(m)) + "</span>" })),
       drop_zone: false,
       /* the sibling's landing train is 634px wide for a locomotive and THREE coaches, i.e. a
          per-part scale of 634/2155 = 0.294. Matching that scale rather than a width budget is

@@ -144,13 +144,13 @@ VO = {
     # ---- «मात्रा टोकरी» (G7) — carried over from the standalone build, ids renamed to
     # this lesson's convention. The clips themselves are the SME's takes, transcoded
     # from mp3 to the .ogg every other clip here uses so they ride the normal VO path.
-    "vo_mt_intro": "टोकरी को उँगली से इधर-उधर ले जाओ।",
-    "vo_mt_round_aa": "आ की मात्रा वाले शब्दों को टोकरी में डालो।",
-    "vo_mt_round_i": "अब इ की मात्रा वाले शब्दों को टोकरी में डालो।",
-    "vo_mt_round_ee": "अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालो।",
-    "vo_mt_cheer_i": "बहुत बढ़िया! अब इ की मात्रा वाले शब्दों को टोकरी में डालो।",
-    "vo_mt_cheer_ee": "बहुत बढ़िया! अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालो।",
-    "vo_mt_done": "शाबाश! तुमने सभी मात्राओं के सही शब्दों को टोकरी में रख लिया है।",
+    "vo_mt_intro": "टोकरी को उँगली से इधर-उधर ले जाइए।",
+    "vo_mt_round_aa": "आ की मात्रा वाले शब्दों को टोकरी में डालिए।",
+    "vo_mt_round_i": "अब इ की मात्रा वाले शब्दों को टोकरी में डालिए।",
+    "vo_mt_round_ee": "अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालिए।",
+    "vo_mt_cheer_i": "बहुत बढ़िया! अब इ की मात्रा वाले शब्दों को टोकरी में डालिए।",
+    "vo_mt_cheer_ee": "बहुत बढ़िया! अब बड़ी ई की मात्रा वाले शब्दों को टोकरी में डालिए।",
+    "vo_mt_done": "शाबाश! आपने सभी मात्राओं के सही शब्दों को टोकरी में रख लिया है।",
     "vo_mt_w_naav": "नाव",
     "vo_mt_w_haath": "हाथ",
     "vo_mt_w_baal": "बाल",
@@ -160,7 +160,7 @@ VO = {
     "vo_mt_w_til": "तिल",
     "vo_mt_w_sir": "सिर",
     "vo_mt_w_dil": "दिल",
-    "vo_mt_w_hiran": "हिरन",
+    "vo_mt_w_hiran": "हिरण",
     "vo_mt_w_nadi": "नदी",
     "vo_mt_w_teer": "तीर",
     "vo_mt_w_chini": "चीनी",
@@ -266,34 +266,58 @@ VO = {
 
     # page 13 - the reverse round: the MATRA is dragged into the word it belongs in
     "vo_ts2_h2_aa":       "यह “आ” की मात्रा है। देखिए, किस शब्द में यह मात्रा लगेगी।",
-    "vo_ts2_h3_aa":       "“आ” की मात्रा “जाल” में लगेगी। इसे “जाल” वाले डिब्बे में डालिए।",
+    "vo_ts2_h3_aa":       "आ की मात्रा को आ वाले डिब्बे में डालिए।",
     "vo_ts2_h2_i":        "यह “इ” की मात्रा है। देखिए, किस शब्द में यह मात्रा लगेगी।",
-    "vo_ts2_h3_i":        "“इ” की मात्रा “सिर” में लगेगी। इसे “सिर” वाले डिब्बे में डालिए।",
+    "vo_ts2_h3_i":        "छोटी इ की मात्रा को इ वाले डिब्बे में डालिए।",
     "vo_ts2_h2_ee":       "यह “ई” की मात्रा है। देखिए, किस शब्द में यह मात्रा लगेगी।",
-    "vo_ts2_h3_ee":       "“ई” की मात्रा “कील” में लगेगी। इसे “कील” वाले डिब्बे में डालिए।",
+    "vo_ts2_h3_ee":       "बड़ी ई की मात्रा को ई वाले डिब्बे में डालिए।",
 
     # ---- Screen 11 · TRAIN_SORT word -> matra coach (deck page 14) ---------------------------
     # [r29 · SME] the watch-only screen that comes BEFORE the first drag activity
-    "vo_ts0_prompt":   "देखिए, शब्द को उसकी सही मात्रा वाले डिब्बे में इस तरह ले जाते हैं।",
+    "vo_g4d_prompt": "देखिए, अक्षर को उसकी मात्रा वाले डिब्बे में कैसे डालते हैं।",
+    "vo_g4d_aa":     "आ की मात्रा इस डिब्बे पर है, इसलिए आ इस डिब्बे में गया।",
+    "vo_g4d_i":      "इ की मात्रा इस डिब्बे पर है, इसलिए इ इस डिब्बे में गया।",
+    "vo_g4d_ee":     "ई की मात्रा इस डिब्बे पर है, इसलिए ई इस डिब्बे में गया।",
+    "vo_g4d_end":    "अब आप भी ऐसे ही करके देखिए।",
     "vo_ts1_prompt":   "हर शब्द को उसकी सही मात्रा वाले डिब्बे में डालिए।",
     "vo_ts1_ok_haath": "शाबाश! हाथ शब्द में आ की मात्रा है।",
     "vo_ts1_ok_pin":   "शाबाश! पिन शब्द में छोटी इ की मात्रा है।",
     "vo_ts1_ok_neem":  "शाबाश! नीम शब्द में बड़ी ई की मात्रा है।",
     "vo_ts1_hint1":       "फिर से पढ़िए। शब्द में कौन-सी मात्रा है, देखिए और उसे उसी मात्रा वाले डिब्बे में डालिए।",
-    "vo_ts1_hint2":    "ध्यान से देखो, इस शब्द में कौन-सी मात्रा है?",
+    "vo_ts1_hint2":    "ध्यान से देखिए, इस शब्द में कौन-सी मात्रा है?",
 
     # ---- Screen 12 · TRAIN_SORT matra -> word coach (deck page 15) ---------------------------
-    "vo_ts2_prompt":  "सही मात्रा को सही शब्द वाले डिब्बे में डालिए।",
-    "vo_ts2_ok_jaal": "शाबाश! जाल शब्द में आ की मात्रा लगी है।",
-    "vo_ts2_ok_sir":  "शाबाश! सिर शब्द में छोटी इ की मात्रा लगी है।",
-    "vo_ts2_ok_keel": "शाबाश! कील शब्द में बड़ी ई की मात्रा लगी है।",
-    "vo_ts2_hint1":       "फिर से देखिए। मात्रा को ध्यान से देखिए और उसे सही शब्द वाले डिब्बे में डालिए।",
-    "vo_ts2_hint2":   "ध्यान से देखो और शब्द को फिर से पढ़ो।",
+    "vo_ts2_prompt":  "सही मात्रा को उसके सही डिब्बे में डालिए।",
+    "vo_ts2_ok_aa":   "शाबाश! यह आ की मात्रा है।",
+    "vo_ts2_ok_i":    "शाबाश! यह छोटी इ की मात्रा है।",
+    "vo_ts2_ok_ee":   "शाबाश! यह बड़ी ई की मात्रा है।",
+    "vo_ts2_hint1":       "फिर से देखिए। मात्रा को ध्यान से देखिए और उसे सही डिब्बे में डालिए।",
+    "vo_ts2_hint2":   "आ की मात्रा ा है, इ की मात्रा ि है और ई की मात्रा ी है। अब मात्रा को सही डिब्बे में डालिए।",
 
-    # ---- Screen 13 · MATRA_FILL (deck page 16) -----------------------------------------------
+    # ---- Screen 14 · WORD_BUILD (deck page 16) -----------------------------------------------
+    # [REV-B1] the अक्षर screen. `vo_ak_*` are the four draggable pieces, said as pieces - a
+    # child hears «जा», not «जा अक्षर» - and पा is the distractor, which belongs to none of the
+    # three words.
+    "vo_wb_prompt":   "चित्र देखकर सही अक्षर से शब्द पूरा कीजिए।",
+    "vo_wb_h1":       "फिर से देखिए। चित्र का नाम सोचिए और देखिए शब्द पूरा करने के लिए कौन-सा अक्षर लगेगा।",
+    "vo_wb_h2":       "नाम ध्यान से सुनिए। जिस शब्द की शुरुआत इस अक्षर से होती है, उसी डिब्बे में इसे डालिए।",
+    "vo_wb_h3_any":   "जो अक्षर चमक रहा है, उसे उसी डिब्बे में डालिए।",
+    "vo_wb_h3_jaal":  "जा को जाल वाले डिब्बे में डालिए। जा, ल… जाल।",
+    "vo_wb_h3_hiran": "हि को हिरण वाले डिब्बे में डालिए। हि, रण… हिरण।",
+    "vo_wb_h3_neem":  "नी को नीम वाले डिब्बे में डालिए। नी, म… नीम।",
+    "vo_wb_ok_jaal":  "शाबाश! जाल बन गया।",
+    "vo_wb_ok_hiran": "शाबाश! हिरण बन गया।",
+    "vo_wb_ok_neem":  "शाबाश! नीम बन गया।",
+    "vo_ak_jaa":      "जा",
+    "vo_ak_hi":       "हि",
+    "vo_ak_nee":      "नी",
+    "vo_ak_paa":      "पा",
+
+    # ---- RETIRED with MATRA_FILL (review B1). Kept so the lines are not lost if the screen
+    #      ever comes back; nothing references them, so they ship in no card and no manifest.
     "vo_mf_prompt":   "मात्रा को सही डिब्बे में डालकर शब्द पूरा कीजिए।",
     "vo_mf_ok_jaal":  "शाबाश! जाल बन गया।",
-    "vo_mf_ok_pari":  "शाबाश! परी बन गया।",
+    "vo_mf_ok_pari":  "शाबाश! परी बन गई।",
     "vo_mf_ok_hiran": "शाबाश! हिरण बन गया।",
     "vo_mf_hint1":        "फिर से देखिए। चित्र का नाम सोचिए और सही मात्रा लगाइए।",
     "vo_mf_hint2":        "नाम ध्यान से सुनिए। जो मात्रा सही लग रही है, वही चुनिए।",
@@ -308,8 +332,22 @@ VO = {
     "vo_ts3_ok_hiran": "शाबाश! हिरण में छोटी इ की मात्रा है।",
     "vo_ts3_ok_neem":  "शाबाश! नीम में बड़ी ई की मात्रा है।",
     "vo_ts3_ok_keel":  "शाबाश! कील में बड़ी ई की मात्रा है।",
-    "vo_ts3_hint1":    "फिर से सुनो और सही मात्रा पहचानो।",
-    "vo_ts3_hint2":    "शब्द को ध्यान से सुनो।",
+    "vo_ts3_hint1":    "फिर से सुनिए और सही मात्रा पहचानिए।",
+    "vo_ts3_hint2":    "शब्द को ध्यान से सुनिए।",
+    # [REV-B5] rung 2 names the matra the picture carries, rung 3 says where it goes - the same
+    # two rungs the done sample gives every card on this screen.
+    "vo_ts3_h2_haath": "हाथ में आ की मात्रा है। अब इसे सही मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts3_h2_naak":  "नाक में आ की मात्रा है। अब इसे सही मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts3_h2_pin":   "पिन में छोटी इ की मात्रा है। अब इसे सही मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts3_h2_hiran": "हिरण में छोटी इ की मात्रा है। अब इसे सही मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts3_h2_neem":  "नीम में बड़ी ई की मात्रा है। अब इसे सही मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts3_h2_keel":  "कील में बड़ी ई की मात्रा है। अब इसे सही मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts3_h3_haath": "हाथ को आ की मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts3_h3_naak":  "नाक को आ की मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts3_h3_pin":   "पिन को छोटी इ की मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts3_h3_hiran": "हिरण को छोटी इ की मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts3_h3_neem":  "नीम को बड़ी ई की मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts3_h3_keel":  "कील को बड़ी ई की मात्रा वाले डिब्बे में डालिए।",
 
     # ---- Screens 15-17 · OBJECT_HUNT (deck slides 18, 19, 20) --------------------------------
     # The screen prompts, the ladder's two hints, and the round's closing line.
@@ -375,10 +413,11 @@ VO = {
     # [r47] THE ONE HUNT SCREEN. Three screens became one, so the question widens from
     # “find आ” to “find any matra we have learned”, and every word in the picture has a
     # clear answer — which is what lets the mixed-matra words be tapped at all.
-    "vo_oh_all_intro":  "जिन चित्रों के नाम में आ, इ या ई की मात्रा है, उन सब पर टैप कीजिए।",
+    # [REV-3] the line names the quota the screen waits for: two of each, not two in total
+    "vo_oh_all_intro":  "आ, इ और ई — हर मात्रा वाले दो-दो चित्र खोजिए और उन पर टैप कीजिए।",
     "vo_oh_all_wrong":  "इस शब्द में आ, इ या ई की मात्रा नहीं है। फिर से सोचिए।",
     "vo_oh_all_hint2":  "ध्यान से देखिए। चित्र का नाम बोलिए और उसकी मात्रा पहचानिए।",
-    "vo_oh_all_done":   "शाबाश! आपने मात्रा वाले चित्र पहचान लिए।",
+    "vo_oh_all_done":   "शाबाश! आपने हर मात्रा वाले दो-दो चित्र पहचान लिए।",
 
     "vo_oh_all_ok_makaan":     "शाबाश! मकान में आ की मात्रा है।",
     "vo_oh_all_ok_baadal":     "शाबाश! बादल में आ की मात्रा है।",
@@ -403,22 +442,22 @@ VO = {
     # The object names, spoken on hover/focus so the child hears the word before judging it.
     "vo_name_makaan":  "मकान।",
     "vo_name_baadal":  "बादल।",
-    "vo_name_kursi":   "कुर्सी।",
+    "vo_name_kursi":   "कुर्सी",
     "vo_name_seedhi":  "सीढ़ी।",
     "vo_name_ped":     "पेड़।",
     "vo_name_mez":     "मेज़।",
-    "vo_name_aam":     "यह आम है।",
-    "vo_name_maala":   "माला।",
+    "vo_name_aam":     "आम",
+    "vo_name_maala":   "माला",
     "vo_name_gaajar":  "गाजर।",
     "vo_name_taala":   "ताला।",
     "vo_name_patang":  "पतंग।",
-    "vo_name_sooraj":  "यह सूरज है।",
-    "vo_name_chidiya": "यह चिड़िया है।",
-    "vo_name_kitaab":  "किताब।",
-    "vo_name_kutta":   "कुत्ता।",
-    "vo_name_gend":    "गेंद।",
+    "vo_name_sooraj":  "सूरज",
+    "vo_name_chidiya": "चिड़िया",
+    "vo_name_kitaab":  "किताब",
+    "vo_name_kutta":   "कुत्ता",
+    "vo_name_gend":    "गेंद",
     "vo_name_ladki":   "लड़की।",
-    "vo_name_ghadi":   "यह घड़ी है।",
+    "vo_name_ghadi":   "घड़ी",
     "vo_name_machhli": "मछली।",
 
     # ---- celebration (deck page 19 · N/C — ships as built) ------------------------------------
@@ -782,6 +821,9 @@ def hunt_objects():
              "x": x, "y": y, "w": w, "h": h}
         if m:
             o["correct"] = True
+            # [REV-3] which matra this one counts towards. The screen asks for two of each, so
+            # a correct object that belongs to no group would be praised and then not count.
+            o["matra"] = m
             o["ok_audio"] = HUNT_OK.get(slug, "vo_oh_all_ok_" + slug)
             o["more_audio"] = "vo_oh_all_more_" + slug
         out.append(o)
@@ -1073,17 +1115,28 @@ SLIDES = [
         # TWO cards and TWO coaches, not three: the deck asks for two options, and a third empty
         # coach left over at the end would read as something the demo forgot to do. आ and इ are
         # the two matras taught first, and both words are already known from earlier screens.
+        # [REV-B3] LETTERS INTO MATRA BINS - the inverse of the page it introduces, which is how
+        # the done sample's own demo (G5D) is built. Watching «आ goes to the ा coach» and then
+        # being asked to put ा on the आ coach is a demonstration; watching the identical task is
+        # a rehearsal of the answer, and teaches nothing.
+        # THREE bins, not two: the next page has three, and a demo that shows two of them leaves
+        # the third unexplained - the review's own finding.
         "id": "G4D", "phase": "guided", "eis": "enactive", "type": "TRAIN_SORT",
-        "prompt_hi": "देखिए, शब्द को उसकी सही मात्रा वाले डिब्बे में इस तरह ले जाते हैं।",
-        "audio": A(prompt="vo_ts0_prompt"),
+        "prompt_hi": "देखिए, अक्षर को उसकी मात्रा वाले डिब्बे में कैसे डालते हैं।",
+        "audio": A(prompt="vo_g4d_prompt"),
         "data": {"demo": True,          # watch only: no drag handlers, nothing scored
-                 "bins": [{"key": "aa", "label": "“आ” (ा)"},
-                          {"key": "i",  "label": "“इ” (ि)"}],
+                 # [REV-B4] the demo hands over before the real page starts
+                 "completion_vo": "vo_g4d_end",
+                 "bins": [{"key": "aa", "label": "◌ा", "label_audio": "vo_matra_aa2"},
+                          {"key": "i",  "label": "◌ि", "label_audio": "vo_matra_i"},
+                          {"key": "ee", "label": "◌ी", "label_audio": "vo_matra_ee"}],
                  "items": [
-                     {"key": "aa", "word_hi": "हाथ", "img": "obj_haath", "emoji": "✋",
-                      "audio": "vo_name_haath", "correct_audio": "vo_ts1_ok_haath"},
-                     {"key": "i",  "word_hi": "पिन", "img": "obj_pin", "emoji": "📌",
-                      "audio": "vo_name_pin", "correct_audio": "vo_ts1_ok_pin"},
+                     {"key": "aa", "glyph": "आ", "audio": "vo_letter_aa",
+                      "correct_audio": "vo_g4d_aa"},
+                     {"key": "i",  "glyph": "इ", "audio": "vo_letter_i",
+                      "correct_audio": "vo_g4d_i"},
+                     {"key": "ee", "glyph": "ई", "audio": "vo_letter_ee",
+                      "correct_audio": "vo_g4d_ee"},
                  ]},
         "signals": {"on_complete": []},
     },
@@ -1093,8 +1146,11 @@ SLIDES = [
         "audio": A(prompt="vo_ts1_prompt", hint1="vo_ts1_hint1", hint2="vo_ts1_hint2",
                    try_again="vo_ts1_hint1"),
         "data": {"signal": "matra_sort_correct",
-                 "bins": [{"key": "aa", "label": "“आ” (ा)", "label_audio": "vo_letter_aa"}, {"key": "i", "label": "“इ” (ि)", "label_audio": "vo_letter_i"},
-                          {"key": "ee", "label": "“ई” (ी)", "label_audio": "vo_letter_ee"}],
+                 # [REV-2] the letter, on its own. The quotes and the bracketed mark are gone;
+                 # the cover is where the letter and its matra are shown together now.
+                 "bins": [{"key": "aa", "label": "आ", "label_audio": "vo_letter_aa"},
+                          {"key": "i",  "label": "इ", "label_audio": "vo_letter_i"},
+                          {"key": "ee", "label": "ई", "label_audio": "vo_letter_ee"}],
                  "items": [
                      {"key": "aa", "word_hi": "हाथ", "img": "obj_haath", "emoji": "✋",
                       "audio": "vo_name_haath", "correct_audio": "vo_ts1_ok_haath", "matra": "ा", "hint2_audio": "vo_ts1_h2_haath", "hint3_audio": "vo_ts1_h3_haath"},
@@ -1106,45 +1162,59 @@ SLIDES = [
         "signals": {"on_complete": ["matra_sort_correct"]},
     },
 
-    # ============ PRACTICE · 5 screens =======================================================
-    {   # Screen 12 · deck page 15 — the REVERSE mapping: matra cards into word coaches
-        "id": "P1", "phase": "practice", "eis": "enactive", "type": "TRAIN_SORT",
-        "prompt_hi": "सही मात्रा को सही शब्द वाले डिब्बे में डालिए।",
+    {   # [REV-A2 / B2] deck page 15 — the REVERSE mapping, and now the second GUIDED screen,
+        # straight after the demo that showed it. Its bins were the three words जाल / सिर / कील;
+        # they are the three LETTERS now, so the question is «which letter does this mark belong
+        # to» rather than «which of these three words happens to contain it» - the done sample's
+        # G5, and the mapping the rest of the lesson is built on.
+        # Named G5 to match that sample; it is no longer a practice screen and a «P» id in the
+        # guided phase would be read as one.
+        "id": "G5", "phase": "guided", "eis": "enactive", "type": "TRAIN_SORT",
+        "prompt_hi": "सही मात्रा को उसके सही डिब्बे में डालिए।",
         "audio": A(prompt="vo_ts2_prompt", hint1="vo_ts2_hint1", hint2="vo_ts2_hint2",
                    try_again="vo_ts2_hint1"),
         "data": {"signal": "matra_sort_correct",
-                 "bins": [{"key": "aa", "label": "जाल", "label_audio": "vo_name_jaal"}, {"key": "i", "label": "सिर", "label_audio": "vo_name_sir"},
-                          {"key": "ee", "label": "कील", "label_audio": "vo_name_keel"}],
+                 "bins": [{"key": "aa", "label": "आ", "label_audio": "vo_letter_aa"},
+                          {"key": "i",  "label": "इ", "label_audio": "vo_letter_i"},
+                          {"key": "ee", "label": "ई", "label_audio": "vo_letter_ee"}],
                  "items": [
-                     {"key": "aa", "glyph": "ा", "correct_audio": "vo_ts2_ok_jaal", "audio": "vo_letter_aa", "hint2_audio": "vo_ts2_h2_aa", "hint3_audio": "vo_ts2_h3_aa"},
-                     {"key": "i",  "glyph": "ि", "correct_audio": "vo_ts2_ok_sir", "audio": "vo_letter_i", "hint2_audio": "vo_ts2_h2_i", "hint3_audio": "vo_ts2_h3_i"},
-                     {"key": "ee", "glyph": "ी", "correct_audio": "vo_ts2_ok_keel", "audio": "vo_letter_ee", "hint2_audio": "vo_ts2_h2_ee", "hint3_audio": "vo_ts2_h3_ee"},
+                     {"key": "aa", "glyph": "ा", "correct_audio": "vo_ts2_ok_aa", "audio": "vo_matra_aa2", "hint2_audio": "vo_ts2_h2_aa", "hint3_audio": "vo_ts2_h3_aa"},
+                     {"key": "i",  "glyph": "ि", "correct_audio": "vo_ts2_ok_i",  "audio": "vo_matra_i",  "hint2_audio": "vo_ts2_h2_i",  "hint3_audio": "vo_ts2_h3_i"},
+                     {"key": "ee", "glyph": "ी", "correct_audio": "vo_ts2_ok_ee", "audio": "vo_matra_ee", "hint2_audio": "vo_ts2_h2_ee", "hint3_audio": "vo_ts2_h3_ee"},
                  ]},
         "signals": {"on_complete": ["matra_sort_correct"]},
     },
-    {   # Screen 13 · deck page 16 — fill the blank.
-        # `blank_at` is an index into the CONSONANT-GROUP sequence, never a character offset:
-        # in हिरण the ि is stored after ह but DRAWN before it, so the blank sits at index 0.
-        # हीरा was CORRECTED to हिरण on the SME's explicit instruction (row #149) — हीरा is
-        # unusable anyway, it carries two in-scope matras (ी and ा).
-        "id": "P2", "phase": "practice", "eis": "enactive", "type": "MATRA_FILL",
-        "prompt_hi": "मात्रा को सही डिब्बे में डालकर शब्द पूरा कीजिए।",
-        "audio": A(prompt="vo_mf_prompt", hint1="vo_mf_hint1", hint2="vo_mf_hint2", hint3="vo_mf_hint3",
-                   try_again="vo_mf_hint1"),
-        "data": {"signal": "matra_fill_correct",
-                 "options": ["ा", "ि", "ी"], "reuse_options": True,
+    {   # [REV-B1] deck page 16 — WORD_BUILD, in place of MATRA_FILL.
+        # The SME's round-3 note on the done sample: the child drags a whole अक्षर, not a bare
+        # mark. Dropping «ा» into a blank tests whether the mark is recognised; dropping «जा»
+        # tests whether the mark is READ - which is this lesson's objective.
+        #
+        # `head` is the अक्षर that carries the matra and `tail` is what is left, so the coach
+        # shows «_ल» and the child completes it. All three heads are first-position, which is
+        # what the screen needs: परी cannot be used here, because its matra sits on the SECOND
+        # अक्षर and the blank would not be the head.
+        # One distractor, पा, which belongs to none of the three words (done sample: पा).
+        "id": "P2", "phase": "practice", "eis": "enactive", "type": "WORD_BUILD",
+        "prompt_hi": "चित्र देखकर सही अक्षर से शब्द पूरा कीजिए।",
+        "audio": A(prompt="vo_wb_prompt", hint1="vo_wb_h1", hint2="vo_wb_h2",
+                   hint3="vo_wb_h3_any", try_again="vo_wb_h1"),
+        "data": {"signal": "word_build_correct",
                  "slots": [
-                     {"word": "जाल", "parts": ["ज", "ल"], "blank_at": 1, "matra": "ा",
-                      "img": "obj_jaal", "emoji": "🕸️", "audio": "vo_name_jaal",
-                      "correct_audio": "vo_mf_ok_jaal"},
-                     {"word": "परी", "parts": ["पर"], "blank_at": 1, "matra": "ी",
-                      "img": "obj_pari", "emoji": "🧚", "audio": "vo_name_pari",
-                      "correct_audio": "vo_mf_ok_pari"},
-                     {"word": "हिरण", "parts": ["ह", "रण"], "blank_at": 0, "matra": "ि",
-                      "img": "obj_hiran", "emoji": "🦌", "audio": "vo_name_hiran",
-                      "correct_audio": "vo_mf_ok_hiran"},
-                 ]},
-        "signals": {"on_complete": ["matra_fill_correct"]},
+                     {"word": "जाल", "head": "जा", "tail": "ल", "matra": "ा",
+                      "img": "obj_jaal", "emoji": "🕸️", "name_audio": "vo_name_jaal",
+                      "hint3_audio": "vo_wb_h3_jaal", "correct_audio": "vo_wb_ok_jaal"},
+                     {"word": "हिरण", "head": "हि", "tail": "रण", "matra": "ि",
+                      "img": "obj_hiran", "emoji": "🦌", "name_audio": "vo_name_hiran",
+                      "hint3_audio": "vo_wb_h3_hiran", "correct_audio": "vo_wb_ok_hiran"},
+                     {"word": "नीम", "head": "नी", "tail": "म", "matra": "ी",
+                      "img": "obj_neem", "emoji": "🌳", "name_audio": "vo_name_neem",
+                      "hint3_audio": "vo_wb_h3_neem", "correct_audio": "vo_wb_ok_neem"},
+                 ],
+                 "options": [{"akshar": "जा", "audio": "vo_ak_jaa"},
+                             {"akshar": "हि", "audio": "vo_ak_hi"},
+                             {"akshar": "नी", "audio": "vo_ak_nee"},
+                             {"akshar": "पा", "audio": "vo_ak_paa"}]},
+        "signals": {"on_complete": ["word_build_correct"]},
     },
     {   # Screen 14 · deck page 17 — PICTURES ONLY, no word text at any point
         "id": "P3", "phase": "practice", "eis": "enactive", "type": "TRAIN_SORT",
@@ -1159,21 +1229,31 @@ SLIDES = [
         # (Shuffling was already in: the tray is Fisher-Yates'd on every mount.)
         "data": {"signal": "matra_sort_correct", "hide_labels": True, "multi": True,
                  "announce_items": True,
-                 "bins": [{"key": "aa", "label": "“आ” (ा)"}, {"key": "i", "label": "“इ” (ि)"},
-                          {"key": "ee", "label": "“ई” (ी)"}],
+                 # [REV-2] the letter, on its own - see page 13
+                 "bins": [{"key": "aa", "label": "आ", "label_audio": "vo_letter_aa"},
+                          {"key": "i",  "label": "इ", "label_audio": "vo_letter_i"},
+                          {"key": "ee", "label": "ई", "label_audio": "vo_letter_ee"}],
                  "items": [
+                     # [REV-B5] every card carries its own rung 2 and rung 3. The generic pair
+                     # could only repeat the instruction; these name the matra in THIS picture.
                      {"key": "aa", "word_hi": "हाथ",  "img": "obj_haath", "emoji": "✋",
-                      "audio": "vo_name_haath", "correct_audio": "vo_ts3_ok_haath"},
+                      "audio": "vo_name_haath", "correct_audio": "vo_ts3_ok_haath",
+                      "hint2_audio": "vo_ts3_h2_haath", "hint3_audio": "vo_ts3_h3_haath"},
                      {"key": "aa", "word_hi": "नाक",  "img": "obj_naak", "emoji": "👃",
-                      "audio": "vo_name_naak", "correct_audio": "vo_ts3_ok_naak"},
+                      "audio": "vo_name_naak", "correct_audio": "vo_ts3_ok_naak",
+                      "hint2_audio": "vo_ts3_h2_naak", "hint3_audio": "vo_ts3_h3_naak"},
                      {"key": "i",  "word_hi": "पिन",  "img": "obj_pin", "emoji": "📌",
-                      "audio": "vo_name_pin", "correct_audio": "vo_ts3_ok_pin"},
+                      "audio": "vo_name_pin", "correct_audio": "vo_ts3_ok_pin",
+                      "hint2_audio": "vo_ts3_h2_pin", "hint3_audio": "vo_ts3_h3_pin"},
                      {"key": "i",  "word_hi": "हिरण", "img": "obj_hiran", "emoji": "🦌",
-                      "audio": "vo_name_hiran", "correct_audio": "vo_ts3_ok_hiran"},
+                      "audio": "vo_name_hiran", "correct_audio": "vo_ts3_ok_hiran",
+                      "hint2_audio": "vo_ts3_h2_hiran", "hint3_audio": "vo_ts3_h3_hiran"},
                      {"key": "ee", "word_hi": "नीम",  "img": "obj_neem", "emoji": "🌳",
-                      "audio": "vo_name_neem", "correct_audio": "vo_ts3_ok_neem"},
+                      "audio": "vo_name_neem", "correct_audio": "vo_ts3_ok_neem",
+                      "hint2_audio": "vo_ts3_h2_neem", "hint3_audio": "vo_ts3_h3_neem"},
                      {"key": "ee", "word_hi": "कील",  "img": "obj_keel", "emoji": "🔩",
-                      "audio": "vo_name_keel", "correct_audio": "vo_ts3_ok_keel"},
+                      "audio": "vo_name_keel", "correct_audio": "vo_ts3_ok_keel",
+                      "hint2_audio": "vo_ts3_h2_keel", "hint3_audio": "vo_ts3_h3_keel"},
                  ]},
         "signals": {"on_complete": ["matra_sort_correct"]},
     },
@@ -1195,7 +1275,9 @@ SLIDES = [
         # picture answers unambiguously — including किताब, चिड़िया, कुत्ता and कुर्सी, which
         # carry two of the three and could not be placed cleanly while the screens were split.
         "id": "P4", "phase": "practice", "eis": "symbolic", "type": "OBJECT_HUNT",
-        "prompt_hi": "मात्रा वाले चित्र खोजिए और उन पर टैप कीजिए।",
+        # [REV-3] the instruction names the quota, or the screen asks for one thing and waits
+        # for another.
+        "prompt_hi": "आ, इ और ई — हर मात्रा वाले दो-दो चित्र खोजिए।",
         "audio": A(prompt="vo_oh_all_intro", result="vo_oh_all_done",
                    try_again="vo_oh_all_wrong", hint1="vo_oh_hint1", hint2="vo_oh_all_hint2"),
                  # [r51] no letter box on this screen - the SME does not want it, and a chip
@@ -1203,11 +1285,18 @@ SLIDES = [
                  # already said. The engine keeps the chip for the single-matra hunts.
                  "data": {"signal": "object_hunt_correct", "letter": "आ", "matra": "ा",
                  "no_chip": True,
-                 # [r53] the hunt ends at TWO. Nine correct objects is a long screen, and
-                 # the point is made once the child has picked two out of the whole scene;
-                 # the rest light up at the end so nothing is lost. Completing hands
-                 # straight on to the tokri game, which is the next slide.
-                 "need": 2,
+                 # [r53] the hunt used to end at TWO of any kind - nine correct objects is a
+                 # long screen, and the point was taken to be made once the child had picked two
+                 # out of the whole scene.
+                 # [REV-3 · SME] TWO OF EACH, not two altogether: "आ ke 2 word, इ ke 2 words,
+                 # ई ke 2 words - then we can go to the next page". Under the flat count a child
+                 # could tap आम and माला and leave without ever looking for an इ or an ई, on the
+                 # one screen whose job is telling the three apart.
+                 # WHAT THE SCENE HOLDS: ा → आम, माला, कुत्ता (3) · ि → चिड़िया, हिरण, किताब,
+                 # पिन (4) · ी → घड़ी, कुर्सी (2). The ई group is exactly its quota, so both of
+                 # its objects have to be found; the engine clamps a quota to its group's size,
+                 # so this is a tight screen, never an unfinishable one. Six finds minimum.
+                 "need_per_matra": 2,
                  "scene": HUNT_SCENE,
                  "objects": hunt_objects()},
         "signals": {"on_complete": ["object_hunt_correct"]},
@@ -1251,11 +1340,35 @@ SLIDES = [
     },
     {
         "id": "CEL", "phase": "practice", "eis": "enactive", "type": "CELEBRATION",
-        "prompt_hi": "शाबाश! आज हमने सीखा — आ, इ और ई की मात्रा पहचानना, और मात्रा वाले शब्द पढ़ना।",
+        # [REV-C4] the line on screen is the line that is spoken. It used to read «शाबाश! आज
+        # हमने सीखा …» while the clip said «बहुत बढ़िया, दोस्त! तुमने कमाल कर दिया!», so the
+        # child saw one sentence and heard another.
+        "prompt_hi": "बहुत बढ़िया, दोस्त! तुमने कमाल कर दिया!",
         "audio": A(prompt="vo_cel_prompt", sfx="sfx_celebrate"),
         "data": {},
     },
 ]
+
+# [REV-A5] THE REVIEWED PAGE ORDER. Declared by id so this list can be read straight against the
+# review's table, and so the five screens keep their own comments where they were written.
+#   1-7   T1-T7     tutorial, unchanged
+#   8-13  guided    the demo and the matra sort FIRST, then the three taps, then the word sort
+#   14-18 practice  word build, picture sort, object hunt, टोकरी, celebration
+_ORDER = ["T1", "T2", "T3", "T4", "T5", "T6", "T7",
+          "G4D", "G5", "G1", "G2", "G3", "G4",
+          "P2", "P3", "P4", "G7", "CEL"]
+_by_id = {}
+for _s in SLIDES:
+    assert _s["id"] not in _by_id, "duplicate slide id %s" % _s["id"]
+    _by_id[_s["id"]] = _s
+assert set(_by_id) == set(_ORDER), (
+    "the order list and the slides disagree: only in slides %s · only in order %s"
+    % (sorted(set(_by_id) - set(_ORDER)), sorted(set(_ORDER) - set(_by_id))))
+SLIDES = [_by_id[_i] for _i in _ORDER]
+# and the phases must come out in blocks, or the transition gates fire in the wrong places
+_phases = [x["phase"] for x in SLIDES]
+assert _phases == sorted(_phases, key=["tutorial", "guided", "practice"].index), \
+    "phases are interleaved after the reorder: %s" % _phases
 
 CARD = {
     "version": "0.2",
@@ -1283,15 +1396,23 @@ CARD = {
     # draws, and `letters` is what is said in front of it. The r24 inverted commas stay - that was
     # this lesson's own call, and the sibling's own comment says this form exists so the cover
     # names the pair exactly as the sorting screens later will.
+    # [REV-B6] the inverted commas are gone. They were added so a coach would read «“आ” (ा)»
+    # like the sort bins; the cover draws letter and matra in separate cells, so all they did was
+    # put a pair of quote marks on the train.
     "landing_hero": {"kind": "matra_train",
                      "matras":  ["ा", "ि", "ी"],
-                     "letters": ["“आ”", "“इ”", "“ई”"]},
+                     "letters": ["आ", "इ", "ई"]},
     "phase_transition_audio": {"tutorial": "vo_pt_tutorial", "guided": "vo_pt_guided",
                                "practice": "vo_pt_practice"},
     # the journey beats are a LOCKED house behaviour — preserved verbatim from the shipped card
-    "phase_transition_title": {"tutorial": "चलो, शुरू करें!", "guided": "साथ में करें।",
-                               "practice": "अब तुम्हारी बारी।"},
-    "phase_distribution": {"tutorial": 7, "guided": 5, "practice": 5},   # [r29] + the drag demo
+    # [REV-C3] the titles now match the recordings and the engine's own PHASE_GATE_TITLE, which
+    # is what the transition screen actually types: the tutorial clip says «चलिए», not «चलो», and
+    # the practice clip says «अब आपकी बारी», not «तुम्हारी».
+    "phase_transition_title": {"tutorial": "चलिए, शुरू करें!", "guided": "साथ में करें।",
+                               "practice": "अब आपकी बारी।"},
+    # [REV-A6] 7 / 6 / 5 after the move. (The review says 7 / 6 / 4, which totals 17 against 18
+    # slides - the celebration is a practice screen and is counted, as it is in the done sample.)
+    "phase_distribution": {"tutorial": 7, "guided": 6, "practice": 5},
     # ---- deck row X1: the SME's 3-attempt ladder --------------------------------------------
     # rung 1 = hint VO, explicitly NO hand · rung 2 = hint VO + the hand on the CORRECT target,
     # child still answers · 3rd-attempt correct = visual celebration, SILENT.
@@ -1325,9 +1446,14 @@ CARD = {
         "silent_on_late_correct": True,
         "hand_in_practice": True,
     },
+    # [REV-B7] `poem_search_correct` can never fire - the poem screen was retired long ago, so
+    # the runtime validator failed every single run on a signal no screen sends. The hunt's own
+    # signal and the word-build's were missing in the other direction.
     "signals_expected": ["slide_entered", "slide_completed", "matra_tap_first_try",
-                         "matra_sort_correct", "matra_fill_correct", "poem_search_correct",
+                         "matra_sort_correct", "word_build_correct", "object_hunt_correct",
                          "lesson_completed", "mastery_score"],
+    # [REV-C2] the play and next button sounds, named on the card so the engine can find them
+    "ui_sfx": {"play": "sfx_play_button", "next": "sfx_next_button"},
     "_emoji_fallback": dict(IMAGES),
     "slides": SLIDES,
 }
@@ -1521,6 +1647,12 @@ def main():
                                                  # and PENDING VO stopped checking them.
                                                  "audio_line", "matra_audio",
                                                  "ok_audio", "more_audio", "wrong_audio",
+                                                 # [REV] the keys the walker never knew about.
+                                                 # Each one PLAYED and none was registered, so
+                                                 # they shipped with no duration and no preload
+                                                 # and never reached the recording list.
+                                                 "mic_nudge_audio", "name_audio",
+                                                 "completion_vo", "outro",
                                                  "try_again", "correct", "reveal", "sfx")
                                            and re.fullmatch(r"(vo|sfx)_[\w]+", v)):
                     used_audio.add(v)
@@ -1528,6 +1660,12 @@ def main():
                     walk(v)
 
     walk(CARD["slides"])
+    # [REV] `phonemes` maps a MATRA to its clip - {"ा": "vo_matra_aa2", ...} - so its keys are
+    # matras and the walker's key list can never match them. Page 1 speaks all three.
+    for _s in CARD["slides"]:
+        for _v in ((_s.get("data") or {}).get("phonemes") or {}).values():
+            if isinstance(_v, str) and re.fullmatch(r"(vo|sfx)_[\w]+", _v):
+                used_audio.add(_v)
     used_audio.add(CARD["landing_audio"])
     used_audio.update(CARD["phase_transition_audio"].values())
 
@@ -1559,6 +1697,10 @@ def main():
     # [r31] the ported gate + celebration, both measured from this lesson's own files
     _gate = gate_spec()
     if _gate:
+        # [REV-A4] «अब आपकी बारी!» opens in front of the टोकरी game, not in front of the first
+        # practice page. Pinning moves only the gate: every page keeps its own phase, and with
+        # it the hint ladder and hand rules that the phase decides.
+        _gate["at"] = {"round3": "G7"}
         CARD["gate"] = _gate
     _cel = cel_anim()
     if _cel:
