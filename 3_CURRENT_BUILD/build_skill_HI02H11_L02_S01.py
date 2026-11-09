@@ -285,6 +285,17 @@ VO = {
     "vo_ts1_ok_neem":  "शाबाश! नीम शब्द में बड़ी ई की मात्रा है।",
     "vo_ts1_hint1":       "फिर से पढ़िए। शब्द में कौन-सी मात्रा है, देखिए और उसे उसी मात्रा वाले डिब्बे में डालिए।",
     "vo_ts1_hint2":    "ध्यान से देखिए, इस शब्द में कौन-सी मात्रा है?",
+    # [FIX-7] the three words joining G4 that have no praise line yet. नाक, हिरण and कील already
+    # have theirs on the picture sort (vo_ts3_ok_* / vo_ts3_h2_* / vo_ts3_h3_*) and reuse them.
+    "vo_ts1_ok_jaal":  "शाबाश! जाल शब्द में आ की मात्रा है।",
+    "vo_ts1_ok_bil":   "शाबाश! बिल शब्द में छोटी इ की मात्रा है।",
+    "vo_ts1_ok_pari":  "शाबाश! परी शब्द में बड़ी ई की मात्रा है।",
+    "vo_ts1_h2_jaal":  "ध्यान से सुनिए — “जाल”। “जाल” में “आ” की मात्रा है।",
+    "vo_ts1_h2_bil":   "ध्यान से सुनिए — “बिल”। “बिल” में “इ” की मात्रा है।",
+    "vo_ts1_h2_pari":  "ध्यान से सुनिए — “परी”। “परी” में “ई” की मात्रा है।",
+    "vo_ts1_h3_jaal":  "“जाल” में “आ” की मात्रा है। इसे “आ” की मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts1_h3_bil":   "“बिल” में “इ” की मात्रा है। इसे “इ” की मात्रा वाले डिब्बे में डालिए।",
+    "vo_ts1_h3_pari":  "“परी” में “ई” की मात्रा है। इसे “ई” की मात्रा वाले डिब्बे में डालिए।",
 
     # ---- Screen 12 · TRAIN_SORT matra -> word coach (deck page 15) ---------------------------
     "vo_ts2_prompt":  "सही मात्रा को उसके सही डिब्बे में डालिए।",
@@ -1151,14 +1162,33 @@ SLIDES = [
                  "bins": [{"key": "aa", "label": "आ", "label_audio": "vo_letter_aa"},
                           {"key": "i",  "label": "इ", "label_audio": "vo_letter_i"},
                           {"key": "ee", "label": "ई", "label_audio": "vo_letter_ee"}],
+                 # [FIX-7] TWO PER COACH. With one card each the last card had one coach left
+                 # and could be placed without reading it. None of these six is a tap-screen
+                 # ANSWER (हाथ / पिन / पानी) - that repetition is what the review flagged.
                  "items": [
-                     {"key": "aa", "word_hi": "हाथ", "img": "obj_haath", "emoji": "✋",
-                      "audio": "vo_name_haath", "correct_audio": "vo_ts1_ok_haath", "matra": "ा", "hint2_audio": "vo_ts1_h2_haath", "hint3_audio": "vo_ts1_h3_haath"},
-                     {"key": "i",  "word_hi": "पिन", "img": "obj_pin", "emoji": "📌",
-                      "audio": "vo_name_pin", "correct_audio": "vo_ts1_ok_pin", "matra": "ि", "hint2_audio": "vo_ts1_h2_pin", "hint3_audio": "vo_ts1_h3_pin"},
-                     {"key": "ee", "word_hi": "नीम", "img": "obj_neem", "emoji": "🌳",
-                      "audio": "vo_name_neem", "correct_audio": "vo_ts1_ok_neem", "matra": "ी", "hint2_audio": "vo_ts1_h2_neem", "hint3_audio": "vo_ts1_h3_neem"},
-                 ]},
+                     {"key": "aa", "word_hi": "जाल", "img": "obj_jaal", "emoji": "🕸️",
+                      "audio": "vo_name_jaal", "correct_audio": "vo_ts1_ok_jaal", "matra": "ा",
+                      "hint2_audio": "vo_ts1_h2_jaal", "hint3_audio": "vo_ts1_h3_jaal"},
+                     {"key": "aa", "word_hi": "नाक", "img": "obj_naak", "emoji": "👃",
+                      "audio": "vo_name_naak", "correct_audio": "vo_ts3_ok_naak", "matra": "ा",
+                      "hint2_audio": "vo_ts3_h2_naak", "hint3_audio": "vo_ts3_h3_naak"},
+                     # the fallback matches obj_bil's own picture, which is an invoice (see
+                     # IMAGES). T4 calls the same image 🕳️ - flagged, not changed here.
+                     {"key": "i",  "word_hi": "बिल", "img": "obj_bil", "emoji": "🧾",
+                      "audio": "vo_name_bil", "correct_audio": "vo_ts1_ok_bil", "matra": "ि",
+                      "hint2_audio": "vo_ts1_h2_bil", "hint3_audio": "vo_ts1_h3_bil"},
+                     {"key": "i",  "word_hi": "हिरण", "img": "obj_hiran", "emoji": "🦌",
+                      "audio": "vo_name_hiran", "correct_audio": "vo_ts3_ok_hiran", "matra": "ि",
+                      "hint2_audio": "vo_ts3_h2_hiran", "hint3_audio": "vo_ts3_h3_hiran"},
+                     {"key": "ee", "word_hi": "परी", "img": "obj_pari", "emoji": "🧚",
+                      "audio": "vo_name_pari", "correct_audio": "vo_ts1_ok_pari", "matra": "ी",
+                      "hint2_audio": "vo_ts1_h2_pari", "hint3_audio": "vo_ts1_h3_pari"},
+                     {"key": "ee", "word_hi": "कील", "img": "obj_keel", "emoji": "🔩",
+                      "audio": "vo_name_keel", "correct_audio": "vo_ts3_ok_keel", "matra": "ी",
+                      "hint2_audio": "vo_ts3_h2_keel", "hint3_audio": "vo_ts3_h3_keel"},
+                 ],
+                 # two cards share a coach now, so the coach has to take two
+                 "multi": True},
         "signals": {"on_complete": ["matra_sort_correct"]},
     },
 

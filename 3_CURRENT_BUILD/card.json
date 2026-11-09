@@ -647,38 +647,72 @@
         "items": [
           {
             "key": "aa",
-            "word_hi": "हाथ",
-            "img": "obj_haath",
-            "emoji": "✋",
-            "audio": "vo_name_haath",
-            "correct_audio": "vo_ts1_ok_haath",
+            "word_hi": "जाल",
+            "img": "obj_jaal",
+            "emoji": "🕸️",
+            "audio": "vo_name_jaal",
+            "correct_audio": "vo_ts1_ok_jaal",
             "matra": "ा",
-            "hint2_audio": "vo_ts1_h2_haath",
-            "hint3_audio": "vo_ts1_h3_haath"
+            "hint2_audio": "vo_ts1_h2_jaal",
+            "hint3_audio": "vo_ts1_h3_jaal"
+          },
+          {
+            "key": "aa",
+            "word_hi": "नाक",
+            "img": "obj_naak",
+            "emoji": "👃",
+            "audio": "vo_name_naak",
+            "correct_audio": "vo_ts3_ok_naak",
+            "matra": "ा",
+            "hint2_audio": "vo_ts3_h2_naak",
+            "hint3_audio": "vo_ts3_h3_naak"
           },
           {
             "key": "i",
-            "word_hi": "पिन",
-            "img": "obj_pin",
-            "emoji": "📌",
-            "audio": "vo_name_pin",
-            "correct_audio": "vo_ts1_ok_pin",
+            "word_hi": "बिल",
+            "img": "obj_bil",
+            "emoji": "🧾",
+            "audio": "vo_name_bil",
+            "correct_audio": "vo_ts1_ok_bil",
             "matra": "ि",
-            "hint2_audio": "vo_ts1_h2_pin",
-            "hint3_audio": "vo_ts1_h3_pin"
+            "hint2_audio": "vo_ts1_h2_bil",
+            "hint3_audio": "vo_ts1_h3_bil"
+          },
+          {
+            "key": "i",
+            "word_hi": "हिरण",
+            "img": "obj_hiran",
+            "emoji": "🦌",
+            "audio": "vo_name_hiran",
+            "correct_audio": "vo_ts3_ok_hiran",
+            "matra": "ि",
+            "hint2_audio": "vo_ts3_h2_hiran",
+            "hint3_audio": "vo_ts3_h3_hiran"
           },
           {
             "key": "ee",
-            "word_hi": "नीम",
-            "img": "obj_neem",
-            "emoji": "🌳",
-            "audio": "vo_name_neem",
-            "correct_audio": "vo_ts1_ok_neem",
+            "word_hi": "परी",
+            "img": "obj_pari",
+            "emoji": "🧚",
+            "audio": "vo_name_pari",
+            "correct_audio": "vo_ts1_ok_pari",
             "matra": "ी",
-            "hint2_audio": "vo_ts1_h2_neem",
-            "hint3_audio": "vo_ts1_h3_neem"
+            "hint2_audio": "vo_ts1_h2_pari",
+            "hint3_audio": "vo_ts1_h3_pari"
+          },
+          {
+            "key": "ee",
+            "word_hi": "कील",
+            "img": "obj_keel",
+            "emoji": "🔩",
+            "audio": "vo_name_keel",
+            "correct_audio": "vo_ts3_ok_keel",
+            "matra": "ी",
+            "hint2_audio": "vo_ts3_h2_keel",
+            "hint3_audio": "vo_ts3_h3_keel"
           }
-        ]
+        ],
+        "multi": true
       },
       "signals": {
         "on_complete": [
@@ -1186,6 +1220,7 @@
       "vo_mt_w_teer": "assets/Audio/VO/vo_mt_w_teer.ogg",
       "vo_mt_w_til": "assets/Audio/VO/vo_mt_w_til.ogg",
       "vo_name_aam": "assets/Audio/VO/vo_name_aam.ogg",
+      "vo_name_bil": "assets/Audio/VO/vo_name_bil.ogg",
       "vo_name_chidiya": "assets/Audio/VO/vo_name_chidiya.ogg",
       "vo_name_din": "assets/Audio/VO/vo_name_din.ogg",
       "vo_name_gend": "assets/Audio/VO/vo_name_gend.ogg",
@@ -1201,6 +1236,7 @@
       "vo_name_naak": "assets/Audio/VO/vo_name_naak.ogg",
       "vo_name_neem": "assets/Audio/VO/vo_name_neem.ogg",
       "vo_name_paani": "assets/Audio/VO/vo_name_paani.ogg",
+      "vo_name_pari": "assets/Audio/VO/vo_name_pari.ogg",
       "vo_name_pin": "assets/Audio/VO/vo_name_pin.ogg",
       "vo_name_sooraj": "assets/Audio/VO/vo_name_sooraj.ogg",
       "vo_name_teer": "assets/Audio/VO/vo_name_teer.ogg",
@@ -1237,17 +1273,17 @@
       "vo_rev_tt_ee": "assets/Audio/VO/vo_rev_tt_ee.ogg",
       "vo_rev_tt_i": "assets/Audio/VO/vo_rev_tt_i.ogg",
       "vo_s1_prompt": "assets/Audio/VO/vo_s1_prompt.ogg",
-      "vo_ts1_h2_haath": "assets/Audio/VO/vo_ts1_h2_haath.ogg",
-      "vo_ts1_h2_neem": "assets/Audio/VO/vo_ts1_h2_neem.ogg",
-      "vo_ts1_h2_pin": "assets/Audio/VO/vo_ts1_h2_pin.ogg",
-      "vo_ts1_h3_haath": "assets/Audio/VO/vo_ts1_h3_haath.ogg",
-      "vo_ts1_h3_neem": "assets/Audio/VO/vo_ts1_h3_neem.ogg",
-      "vo_ts1_h3_pin": "assets/Audio/VO/vo_ts1_h3_pin.ogg",
+      "vo_ts1_h2_bil": "assets/Audio/VO/vo_ts1_h2_bil.ogg",
+      "vo_ts1_h2_jaal": "assets/Audio/VO/vo_ts1_h2_jaal.ogg",
+      "vo_ts1_h2_pari": "assets/Audio/VO/vo_ts1_h2_pari.ogg",
+      "vo_ts1_h3_bil": "assets/Audio/VO/vo_ts1_h3_bil.ogg",
+      "vo_ts1_h3_jaal": "assets/Audio/VO/vo_ts1_h3_jaal.ogg",
+      "vo_ts1_h3_pari": "assets/Audio/VO/vo_ts1_h3_pari.ogg",
       "vo_ts1_hint1": "assets/Audio/VO/vo_ts1_hint1.ogg",
       "vo_ts1_hint2": "assets/Audio/VO/vo_ts1_hint2.ogg",
-      "vo_ts1_ok_haath": "assets/Audio/VO/vo_ts1_ok_haath.ogg",
-      "vo_ts1_ok_neem": "assets/Audio/VO/vo_ts1_ok_neem.ogg",
-      "vo_ts1_ok_pin": "assets/Audio/VO/vo_ts1_ok_pin.ogg",
+      "vo_ts1_ok_bil": "assets/Audio/VO/vo_ts1_ok_bil.ogg",
+      "vo_ts1_ok_jaal": "assets/Audio/VO/vo_ts1_ok_jaal.ogg",
+      "vo_ts1_ok_pari": "assets/Audio/VO/vo_ts1_ok_pari.ogg",
       "vo_ts1_prompt": "assets/Audio/VO/vo_ts1_prompt.ogg",
       "vo_ts2_h2_aa": "assets/Audio/VO/vo_ts2_h2_aa.ogg",
       "vo_ts2_h2_ee": "assets/Audio/VO/vo_ts2_h2_ee.ogg",
@@ -1375,6 +1411,7 @@
       "vo_mt_w_teer": "तीर",
       "vo_mt_w_til": "तिल",
       "vo_name_aam": "आम",
+      "vo_name_bil": "बिल",
       "vo_name_chidiya": "चिड़िया",
       "vo_name_din": "दिन",
       "vo_name_gend": "गेंद",
@@ -1390,6 +1427,7 @@
       "vo_name_naak": "नाक",
       "vo_name_neem": "नीम",
       "vo_name_paani": "पानी",
+      "vo_name_pari": "परी",
       "vo_name_pin": "पिन",
       "vo_name_sooraj": "सूरज",
       "vo_name_teer": "तीर",
@@ -1426,17 +1464,17 @@
       "vo_rev_tt_ee": "सही डिब्बा यह है। पानी शब्द में बड़ी ई की मात्रा है।",
       "vo_rev_tt_i": "सही डिब्बा यह है। पिन शब्द में छोटी इ की मात्रा है।",
       "vo_s1_prompt": "आज हम आ की मात्रा, छोटी इ की मात्रा और बड़ी ई की मात्रा वाले शब्द पढ़ेंगे।",
-      "vo_ts1_h2_haath": "ध्यान से सुनिए — “हाथ”। “हाथ” में “आ” की मात्रा है।",
-      "vo_ts1_h2_neem": "ध्यान से सुनिए — “नीम”। “नीम” में “ई” की मात्रा है।",
-      "vo_ts1_h2_pin": "ध्यान से सुनिए — “पिन”। “पिन” में “इ” की मात्रा है।",
-      "vo_ts1_h3_haath": "“हाथ” में “आ” की मात्रा है। इसे “आ” की मात्रा वाले डिब्बे में डालिए।",
-      "vo_ts1_h3_neem": "“नीम” में “ई” की मात्रा है। इसे “ई” की मात्रा वाले डिब्बे में डालिए।",
-      "vo_ts1_h3_pin": "“पिन” में “इ” की मात्रा है। इसे “इ” की मात्रा वाले डिब्बे में डालिए।",
+      "vo_ts1_h2_bil": "ध्यान से सुनिए — “बिल”। “बिल” में “इ” की मात्रा है।",
+      "vo_ts1_h2_jaal": "ध्यान से सुनिए — “जाल”। “जाल” में “आ” की मात्रा है।",
+      "vo_ts1_h2_pari": "ध्यान से सुनिए — “परी”। “परी” में “ई” की मात्रा है।",
+      "vo_ts1_h3_bil": "“बिल” में “इ” की मात्रा है। इसे “इ” की मात्रा वाले डिब्बे में डालिए।",
+      "vo_ts1_h3_jaal": "“जाल” में “आ” की मात्रा है। इसे “आ” की मात्रा वाले डिब्बे में डालिए।",
+      "vo_ts1_h3_pari": "“परी” में “ई” की मात्रा है। इसे “ई” की मात्रा वाले डिब्बे में डालिए।",
       "vo_ts1_hint1": "फिर से पढ़िए। शब्द में कौन-सी मात्रा है, देखिए और उसे उसी मात्रा वाले डिब्बे में डालिए।",
       "vo_ts1_hint2": "ध्यान से देखिए, इस शब्द में कौन-सी मात्रा है?",
-      "vo_ts1_ok_haath": "शाबाश! हाथ शब्द में आ की मात्रा है।",
-      "vo_ts1_ok_neem": "शाबाश! नीम शब्द में बड़ी ई की मात्रा है।",
-      "vo_ts1_ok_pin": "शाबाश! पिन शब्द में छोटी इ की मात्रा है।",
+      "vo_ts1_ok_bil": "शाबाश! बिल शब्द में छोटी इ की मात्रा है।",
+      "vo_ts1_ok_jaal": "शाबाश! जाल शब्द में आ की मात्रा है।",
+      "vo_ts1_ok_pari": "शाबाश! परी शब्द में बड़ी ई की मात्रा है।",
       "vo_ts1_prompt": "हर शब्द को उसकी सही मात्रा वाले डिब्बे में डालिए।",
       "vo_ts2_h2_aa": "यह “आ” की मात्रा है। देखिए, किस शब्द में यह मात्रा लगेगी।",
       "vo_ts2_h2_ee": "यह “ई” की मात्रा है। देखिए, किस शब्द में यह मात्रा लगेगी।",
@@ -2203,6 +2241,12 @@
           1.03
         ]
       ],
+      "vo_name_bil": [
+        [
+          0.17,
+          0.54
+        ]
+      ],
       "vo_name_chidiya": [
         [
           0.21,
@@ -2299,6 +2343,12 @@
         [
           0.23,
           0.67
+        ]
+      ],
+      "vo_name_pari": [
+        [
+          0.32,
+          0.75
         ]
       ],
       "vo_name_pin": [
@@ -2925,150 +2975,6 @@
           5.72
         ]
       ],
-      "vo_ts1_h2_haath": [
-        [
-          0.23,
-          1.49
-        ],
-        [
-          2.02,
-          2.41
-        ],
-        [
-          2.56,
-          2.61
-        ],
-        [
-          3.36,
-          4.02
-        ],
-        [
-          4.48,
-          5.46
-        ]
-      ],
-      "vo_ts1_h2_neem": [
-        [
-          0.22,
-          1.48
-        ],
-        [
-          2.15,
-          2.87
-        ],
-        [
-          3.69,
-          4.59
-        ],
-        [
-          5.13,
-          5.85
-        ],
-        [
-          5.95,
-          6.38
-        ]
-      ],
-      "vo_ts1_h2_pin": [
-        [
-          0.31,
-          1.57
-        ],
-        [
-          2.29,
-          2.65
-        ],
-        [
-          3.48,
-          4.16
-        ],
-        [
-          4.72,
-          4.83
-        ],
-        [
-          5.21,
-          5.55
-        ],
-        [
-          5.65,
-          6.06
-        ]
-      ],
-      "vo_ts1_h3_haath": [
-        [
-          0.21,
-          1.01
-        ],
-        [
-          1.4,
-          2.42
-        ],
-        [
-          2.9,
-          3.29
-        ],
-        [
-          3.66,
-          5.68
-        ]
-      ],
-      "vo_ts1_h3_neem": [
-        [
-          0.26,
-          1.51
-        ],
-        [
-          1.97,
-          2.27
-        ],
-        [
-          2.39,
-          2.78
-        ],
-        [
-          2.9,
-          3.34
-        ],
-        [
-          3.91,
-          4.43
-        ],
-        [
-          4.86,
-          5.12
-        ],
-        [
-          5.23,
-          7.36
-        ]
-      ],
-      "vo_ts1_h3_pin": [
-        [
-          0.22,
-          0.9
-        ],
-        [
-          1.36,
-          1.57
-        ],
-        [
-          1.7,
-          2.61
-        ],
-        [
-          3.31,
-          3.77
-        ],
-        [
-          4.26,
-          4.48
-        ],
-        [
-          4.59,
-          6.63
-        ]
-      ],
       "vo_ts1_hint1": [
         [
           0.22,
@@ -3099,48 +3005,6 @@
         [
           1.65,
           3.31
-        ]
-      ],
-      "vo_ts1_ok_haath": [
-        [
-          0.29,
-          1.17
-        ],
-        [
-          1.6,
-          2.57
-        ],
-        [
-          2.91,
-          3.89
-        ]
-      ],
-      "vo_ts1_ok_neem": [
-        [
-          0.24,
-          1.2
-        ],
-        [
-          1.56,
-          2.6
-        ],
-        [
-          2.76,
-          4.12
-        ]
-      ],
-      "vo_ts1_ok_pin": [
-        [
-          0.26,
-          1.15
-        ],
-        [
-          1.64,
-          2.59
-        ],
-        [
-          2.78,
-          4.12
         ]
       ],
       "vo_ts1_prompt": [
@@ -3742,6 +3606,7 @@
       "vo_mt_w_teer": 0.755,
       "vo_mt_w_til": 0.589,
       "vo_name_aam": 1.251,
+      "vo_name_bil": 0.891,
       "vo_name_chidiya": 1.331,
       "vo_name_din": 1.051,
       "vo_name_gend": 1.011,
@@ -3757,6 +3622,7 @@
       "vo_name_naak": 0.971,
       "vo_name_neem": 0.891,
       "vo_name_paani": 0.891,
+      "vo_name_pari": 1.011,
       "vo_name_pin": 0.931,
       "vo_name_sooraj": 1.731,
       "vo_name_teer": 1.051,
@@ -3793,17 +3659,8 @@
       "vo_rev_tt_ee": 4.531,
       "vo_rev_tt_i": 4.771,
       "vo_s1_prompt": 5.931,
-      "vo_ts1_h2_haath": 5.771,
-      "vo_ts1_h2_neem": 6.611,
-      "vo_ts1_h2_pin": 6.371,
-      "vo_ts1_h3_haath": 5.931,
-      "vo_ts1_h3_neem": 7.651,
-      "vo_ts1_h3_pin": 6.931,
       "vo_ts1_hint1": 7.291,
       "vo_ts1_hint2": 3.571,
-      "vo_ts1_ok_haath": 4.211,
-      "vo_ts1_ok_neem": 4.331,
-      "vo_ts1_ok_pin": 4.411,
       "vo_ts1_prompt": 3.651,
       "vo_ts2_h2_aa": 4.811,
       "vo_ts2_h2_ee": 5.931,
