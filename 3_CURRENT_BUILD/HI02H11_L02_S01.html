@@ -14982,10 +14982,22 @@ function boot(){
      the second cutting the first. _landingVoT is the held one; _landingVoOn says it is already
      talking, so the later caller stands down instead of restarting it. */
   let _landingVoT = 0, _landingVoOn = false, _landingHeld = false;
+  /* [QA BUG_01] has ▶ ever been on screen? Before it has, the greeting hides it; after it
+     has, a replay must not take it away again - see the two branches below. */
+  let _startBtnShown = false;
   const playLanding = ()=>{ if($("startGate").classList.contains("hidden")) return;
     clearTimeout(_landingVoT); _landingVoT = 0;
     if(_landingVoOn) return;
-    setStartBtnReady(false); disarmStartNudge();
+    /* [QA BUG_01 · file4's S05 2026-11-09] "when the VO is completely loaded and the speaker is
+       tapped again, the play button shouldn't disappear". setStartBtnReady(false) adds
+       `sg-waiting`, which is visibility:hidden - so every tap of the सुनो chip blinked the button
+       out for the length of the greeting. That is correct the FIRST time, when the button has
+       never been seen; on a replay the child is looking straight at it.
+       After it has been shown once, the greeting only makes it unpressable: `disabled` does not
+       hide it and does stop the pulse, so it reads as "wait", not as gone. */
+    if(!_startBtnShown) setStartBtnReady(false);
+    else { const _b = $("sgBtn"); if(_b) _b.disabled = true; }
+    disarmStartNudge();
     /* through the unlock: the listen chip is often the child's FIRST gesture on a deployed
        build, and speaking straight away there put the greeting into a still-suspended context -
        silent, and spent, so the chip appeared to do nothing at all. */
@@ -14994,6 +15006,7 @@ function boot(){
       _landingVoOn = true;
       play(landSrc, ()=>{ _landingVoOn = false;
                           if(window.__landingTrainReveal) window.__landingTrainReveal();
+                          _startBtnShown = true;        /* [QA BUG_01] from here a replay keeps it */
                           setStartBtnReady(true); armStartNudge(); });
     }); };
   /* never strand the child behind a clip that never ends or never starts.

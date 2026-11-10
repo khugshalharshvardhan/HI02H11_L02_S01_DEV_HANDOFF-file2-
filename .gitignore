@@ -1,0 +1,15 @@
+# Voice-over DELIVERY folders dropped inside the build's asset tree.
+#
+# The lesson plays assets/Audio/VO/<id>.ogg - flat, one file per audio id. A delivery arrives as
+# a folder of .wav next to them, which is raw material: 30 MB that the lesson never reads, and
+# that `git add .` would otherwise commit and deploy.
+# Convert what is wanted into assets/Audio/VO/<id>.ogg; leave the folder here as the source.
+3_CURRENT_BUILD/assets/Audio/VO/*/
+
+# Office lock files (~$Name.pptx) from a deck being open while the repo is committed
+~$*
+
+# Editor / OS noise
+.vscode/
+Thumbs.db
+.DS_Store
