@@ -30,8 +30,9 @@ _SOURCE/
 3_CURRENT_BUILD/*.py
 3_CURRENT_BUILD/card.json
 
-# The source GIF. It is re-encoded into assets/UI/train_cover.webp, which is what the page loads.
-3_CURRENT_BUILD/assets/GIFandVIDEO/
+# The cover train source is re-encoded into assets/UI/train_cover.webp.
+# Keep the running-boy GIF: page 5 loads it directly at runtime.
+3_CURRENT_BUILD/assets/GIFandVIDEO/train.gif
 # Source art the page never requests, each encoded into assets/UI/ at authoring time:
 #   train_spritesheet.png -> assets/UI/train_spritesheet.webp  (5702KB -> 1076KB), the moving train
 #   train.png             -> assets/UI/train_still.webp        (1184KB ->  814KB), the parked train
