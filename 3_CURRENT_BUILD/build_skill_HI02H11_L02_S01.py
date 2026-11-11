@@ -1724,7 +1724,8 @@ def main():
         # places below, so there was nothing for it to read. IMG_EXT is resolved once, at the
         # top of the emit, and every path is built from it.
         "img_ext": IMG_EXT,
-        "image": {k: f"assets/Images/{k}.{IMG_EXT}" for k in sorted(IMAGES)},
+        "image": {k: ("assets/GIFandVIDEO/boy_running (1).gif" if k == "obj_gati"
+                      else f"assets/Images/{k}.{IMG_EXT}") for k in sorted(IMAGES)},
         "audio_ext": "ogg",
         # [s77] was a second, hard-coded "img_ext": "png" in this same dict literal - a later
         # duplicate key silently wins in Python, so the card shipped .webp paths with a "png"

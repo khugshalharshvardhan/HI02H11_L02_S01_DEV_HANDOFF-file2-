@@ -6495,7 +6495,8 @@ function sortSeqReveal(tray, slide){
 function imgOrEmoji(imgKey, emoji, imgClass, emojiClass){
   if(imgKey){
     const fb = String(emoji||"❓").replace(/'/g,"");
-    return `<img class="${imgClass}" src="assets/Images/${imgKey}.${IMG_EXT}" alt="" `+
+    const imageSrc = (CARD.assets && CARD.assets.image && CARD.assets.image[imgKey]) || `assets/Images/${imgKey}.${IMG_EXT}`;
+    return `<img class="${imgClass}" src="${imageSrc}" alt="" `+
       `onerror="var s=document.createElement('span');s.className='${emojiClass}';s.textContent='${fb}';this.replaceWith(s);">`;
   }
   return `<span class="${emojiClass}">${emoji||"❓"}</span>`;
