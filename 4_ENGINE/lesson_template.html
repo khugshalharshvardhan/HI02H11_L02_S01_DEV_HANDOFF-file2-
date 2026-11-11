@@ -2069,7 +2069,11 @@ body.is-start .phase-gate{
      than the picture sort's and stopped 37 px off the stage floor against that page's 98 px.
      `auto` pushes the tray to the bottom of the column and the margin below sets the clearance,
      so every drag screen matches and a taller tray grows upward instead of into the edge. */
-  margin-top:auto;margin-bottom:52px;
+  /* [SME] "images and train track are very close to each other and it looks like overlapping -
+     push the options a little down". Measured at 20 px between the rail and the tray on every
+     drag screen. The same total margin is re-split, from under the tray to over it, so the gap
+     opens without the cards reaching any further down the stage than they do now. */
+  margin-top:30px;margin-bottom:26px;
   max-width:1120px;}
 .train-tray .tt-card{background:#FFFFFF;border:3px solid #CFE3FA;border-radius:14px;padding:10px 14px;
   display:flex;flex-direction:column;align-items:center;gap:6px;min-width:104px;cursor:grab;
@@ -2100,9 +2104,12 @@ body.is-start .phase-gate{
 .train-tray .tt-card img{width:78px;height:78px;object-fit:contain;}
 /* [FIX-8b] five cards or more: a smaller picture and tighter padding, so a tray that carries a
    word under every picture still fits its host instead of hanging past the bottom of it. */
-.train-tray.tt-dense .tt-card{padding:7px 12px;gap:4px;}
-.train-tray.tt-dense .tt-card img{width:58px;height:58px;}
-.train-tray.tt-dense .tt-card .tt-emoji{font-size:46px;}
+.train-tray.tt-dense .tt-card{padding:5px 12px;gap:3px;}
+.train-tray.tt-dense .tt-card img{width:46px;height:46px;}
+.train-tray.tt-dense .tt-card .tt-emoji{font-size:38px;}
+/* [SME] ...and the gap above the tray grew by 30 px for every drag screen, which the six-card
+   tray is the only one that cannot afford - its column already overflows its host. The card
+   gives back what the gap took, so page 13 keeps a clear bottom edge AND a clear rail. */
 .train-tray .tt-card .tt-emoji{font-size:60px;line-height:1;}
 .train-tray .tt-card .tt-lbl{font-size:30px;font-weight:800;color:var(--navy);}
 .train-tray .tt-card .tt-glyph{font-size:52px;font-weight:800;color:var(--navy);line-height:1;}
@@ -12394,6 +12401,9 @@ SlideModules.TRAIN_SORT = {
          ("हाथ"), and a praise line on the correct drop ("शाबाश! हाथ शब्द में आ की मात्रा है।").
          One id could not carry both. (rows #128/#132, #166/#170) */
       if(it.correct_audio) t.dataset.okaudio = it.correct_audio;
+      /* [SME] the word travels with the card whether or not the TRAY shows it - a picture-only
+         screen still has to be able to write the word down once the card has landed. */
+      if(it.word_hi) t.dataset.word = it.word_hi;
       let inner = "";
       if(it.glyph)      inner = '<span class="tt-glyph ink-glyph">' + matraGlyph(it.glyph) + '</span>';
       else              inner = imgOrEmoji(it.img, it.emoji, "", "tt-emoji");
@@ -12512,6 +12522,16 @@ SlideModules.TRAIN_SORT = {
       });
       if(!multi) body.classList.add("filled");     // "Only one word can be placed inside each coach" (row #130)
       body.classList.add("correct"); body.classList.remove("nudge");
+      /* [SME] "when we drag an image and drop it in the train box the image becomes a word" -
+         page 13 does that because its cards carry a label; the picture round hides its labels, so
+         a landed card there showed a picture and nothing else and the word was never written
+         down at all. It is added AS IT LANDS: the question stays a listening one, and the answer
+         is spelled out once it has been answered. */
+      if(!t.querySelector(".tt-lbl") && t.dataset.word){
+        const _w = document.createElement("span");
+        _w.className = "tt-lbl"; _w.textContent = t.dataset.word;
+        t.appendChild(_w);
+      }
       /* [REV-D10 · done r134 / r121] THE MATRA LIGHTS AS THE WORD LANDS - the reason it belongs in
          this coach, marked at the moment the child is looking at it. Until now a matra was only
          ever lit during rung 2, so a child who got every word right first time never saw one.

@@ -917,72 +917,20 @@
         "matra": "ा",
         "no_chip": true,
         "need_per_matra": 2,
-        "scene": "assets/UI/scene_hunt_all.webp",
+        "scene": "assets/UI/scene_hunt_garden.webp",
         "objects": [
           {
-            "word_hi": "आम",
-            "audio": "vo_name_aam",
-            "emoji": "🥭",
-            "x": 34.8,
-            "y": 15.2,
-            "w": 7.5,
-            "h": 11.5,
+            "word_hi": "मकान",
+            "audio": "vo_name_makaan",
+            "emoji": "🏠",
+            "x": 13.0,
+            "y": 12.0,
+            "w": 24.0,
+            "h": 22.0,
             "correct": true,
             "matra": "ा",
-            "ok_audio": "vo_oh_aa_ok_aam",
-            "more_audio": "vo_oh_all_more_aam"
-          },
-          {
-            "word_hi": "माला",
-            "audio": "vo_name_maala",
-            "emoji": "📿",
-            "x": 50.0,
-            "y": 88.8,
-            "w": 8.3,
-            "h": 8.5,
-            "correct": true,
-            "matra": "ा",
-            "ok_audio": "vo_oh_aa_ok_maala",
-            "more_audio": "vo_oh_all_more_maala"
-          },
-          {
-            "word_hi": "कुत्ता",
-            "audio": "vo_name_kutta",
-            "emoji": "🐶",
-            "x": 84.2,
-            "y": 67.5,
-            "w": 10.5,
-            "h": 16.0,
-            "correct": true,
-            "matra": "ा",
-            "ok_audio": "vo_oh_all_ok_kutta",
-            "more_audio": "vo_oh_all_more_kutta"
-          },
-          {
-            "word_hi": "चिड़िया",
-            "audio": "vo_name_chidiya",
-            "emoji": "🐦",
-            "x": 44.0,
-            "y": 21.8,
-            "w": 7.0,
-            "h": 13.5,
-            "correct": true,
-            "matra": "ि",
-            "ok_audio": "vo_oh_i_ok_chidiya",
-            "more_audio": "vo_oh_all_more_chidiya"
-          },
-          {
-            "word_hi": "हिरण",
-            "audio": "vo_name_hiran",
-            "emoji": "🦌",
-            "x": 69.2,
-            "y": 51.0,
-            "w": 10.5,
-            "h": 28.0,
-            "correct": true,
-            "matra": "ि",
-            "ok_audio": "vo_oh_i_ok_hiran",
-            "more_audio": "vo_oh_all_more_hiran"
+            "ok_audio": "vo_oh_all_ok_makaan",
+            "more_audio": "vo_oh_all_more_makaan"
           },
           {
             "word_hi": "किताब",
@@ -990,7 +938,7 @@
             "emoji": "📕",
             "x": 21.0,
             "y": 65.5,
-            "w": 13.0,
+            "w": 10.0,
             "h": 13.0,
             "correct": true,
             "matra": "ि",
@@ -998,12 +946,117 @@
             "more_audio": "vo_oh_all_more_kitaab"
           },
           {
+            "word_hi": "आम",
+            "audio": "vo_name_aam",
+            "emoji": "🥭",
+            "x": 34.5,
+            "y": 18.0,
+            "w": 7.0,
+            "h": 12.0,
+            "correct": true,
+            "matra": "ा",
+            "ok_audio": "vo_oh_aa_ok_aam",
+            "more_audio": "vo_oh_all_more_aam"
+          },
+          {
+            "word_hi": "चिड़िया",
+            "audio": "vo_name_chidiya",
+            "emoji": "🐦",
+            "x": 45.0,
+            "y": 22.0,
+            "w": 7.0,
+            "h": 12.0,
+            "correct": true,
+            "matra": "ि",
+            "ok_audio": "vo_oh_i_ok_chidiya",
+            "more_audio": "vo_oh_all_more_chidiya"
+          },
+          {
+            "word_hi": "पेड़",
+            "audio": "vo_name_ped",
+            "emoji": "🌳",
+            "x": 36.5,
+            "y": 42.0,
+            "w": 7.0,
+            "h": 26.0
+          },
+          {
+            "word_hi": "सूरज",
+            "audio": "vo_name_sooraj",
+            "emoji": "☀️",
+            "x": 77.0,
+            "y": 12.0,
+            "w": 10.0,
+            "h": 20.0
+          },
+          {
+            "word_hi": "बादल",
+            "audio": "vo_name_baadal",
+            "emoji": "☁️",
+            "x": 68.0,
+            "y": 30.0,
+            "w": 10.0,
+            "h": 8.0,
+            "correct": true,
+            "matra": "ा",
+            "ok_audio": "vo_oh_all_ok_baadal",
+            "more_audio": "vo_oh_all_more_baadal"
+          },
+          {
+            "word_hi": "हिरण",
+            "audio": "vo_name_hiran",
+            "emoji": "🦌",
+            "x": 70.0,
+            "y": 50.0,
+            "w": 12.0,
+            "h": 25.0,
+            "correct": true,
+            "matra": "ि",
+            "ok_audio": "vo_oh_i_ok_hiran",
+            "more_audio": "vo_oh_all_more_hiran"
+          },
+          {
+            "word_hi": "गेंद",
+            "audio": "vo_name_gend",
+            "emoji": "⚽",
+            "x": 37.5,
+            "y": 65.0,
+            "w": 7.0,
+            "h": 10.0
+          },
+          {
+            "word_hi": "घड़ी",
+            "audio": "vo_name_ghadi",
+            "emoji": "🕐",
+            "x": 43.5,
+            "y": 78.5,
+            "w": 7.0,
+            "h": 15.0,
+            "correct": true,
+            "matra": "ी",
+            "ok_audio": "vo_oh_ee_ok_ghadi",
+            "more_audio": "vo_oh_all_more_ghadi"
+          },
+          {
+            "word_hi": "माला",
+            "audio": "vo_name_maala",
+            "emoji": "📿",
+            "x": 51.5,
+            "y": 87.5,
+            "w": 7.0,
+            "h": 9.0,
+            "correct": true,
+            "matra": "ा",
+            "ok_audio": "vo_oh_aa_ok_maala",
+            "more_audio": "vo_oh_all_more_maala"
+          },
+          {
             "word_hi": "पिन",
             "audio": "vo_name_pin",
             "emoji": "📌",
-            "x": 28.2,
-            "y": 83.5,
-            "w": 4.5,
+            "x": 28.0,
+            "y": 84.0,
+            "w": 5.0,
             "h": 7.0,
             "correct": true,
             "matra": "ि",
@@ -1011,48 +1064,26 @@
             "more_audio": "vo_oh_all_more_pin"
           },
           {
-            "word_hi": "घड़ी",
-            "audio": "vo_name_ghadi",
-            "emoji": "🕐",
-            "x": 42.5,
-            "y": 79.5,
-            "w": 6.0,
-            "h": 17.0,
-            "correct": true,
-            "matra": "ी",
-            "ok_audio": "vo_oh_ee_ok_ghadi",
-            "more_audio": "vo_oh_all_more_ghadi"
+            "word_hi": "मेज़",
+            "audio": "vo_name_mez",
+            "emoji": "🪑",
+            "x": 36.0,
+            "y": 92.0,
+            "w": 8.0,
+            "h": 8.0
           },
           {
             "word_hi": "कुर्सी",
             "audio": "vo_name_kursi",
             "emoji": "🪑",
-            "x": 65.8,
-            "y": 84.0,
-            "w": 12.5,
+            "x": 66.0,
+            "y": 80.0,
+            "w": 12.0,
             "h": 32.0,
             "correct": true,
             "matra": "ी",
             "ok_audio": "vo_oh_all_ok_kursi",
             "more_audio": "vo_oh_all_more_kursi"
-          },
-          {
-            "word_hi": "सूरज",
-            "audio": "vo_name_sooraj",
-            "emoji": "☀️",
-            "x": 77.5,
-            "y": 11.0,
-            "w": 12.0,
-            "h": 20.0
-          },
-          {
-            "word_hi": "गेंद",
-            "audio": "vo_name_gend",
-            "emoji": "⚽",
-            "x": 36.8,
-            "y": 65.5,
-            "w": 6.5,
-            "h": 11.0
           }
         ]
       },
@@ -1220,6 +1251,7 @@
       "vo_mt_w_teer": "assets/Audio/VO/vo_mt_w_teer.ogg",
       "vo_mt_w_til": "assets/Audio/VO/vo_mt_w_til.ogg",
       "vo_name_aam": "assets/Audio/VO/vo_name_aam.ogg",
+      "vo_name_baadal": "assets/Audio/VO/vo_name_baadal.ogg",
       "vo_name_bil": "assets/Audio/VO/vo_name_bil.ogg",
       "vo_name_chidiya": "assets/Audio/VO/vo_name_chidiya.ogg",
       "vo_name_din": "assets/Audio/VO/vo_name_din.ogg",
@@ -1231,12 +1263,14 @@
       "vo_name_keel": "assets/Audio/VO/vo_name_keel.ogg",
       "vo_name_kitaab": "assets/Audio/VO/vo_name_kitaab.ogg",
       "vo_name_kursi": "assets/Audio/VO/vo_name_kursi.ogg",
-      "vo_name_kutta": "assets/Audio/VO/vo_name_kutta.ogg",
       "vo_name_maala": "assets/Audio/VO/vo_name_maala.ogg",
+      "vo_name_makaan": "assets/Audio/VO/vo_name_makaan.ogg",
+      "vo_name_mez": "assets/Audio/VO/vo_name_mez.ogg",
       "vo_name_naak": "assets/Audio/VO/vo_name_naak.ogg",
       "vo_name_neem": "assets/Audio/VO/vo_name_neem.ogg",
       "vo_name_paani": "assets/Audio/VO/vo_name_paani.ogg",
       "vo_name_pari": "assets/Audio/VO/vo_name_pari.ogg",
+      "vo_name_ped": "assets/Audio/VO/vo_name_ped.ogg",
       "vo_name_pin": "assets/Audio/VO/vo_name_pin.ogg",
       "vo_name_sooraj": "assets/Audio/VO/vo_name_sooraj.ogg",
       "vo_name_teer": "assets/Audio/VO/vo_name_teer.ogg",
@@ -1246,16 +1280,18 @@
       "vo_oh_all_hint2": "assets/Audio/VO/vo_oh_all_hint2.ogg",
       "vo_oh_all_intro": "assets/Audio/VO/vo_oh_all_intro.ogg",
       "vo_oh_all_more_aam": "assets/Audio/VO/vo_oh_all_more_aam.ogg",
+      "vo_oh_all_more_baadal": "assets/Audio/VO/vo_oh_all_more_baadal.ogg",
       "vo_oh_all_more_chidiya": "assets/Audio/VO/vo_oh_all_more_chidiya.ogg",
       "vo_oh_all_more_ghadi": "assets/Audio/VO/vo_oh_all_more_ghadi.ogg",
       "vo_oh_all_more_hiran": "assets/Audio/VO/vo_oh_all_more_hiran.ogg",
       "vo_oh_all_more_kitaab": "assets/Audio/VO/vo_oh_all_more_kitaab.ogg",
       "vo_oh_all_more_kursi": "assets/Audio/VO/vo_oh_all_more_kursi.ogg",
-      "vo_oh_all_more_kutta": "assets/Audio/VO/vo_oh_all_more_kutta.ogg",
       "vo_oh_all_more_maala": "assets/Audio/VO/vo_oh_all_more_maala.ogg",
+      "vo_oh_all_more_makaan": "assets/Audio/VO/vo_oh_all_more_makaan.ogg",
       "vo_oh_all_more_pin": "assets/Audio/VO/vo_oh_all_more_pin.ogg",
+      "vo_oh_all_ok_baadal": "assets/Audio/VO/vo_oh_all_ok_baadal.ogg",
       "vo_oh_all_ok_kursi": "assets/Audio/VO/vo_oh_all_ok_kursi.ogg",
-      "vo_oh_all_ok_kutta": "assets/Audio/VO/vo_oh_all_ok_kutta.ogg",
+      "vo_oh_all_ok_makaan": "assets/Audio/VO/vo_oh_all_ok_makaan.ogg",
       "vo_oh_all_wrong": "assets/Audio/VO/vo_oh_all_wrong.ogg",
       "vo_oh_ee_ok_ghadi": "assets/Audio/VO/vo_oh_ee_ok_ghadi.ogg",
       "vo_oh_hint1": "assets/Audio/VO/vo_oh_hint1.ogg",
@@ -1411,6 +1447,7 @@
       "vo_mt_w_teer": "तीर",
       "vo_mt_w_til": "तिल",
       "vo_name_aam": "आम",
+      "vo_name_baadal": "बादल।",
       "vo_name_bil": "बिल",
       "vo_name_chidiya": "चिड़िया",
       "vo_name_din": "दिन",
@@ -1422,12 +1459,14 @@
       "vo_name_keel": "कील",
       "vo_name_kitaab": "किताब",
       "vo_name_kursi": "कुर्सी",
-      "vo_name_kutta": "कुत्ता",
       "vo_name_maala": "माला",
+      "vo_name_makaan": "मकान।",
+      "vo_name_mez": "मेज़।",
       "vo_name_naak": "नाक",
       "vo_name_neem": "नीम",
       "vo_name_paani": "पानी",
       "vo_name_pari": "परी",
+      "vo_name_ped": "पेड़।",
       "vo_name_pin": "पिन",
       "vo_name_sooraj": "सूरज",
       "vo_name_teer": "तीर",
@@ -1437,16 +1476,18 @@
       "vo_oh_all_hint2": "ध्यान से देखिए। चित्र का नाम बोलिए और उसकी मात्रा पहचानिए।",
       "vo_oh_all_intro": "आ, इ और ई — हर मात्रा वाले दो-दो चित्र खोजिए और उन पर टैप कीजिए।",
       "vo_oh_all_more_aam": "बहुत बढ़िया, आम! अब और मात्रा वाले चित्र खोजिए।",
+      "vo_oh_all_more_baadal": "बहुत बढ़िया, बादल! अब और मात्रा वाले चित्र खोजिए।",
       "vo_oh_all_more_chidiya": "बहुत बढ़िया, चिड़िया! अब और मात्रा वाले चित्र खोजिए।",
       "vo_oh_all_more_ghadi": "बहुत बढ़िया, घड़ी! अब और मात्रा वाले चित्र खोजिए।",
       "vo_oh_all_more_hiran": "बहुत बढ़िया, हिरण! अब और मात्रा वाले चित्र खोजिए।",
       "vo_oh_all_more_kitaab": "बहुत बढ़िया, किताब! अब और मात्रा वाले चित्र खोजिए।",
       "vo_oh_all_more_kursi": "बहुत बढ़िया, कुर्सी! अब और मात्रा वाले चित्र खोजिए।",
-      "vo_oh_all_more_kutta": "बहुत बढ़िया, कुत्ता! अब और मात्रा वाले चित्र खोजिए।",
       "vo_oh_all_more_maala": "बहुत बढ़िया, माला! अब और मात्रा वाले चित्र खोजिए।",
+      "vo_oh_all_more_makaan": "बहुत बढ़िया, मकान! अब और मात्रा वाले चित्र खोजिए।",
       "vo_oh_all_more_pin": "बहुत बढ़िया, पिन! अब और मात्रा वाले चित्र खोजिए।",
+      "vo_oh_all_ok_baadal": "शाबाश! बादल में आ की मात्रा है।",
       "vo_oh_all_ok_kursi": "शाबाश! कुर्सी में बड़ी ई की मात्रा है।",
-      "vo_oh_all_ok_kutta": "शाबाश! कुत्ता में आ की मात्रा है।",
+      "vo_oh_all_ok_makaan": "शाबाश! मकान में आ की मात्रा है।",
       "vo_oh_all_wrong": "इस शब्द में आ, इ या ई की मात्रा नहीं है। फिर से सोचिए।",
       "vo_oh_ee_ok_ghadi": "शाबाश! घड़ी में बड़ी ई की मात्रा है।",
       "vo_oh_hint1": "चित्र का नाम ध्यान से सुनिए और मात्रा पहचानिए।",
@@ -2241,6 +2282,12 @@
           1.03
         ]
       ],
+      "vo_name_baadal": [
+        [
+          0.24,
+          0.88
+        ]
+      ],
       "vo_name_bil": [
         [
           0.17,
@@ -2307,20 +2354,22 @@
           0.94
         ]
       ],
-      "vo_name_kutta": [
-        [
-          0.14,
-          0.27
-        ],
-        [
-          0.43,
-          0.61
-        ]
-      ],
       "vo_name_maala": [
         [
           0.25,
           0.73
+        ]
+      ],
+      "vo_name_makaan": [
+        [
+          0.28,
+          1.15
+        ]
+      ],
+      "vo_name_mez": [
+        [
+          0.26,
+          0.9
         ]
       ],
       "vo_name_naak": [
@@ -2349,6 +2398,12 @@
         [
           0.32,
           0.75
+        ]
+      ],
+      "vo_name_ped": [
+        [
+          0.27,
+          0.85
         ]
       ],
       "vo_name_pin": [
@@ -2493,6 +2548,20 @@
           5.0
         ]
       ],
+      "vo_oh_all_more_baadal": [
+        [
+          0.21,
+          1.18
+        ],
+        [
+          1.43,
+          1.94
+        ],
+        [
+          2.39,
+          4.54
+        ]
+      ],
       "vo_oh_all_more_chidiya": [
         [
           0.13,
@@ -2579,36 +2648,6 @@
           5.72
         ]
       ],
-      "vo_oh_all_more_kutta": [
-        [
-          0.26,
-          0.77
-        ],
-        [
-          0.89,
-          1.48
-        ],
-        [
-          1.65,
-          1.92
-        ],
-        [
-          2.45,
-          2.75
-        ],
-        [
-          2.98,
-          3.52
-        ],
-        [
-          3.62,
-          4.28
-        ],
-        [
-          4.39,
-          5.2
-        ]
-      ],
       "vo_oh_all_more_maala": [
         [
           0.22,
@@ -2620,6 +2659,20 @@
         ],
         [
           2.64,
+          4.83
+        ]
+      ],
+      "vo_oh_all_more_makaan": [
+        [
+          0.15,
+          1.14
+        ],
+        [
+          1.58,
+          2.3
+        ],
+        [
+          2.81,
           4.83
         ]
       ],
@@ -2637,6 +2690,20 @@
           4.37
         ]
       ],
+      "vo_oh_all_ok_baadal": [
+        [
+          0.27,
+          1.09
+        ],
+        [
+          1.46,
+          2.27
+        ],
+        [
+          2.58,
+          3.66
+        ]
+      ],
       "vo_oh_all_ok_kursi": [
         [
           0.26,
@@ -2651,26 +2718,22 @@
           4.35
         ]
       ],
-      "vo_oh_all_ok_kutta": [
+      "vo_oh_all_ok_makaan": [
         [
-          0.26,
-          1.27
+          0.14,
+          1.04
         ],
         [
-          1.63,
-          1.73
+          1.36,
+          2.09
         ],
         [
-          1.9,
-          2.33
+          2.3,
+          2.9
         ],
         [
-          2.76,
-          3.42
-        ],
-        [
-          3.52,
-          3.87
+          3.01,
+          3.39
         ]
       ],
       "vo_oh_all_wrong": [
@@ -3606,6 +3669,7 @@
       "vo_mt_w_teer": 0.755,
       "vo_mt_w_til": 0.589,
       "vo_name_aam": 1.251,
+      "vo_name_baadal": 1.131,
       "vo_name_bil": 0.891,
       "vo_name_chidiya": 1.331,
       "vo_name_din": 1.051,
@@ -3617,12 +3681,14 @@
       "vo_name_keel": 0.971,
       "vo_name_kitaab": 1.011,
       "vo_name_kursi": 1.171,
-      "vo_name_kutta": 0.784,
       "vo_name_maala": 0.987,
+      "vo_name_makaan": 1.411,
+      "vo_name_mez": 1.171,
       "vo_name_naak": 0.971,
       "vo_name_neem": 0.891,
       "vo_name_paani": 0.891,
       "vo_name_pari": 1.011,
+      "vo_name_ped": 1.171,
       "vo_name_pin": 0.931,
       "vo_name_sooraj": 1.731,
       "vo_name_teer": 1.051,
@@ -3632,16 +3698,18 @@
       "vo_oh_all_hint2": 5.531,
       "vo_oh_all_intro": 7.931,
       "vo_oh_all_more_aam": 5.171,
+      "vo_oh_all_more_baadal": 4.731,
       "vo_oh_all_more_chidiya": 4.531,
       "vo_oh_all_more_ghadi": 4.491,
       "vo_oh_all_more_hiran": 4.891,
       "vo_oh_all_more_kitaab": 4.891,
       "vo_oh_all_more_kursi": 5.931,
-      "vo_oh_all_more_kutta": 5.491,
       "vo_oh_all_more_maala": 5.211,
+      "vo_oh_all_more_makaan": 5.051,
       "vo_oh_all_more_pin": 4.531,
+      "vo_oh_all_ok_baadal": 4.011,
       "vo_oh_all_ok_kursi": 4.611,
-      "vo_oh_all_ok_kutta": 4.131,
+      "vo_oh_all_ok_makaan": 3.571,
       "vo_oh_all_wrong": 7.331,
       "vo_oh_ee_ok_ghadi": 3.651,
       "vo_oh_hint1": 4.251,

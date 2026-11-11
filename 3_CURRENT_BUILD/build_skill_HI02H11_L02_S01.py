@@ -782,7 +782,7 @@ def _sound_cues_ms(audio_id, n=3):
 #  x/y/w/h are percentages of the scene, each placed by cropping it out of the artwork and looking
 #  at it, and audited for overlaps (two hotspots that overlap make a tap land on the wrong word).
 # ══════════════════════════════════════════════════════════════════════════════════════════
-HUNT_SCENE = "assets/UI/scene_hunt_all.webp"
+HUNT_SCENE = "assets/UI/scene_hunt_garden.webp"
 # word, slug, emoji, the matra it carries (None = none of the three), and the hotspot as
 # percentages of the scene. Every box was placed by cropping it out of the artwork and looking at
 # it, then audited so that no two overlap - two overlapping boxes make a tap land on the wrong word.
@@ -799,18 +799,26 @@ HUNT_SCENE = "assets/UI/scene_hunt_all.webp"
 # by its corner lands half its own size up and to the left of what it should cover.
 # Audited for overlaps - two that overlap make a tap land on the wrong word.
 HUNT_CAST = [
-    (u"आम", "aam", u"🥭", u"ा",  34.8,  15.2,   7.5,  11.5),
-    (u"माला", "maala", u"📿", u"ा",  50.0,  88.8,   8.3,   8.5),
-    (u"कुत्ता", "kutta", u"🐶", u"ा",  84.2,  67.5,  10.5,  16.0),
-    (u"चिड़िया", "chidiya", u"🐦", u"ि",  44.0,  21.8,   7.0,  13.5),
-    (u"हिरण", "hiran", u"🦌", u"ि",  69.2,  51.0,  10.5,  28.0),
-    (u"किताब", "kitaab", u"📕", u"ि",  21.0,  65.5,  13.0,  13.0),
-    (u"पिन", "pin", u"📌", u"ि",  28.2,  83.5,   4.5,   7.0),
-    (u"घड़ी", "ghadi", u"🕐", u"ी",  42.5,  79.5,   6.0,  17.0),
-    (u"कुर्सी", "kursi", u"🪑", u"ी",  65.8,  84.0,  12.5,  32.0),
-    (u"सूरज", "sooraj", u"☀️", None,  77.5,  11.0,  12.0,  20.0),
-    (u"गेंद", "gend", u"⚽", None,  36.8,  65.5,   6.5,  11.0),
+    # [SME 2026-11-11] re-measured against scene_hunt_garden.webp. x/y are the box's
+    # CENTRE in percent (.oh-obj is translate(-50%,-50%)), w/h its size. Each one was read
+    # off a percentage grid over the picture, drawn back onto it and checked, then audited
+    # for overlaps - two boxes sharing ground send a tap to the wrong word.
+    (u"मकान", "makaan", u"🏠", u"ा",  13.0,  12.0,  24.0,  22.0),
+    (u"किताब", "kitaab", u"📕", u"ि",  21.0,  65.5,  10.0,  13.0),
+    (u"आम", "aam", u"🥭", u"ा",  34.5,  18.0,   7.0,  12.0),
+    (u"चिड़िया", "chidiya", u"🐦", u"ि",  45.0,  22.0,   7.0,  12.0),
+    (u"पेड़", "ped", u"🌳", None,  36.5,  42.0,   7.0,  26.0),
+    (u"सूरज", "sooraj", u"☀️", None,  77.0,  12.0,  10.0,  20.0),
+    (u"बादल", "baadal", u"☁️", u"ा",  68.0,  30.0,  10.0,   8.0),
+    (u"हिरण", "hiran", u"🦌", u"ि",  70.0,  50.0,  12.0,  25.0),
+    (u"गेंद", "gend", u"⚽", None,  37.5,  65.0,   7.0,  10.0),
+    (u"घड़ी", "ghadi", u"🕐", u"ी",  43.5,  78.5,   7.0,  15.0),
+    (u"माला", "maala", u"📿", u"ा",  51.5,  87.5,   7.0,   9.0),
+    (u"पिन", "pin", u"📌", u"ि",  28.0,  84.0,   5.0,   7.0),
+    (u"मेज़", "mez", u"🪑", None,  36.0,  92.0,   8.0,   8.0),
+    (u"कुर्सी", "kursi", u"🪑", u"ी",  66.0,  80.0,  12.0,  32.0),
 ]
+
 # praise that already exists and still names the right matra; the rest are minted above
 HUNT_OK = {
     "aam": "vo_oh_aa_ok_aam",
