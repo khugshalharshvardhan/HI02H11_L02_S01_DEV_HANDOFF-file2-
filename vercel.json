@@ -2,16 +2,49 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/", "destination": "/3_CURRENT_BUILD/HI02H11_L02_S01.html" },
-    { "source": "/index.html", "destination": "/3_CURRENT_BUILD/HI02H11_L02_S01.html" },
-    { "source": "/play", "destination": "/3_CURRENT_BUILD/HI02H11_L02_S01.html" },
-    { "source": "/assets/:path*", "destination": "/3_CURRENT_BUILD/assets/:path*" }
+    {
+      "source": "/",
+      "destination": "/3_CURRENT_BUILD/HI02H11_L02_S01.html"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/3_CURRENT_BUILD/HI02H11_L02_S01.html"
+    },
+    {
+      "source": "/play",
+      "destination": "/3_CURRENT_BUILD/HI02H11_L02_S01.html"
+    },
+    {
+      "source": "/assets/:path*",
+      "destination": "/3_CURRENT_BUILD/assets/:path*"
+    }
   ],
   "headers": [
     {
       "source": "/3_CURRENT_BUILD/HI02H11_L02_S01.html",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/assets/Audio/VO/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/3_CURRENT_BUILD/assets/Audio/VO/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
       ]
     }
   ]

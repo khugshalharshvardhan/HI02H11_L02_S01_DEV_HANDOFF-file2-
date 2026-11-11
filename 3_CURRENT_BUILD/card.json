@@ -1585,6 +1585,7 @@
       "obj_teer": "assets/Images/obj_teer.webp"
     },
     "audio_ext": "ogg",
+    "audio_revision": "1f4a64990bdfa2c0",
     "audio_speech": {
       "vo_cel_prompt": [
         [

@@ -1733,6 +1733,17 @@ def main():
 
     }
 
+    # Derive the release URL from the actual VO bytes, so replacing a take invalidates caches.
+    import hashlib
+    vo_hash = hashlib.sha256()
+    for aid, rel in sorted(CARD["assets"]["audio"].items()):
+        path = os.path.join(OUT, rel)
+        if aid.startswith("vo_") and os.path.isfile(path):
+            vo_hash.update(aid.encode("utf-8"))
+            with open(path, "rb") as clip:
+                vo_hash.update(clip.read())
+    CARD["assets"]["audio_revision"] = vo_hash.hexdigest()[:16]
+
     # [r31] the ported gate + celebration, both measured from this lesson's own files
     _gate = gate_spec()
     if _gate:

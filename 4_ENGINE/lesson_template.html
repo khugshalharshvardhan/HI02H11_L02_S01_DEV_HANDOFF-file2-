@@ -5143,6 +5143,14 @@ function _afterAudioUnlock(fn){
   attempt();
   if(!ran) EVTS.forEach(e => window.addEventListener(e, arm, true));
 }
+/* A new audio release must bypass recordings cached under the previous file URLs. */
+function _voiceRequestSrc(src){
+  const revision = CARD.assets && CARD.assets.audio_revision;
+  if(!src || !revision || String(src).indexOf("assets/Audio/VO/") < 0) return src;
+  const url = new URL(src, document.baseURI);
+  url.searchParams.set("vo_rev", revision);
+  return url.href;
+}
 function _loadVoiceBuffer(src){
   if(!src) return Promise.reject(new Error("missing audio source"));
   if(_voiceBuffers.has(src)) return Promise.resolve(_voiceBuffers.get(src));
@@ -5150,7 +5158,7 @@ function _loadVoiceBuffer(src){
   const p=(async()=>{
     const c=_voiceContext();
     if(!c||!window.fetch) throw new Error("Web Audio unavailable");
-    const r=await fetch(src,{cache:"force-cache"});
+    const r=await fetch(_voiceRequestSrc(src),{cache:"no-cache"});
     if(!r.ok) throw new Error("audio fetch failed: "+r.status);
     const b=await c.decodeAudioData(await r.arrayBuffer());
     _voiceBuffers.set(src,b); return b;
@@ -5283,7 +5291,7 @@ function play(src, onEnd){
        decode error, start() throw. Failure mode = today's behaviour, never worse, and never TTS. */
     const htmlFallback=()=>{
       if(myGen!==_audioGen)return;
-      const a=new Audio(src); currentAudio=a; a.preload="auto";
+      const a=new Audio(_voiceRequestSrc(src)); currentAudio=a; a.preload="auto";
       a.playbackRate = 1.0;   // natural recorded pace — any pep-up factor makes HUMAN VO too fast (Yasir 2026-07-24)
       if(_tw){
         a.addEventListener("loadedmetadata",()=>{ try{ if(isFinite(a.duration)&&_tw[0]<a.duration)a.currentTime=_tw[0]; }catch(e){} });
@@ -5335,7 +5343,7 @@ function playSfx(id, vol){
     const c=_resumeVoiceAudio(); if(!c)throw new Error("Web Audio unavailable");
     const source=c.createBufferSource(),gain=c.createGain();
     source.buffer=buffer; gain.gain.value=g; source.connect(gain).connect(c.destination); source.start(0);
-  }).catch(()=>{ try{const a=new Audio(src);a.volume=Math.min(1,g);a.play().catch(()=>{});}catch(e){} });
+  }).catch(()=>{ try{const a=new Audio(_voiceRequestSrc(src));a.volume=Math.min(1,g);a.play().catch(()=>{});}catch(e){} });
 }
 /* ---------- game-feel: procedural SFX (no audio files) + success particle burst ----------
    WebAudio resumes on the first user tap (autoplay policy), so taps/answers always sound. */
@@ -10639,7 +10647,7 @@ function speakNoLock(src){
   if(!src || isMuted) return;
   try{
     if(_hoverVoice){ _hoverVoice.pause(); _hoverVoice = null; }
-    const a = new Audio(src);
+    const a = new Audio(_voiceRequestSrc(src));
     _hoverVoice = a;
     a.play().catch(()=>{});
   }catch(e){}
@@ -16962,7 +16970,7 @@ const BGM = (function(){
   const live = new Set();
   const make = ()=>{
     if(el) return el;
-    el = new Audio(src); el.loop = true; el.preload = "auto"; el.volume = 0;
+    el = new Audio(_voiceRequestSrc(src)); el.loop = true; el.preload = "auto"; el.volume = 0;
     /* [r110] "once the bg music completes, play it again". `loop` is set, but a browser can still
        let a long streamed track finish - its seek back to the start fails on a stream it cannot
        seek - and then the music simply stops. If it ever ends, it starts again from the top. */
