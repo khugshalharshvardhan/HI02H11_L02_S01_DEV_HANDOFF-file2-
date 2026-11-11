@@ -13552,9 +13552,15 @@ SlideModules.MEET_PAIR = {
     col.classList.add("mx-v2");
     /* one example, staged: the word is there, the picture is held back a beat */
     const render = (ex)=>{
+      let pictureMarkup = imgOrEmoji(ex.img, ex.emoji, "pic-img", "pic-emoji");
+      const pictureSrc = CARD.assets && CARD.assets.image && CARD.assets.image[ex.img];
+      // Start animated pictures on their reveal cue, rather than while they are hidden.
+      if(/\.gif(?:[?#]|$)/i.test(pictureSrc || "")){
+        pictureMarkup = pictureMarkup.replace(' src=', ' data-animation-src=');
+      }
       wrap.innerHTML =
         '<div class="meet-pic-box mex-pic mx-pic mp-wait">' +
-          imgOrEmoji(ex.img, ex.emoji, "pic-img", "pic-emoji") + "</div>" +
+          pictureMarkup + "</div>" +
         /* [r134] Yasir: the word on the LEFT, just below the picture, and the mic on the RIGHT */
         '<div class="mx-wordrow">' +
           '<div class="meet-letter-box mx-wordbox">' +
@@ -13652,6 +13658,16 @@ SlideModules.MEET_PAIR = {
       const ex = exs[i];
       if(!ex){ after(); return; }
       const { card, word, pic, mic } = render(ex);
+      const revealPicture = ()=>{
+        const animation = pic.querySelector("img[data-animation-src]");
+        if(animation){
+          const src = new URL(animation.dataset.animationSrc, document.baseURI);
+          src.searchParams.set("animation", String(myGen));
+          animation.src = src.href;
+          animation.removeAttribute("data-animation-src");
+        }
+        pic.classList.remove("mp-wait");
+      };
 
       /* [r15] THE VOICE DRIVES THE PICTURE AND THE GLOW, not a pair of fixed delays.
          Before this the word, the picture and the mark all arrived inside ~950ms and THEN the
@@ -13677,12 +13693,12 @@ SlideModules.MEET_PAIR = {
         if(!alive()) return;
         timers.push(setTimeout(()=>{        // 3 · «बोलकर देखिए।» -> the picture
           if(!alive()) return;
-          pic.classList.remove("mp-wait");
+          revealPicture();
           sfxPopSoft();
         }, Math.max(0, ex.pic_ms || 520)));
         timers.push(setTimeout(()=>{        // 4 · «इसमें … मात्रा लगी है।» -> the mark
           if(!alive()) return;
-          pic.classList.remove("mp-wait");   // never strand it if the cue overran the clip
+          revealPicture();   // never strand it if the cue overran the clip
           /* [r122] Yasir: «don't add glow effect in the words, only matra will be highlighted» -
              no pulse (it brightened the whole word) and no glow: the matra turns orange, nothing else
              [s99] and it is only the COLOUR that arrives now: the drawing has been there since the
@@ -13696,7 +13712,7 @@ SlideModules.MEET_PAIR = {
           timers.forEach(clearTimeout);
           if(!alive()) return;
           /* whatever the cues did, the example ends fully shown */
-          pic.classList.remove("mp-wait");
+          revealPicture();
           /* [s105] "is the highlight already there?" - an overlay today, a drawing before */
           if(word.querySelector(".mh-ov, .mw-red")) word.classList.remove("mx-hlwait");
           else matraHLSoon(word, ex.matra);
