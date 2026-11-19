@@ -451,12 +451,12 @@ VO = {
     "vo_oh_all_more_kursi":      "बहुत बढ़िया, कुर्सी! अब और मात्रा वाले चित्र खोजिए।",
 
     # The object names, spoken on hover/focus so the child hears the word before judging it.
-    "vo_name_makaan":  "मकान।",
-    "vo_name_baadal":  "बादल।",
+    "vo_name_makaan":  "मकान",
+    "vo_name_baadal":  "बादल",
     "vo_name_kursi":   "कुर्सी",
     "vo_name_seedhi":  "सीढ़ी।",
-    "vo_name_ped":     "पेड़।",
-    "vo_name_mez":     "मेज़।",
+    "vo_name_ped":     "पेड़",
+    "vo_name_mez":     "मेज़",
     "vo_name_aam":     "आम",
     "vo_name_maala":   "माला",
     "vo_name_gaajar":  "गाजर।",

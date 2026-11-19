@@ -10695,7 +10695,10 @@ const sfxSparkle     = ()=> _tone([1180, 1560], "sine", 0.22, 0.055);
 window.__coverSfx  = ["sfx_whistle", "sfx_train_move", "sfx_pop"];
 window.__lessonSfx = ["sfx_whistle", "sfx_train_move", "sfx_pop",
                       "sfx_fb_correct", "sfx_fb_incorrect", "sfx_play_button", "sfx_next_button",
-                      "sfx_whoosh"];   /* [s80] the transition screen's own */
+                      "sfx_whoosh",    /* [s80] the transition screen's own */
+                      /* [SME] warmed too: it is no longer on the wrong-answer path, but anything
+                         that does reach for it should not have to fetch it mid-gesture. */
+                      "sfx_shake", "sfx_sparkle"];
 function sfxWarm(id){
   try{ return _loadVoiceBuffer(SFX_DIR + id + "." + AUDIO_EXT).catch(()=> null); }
   catch(e){ return Promise.resolve(null); }
@@ -12654,7 +12657,7 @@ SlideModules.TRAIN_SORT = {
              child was holding is the thing they are looking at */
           t.classList.remove("tt-shake"); void t.offsetWidth; t.classList.add("tt-shake");
           setTimeout(()=> t.classList.remove("tt-shake"), 460);
-          sfxShake();
+          fbWrong();          /* [SME] the lesson's wrong sound, not sfx_shake: fbWrong was defined and never called, so the drag screens answered a wrong drop with an un-warmed file while the tap screens played sfx_fb_incorrect. One pair, both halves, every screen. */
           setTimeout(()=> body.classList.remove("wrong"), 460);
           const n = (wrongN.get(t) || 0) + 1; wrongN.set(t, n);
           SwiftPAL.emit("answer_wrong", { slide_id: slide.id, phase: slide.phase, attempts: state.attempts });
@@ -12945,7 +12948,7 @@ SlideModules.MATRA_FILL = {
              child was holding is the thing they are looking at */
           t.classList.remove("tt-shake"); void t.offsetWidth; t.classList.add("tt-shake");
           setTimeout(()=> t.classList.remove("tt-shake"), 460);
-          sfxShake();
+          fbWrong();          /* [SME] the lesson's wrong sound, not sfx_shake: fbWrong was defined and never called, so the drag screens answered a wrong drop with an un-warmed file while the tap screens played sfx_fb_incorrect. One pair, both halves, every screen. */
           setTimeout(()=> body.classList.remove("wrong"), 460);
           t.style.transform = "";
           const n = (wrongN.get(blank) || 0) + 1; wrongN.set(blank, n);
@@ -13193,7 +13196,7 @@ SlideModules.WORD_BUILD = {
           body.classList.remove("wrong"); void body.offsetWidth; body.classList.add("wrong");
           t.classList.remove("tt-shake"); void t.offsetWidth; t.classList.add("tt-shake");
           setTimeout(()=> t.classList.remove("tt-shake"), 460);
-          sfxShake();
+          fbWrong();          /* [SME] the lesson's wrong sound, not sfx_shake: fbWrong was defined and never called, so the drag screens answered a wrong drop with an un-warmed file while the tap screens played sfx_fb_incorrect. One pair, both halves, every screen. */
           setTimeout(()=> body.classList.remove("wrong"), 460);
           t.style.transform = "";
           const n = (wrongN.get(blank) || 0) + 1; wrongN.set(blank, n);
@@ -13424,7 +13427,7 @@ SlideModules.POEM_SEARCH = {
           /* wrong (rows #188, #189) */
           state.attempts++; wrongN++;
           w.classList.remove("shake"); void w.offsetWidth; w.classList.add("shake");
-          sfxShake(); setSwMood("tryagain");
+          fbWrong();          /* [SME] the lesson's wrong sound, not sfx_shake: fbWrong was defined and never called, so the drag screens answered a wrong drop with an un-warmed file while the tap screens played sfx_fb_incorrect. One pair, both halves, every screen. */ setSwMood("tryagain");
           setTimeout(()=> w.classList.remove("shake"), 460);
           SwiftPAL.emit("answer_wrong", { slide_id: slide.id, phase: slide.phase, attempts: state.attempts });
           const clip = (wrongN <= 1) ? (audioFor(slide, "hint1") || audioFor(slide, "try_again")) : midHint(slide);
