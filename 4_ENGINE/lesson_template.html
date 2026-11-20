@@ -2105,7 +2105,10 @@ body.is-start .phase-gate{
 /* [FIX-8b] five cards or more: a smaller picture and tighter padding, so a tray that carries a
    word under every picture still fits its host instead of hanging past the bottom of it. */
 .train-tray.tt-dense .tt-card{padding:5px 12px;gap:3px;}
-.train-tray.tt-dense .tt-card img{width:46px;height:46px;}
+.train-tray.tt-dense .tt-card img{width:56px;height:56px;}
+/* [SME] a tray of pictures with no words under them: the picture IS the question, so it takes
+   the room the missing label row gives back. Page 15 only. */
+.train-tray.tt-pics .tt-card img{width:96px;height:96px;}
 .train-tray.tt-dense .tt-card .tt-emoji{font-size:38px;}
 /* [SME] ...and the gap above the tray grew by 30 px for every drag screen, which the six-card
    tray is the only one that cannot afford - its column already overflows its host. The card
@@ -12430,8 +12433,13 @@ SlideModules.TRAIN_SORT = {
     host.appendChild(tray);
     /* [FIX-8b] a tray of more than four cards is the densest thing on any of these pages; with a
        word under each picture its column runs taller than the host and hangs out of the bottom.
-       The class takes the card down a size - see .train-tray.tt-dense. */
-    if(tray.children.length > 4) tray.classList.add("tt-dense");
+       The class takes the card down a size - see .train-tray.tt-dense.
+       [SME] ...with a word under every card. It is the LABEL ROW that overruns the host, not the
+       card count: a picture-only tray carries the same six cards in a much shorter column and has
+       room to spare. Shrinking it too cost page 15 - the screen that asks the child to read a
+       PICTURE - its picture size for a reason that was never its own. */
+    if(tray.children.length > 4 && !hideLabels) tray.classList.add("tt-dense");
+    else if(hideLabels) tray.classList.add("tt-pics");
     /* "Picture cards fade/slide up from the bottom." (rows #144, #175) */
     const rise = ()=> {
       [...tray.children].forEach((t, i)=> setTimeout(()=>{
