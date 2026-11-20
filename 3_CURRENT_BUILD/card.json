@@ -918,7 +918,7 @@
             "correct": true,
             "matra": "ा",
             "ok_audio": "vo_oh_all_ok_makaan",
-            "more_audio": "vo_oh_all_more_makaan"
+            "more_audio": "vo_oh_all_more"
           },
           {
             "word_hi": "किताब",
@@ -931,7 +931,7 @@
             "correct": true,
             "matra": "ि",
             "ok_audio": "vo_oh_i_ok_kitaab",
-            "more_audio": "vo_oh_all_more_kitaab"
+            "more_audio": "vo_oh_all_more"
           },
           {
             "word_hi": "आम",
@@ -944,7 +944,7 @@
             "correct": true,
             "matra": "ा",
             "ok_audio": "vo_oh_aa_ok_aam",
-            "more_audio": "vo_oh_all_more_aam"
+            "more_audio": "vo_oh_all_more"
           },
           {
             "word_hi": "चिड़िया",
@@ -957,7 +957,7 @@
             "correct": true,
             "matra": "ि",
             "ok_audio": "vo_oh_i_ok_chidiya",
-            "more_audio": "vo_oh_all_more_chidiya"
+            "more_audio": "vo_oh_all_more"
           },
           {
             "word_hi": "पेड़",
@@ -988,7 +988,7 @@
             "correct": true,
             "matra": "ा",
             "ok_audio": "vo_oh_all_ok_baadal",
-            "more_audio": "vo_oh_all_more_baadal"
+            "more_audio": "vo_oh_all_more"
           },
           {
             "word_hi": "हिरण",
@@ -1001,7 +1001,7 @@
             "correct": true,
             "matra": "ि",
             "ok_audio": "vo_oh_i_ok_hiran",
-            "more_audio": "vo_oh_all_more_hiran"
+            "more_audio": "vo_oh_all_more"
           },
           {
             "word_hi": "गेंद",
@@ -1023,7 +1023,7 @@
             "correct": true,
             "matra": "ी",
             "ok_audio": "vo_oh_ee_ok_ghadi",
-            "more_audio": "vo_oh_all_more_ghadi"
+            "more_audio": "vo_oh_all_more"
           },
           {
             "word_hi": "माला",
@@ -1036,7 +1036,7 @@
             "correct": true,
             "matra": "ा",
             "ok_audio": "vo_oh_aa_ok_maala",
-            "more_audio": "vo_oh_all_more_maala"
+            "more_audio": "vo_oh_all_more"
           },
           {
             "word_hi": "पिन",
@@ -1049,7 +1049,7 @@
             "correct": true,
             "matra": "ि",
             "ok_audio": "vo_oh_i_ok_pin",
-            "more_audio": "vo_oh_all_more_pin"
+            "more_audio": "vo_oh_all_more"
           },
           {
             "word_hi": "मेज़",
@@ -1071,7 +1071,7 @@
             "correct": true,
             "matra": "ी",
             "ok_audio": "vo_oh_all_ok_kursi",
-            "more_audio": "vo_oh_all_more_kursi"
+            "more_audio": "vo_oh_all_more"
           }
         ]
       },
@@ -1267,16 +1267,7 @@
       "vo_oh_all_done": "assets/Audio/VO/vo_oh_all_done.ogg",
       "vo_oh_all_hint2": "assets/Audio/VO/vo_oh_all_hint2.ogg",
       "vo_oh_all_intro": "assets/Audio/VO/vo_oh_all_intro.ogg",
-      "vo_oh_all_more_aam": "assets/Audio/VO/vo_oh_all_more_aam.ogg",
-      "vo_oh_all_more_baadal": "assets/Audio/VO/vo_oh_all_more_baadal.ogg",
-      "vo_oh_all_more_chidiya": "assets/Audio/VO/vo_oh_all_more_chidiya.ogg",
-      "vo_oh_all_more_ghadi": "assets/Audio/VO/vo_oh_all_more_ghadi.ogg",
-      "vo_oh_all_more_hiran": "assets/Audio/VO/vo_oh_all_more_hiran.ogg",
-      "vo_oh_all_more_kitaab": "assets/Audio/VO/vo_oh_all_more_kitaab.ogg",
-      "vo_oh_all_more_kursi": "assets/Audio/VO/vo_oh_all_more_kursi.ogg",
-      "vo_oh_all_more_maala": "assets/Audio/VO/vo_oh_all_more_maala.ogg",
-      "vo_oh_all_more_makaan": "assets/Audio/VO/vo_oh_all_more_makaan.ogg",
-      "vo_oh_all_more_pin": "assets/Audio/VO/vo_oh_all_more_pin.ogg",
+      "vo_oh_all_more": "assets/Audio/VO/vo_oh_all_more.ogg",
       "vo_oh_all_ok_baadal": "assets/Audio/VO/vo_oh_all_ok_baadal.ogg",
       "vo_oh_all_ok_kursi": "assets/Audio/VO/vo_oh_all_ok_kursi.ogg",
       "vo_oh_all_ok_makaan": "assets/Audio/VO/vo_oh_all_ok_makaan.ogg",
@@ -1463,16 +1454,7 @@
       "vo_oh_all_done": "शाबाश! आपने हर मात्रा वाले दो-दो चित्र पहचान लिए।",
       "vo_oh_all_hint2": "ध्यान से देखिए। चित्र का नाम बोलिए और उसकी मात्रा पहचानिए।",
       "vo_oh_all_intro": "आ, इ और ई — हर मात्रा वाले दो-दो चित्र खोजिए और उन पर टैप कीजिए।",
-      "vo_oh_all_more_aam": "बहुत बढ़िया, आम! अब और मात्रा वाले चित्र खोजिए।",
-      "vo_oh_all_more_baadal": "बहुत बढ़िया, बादल! अब और मात्रा वाले चित्र खोजिए।",
-      "vo_oh_all_more_chidiya": "बहुत बढ़िया, चिड़िया! अब और मात्रा वाले चित्र खोजिए।",
-      "vo_oh_all_more_ghadi": "बहुत बढ़िया, घड़ी! अब और मात्रा वाले चित्र खोजिए।",
-      "vo_oh_all_more_hiran": "बहुत बढ़िया, हिरण! अब और मात्रा वाले चित्र खोजिए।",
-      "vo_oh_all_more_kitaab": "बहुत बढ़िया, किताब! अब और मात्रा वाले चित्र खोजिए।",
-      "vo_oh_all_more_kursi": "बहुत बढ़िया, कुर्सी! अब और मात्रा वाले चित्र खोजिए।",
-      "vo_oh_all_more_maala": "बहुत बढ़िया, माला! अब और मात्रा वाले चित्र खोजिए।",
-      "vo_oh_all_more_makaan": "बहुत बढ़िया, मकान! अब और मात्रा वाले चित्र खोजिए।",
-      "vo_oh_all_more_pin": "बहुत बढ़िया, पिन! अब और मात्रा वाले चित्र खोजिए।",
+      "vo_oh_all_more": "बहुत बढ़िया! अब और मात्रा वाले चित्र खोजिए।",
       "vo_oh_all_ok_baadal": "शाबाश! बादल में आ की मात्रा है।",
       "vo_oh_all_ok_kursi": "शाबाश! कुर्सी में बड़ी ई की मात्रा है।",
       "vo_oh_all_ok_makaan": "शाबाश! मकान में आ की मात्रा है।",
@@ -1585,7 +1567,7 @@
       "obj_teer": "assets/Images/obj_teer.webp"
     },
     "audio_ext": "ogg",
-    "audio_revision": "c2d3328ba651b205",
+    "audio_revision": "647476ab203f209b",
     "audio_speech": {
       "vo_ak_hi": [
         [
@@ -2805,172 +2787,14 @@
           7.17
         ]
       ],
-      "vo_oh_all_more_aam": [
-        [
-          0.27,
-          1.08
-        ],
-        [
-          1.58,
-          1.93
-        ],
-        [
-          2.53,
-          2.7
-        ],
-        [
-          2.86,
-          4.5
-        ]
-      ],
-      "vo_oh_all_more_baadal": [
-        [
-          0.21,
-          1.18
-        ],
-        [
-          1.43,
-          1.94
-        ],
-        [
-          2.39,
-          4.54
-        ]
-      ],
-      "vo_oh_all_more_chidiya": [
-        [
-          0.27,
-          1.48
-        ],
-        [
-          2.08,
-          2.27
-        ],
-        [
-          2.41,
-          4.08
-        ]
-      ],
-      "vo_oh_all_more_ghadi": [
-        [
-          0.28,
-          1.58
-        ],
-        [
-          2.11,
-          2.29
-        ],
-        [
-          2.4,
-          4.12
-        ]
-      ],
-      "vo_oh_all_more_hiran": [
-        [
-          0.26,
-          1.13
-        ],
-        [
-          1.68,
-          2.08
-        ],
-        [
-          2.86,
-          3.05
-        ],
-        [
-          3.19,
-          5.09
-        ]
-      ],
-      "vo_oh_all_more_kitaab": [
-        [
-          0.29,
-          1.2
-        ],
-        [
-          1.66,
-          1.73
-        ],
-        [
-          1.83,
-          2.1
-        ],
-        [
-          2.91,
-          3.08
-        ],
-        [
-          3.24,
-          5.03
-        ]
-      ],
-      "vo_oh_all_more_kursi": [
-        [
-          0.28,
-          1.27
-        ],
-        [
-          1.89,
-          2.39
-        ],
-        [
-          3.21,
-          3.39
-        ],
-        [
-          3.51,
-          5.28
-        ]
-      ],
-      "vo_oh_all_more_maala": [
-        [
-          0.28,
-          0.41
-        ],
-        [
-          0.55,
-          1.77
-        ],
-        [
-          2.23,
-          2.39
-        ],
-        [
-          2.65,
-          4.47
-        ]
-      ],
-      "vo_oh_all_more_makaan": [
+      "vo_oh_all_more": [
         [
           0.15,
           1.14
         ],
         [
-          1.58,
-          2.3
-        ],
-        [
-          2.81,
-          4.83
-        ]
-      ],
-      "vo_oh_all_more_pin": [
-        [
-          0.28,
-          1.17
-        ],
-        [
-          1.61,
-          1.89
-        ],
-        [
-          2.55,
-          2.72
-        ],
-        [
-          2.89,
-          4.56
+          1.64,
+          3.66
         ]
       ],
       "vo_oh_all_ok_baadal": [
@@ -4761,16 +4585,7 @@
       "vo_oh_all_done": 4.0,
       "vo_oh_all_hint2": 5.64,
       "vo_oh_all_intro": 7.56,
-      "vo_oh_all_more_aam": 4.96,
-      "vo_oh_all_more_baadal": 4.731,
-      "vo_oh_all_more_chidiya": 4.48,
-      "vo_oh_all_more_ghadi": 4.44,
-      "vo_oh_all_more_hiran": 5.44,
-      "vo_oh_all_more_kitaab": 5.44,
-      "vo_oh_all_more_kursi": 5.72,
-      "vo_oh_all_more_maala": 4.84,
-      "vo_oh_all_more_makaan": 5.051,
-      "vo_oh_all_more_pin": 4.96,
+      "vo_oh_all_more": 3.881,
       "vo_oh_all_ok_baadal": 4.011,
       "vo_oh_all_ok_kursi": 4.48,
       "vo_oh_all_ok_makaan": 3.571,

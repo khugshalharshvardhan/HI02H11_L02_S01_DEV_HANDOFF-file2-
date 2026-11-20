@@ -437,6 +437,8 @@ VO = {
 
     # the mid-screen line sends the child back for ANY remaining matra, not for one of
     # them — the per-matra wording the three screens used would mislead here.
+    # [SME] the praise with no name in it - see hunt_objects(). Cut from the मकान take.
+    "vo_oh_all_more":            "बहुत बढ़िया! अब और मात्रा वाले चित्र खोजिए।",
     "vo_oh_all_more_aam":        "बहुत बढ़िया, आम! अब और मात्रा वाले चित्र खोजिए।",
     "vo_oh_all_more_maala":      "बहुत बढ़िया, माला! अब और मात्रा वाले चित्र खोजिए।",
     "vo_oh_all_more_makaan":     "बहुत बढ़िया, मकान! अब और मात्रा वाले चित्र खोजिए।",
@@ -844,7 +846,10 @@ def hunt_objects():
             # a correct object that belongs to no group would be praised and then not count.
             o["matra"] = m
             o["ok_audio"] = HUNT_OK.get(slug, "vo_oh_all_ok_" + slug)
-            o["more_audio"] = "vo_oh_all_more_" + slug
+            # [SME] one generic line, not a per-object one. The object's own name clip plays
+            # a moment earlier on this same path, so a praise that names it again says the word
+            # twice in a row. See vo_oh_all_more.
+            o["more_audio"] = "vo_oh_all_more"
         out.append(o)
     return out
 
